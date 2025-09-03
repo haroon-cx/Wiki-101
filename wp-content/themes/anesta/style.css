@@ -1,0 +1,569 @@
+/*
+Theme Name: Anesta
+Theme URI: https://anesta.ancorathemes.com/
+Description: Anesta is a Premium WordPress theme that has built-in support for popular Page Builders, slider with swipe gestures, and is SEO- and Retina-ready. The unique system of inheritance and override options allows setting up individual parameters for different sections of your site and supported plugins.
+Author: AncoraThemes
+Author URI: https://ancorathemes.com/
+Version: 1.1.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: blog, e-commerce, portfolio, grid-layout, one-column, two-columns, three-columns, four-columns, left-sidebar, right-sidebar, custom-background, custom-colors, custom-header, custom-logo, custom-menu, editor-style, featured-image-header, featured-images, flexible-header, footer-widgets, full-width-template, microformats, post-formats, sticky-post, theme-options, threaded-comments, translation-ready, block-styles, wide-blocks
+Text Domain: anesta
+*/
+/* TABLE OF CONTENTS:
+
+1. Reset tags and predefined classes
+2+ See in the active skin styles
+
+-------------------------------------------------------------- */
+/* 1. Reset tags
+-------------------------------------------------------------- */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+video,
+audio,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+font,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+input,
+textarea,
+button,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+address,
+section {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  outline: 0;
+  -ms-word-wrap: break-word;
+  word-wrap: break-word;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding: 160px;
+}
+
+button {
+  font-size: 20px;
+}
+
+h1,
+.fzz {
+  font-size: 32px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+h5 {
+  font-size: 16px;
+}
+
+h6 {
+  font-size: 14px;
+}
+
+applet,
+object,
+iframe,
+video,
+audio,
+fieldset,
+form,
+label,
+legend,
+input,
+textarea,
+button,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  border: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.5;
+  margin-top: 0 !important;
+}
+
+label {
+  color: #747474;
+  margin-bottom: 4px;
+}
+
+.required label span {
+  color: #F1333D;
+}
+
+html {
+  font-size: 100%;
+  /*62.5%;*/
+  /* Corrects text resizing oddly in IE6/7 when body font-size is set using em units
+									   http://clagnut.com/blog/348/#c790 */
+  -webkit-text-size-adjust: 100%;
+  /* Prevents iOS text size adjust after orientation change, without disabling user zoom */
+  -ms-text-size-adjust: 100%;
+  /* www.456bereastreet.com/archive/201012/
+									   controlling_text_size_in_safari_for_ios_without_disabling_user_zoom/ */
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html:not(.edit-post-visual-editor) {
+  height: 100%;
+  overflow-y: scroll !important;
+  overflow-x: hidden;
+}
+
+html:not(.edit-post-visual-editor),
+body:not(.edit-post-visual-editor) {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+div.ui-widget,
+div.ui-widget .ui-widget,
+div.ui-widget .ui-widget-header,
+div.ui-widget .ui-widget-content,
+div.ui-accordion .ui-accordion-header,
+div.ui-widget button,
+div.ui-widget input,
+div.ui-widget select,
+div.ui-widget textarea,
+div.ui-state-default,
+div.ui-widget-content .ui-state-default,
+div.ui-widget-header .ui-state-default {
+  font-family: inherit;
+  font-size: 1em;
+  line-height: inherit;
+}
+
+div.ui-widget,
+div.ui-widget .ui-widget,
+div.ui-widget .ui-widget-header,
+div.ui-widget .ui-widget-content,
+div.ui-accordion .ui-accordion-header,
+div.ui-state-default,
+div.ui-widget-content .ui-state-default,
+div.ui-widget-header .ui-state-default {
+  color: inherit;
+  background: none;
+  border-style: none;
+  -webkit-border-radius: 0;
+  -ms-border-radius: 0;
+  border-radius: 0;
+}
+
+div.ui-datepicker {
+  background-color: #fff;
+}
+
+div.ui-accordion .ui-accordion-header {
+  padding: 0;
+}
+
+div.ui-accordion .ui-accordion-header-icon {
+  display: none;
+}
+
+div.ui-tabs,
+div.ui-tabs .ui-tabs-panel,
+div.ui-tabs .ui-tabs-nav {
+  padding: 0;
+}
+
+div.ui-tabs .ui-tabs-nav li {
+  float: none;
+  margin: 0;
+}
+
+div.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+  float: none;
+}
+
+/* Predefined classes for users
+-------------------------------------------------------------- */
+/* Round object corners */
+.rounded_none {
+  -webkit-border-radius: 0;
+  -ms-border-radius: 0;
+  border-radius: 0;
+}
+
+.rounded_tiny {
+  -webkit-border-radius: 4px;
+  -ms-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.rounded_small {
+  -webkit-border-radius: 6px;
+  -ms-border-radius: 6px;
+  border-radius: 6px;
+}
+
+.rounded_medium {
+  -webkit-border-radius: 10px;
+  -ms-border-radius: 10px;
+  border-radius: 10px;
+}
+
+.rounded_large {
+  -webkit-border-radius: 15px;
+  -ms-border-radius: 15px;
+  border-radius: 15px;
+}
+
+.rounded {
+  -webkit-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+}
+
+/* Overflow hidden */
+.overflow_hidden {
+  overflow: hidden !important;
+}
+
+.overflow_x_hidden {
+  overflow-x: hidden !important;
+}
+
+.overflow_y_hidden {
+  overflow-y: hidden !important;
+}
+
+input[type="search"],
+#filter-search,
+div#agqa-search-box input ,.filter-select-title{
+  background-image: url(images/search-icon.svg);
+}
+input[type="search"],
+#filter-search,
+div#agqa-search-box input{
+  padding-left: 65px !important;
+}
+
+input[type="search"],
+button.filter-select-title,
+#filter-search,div#agqa-search-box input {
+  background-repeat: no-repeat;
+  background-position: left 28px center;
+  background-size: 18px;
+  text-transform: capitalize;
+}
+
+.filter-container button.filter-select-title {
+  background-image: url(images/filter-icon.svg);
+  color: var(--theme-color-input_text);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.02);
+  padding: 12px 54px 12px 65px !important;
+  box-sizing: border-box;
+  width: 100%;
+  text-align: left;
+  position: relative;
+  color: #747474;
+  height: 60px;
+}
+
+button.filter-select-title::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin-block: auto;
+  right: 21px;
+  width: 14px;
+  height: 14px;
+  background-image: url(images/arrow-down.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transition: all .3s ease-in-out;
+}
+
+.filter-container .filter-area button.filter-select-title:hover,
+.filter-container .filter-area button.filter-select-title:active,
+.filter-container .filter-area button.filter-select-title:focus {
+  color: var(--theme-color-input_text);
+  border: 1px solid #747474;
+  background-color: #1D1C25;
+}
+
+
+::placeholder,
+input::placeholder {
+  color: #747474;
+}
+
+.filter-container button.filter-select-title,
+.filter-select-list,.dropdown-lists{
+  border: 1px solid #747474;
+  background-color: #1D1C25;
+}
+
+.filter-select-list{
+  top: 70px;
+  width: 100%;
+}
+
+.enabled {
+  background-color: #52C41A;
+}
+
+.disabled {
+  background-color: #FF4D4F;
+}
+
+.filter-select-list,.dropdown-lists {
+  border-radius: 16px;
+  padding: 16px 8px;
+  display: none;
+  position: absolute;
+  z-index: 99;
+  box-sizing: border-box;
+}
+
+.api-revenue-states-buttons span{
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 16px;
+  margin-top: 14px;
+}
+
+.filter-select .filter-select-list ul ,.dropdown-ctn .dropdown-lists ul{
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.filter-select-list li ,.dropdown-lists li{
+  list-style-type: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px 16px;
+  transition: background-color .3s ease-in-out;
+  border-radius: 16px;
+}
+
+.filter-select-list li:hover,.dropdown-lists li:hover,
+.select-item {
+  background-color: #404040;
+}
+
+.content_wrap:after,
+.content_wrap .clearfix {
+  display: none !important;
+}
+
+.dropdown-ctn{
+  position: relative;
+}
+
+.dropdown-lists li{
+  top: 20px;
+}
+
+input,
+.agqa-popup-form-field .agqa-popup-form-button {
+  border: 1px solid #747474;
+}
+
+input,
+.agqa-popup-form-field .agqa-popup-form-button,
+.agqa-popup-form-multi-select {
+  background-color: #747474;
+}
+
+select {
+  background-image: url(images/arrow-down-icon.svg);
+  background-size: 13px;
+  background-repeat: no-repeat;
+  background-position: center right 21px;
+}
+
+form input,
+form select {
+  margin-bottom: 16px;
+  height: 47px;
+}
+
+form input,
+.agqa-popup-form-button {
+  width: 100%;
+  color: #fff;
+}
+
+.agqa-popup-form-button {
+  text-align: left;
+  padding: 12px 16px;
+}
+
+.selected-dropdown-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.agqa-popup-form-ctn .agqa-popup-form-field .agqa-popup-form-button:hover,
+.agqa-popup-form-ctn .agqa-popup-form-field .agqa-popup-form-button:active,
+.agqa-popup-form-ctn .agqa-popup-form-field .agqa-popup-form-button:focus {
+  background-color: #747474;
+  border-color: #747474;
+}
+
+.agqa-popup-form-select ul {
+  border-radius: 0 0 16px 16px;
+}
+
+.content .agqa-popup-form-select ul,
+.agqa-popup-form-select ul {
+  margin-bottom: 0;
+}
+
+.agqa-popup-form-multi-select {
+  border-radius: 16px;
+  margin-bottom: 16px;
+}
+
+.agqa-popup-form-select {
+  display: none;
+  max-height: 430px;
+  overflow-y: auto;
+}
+
+.upload-file-button {
+  position: relative;
+  /* border: 1px solid transparent;
+  border-image: linear-gradient(90deg, #7F56CA, #6B4EBD); */
+  border: 1px solid #7F56CA;
+  border-radius: 16px;
+  padding-left: 58px;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.upload-file-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 29px;
+  margin-block: auto;
+  width: 14px;
+  height: 14px;
+  background-image: url(images/plus-purple-icon.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transition: all .3s ease-in-out;
+}
+
+.d-flex {
+  display: flex;
+  gap: 16px 24px;
+}
+
+.sidebar>.sidebar_inner>.widget ul#menu-main-menu li.current_page_item a {
+  font-weight: 600;
+}
+
+.no-found-result {
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+}
+
+.align-center {
+  text-align: center;
+}
+
+select {
+  cursor: pointer;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  background-color: #606060 !important;
+}
+
+/*# sourceMappingURL=style.css.map */

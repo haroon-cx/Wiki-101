@@ -1,0 +1,41 @@
+/*
+Theme Name:     Hello Elementor Child
+Theme URI:      https://example.com/
+Description:    Child theme for the Hello Elementor theme
+Author:         Haroon Jamil
+Author URI:     https://example.com/
+Template:       hello-elementor
+Version:        1.0.0
+*/
+
+@import url("../hello-elementor/style.css"); /* optional: sirf legacy support mein */
+
+.search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    flex: 1 1 200px;
+    position: relative;
+}
+
+.input-group input {
+    padding: 10px;
+    width: 100%;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: #0073aa;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.search-results {
+    background-color: #f4f4f4;
+    padding: 15px;
+}

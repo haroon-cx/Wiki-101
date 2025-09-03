@@ -1,0 +1,124 @@
+# Translation of Plugins - Post Duplicator - Stable (latest release) in Chinese (China)
+# This file is distributed under the same license as the Plugins - Post Duplicator - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2024-10-30 08:06:14+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: GlotPress/4.0.1\n"
+"Language: zh_CN\n"
+"Project-Id-Version: Plugins - Post Duplicator - Stable (latest release)\n"
+
+#: includes/api.php:56 includes/settings.php:59
+msgid "Copy"
+msgstr "复制"
+
+#: includes/notices.php:21
+msgid "here"
+msgstr "这里"
+
+#: includes/settings.php:17
+msgid "Post Duplicator Settings"
+msgstr "Post Duplicator 设置"
+
+#: includes/settings.php:154
+msgid "Offset Date"
+msgstr "偏移天数"
+
+#: includes/settings.php:149
+msgid "String that should be appended to the duplicate post's slug"
+msgstr "附加到复制文章别名的字符串"
+
+#: includes/settings.php:148
+msgid "Duplicate Slug"
+msgstr "复制别名"
+
+#: includes/settings.php:143
+msgid "String that should be appended to the duplicate post's title"
+msgstr "附加到复制文章标题的字符串"
+
+#: includes/settings.php:142
+msgid "Duplicate Title"
+msgstr "复制标题"
+
+#: includes/settings.php:135
+msgid "Current Time"
+msgstr "当前时间"
+
+#: includes/settings.php:134
+msgid "Duplicate Timestamp"
+msgstr "复制时间戳"
+
+#: includes/settings.php:132
+msgid "Post Date"
+msgstr "文章日期"
+
+#: includes/settings.php:116
+msgid "Post Type"
+msgstr "文章类型"
+
+#: includes/settings.php:110
+msgid "Pending"
+msgstr "待审核"
+
+#: includes/settings.php:109
+msgid "Published"
+msgstr "已发布"
+
+#: includes/settings.php:108
+msgid "Draft"
+msgstr "草稿"
+
+#: includes/settings.php:105
+msgid "Post Status"
+msgstr "文章状态"
+
+#: includes/settings.php:125
+msgid "Original Post Author"
+msgstr "原始文章作者"
+
+#: includes/settings.php:124
+msgid "Current User"
+msgstr "当前用户"
+
+#: includes/settings.php:122
+msgid "Post Author"
+msgstr "文章作者"
+
+#: includes/notices.php:22
+msgid "Successfully Duplicated! You can edit your new %1$s %2$s."
+msgstr "复制成功！您可以编辑新的 %1$s %2$s。"
+
+#: includes/helpers.php:9 includes/settings.php:107
+msgid "Same as original"
+msgstr "和来源相同"
+
+#: includes/edit.php:36
+msgid "Duplicate %1$s to %2$s"
+msgstr "将 %1$s 复制到 %2$s"
+
+#: includes/edit.php:30 includes/hooks.php:36
+msgid "Duplicate %s"
+msgstr "复制 %s"
+
+#. Author URI of the plugin
+#: m4c-postduplicator.php
+msgid "http://www.metaphorcreations.com"
+msgstr "http://www.metaphorcreations.com"
+
+#. Author of the plugin
+#: m4c-postduplicator.php
+msgid "Metaphor Creations"
+msgstr "Metaphor Creations"
+
+#. Description of the plugin
+#: m4c-postduplicator.php
+msgid "Creates functionality to duplicate any and all post types, including taxonomies & custom fields"
+msgstr "为WordPress添加一个复制文章及其自定义字段、分类方法的功能。"
+
+#. Plugin Name of the plugin
+#: m4c-postduplicator.php includes/settings.php:18
+msgid "Post Duplicator"
+msgstr "文章复制器"
