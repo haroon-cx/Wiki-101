@@ -207,7 +207,7 @@ function agqa_create_tables()
         FOREIGN KEY (game_category_id) REFERENCES {$wpdb->prefix}game_category(id) ON DELETE CASCADE
     ) $charset;");
 
-    // Revenue Reorder Tablekdfjkdhfjhdjfhjd
+    // Revenue Reorder Table
 
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}reorder_revenue (
     id INT AUTO_INCREMENT PRIMARY KEY,
