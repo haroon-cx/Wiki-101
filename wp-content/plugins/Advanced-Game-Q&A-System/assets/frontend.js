@@ -655,25 +655,49 @@ jQuery(document).ready(function ($) {
         hidePopup();
     });
 
-    // Handle the removal of fields and re-count the remaining fields
-    $(document).on("click", ".remove-field-btn", function () {
-        // Remove the field
-        const field = $(this).closest(".form-field.custom-field-item");
-        field.remove();
+// Handle the removal of fields with confirmation popup
+$(document).on("click", ".remove-field-btn, .delete-button", function () {
+    var fieldToRemove = $(this).closest(".form-field.custom-field-item");
+    var confirmationPopup = $("#confirmation-popup");
+
+    // Show the confirmation popup
+    confirmationPopup.show();
+
+    // Store the reference to the field being removed
+    var currentField = fieldToRemove;
+
+    // Handle the "Yes" button click (field will be removed)
+    $("#yes-cancel").on("click", function () {
+        // Remove the field from the DOM
+        currentField.remove();
 
         // Recount all fields and update their index
         $(".form-field.custom-field-item").each(function (index) {
-            // Update the hidden input name and label for each field
             $(this)
                 .find("input[type='hidden']")
                 .attr("name", `custom-label-${index + 1}`);
-            // $(this).find("label").text(`Custom Label ${index + 1}`);
-            // $(this).find("input[type='text']").attr("name", `custom-field-${index + 1}`).attr("placeholder", `Custom Field ${index + 1}`);
-        });
 
+            // Optionally, update the labels and input fields if needed
+            $(this).find("label").text(`Custom Label ${index + 1}`);
+            $(this).find("input[type='text']")
+                .attr("name", `custom-field-${index + 1}`)
+                .attr("placeholder", `Custom Field ${index + 1}`);
+        });
+            var faqAccordionItem = jQuery(this).closest('.faq-accordion');
+            faqAccordionItem.fadeOut(500,function(){ faqAccordionItem.remove(); });
+        // Hide the confirmation popup after removal
+        confirmationPopup.hide();
+        
+        // Call the checkFieldLimit function to verify the field count
         checkFieldLimit();
     });
 
+    // Handle the "No" button click (field will not be removed)
+    $(".no-cancel").on("click", function () {
+        // Just hide the confirmation popup without removing the field
+        confirmationPopup.hide();
+    });
+});
     // Function to add a custom field dynamically
     function addCustomField(fieldNumber, value) {
         const newField = $(`
