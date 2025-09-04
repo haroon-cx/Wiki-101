@@ -270,5 +270,50 @@ jQuery(document).ready(function ($) {
       });
    })
 
+  /**
+   * FAQ Filter 
+   */
+
+$("#agqa-game-filter").on("click", function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    var searchTerm = $("#filter-search").val().toLowerCase();
+    var selectedCategory = $('input.agqa-filter-select-hidden').val().toLowerCase();
+    var resultsFound = false;  // Flag to track if any result is found
+
+    // Initially hide pagination and "Nothing Found" message
+    $(".no-found-ctn").hide();  // Hide "Nothing Found" message
+    $('div#pagination-demo').hide();  // Hide pagination
+
+    $(".faq-accordion").each(function() {
+        var faqCategory = $(this).find(".faq-accodion-status").text().trim().toLowerCase();
+        var questionText = $(this).find(".faq-accordion-head h2").text().toLowerCase();
+        var answerText = $(this).find(".faq-accordion-body p").text().toLowerCase();
+
+        // If search term is provided, filter based on search term alone, regardless of category
+        // If no category is selected, just apply the search filter
+        if ((selectedCategory === "all" || faqCategory === selectedCategory) && 
+            (questionText.includes(searchTerm) || answerText.includes(searchTerm))) {
+            $(this).show();  // Show the FAQ item
+            resultsFound = true;  // Mark that at least one result is found
+        } else if (searchTerm && (questionText.includes(searchTerm) || answerText.includes(searchTerm))) {
+            // If only search term matches, show it without category filter
+            $(this).show();  // Show the FAQ item
+            resultsFound = true;  // Mark that at least one result is found
+        } else {
+            $(this).hide();  // Hide the FAQ item
+        }
+    });
+
+    // If no results are found, show the 'nothing found' message
+    if (!resultsFound) {
+        $(".no-found-ctn").show();  // Show the 'no results' message
+        $('div#pagination-demo').hide();  // Hide pagination
+    } else {
+        $('div#pagination-demo').show();  // Show pagination
+        $(".no-found-ctn").hide();  // Hide the 'nothing found' message
+    }
+});
 
 });
+

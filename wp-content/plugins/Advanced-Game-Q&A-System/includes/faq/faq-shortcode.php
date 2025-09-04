@@ -122,8 +122,10 @@ function custom_faq_shortcode() {
                                 </button>
                             </div>    
                             <div class="faq-accordion-body">
-                                <P><?php echo $faq_value->answer; ?></P>
-                            </div>
+                                    <?php if( $faq_value->answer) {?>  
+                                    <p><?php echo $faq_value->answer; ?></p>
+                                    <?php } ?>
+                                </div>
                             <div class="faq-accordion-bottom">
                                 <button class="faq-accordion-button like-button">
                                 <div class="faq-accordion-icon">
@@ -181,6 +183,18 @@ function custom_faq_shortcode() {
                             </div>
                         </div>
                         <?php } ?>
+                    <div class="section-found">
+                        <div class="no-found-ctn">
+                            <div class="search-no-found">
+                                <div class="search-no-found-icon">
+                                    <img src="<?php echo AGQA_URL ?>assets/images/search-forund-icon.svg" alt="Search Icon">
+                                </div>
+                                <div class="search-no-found-text">
+                                    <h2>Nothing matched your search</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="pagination-ctn">

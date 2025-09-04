@@ -42,9 +42,11 @@
                                 style="background: transparent !important; padding: 0; padding-left: 10px;">
                                 <img src="<?php echo AGQA_URL ?>assets/images/accordian-arrow.svg" alt="Arrow">
                                 </button>
-                            </div>    
+                            </div> 
                             <div class="faq-accordion-body">
-                                <P><?php echo $faq_value->answer; ?></P>
+                                <?php if( $faq_value->answer) {?>  
+                                <p><?php echo $faq_value->answer; ?></p>
+                                <?php } ?>
                             </div>
                             <div class="faq-accordion-bottom">
                              
