@@ -112,6 +112,7 @@ function custom_faq_shortcode() {
                 <div class="faq-accordions"> 
                     <?php foreach ($faq_data as $faq_value) { 
                         ?>
+                        
                         <div class="faq-accordion">
                             <div class="faq-accodion-status"><?php echo $faq_value->faq_category; ?></div>
                             <div class="faq-accordion-head">
@@ -127,13 +128,14 @@ function custom_faq_shortcode() {
                                     <?php } ?>
                                 </div>
                             <div class="faq-accordion-bottom">
-                                <button class="faq-accordion-button like-button">
+                                <button class="faq-accordion-button like-button" name="action-type">
                                 <div class="faq-accordion-icon">
+                                    <input type="hidden" class="agqa-like" name="faq-id" value="<?php echo $faq_value->id; ?>">
                                     <img src="<?php echo AGQA_URL ?>assets/images/like-icon.svg" alt="Like Icon">
                                 </div>    
                                     <span class="like-coounting">12</span>
                                 </button>
-                                <button class="faq-accordion-button unlike-button">
+                                <button class="faq-accordion-button unlike-button" name="action-type">
                                 <div class="faq-accordion-icon">
                                     <img src="<?php echo AGQA_URL ?>assets/images/unlike-icon.svg" alt="Un Like Icon">
                                 </div>    

@@ -227,7 +227,73 @@ add_action('wp_ajax_nopriv_agqa_edit_faq', 'agqa_edit_faq');
 
 
 /**
- * FAQ history handler
+ * FAQ like & dislike handler
  */
+function handle_like_dislike_action() {
+    // Check nonce for security
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+        die('Permission denied.');
+    }
+
+    // Parse the form_data from the AJAX request (received as a serialized string)
+    parse_str($_POST['form_data'], $data); // Parse serialized form data
+
+    // Get parameters sent via AJAX
+    $faq_id = intval($data['faq-id']);  // Get faq_id from the form_data
+    $action_type = sanitize_text_field($data['like']);  // Action type is 'like'
+    $user_id = get_current_user_id();
+    
+    global $wpdb;
+
+    // Check if the user has already liked/disliked this FAQ
+    $existing_action = $wpdb->get_var($wpdb->prepare("
+        SELECT action_type FROM {$wpdb->prefix}agqa_faq_likes_dislikes
+        WHERE faq_id = %d AND user_id = %d
+    ", $faq_id, $user_id));
+
+    if ($existing_action) {
+        // If the user has already liked or disliked, update the action
+        if ($existing_action === $action_type) {
+            // Remove the like/dislike if it's the same as the current action
+            $wpdb->delete($wpdb->prefix . 'agqa_faq_likes_dislikes', array(
+                'faq_id' => $faq_id,
+                'user_id' => $user_id,
+                'action_type' => $action_type
+            ));
+            echo 'removed';
+        } else {
+            // If the action is different, update the record
+            $wpdb->update($wpdb->prefix . 'agqa_faq_likes_dislikes', array(
+                'action_type' => $action_type
+            ), array(
+                'faq_id' => $faq_id,
+                'user_id' => $user_id
+            ));
+            echo 'updated';
+        }
+    } else {
+        // Insert the like/dislike record if not already present
+        $wpdb->insert($wpdb->prefix . 'agqa_faq_likes_dislikes', array(
+            'faq_id' => $faq_id,
+            'user_id' => $user_id,
+            'action_type' => $action_type
+        ));
+        echo 'added';
+    }
+
+    // Send back the current like and dislike counts
+    $like_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}agqa_faq_likes_dislikes WHERE faq_id = %d AND action_type = 'like'", $faq_id));
+    $dislike_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}agqa_faq_likes_dislikes WHERE faq_id = %d AND action_type = 'dislike'", $faq_id));
+
+    echo json_encode(array(
+        'like_count' => $like_count,
+        'dislike_count' => $dislike_count
+    ));
+
+    wp_die(); // End the request
+}
+
+add_action('wp_ajax_like_dislike_action', 'handle_like_dislike_action');
+add_action('wp_ajax_nopriv_like_dislike_action', 'handle_like_dislike_action');
 
 ?>
