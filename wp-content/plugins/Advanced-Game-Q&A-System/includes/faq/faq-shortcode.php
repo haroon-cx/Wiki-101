@@ -149,6 +149,17 @@ function custom_faq_shortcode() {
                                     </div>    
                                     Edit
                                 </a>
+                                <div id="custom-faq-field-popup">
+                                <div id="custom-faq-field-popup-inner">
+                                    <h2>Delete</h2>
+                                    <div class="popup-form-cross-icon"></div>
+                                    <div class="form-message">Are you sure you want to Delete?</div>
+                                        <div class="agqa-popup-form-buttons d-flex">
+                                            <button class="no-cancel" type="button">No</button>
+                                            <button id="yes-cancel" type="submit" value="Yes">Yes</button>
+                                    </div>
+                                </div>
+                            </div>
                                 <button class="faq-accordion-button delete-button">
                                     <div class="faq-accordion-icon">
                                         <img src="<?php echo AGQA_URL ?>assets/images/delete-icon.svg" alt="Delete Icon">

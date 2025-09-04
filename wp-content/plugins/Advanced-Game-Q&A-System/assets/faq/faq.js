@@ -1,280 +1,257 @@
 jQuery(document).ready(function() {
-  jQuery('.faq-accordion-head').click(function() {
-    // Close all other open accordion bodies
-    jQuery('.faq-accordion-body').not(jQuery(this).next()).slideUp();
-    
-    // Toggle the clicked accordion body
-    jQuery(this).next('.faq-accordion-body').stop(true, true).slideToggle();
 
-    // Toggle the 'active' class on the clicked header
+  // ==========================
+  // 1. Initialize Froala Editor
+  // ==========================
+  jQuery('.editor-faq').each(function() {
+    var editor = new FroalaEditor(this, {
+      toolbarButtons: [
+        'bold', 'italic', 'underline', 'strikeThrough',
+        'fontFamily', 'fontSize', 'color', 'paragraphFormat', 'align',
+        'formatOL', 'formatUL', 'outdent', 'indent', 'clearFormatting',
+        'insertLink', 'undo', 'redo', 'fullscreen', 'html'
+      ],
+      imageUpload: false,
+      videoUpload: false,
+      fileUpload: false
+    });
+
+    const maxChars = 3000;
+    let typingTimer;
+    const typingDelay = 2000;
+
+    editor.events.on('input', function() {
+      const $editorContent = editor.$el.find('.fr-view');
+      const $charCounter = jQuery(this).closest('.form-field-editor').find('.char-counter');
+      const $currentCount = $charCounter.find('.current-count');
+      const $formResponse = jQuery(this).closest('.form-field-editor').find('.form-response');
+
+      // Get text content
+      let text = $editorContent.text();
+      let length = text.length;
+
+      // Limit to maxChars
+      if(length > maxChars) {
+        editor.html.set(text.substring(0, maxChars));
+        text = editor.html.get();
+        length = text.length;
+      }
+
+      // Update counter
+      $currentCount.text(length);
+
+      // Reset messages
+      if($formResponse.hasClass('success')) {
+        $formResponse.text('').removeClass('success');
+        $charCounter.removeClass('show-message');
+      }
+
+      // Empty input
+      if(length === 0) {
+        $formResponse.text('').removeClass('error success');
+        $charCounter.removeClass('show-message');
+        return;
+      }
+
+      // At limit
+      if(length === maxChars) {
+        $formResponse.text('Unable to enter more characters').removeClass('success').addClass('error');
+        $charCounter.addClass('show-message');
+        return;
+      }
+
+      // Under limit → show success after typing stops
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(function() {
+        if(editor.$el.find('.fr-view').text().length < maxChars) {
+          $formResponse.text('Successfully submitted').removeClass('error').addClass('success');
+          $charCounter.addClass('show-message');
+        }
+      }, typingDelay);
+    });
+  });
+
+  // ==========================
+  // 2. FAQ Accordion Toggle
+  // ==========================
+  jQuery('.faq-accordion-head').click(function() {
+    jQuery('.faq-accordion-body').not(jQuery(this).next()).slideUp();
+    jQuery(this).next('.faq-accordion-body').stop(true,true).slideToggle();
     jQuery(this).toggleClass('active');
   });
-  let userSelections = {};
 
-  // Handle click on Like button
-  jQuery('.like-button').click(function() {
-    let faqId = jQuery(this).data('faq-id');
-    let likeCountSpan = jQuery(this).find('.like-coounting');
-    let unlikeButton = jQuery(this).closest('.faq-accordion').find('.unlike-button');
-    let unlikeCountSpan = unlikeButton.find('.unlike-coounting');
+// ==========================
+// 3. Like/Dislike Buttons
+// ==========================
+let userSelections = {};  // This will track the state for each faqId
 
-    // If the user has already clicked Like
-    if (userSelections[faqId] === 'like') {
-      // User is changing from Like to None
-      likeCountSpan.text(parseInt(likeCountSpan.text()) - 1);
-      jQuery(this).removeClass('active');  // Remove 'active' class from Like
-      userSelections[faqId] = null;  // Reset the user's selection
-    } else if (userSelections[faqId] === 'dislike') {
-      // User is changing from Dislike to Like
-      unlikeCountSpan.text(parseInt(unlikeCountSpan.text()) - 1);  // Decrease Dislike count
-      likeCountSpan.text(parseInt(likeCountSpan.text()) + 1);       // Increase Like count
-      jQuery(this).addClass('active');  // Add 'active' class to Like
-      unlikeButton.removeClass('active');  // Remove 'active' class from Dislike
-      userSelections[faqId] = 'like';  // Update user's selection to Like
-    } else {
-      // User is selecting Like for the first time
-      likeCountSpan.text(parseInt(likeCountSpan.text()) + 1);
-      jQuery(this).addClass('active');  // Add 'active' class to Like
-      userSelections[faqId] = 'like';  // Set user's selection to Like
-    }
-  });
+jQuery('.like-button').click(function() {
+  let faqId = jQuery(this).data('faq-id');
+  let likeCountSpan = jQuery(this).find('.like-coounting');
+  let unlikeButton = jQuery(this).closest('.faq-accordion').find('.unlike-button');
+  let unlikeCountSpan = unlikeButton.find('.unlike-coounting');
 
-  // Handle click on Dislike button
-  jQuery('.unlike-button').click(function() {
-    let faqId = jQuery(this).data('faq-id');
-    let dislikeCountSpan = jQuery(this).find('.unlike-coounting');
-    let likeButton = jQuery(this).closest('.faq-accordion').find('.like-button');
-    let likeCountSpan = likeButton.find('.like-coounting');
-
-    // If the user has already clicked Dislike
+  // If the like button is clicked, handle state changes
+  if (userSelections[faqId] === 'like') {
+    // If "like" is already active, deactivate it
+    likeCountSpan.text(parseInt(likeCountSpan.text()) - 1);
+    jQuery(this).removeClass('active');
+    userSelections[faqId] = null;  // Reset the state
+  } else {
+    // If "dislike" was active, deactivate it
     if (userSelections[faqId] === 'dislike') {
-      // User is changing from Dislike to None
-      dislikeCountSpan.text(parseInt(dislikeCountSpan.text()) - 1);
-      jQuery(this).removeClass('active');  // Remove 'active' class from Dislike
-      userSelections[faqId] = null;  // Reset the user's selection
-    } else if (userSelections[faqId] === 'like') {
-      // User is changing from Like to Dislike
-      likeCountSpan.text(parseInt(likeCountSpan.text()) - 1);  // Decrease Like count
-      dislikeCountSpan.text(parseInt(dislikeCountSpan.text()) + 1);  // Increase Dislike count
-      jQuery(this).addClass('active');  // Add 'active' class to Dislike
-      likeButton.removeClass('active');  // Remove 'active' class from Like
-      userSelections[faqId] = 'dislike';  // Update user's selection to Dislike
-    } else {
-      // User is selecting Dislike for the first time
-      dislikeCountSpan.text(parseInt(dislikeCountSpan.text()) + 1);
-      jQuery(this).addClass('active');  // Add 'active' class to Dislike
-      userSelections[faqId] = 'dislike';  // Set user's selection to Dislike
-    }
-  });
-      jQuery('.copy-button').click(function() {
-        // Get the question (h2 text) and the answer (p text) dynamically
-        var question = jQuery(this).closest('.faq-accordion').find('.faq-accordion-head h2').text();
-        var answer = jQuery(this).closest('.faq-accordion').find('.faq-accordion-body p').text();
-
-        // Format the copied text as "Q: <Question> Ans: <Answer>"
-        var textToCopy = 'Q: ' + question + ' Ans: ' + answer;
-
-        // Create a temporary text area to hold the content for copying
-        var tempInput = document.createElement('textarea');
-        tempInput.value = textToCopy;
-
-        // Append the textarea to the document body
-        document.body.appendChild(tempInput);
-
-        // Select the text and copy it to clipboard
-        tempInput.select();
-        document.execCommand('copy');
-
-        // Remove the temporary input element from the document
-        document.body.removeChild(tempInput);
-
-        // Append the success message after copying
-        var successMessage = '<div class="copied-success">Copy Successful</div>';
-        jQuery(this).closest('.faq-accordion').append(successMessage);
-
-        // Optionally remove the success message after 3 seconds
-        setTimeout(function() {
-            jQuery('.copied-success').fadeOut(500, function() {
-                jQuery(this).remove();
-            });
-        }, 3000);
-    });
-        jQuery('.delete-button').click(function() {
-        // Get the unique reference for the clicked .faq-accordion item
-        var faqAccordionItem = jQuery(this).closest('.faq-accordion');
-
-        // Hide or delete the specific .faq-accordion item
-        faqAccordionItem.fadeOut(500, function() {
-            // Optionally, remove the item from DOM after fading out
-            faqAccordionItem.remove();
-        });
-    });
-   
-   
-    jQuery("input[type='search']").on("input", function() {
-        var query = jQuery(this).val().toLowerCase();  // Get the search query
-
-        // If the query is not empty
-        if (query !== "") {
-            // Loop through all elements inside the FAQ content
-            jQuery(".faq-main-content").find("*").each(function() {
-                var $node = jQuery(this);
-                var text = $node.text();  // Get the text content of the node
-
-                // Only modify text nodes (not images, buttons, etc.)
-                if ($node.children().length === 0 && text.toLowerCase().includes(query)) {
-                    // Highlight matching text by wrapping it in <span class="highlighted">
-                    var newText = text.replace(new RegExp("\\b" + query + "\\b", "gi"), function(match) {
-                        return '<span class="highlighted">' + match + '</span>';
-                    });
-
-                    // Set the new text with highlighted part
-                    $node.html(newText);
-                }
-            });
-        } else {
-            // Clear highlight if the input is empty, but don't overwrite the entire text
-            jQuery(".faq-main-content").find(".highlighted").each(function() {
-                var $highlightedNode = jQuery(this);
-                // Remove the highlight, keep the text
-                $highlightedNode.replaceWith($highlightedNode.text());
-            });
-        }
-    });
-
-    // Open the popup when any delete button is clicked
-    jQuery(".delete-button").on("click", function () {
-      jQuery("#custom-faq-field-popup").addClass("active");
-    });
-
-    // Close popup on cross icon
-    jQuery(".popup-form-cross-icon").on("click", function () {
-      jQuery("#custom-faq-field-popup").removeClass("active");
-    });
-
-    // Close popup on clicking 'No' or 'Cancel' button
-    jQuery("#custom-faq-field-popup .no-cancel").on("click", function () {
-      jQuery("#custom-faq-field-popup").removeClass("active");
-    });
-
-    // Close popup when clicking outside of the popup inner area
-    jQuery(document).on("click", function () {
-      // Check if the click is outside the popup inner
-      if (!jQuery(e.target).closest("#custom-faq-field-popup-inner").length) {
-        jQuery("#custom-faq-field-popup").removeClass("active");
-      }
-    });
-
-    // Prevent click inside the popup from closing it
-    jQuery("#custom-faq-field-popup-inner").on("click", function () {
-      e.stopPropagation();
-    });
-
-    // Add functionality for confirming deletion
-    jQuery("#custom-faq-field-popup #yes-cancel").on("click", function () {
-      // Close the popup immediately after clicking "Yes"
-      jQuery("#custom-faq-field-popup").removeClass("active");
-
-      // Show the success message after a brief delay (0.5s)
-      setTimeout(function() {
-        // Append success message to the body or a specific container
-        jQuery(".faq-main-content").append('<div class="success-message">Successfully Deleted</div>');
-
-        // Hide the success message after 3 seconds
-        setTimeout(function() {
-          jQuery(".success-message").fadeOut(function() {
-            jQuery(this).remove(); // Remove the message from the DOM after it fades out
-          });
-        }, 1500); // 3 seconds after showing the message
-      }, 200); // Show the message 0.5 seconds after clicking "Yes"
-    });
-
-   const maxLength = 100;
-
-    // Create or get the message element
-    function createMessage(input) {
-      let msg = input.closest('.faq-template').find('#filter-search-msg');
-      if (msg.length === 0) {
-        msg = jQuery('<div>', { 
-          id: 'filter-search-msg',
-          class: 'field-helper',
-          role: 'status',
-          'aria-live': 'polite'
-        }).insertAfter(input);
-      }
-      return msg;
+      unlikeCountSpan.text(parseInt(unlikeCountSpan.text()) - 1);
+      jQuery(unlikeButton).removeClass('active');
     }
 
-    // Real-time typing event
-    jQuery('#filter-search').on('input', function() {
-      const input = jQuery(this);
-      const msg = createMessage(input);
+    // Activate "like" button
+    likeCountSpan.text(parseInt(likeCountSpan.text()) + 1);
+    jQuery(this).addClass('active');
+    userSelections[faqId] = 'like';  // Set the state to 'like'
+  }
+});
 
-      if (input.val().length > maxLength) {
-        input.val(input.val().slice(0, maxLength)); // Trim if it exceeds max length
-        msg.text('Unable to input more characters.').addClass('is-error');
-      } else {
-        msg.removeClass('is-error').text(''); // Clear message if valid
-      }
-    });
+jQuery('.unlike-button').click(function() {
+  let faqId = jQuery(this).data('faq-id');
+  let dislikeCountSpan = jQuery(this).find('.unlike-coounting');
+  let likeButton = jQuery(this).closest('.faq-accordion').find('.like-button');
+  let likeCountSpan = likeButton.find('.like-coounting');
 
-    // On form submit, prevent submission if the input exceeds 100 characters
-    jQuery('.faq-template').on('click', '#agqa-game-filter', function(e) {
-      const input = jQuery(this).closest('.faq-template').find('#filter-search');
-      const msg = createMessage(input);
-
-      if (input.val().length > maxLength) {
-        e.preventDefault(); // Prevent form submission
-        msg.text('Unable to input more characters.').addClass('is-error');
-      } else {
-        msg.removeClass('is-error').text(''); // Clear message if valid
-      }
-    });
-
-  });
-  
-document.querySelectorAll('.editor-faq').forEach(function(el) {
-  // Initialize Froala Editor
-  var editor = new FroalaEditor(el, {
-    // Toolbar setup
-    toolbarButtons: {
-      moreText: {
-        buttons: [
-          'bold', 'italic', 'underline', 'strikeThrough',
-          'fontFamily', 'fontSize', 'color', 'paragraphFormat', 'align',
-          'formatOL', 'formatUL', 'outdent', 'indent', 'clearFormatting'
-        ]
-      },
-      moreRich: {
-        buttons: [
-          'insertLink'   // ✅ allow links only
-        ]
-      },
-      moreMisc: {
-        buttons: ['undo', 'redo', 'fullscreen', 'html']
-      }
-    },
-
-    // Disable uploads
-    imageUpload: false,
-    videoUpload: false,
-    fileUpload: false,
-
-    // Ensure editor re-initializes after pasting
-    events: {
-      'paste.after': function() {
-        // Reset toolbar or any custom actions to avoid the toolbars from hiding
-        setTimeout(() => {
-          editor.refresh();
-        }, 100);
-      }
+  // If the dislike button is clicked, handle state changes
+  if (userSelections[faqId] === 'dislike') {
+    // If "dislike" is already active, deactivate it
+    dislikeCountSpan.text(parseInt(dislikeCountSpan.text()) - 1);
+    jQuery(this).removeClass('active');
+    userSelections[faqId] = null;  // Reset the state
+  } else {
+    // If "like" was active, deactivate it
+    if (userSelections[faqId] === 'like') {
+      likeCountSpan.text(parseInt(likeCountSpan.text()) - 1);
+      jQuery(likeButton).removeClass('active');
     }
-  });
 
-  // Manually refresh the editor after every paste event to prevent hiding
-  el.addEventListener('paste', function() {
+    // Activate "dislike" button
+    dislikeCountSpan.text(parseInt(dislikeCountSpan.text()) + 1);
+    jQuery(this).addClass('active');
+    userSelections[faqId] = 'dislike';  // Set the state to 'dislike'
+  }
+});
+
+  // ==========================
+  // 4. Copy Button
+  // ==========================
+  jQuery('.copy-button').click(function() {
+    var question = jQuery(this).closest('.faq-accordion').find('.faq-accordion-head h2').text();
+    var answer = jQuery(this).closest('.faq-accordion').find('.faq-accordion-body p').text();
+    var textToCopy = 'Q: ' + question + ' Ans: ' + answer;
+
+    var tempInput = document.createElement('textarea');
+    tempInput.value = textToCopy;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+
+    var successMessage = '<div class="copied-success">Copy Successful</div>';
+    jQuery(this).closest('.faq-accordion').append(successMessage);
     setTimeout(function() {
-      editor.refresh(); // Refresh the editor to show tools again
-    }, 100);  // Give a small delay to allow paste operation to complete
+      jQuery('.copied-success').fadeOut(500,function(){ jQuery(this).remove(); });
+    },3000);
   });
+
+  // ==========================
+  // 6. Pagination
+  // ==========================
+  var itemsPerPage = 15;
+  var totalItems = jQuery('.faq-accordion').length;
+  var totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  jQuery('#pagination-demo').twbsPagination({
+    totalPages: totalPages,
+    visiblePages: 3,
+    onPageClick: function(event,page) {
+      jQuery('.faq-accordion').hide();
+      jQuery('.faq-accordion[data-page="' + page + '"]').show();
+    }
+  });
+
+  jQuery('.faq-accordion').each(function(index) {
+    var page = Math.floor(index / itemsPerPage) + 1;
+    jQuery(this).attr('data-page', page);
+    if(page === 1) { jQuery(this).show(); } else { jQuery(this).hide(); }
+  });
+
+  // ==========================
+  // 7. Search with Highlighting
+  // ==========================
+  jQuery("input[type='search']").on("input",function() {
+    var query = jQuery(this).val().toLowerCase();
+
+    if(query !== "") {
+      jQuery(".faq-main-content").find("*").each(function() {
+        var $node = jQuery(this);
+        var text = $node.text();
+        if($node.children().length === 0 && text.toLowerCase().includes(query)) {
+          var newText = text.replace(new RegExp("\\b" + query + "\\b","gi"), function(match) {
+            return '<span class="highlighted">' + match + '</span>';
+          });
+          $node.html(newText);
+        }
+      });
+    } else {
+      jQuery(".faq-main-content").find(".highlighted").each(function() {
+        var $highlightedNode = jQuery(this);
+        $highlightedNode.replaceWith($highlightedNode.text());
+      });
+    }
+  });
+
+  // 3sep 2025 (Usama)
+
+// Open the popup when any delete button is clicked
+jQuery(".delete-button").on("click", function () {
+  jQuery("#custom-faq-field-popup").addClass("active");
+});
+
+// Close popup on cross icon
+jQuery(".popup-form-cross-icon").on("click", function () {
+  jQuery("#custom-faq-field-popup").removeClass("active");
+});
+
+// Close popup on clicking 'No' or 'Cancel' button
+jQuery("#custom-faq-field-popup .no-cancel").on("click", function () {
+  jQuery("#custom-faq-field-popup").removeClass("active");
+});
+
+// Close popup when clicking outside of the popup inner area
+jQuery(document).on("click", function () {
+  // Check if the click is outside the popup inner
+  if (!jQuery("#custom-faq-field-popup-inner").length) {
+    jQuery("#custom-faq-field-popup").removeClass("active");
+  }
+});
+
+// Prevent click inside the popup from closing it
+jQuery("#custom-faq-field-popup-inner").on("click", function () {
+  e.stopPropagation();
+});
+
+// Add functionality for confirming deletion
+jQuery("#custom-faq-field-popup #yes-cancel").on("click", function () {
+  // Close the popup immediately after clicking "Yes"
+  jQuery("#custom-faq-field-popup").removeClass("active");
+
+  // Show the success message after a brief delay (0.5s)
+  setTimeout(function() {
+    // Append success message to the body or a specific container
+    jQuery(".faq-main-content").append('<div class="success-message">Successfully Deleted</div>');
+
+    // Hide the success message after 3 seconds
+    setTimeout(function() {
+      jQuery(".success-message").fadeOut(function() {
+        jQuery(this).remove(); // Remove the message from the DOM after it fades out
+      });
+    }, 1500); // 3 seconds after showing the message
+  }, 200); // Show the message 0.5 seconds after clicking "Yes"
+});
 });

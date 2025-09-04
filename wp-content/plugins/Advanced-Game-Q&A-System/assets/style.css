@@ -472,7 +472,7 @@ textarea::placeholder {
 .agqa-popup-header h2 {
   margin: 0;
   font-size: 24px;
-  color: #8e44ad;
+  color: #8e44ad !important;
 }
 
 .popup-close,
@@ -711,7 +711,7 @@ button.sc_button_hover_slide_left {
 .api-form-wrapper h1 {
   margin-top: -9px;
   font-size: 32px;
-  color: #c770fe;
+  color: #c770fe !important;
 }
 
 .api-form-wrapper.show {
@@ -1266,7 +1266,6 @@ div#agqa-add-game-modal {
 
 h1.heading-1 {
   font-size: 16px;
-  color: #7644ce;
 }
 
 /* Question Report Style */
@@ -1914,6 +1913,15 @@ input[type="submit"] {
   color: #7F56CA;
 }
 
+#custom-faq-field-popup #yes-cancel {
+  color: #fff;
+  background-color: #7644CE;
+}
+
+#custom-faq-field-popup #yes-cancel {
+  background-color: #624491;
+}
+
 .filter-area .filter-select-button {
   background-color: #fff;
   padding: 15px 24px !important;
@@ -2140,7 +2148,7 @@ body .selected-dropdown-item,
 }
 
 /* Popup form New Category Styl" */
-
+#custom-faq-field-popup,
 .agqa-popup-form,
 .reorder-popup,
 .cancel-form-confirmation,
@@ -2157,6 +2165,7 @@ body .selected-dropdown-item,
   pointer-events: none;
 }
 
+#custom-faq-field-popup::before,
 .agqa-popup-form::before,
 .reorder-popup::before,
 .cancel-form-confirmation::before,
@@ -2176,11 +2185,27 @@ body .selected-dropdown-item,
 .agqa-popup-form.active::before,
 .reorder-popup.active::before,
 .cancel-form-confirmation.active::before,
-.confirm-submit-popup.active::before {
+.confirm-submit-popup.active::before,
+#custom-faq-field-popup.active::before {
   opacity: 1;
   visibility: visible;
 }
 
+#custom-faq-field-popup::before {
+  opacity: 0;
+  visibility: hidden;
+  transition: all .3s ease-in-out;
+}
+
+#custom-faq-field-popup {
+  pointer-events: none;
+}
+
+#custom-faq-field-popup.active {
+  pointer-events: initial;
+}
+
+#custom-faq-field-popup.active #custom-faq-field-popup-inner,
 .agqa-popup-form.active .agqa-popup-form-inner,
 .reorder-popup.active .reorder-popup-inner,
 .cancel-form-confirmation.active .cancel-form-confirmation-box,
@@ -2190,6 +2215,7 @@ body .selected-dropdown-item,
   pointer-events: initial;
 }
 
+#custom-faq-field-popup-inner,
 .agqa-popup-form-inner,
 .reorder-popup-inner,
 .cancel-form-confirmation-box,
@@ -2269,12 +2295,6 @@ body .selected-dropdown-item,
   height: clamp(18px, 3vw, 20px);
   object-fit: contain;
   transition: transform 0.2s ease;
-}
-
-h2 {
-  color: #a566ff;
-  font-weight: 600;
-  font-size: clamp(1.1rem, 2.5vw, 1.2rem);
 }
 
 .tabs {
@@ -2726,6 +2746,12 @@ textarea.wp-editor-area {
   margin-top: 16px;
 }
 
+.agqa-popup-form-buttons form {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
 .agqa-popup-form-select ul {
   padding: 0;
 }
@@ -3157,7 +3183,6 @@ div#agqa-search-box input {
   width: calc(33.33% - 10.66px);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
 }
 
 .form-field label {
@@ -3244,15 +3269,17 @@ div#agqa-search-box input {
   width: auto;
 }
 
+#custom-faq-field-popup button,
 form .form-buttons input,
 form .form-buttons button {
   padding: 8px 24px !important;
 }
 
 .add-custom-field-ctn {
-  height: 100%;
   display: flex;
-  align-items: flex-end;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 28px 0 0;
 }
 
 #add-custom-field-btn {
@@ -3299,6 +3326,7 @@ form .form-buttons button {
   z-index: 9;
 }
 
+#custom-faq-field-popup-inner,
 #custom-field-popup-inner,
 .cancel-form-confirmation-box,
 .confirm-submit-popup-box {
@@ -3317,8 +3345,10 @@ form .form-buttons button {
   width: 572px;
 }
 
+#custom-faq-field-popup-inner,
 .submit-confirm,
 .cancel-form-confirmation-box,
+.cancel-confirm,
 .confirm-submit-popup-box {
   width: 508px;
 }
@@ -3348,6 +3378,7 @@ form .form-buttons button {
   padding: 9px;
 }
 
+#custom-faq-field-popup h2,
 #custom-field-popup h1,
 #custom-field-popup h2,
 #custom-field-popup h3,
@@ -3386,6 +3417,7 @@ form .form-buttons button {
 .form-response.error,
 .error,
 .limit-full,
+#error-message,
 #filter-search-msg {
   color: #F1333D;
 }
@@ -3393,6 +3425,7 @@ form .form-buttons button {
 .error-message,
 .form-response.error,
 .form-response,
+#error-message,
 .error {
   position: relative;
 }
@@ -3400,6 +3433,7 @@ form .form-buttons button {
 .error-message,
 .form-response.error,
 .form-response,
+#error-message,
 .error,
 #filter-search-msg {
   font-size: 14px !important;
@@ -3450,6 +3484,7 @@ form .form-buttons button {
 }
 
 .submit-warning,
+.success-message,
 .submitted-successfully,
 .submitted-unsuccessfully {
   position: fixed;
@@ -3459,6 +3494,7 @@ form .form-buttons button {
   padding: 8px 16px;
 }
 
+.success-message,
 .submit-warning,
 .submitted-successfully,
 .submitted-unsuccessfully,
@@ -3479,6 +3515,7 @@ form .form-buttons button {
   background-color: #ffbb00;
 }
 
+.success-message,
 .submitted-successfully,
 .copied-success {
   background-color: #34C759;
@@ -3533,6 +3570,7 @@ form .form-buttons button {
   color: #747474;
 }
 
+#custom-faq-field-popup button,
 .popup-content .form-buttons button,
 .popup-content input[type="submit"],
 .cancel-form-confirmation .form-buttons button,
@@ -3607,7 +3645,7 @@ form .form-buttons button {
 }
 
 .reorder-popup-title h2 {
-  color: #7644CE;
+  color: #7644CE !important;
   font-weight: 500;
 }
 
@@ -3642,7 +3680,7 @@ form .form-buttons button {
 
 .selling-price-tile-item span,
 .selling-price-tile-item h2 {
-  color: #747474;
+  color: #747474 !important;
 }
 
 .selling-price-tile-item span {
@@ -4382,7 +4420,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 
-@media (max-height: 900px) {
+@media (max-height: 980px) {
 
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
@@ -4390,7 +4428,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
   }
 }
 
-@media (max-height: 800px) {
+@media (max-height: 900px) {
 
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
@@ -4398,7 +4436,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
   }
 }
 
-@media (max-height: 700px) {
+@media (max-height: 800px) {
 
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
@@ -4406,6 +4444,201 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
   }
 }
 
+@media (max-height: 700px) {
+
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 126px;
+  }
+
+  .agqa-popup-form-buttons {
+    margin-top: 0px;
+  }
+
+  .agqa-popup-form-ctn .custom-select-dropdown,
+  .agqa-popup-form-ctn .agqa-popup-form-multi-select,
+  .agqa-popup-form-ctn input[type="text"],
+  .agqa-popup-form-title h2,
+  .agqa-popup-form-ctn .agqa-popup-form-select {
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-height: 599px) {
+
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 43vh;
+  }
+  .agqa-popup-form-ctn  .agqa-popup-form-inner {
+    overflow: hidden;
+  }
+}
+
+@media (max-height: 590px) {
+
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 42vh;
+  }
+}
+
+@media (max-height: 580px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 41vh;
+  }
+}
+
+@media (max-height: 570px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 41vh;
+  }
+}
+
+@media (max-height: 560px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 40vh;
+  }
+}
+
+@media (max-height: 550px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 39vh;
+  }
+}
+
+@media (max-height: 540px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 38vh;
+  }
+}
+
+@media (max-height: 530px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 37vh;
+  }
+}
+
+@media (max-height: 520px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 36vh;
+  }
+}
+
+@media (max-height: 510px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 35vh;
+  }
+}
+
+@media (max-height: 500px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 34vh;
+  }
+}
+
+@media (max-height: 490px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 33vh;
+  }
+}
+
+@media (max-height: 480px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 32vh;
+  }
+}
+
+@media (max-height: 470px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 31vh;
+  }
+}
+
+@media (max-height: 460px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 30vh;
+  }
+}
+
+@media (max-height: 450px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 29vh;
+  }
+}
+
+@media (max-height: 440px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 46vh;
+  }
+}
+
+@media (max-height: 430px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 44vh;
+  }
+}
+
+@media (max-height: 420px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 43vh;
+  }
+}
+
+@media (max-height: 410px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 42vh;
+  }
+}
+
+@media (max-height: 400px) {
+  
+  .agqa-popup-form-select,
+  .custom-select-dropdown-lists {
+    max-height: 41vh;
+  }
+}
+
 #report_form .custom-select-dropdown {
   margin-bottom: 16px;
+}
+
+.agqa-popup-form .custom-select-dropdown+.error-message {
+  top: -15px;
 }

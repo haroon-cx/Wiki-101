@@ -19,13 +19,16 @@
 }
 
 @media (max-width: 1700px) {
-    .agqa-popup-form-ctn {
+
+    .agqa-popup-form-ctn,
+    .filter-right-area {
         position: absolute;
         top: -0px;
         right: 0;
     }
 
-    .fzz {
+    .fzz,
+    .template-title h1 {
         margin-bottom: 24px !important;
     }
 
@@ -46,6 +49,10 @@
     .category-heading,
     .content .category-heading {
         margin-bottom: 20px;
+    }
+
+    .faq-accordion-bottom {
+        gap: 16px;
     }
 }
 
@@ -75,6 +82,10 @@
     .form-field {
         width: calc(50% - 8px);
     }
+
+    .faq-form {
+        padding: 32px 40px 25px;
+    }
 }
 
 @media (max-width: 1440px) and (min-width: 1024px) {
@@ -92,20 +103,24 @@
     .api-heading-wrapper .filter-select-title {
         min-width: 200px;
     }
+
+    .form-field-editor {
+        height: 480px;
+    }
 }
 
 @media (max-width: 1440px) and (min-width: 1200px) {
 
     body.body_style_wide:not(.expand_content) .page_content_wrap .content_wrap>.content,
     body.body_style_wide:not(.expand_content) .content_wrap>.content {
-        width: 70% !important;
+        width: 68% !important;
     }
 
     .page_content_wrap .content_wrap>.widget_area,
     .content_wrap>.widget_area,
     .page_content_wrap .content_wrap>.sidebar,
     .content_wrap>.sidebar {
-        width: 28% !important;
+        width: 30% !important;
     }
 
     .api-info-value {
@@ -189,7 +204,7 @@
     }
 
     .api-provider-section {
-        width: 20%;         
+        width: 20%;
     }
 
     .api-info-grid,
@@ -238,6 +253,18 @@
         width: 450px;
         bottom: 25px;
         left: 0;
+    }
+
+    .fr-toolbar .fr-command.fr-btn,
+    .fr-popup .fr-command.fr-btn,
+    .fr-modal .fr-command.fr-btn {
+        padding: 6px !important;
+        border-radius: 6px !important;
+    }
+
+    .fr-btn-grp,
+    .fr-toolbar .fr-more-toolbar {
+        gap: 5px;
     }
 }
 
@@ -569,10 +596,11 @@
     button {
         padding: 13px 20px;
     }
+
     .copied-success {
-    left: 0;
-    right: 0;
-   }     
+        left: 0;
+        right: 0;
+    }
 }
 
 @media (max-width: 1023px) and (min-width: 748px) {
@@ -685,5 +713,11 @@
 
     .provider-card {
         width: 31%;
+    }
+}
+
+@media (max-height: 900px) {
+    .reorder-selling-price-tiles {
+        max-height: 54vh;
     }
 }

@@ -45,9 +45,14 @@
     border-top: 1px solid #747474;
 }
 
-.faq-accordion a {
+.faq-accordion a,
+.form-field-editor a {
     color: #45AFFF;
     text-decoration: underline;
+}
+
+.faq-form a {
+    cursor: pointer;
 }
 
 a.faq-accordion-button{
@@ -58,6 +63,7 @@ a.faq-accordion-button{
     border-left: none !important;
 }
 
+.form-field-editor a:hover,
 .faq-accordion a:hover {
     color: #45AFFF;
     text-decoration: none;
@@ -90,9 +96,12 @@ a.faq-accordion-button:hover{
 }
 
 .faq-accordion-bottom {
+    flex-wrap: wrap;
     gap: 24px;
 }
-
+body{
+    background-color: black !important;
+}
 .faq-accordion-bottom,
 .faq-accordion-button,
 .faq-accordion-icon {
@@ -318,6 +327,7 @@ a.faq-accordion-button:hover{
 .fr-btn-wrap {
     display: flex !important;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .fr-btn-grp:nth-child(n + 2) {
