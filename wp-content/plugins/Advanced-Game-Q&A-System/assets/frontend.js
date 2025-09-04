@@ -671,23 +671,9 @@ $(document).on("click", ".remove-field-btn, .delete-button", function () {
         // Remove the field from the DOM
         currentField.remove();
 
-        // Recount all fields and update their index
-        $(".form-field.custom-field-item").each(function (index) {
-            $(this)
-                .find("input[type='hidden']")
-                .attr("name", `custom-label-${index + 1}`);
-
-            // Optionally, update the labels and input fields if needed
-            $(this).find("label").text(`Custom Label ${index + 1}`);
-            $(this).find("input[type='text']")
-                .attr("name", `custom-field-${index + 1}`)
-                .attr("placeholder", `Custom Field ${index + 1}`);
-        });
-            var faqAccordionItem = jQuery(this).closest('.faq-accordion');
-            faqAccordionItem.fadeOut(500,function(){ faqAccordionItem.remove(); });
         // Hide the confirmation popup after removal
         confirmationPopup.hide();
-        
+
         // Call the checkFieldLimit function to verify the field count
         checkFieldLimit();
     });
@@ -698,6 +684,7 @@ $(document).on("click", ".remove-field-btn, .delete-button", function () {
         confirmationPopup.hide();
     });
 });
+
     // Function to add a custom field dynamically
     function addCustomField(fieldNumber, value) {
         const newField = $(`
