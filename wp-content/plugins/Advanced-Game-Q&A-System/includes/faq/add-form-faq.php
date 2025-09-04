@@ -26,19 +26,19 @@
                         <span class="custom-dropdown-selected-value"></span>
                             </div>
                     <div class="custom-select-dropdown-lists">
-                    <ul>
-                        <li>All</li>
-                        <li data-value="Account & Access Management">Account & Access Management</li>
-                        <li data-value="System Features & Workflow">System Features & Workflow</li>
-                        <li data-value="Reports & Data Queries">Reports & Data Queries</li> 
-                        <li data-value="Errors & Troubleshooting">Errors & Troubleshooting</li>
-                        <li data-value="Notifications & Alerts">Notifications & Alerts</li>
-                        <li data-value="Performance & Compatibility">Performance & Compatibility</li>
-                        <li data-value="System Settings & Customization">System Settings & Customization</li>
-                        <li data-value="Customer Support & Contact">Customer Support & Contact</li>
-                        <li data-value="Other">Other</li>
-                    </ul>
-                </div>
+                      <ul>
+                          <li>All</li>
+                          <li data-value="Account & Access Management">Account & Access Management</li>
+                          <li data-value="System Features & Workflow">System Features & Workflow</li>
+                          <li data-value="Reports & Data Queries">Reports & Data Queries</li> 
+                          <li data-value="Errors & Troubleshooting">Errors & Troubleshooting</li>
+                          <li data-value="Notifications & Alerts">Notifications & Alerts</li>
+                          <li data-value="Performance & Compatibility">Performance & Compatibility</li>
+                          <li data-value="System Settings & Customization">System Settings & Customization</li>
+                          <li data-value="Customer Support & Contact">Customer Support & Contact</li>
+                          <li data-value="Other">Other</li>
+                      </ul>
+                  </div>
                 <input type="hidden" name="faq-category" id="issue_type" required="">
                  </div>
                 </div>
@@ -51,7 +51,7 @@
                 <div class="form-buttons agqa-popup-form-buttons d-flex full-width agqa-add-update-btn">
                     <div id="cancel-form-confirmation" class="cancel-form-confirmation" style="">
                          <div class="cancel-form-confirmation-box">
-                            <h2>Cancel</h2>
+                            <h2>Cancel</h2> 
                                 <div class="popup-form-cross-icon"></div>
                                 <div class="form-message">Are you sure you want to cancel?</div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
@@ -60,8 +60,7 @@
                                 </div>
                          </div>       
                     </div>
-                    <a href="<?php echo esc_url(home_url('/faq')) ?>" class="back-button" id="cancel-confirmation-button">Cancel</a>
-
+                    <a href="<?php echo esc_url(home_url('/faq')) ?>" class="back-button"    id="cancel-confirmation-button">Cancel</a>
                     <div id="confirm-submit-popup" class="confirm-submit-popup">
                          <div class="confirm-submit-popup-box">
                             <h2>Submit</h2>
@@ -73,6 +72,7 @@
                                 </div>
                          </div>       
                     </div>
+                    <button class="reject-button">Reject</button>
                     <input type="submit" value="Submit" class="agqa-edit-submit-btn" id="confirm-submit-popup-button">
                 </div>
             </form>

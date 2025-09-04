@@ -2786,9 +2786,22 @@ textarea.wp-editor-area {
 }
 
 .agqa-popup-form-buttons input[type="submit"],
-.agqa-popup-form-buttons .cancel-button {
+.agqa-popup-form-buttons .cancel-button{
   margin-bottom: 0;
+}
+
+.agqa-popup-form-buttons input[type="submit"],
+.agqa-popup-form-buttons .cancel-button,
+.form-buttons .reject-button {
   font-size: 20px !important;
+}
+
+.form-buttons .reject-button {
+  background-color: #E92727;
+}
+
+.form-buttons .reject-button:hover {
+  background-color: #d60000 !important;
 }
 
 body .select_container select,

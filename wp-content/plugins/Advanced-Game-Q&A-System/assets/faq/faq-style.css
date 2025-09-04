@@ -41,8 +41,18 @@
 
 .faq-accordion-body {
     display: none;
+    margin-top: 29px;
     padding-top: 29px;
     border-top: 1px solid #747474;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.faq-accordion-body li,
+.faq-accordion-body p,
+.faq-accordion-body ul,
+.faq-accordion-body ol {
+    margin-bottom: 0;
 }
 
 .faq-accordion a,
@@ -82,11 +92,6 @@ a.faq-accordion-button:hover{
     margin-bottom: 0;
 }
 
-.faq-accordion-body,
-.faq-accordion-bottom {
-    margin-top: 29px;
-}
-
 .faq-accordion-button {
     padding: 6px 12px;
     color: white;
@@ -98,6 +103,7 @@ a.faq-accordion-button:hover{
 .faq-accordion-bottom {
     flex-wrap: wrap;
     gap: 24px;
+    padding-top: 29px;
 }
 body{
     background-color: black !important;
@@ -240,6 +246,17 @@ body{
     height: 100%;
 }
 
+textarea.fr-code {
+    width: calc(100% - 32px);
+    margin: 16px auto !important;
+    background: #aaaaaa !important;
+    color: white !important;
+}
+
+textarea.fr-code:focus {
+    background: #aaaaaa !important;
+}
+
 .fr-box.fr-basic .fr-element {
     font-size: 16px !important;
     padding: 16px !important;
@@ -362,7 +379,7 @@ body{
 .fr-desktop .fr-command.fr-btn-hover:not(.disabled),
 .fr-desktop .fr-command.fr-expanded:not(.fr-table-cell),
 .fr-options {
-    background: #d7d7d7 !important;
+    background: #aaaaaa !important;
 }
 
 .fr-toolbar .fr-more-toolbar.fr-expanded {
