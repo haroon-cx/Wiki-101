@@ -43,12 +43,12 @@
                         <li data-value="other">Other</li>
                     </ul>
                 </div>
-                <input type="hidden" name="issue_type" id="issue_type" required="">
+                <input type="hidden" name="issue_type" id="issue_type" required>
                  </div>
             </div>
-            <div class="agqa-popup-form-field">
-                <label for="detail-description">Detailed Description</label>
-                <textarea name="detail-description" id="detail-description" placeholder="Typing...."></textarea>
+            <div class="agqa-popup-form-field required">
+                <label for="detail-description"><span>* </span>Detailed Description</label>
+                <textarea name="detail-description" id="detail-description" placeholder="Typing...." required></textarea>
             </div>
             <div class="agqa-popup-form-field report-upload-field">
                 <label for="report-upload-input">Upload Attachments</label>
