@@ -8,15 +8,7 @@ function report_system_shortcode() {
     <div class="report-system">
         <h1>Report System</h1>
         <!-- Add any report form or functionality here -->
-        <form method="post" action="">
-            <label for="report_title">Title:</label>
-            <input type="text" id="report_title" name="report_title" required>
-            <br>
-            <label for="report_description">Description:</label>
-            <textarea id="report_description" name="report_description" required></textarea>
-            <br>
-            <input type="submit" name="submit_report" value="Submit Report">
-        </form>
+    
     </div>
     <?php
 

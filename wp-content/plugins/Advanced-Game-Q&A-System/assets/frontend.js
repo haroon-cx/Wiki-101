@@ -1649,8 +1649,8 @@ jQuery(document).ready(function ($) {
 
 
 
-    $('input[type="text"]').on('input', function() {
-    var maxLength = 150;
+    $('input[type="text"],.faq-template #filter-search').on('input', function() {
+    var maxLength = 100;
     var $input = $(this);
     var $errorMessage = $input.next('#error-message'); // Look for the error message next to the input
     var $formField = $input.closest('.form-field'); // Find the parent .form-field of the current input
@@ -1660,7 +1660,7 @@ jQuery(document).ready(function ($) {
       $formField.addClass('error-field-input'); // Add 'error' class to the parent .form-field
       // Append error message if it doesn't already exist
       if ($errorMessage.length === 0) {
-        $('<div id="error-message">Max 150 characters allowed.</div>')
+        $('<div id="error-message">Max 100 characters allowed.</div>')
           .insertAfter($input); // Insert the error message after the input
       }
     } else {
@@ -1671,6 +1671,7 @@ jQuery(document).ready(function ($) {
       }
     }
 });
+
 jQuery('form#report_form').submit('submit', function(){
     const $form = $(this);
  let isValid = true;

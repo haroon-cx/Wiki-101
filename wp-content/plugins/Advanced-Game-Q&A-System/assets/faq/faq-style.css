@@ -48,6 +48,10 @@
     gap: 20px;
 }
 
+.faq-accordion-body table {
+    margin: 0 !important;
+}
+
 .faq-accordion-body li,
 .faq-accordion-body p,
 .faq-accordion-body ul,
@@ -451,4 +455,9 @@ textarea.fr-code:focus {
 
 .fr-box a.fr-floating-btn.fr-btn+.fr-btn {
     margin: auto 0 !important;
+}
+
+.faq-template #error-message {
+    position: absolute;
+    bottom: -22px;
 }

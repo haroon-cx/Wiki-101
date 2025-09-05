@@ -4655,3 +4655,25 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 .agqa-popup-form .custom-select-dropdown+.error-message {
   top: -15px;
 }
+
+body .body_wrap table:not(.wp-calendar-table):not(.shop_attributes):not(.variations):not(.table-condensed),body .page_wrap table,body table {
+  display: inline-block;
+    -webkit-border-radius: 8px !important;
+    -ms-border-radius: 8px !important;
+    border-radius: 8px !important;
+    border: 1px solid #747474 !important;
+    box-shadow: none !important;
+    background-color: rgba(0, 0, 0, .25) !important;
+    padding: 4px 18px !important;
+  }
+  
+  table th+td, table td+th, table td+td ,table th, table td{
+    border: none !important;
+  }
+  
+  body.page_content_blocks:not(.single-post):not(.single-job_listing):not(.elementor-page) .content table:not(.wp-calendar-table):not(.reports-list):not(.pmpro_table):not(.profile-fields):not(.shop_attributes):not(.variations):not(.doctable):not(.notification-settings):not(.toggle-table):not(.profile-settings):not(.post-revisions):not(.form-table):not(.lp-list-table) {
+    -webkit-border-radius: 8px !important;
+    -ms-border-radius: 8px !important;
+    border-radius: 8px !important;
+    border: 1px solid #747474 !important;
+}
