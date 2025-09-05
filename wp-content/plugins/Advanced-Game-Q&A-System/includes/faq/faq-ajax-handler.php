@@ -1,11 +1,12 @@
-<?php 
+<?php
 
 // AJAX Handler: Insert new FAQ
-function agqa_insert_review_faq() {
+function agqa_insert_review_faq()
+{
     global $wpdb;
 
     // Verify nonce
-    if( !isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce') ) {
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
         die('Permission Denied');
     }
     parse_str($_POST['form_data'], $data); // Parse serialized form data
@@ -32,13 +33,13 @@ function agqa_insert_review_faq() {
             'status' => 'pending',
             'user_id' => $current_user_id,
             'time' => current_time('mysql'),
-            
+
         ),
         array(
             '%s',
-            '%s', 
-            '%s', 
-            '%s' 
+            '%s',
+            '%s',
+            '%s'
         )
     );
 
@@ -56,11 +57,12 @@ add_action('wp_ajax_nopriv_agqa_insert_review_faq', 'agqa_insert_review_faq'); /
  * FAQ Approvel handler
  */
 
-function handle_faq_review_approval() {
+function handle_faq_review_approval()
+{
     global $wpdb;
 
     // Ensure nonce is valid for security
-    if ( ! isset($_POST['nonce']) || ! wp_verify_nonce($_POST['nonce'], 'agqa_nonce') ) {
+    if (! isset($_POST['nonce']) || ! wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
         die('Permission Denied');
     }
 
@@ -84,62 +86,61 @@ function handle_faq_review_approval() {
             // Retrieve the FAQ data from agqa_faq
             $faq_data = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}agqa_faq WHERE id = %d", $faq_id));
 
-           if ($faq_data) {
-    // Insert the review into agqa_faq_history table
-    $inserted = $wpdb->insert(
-        "{$wpdb->prefix}agqa_faq_history",
-        array(
-            'faq_id' => $faq_id,
-            'question' => $faq_data->question,
-            'answer' => $faq_data->answer,
-            'verified_answer' => $faq_data->verified_answer,
-            'faq_category' => $faq_data->faq_category,
-            'user_id' => get_current_user_id(), // Use current user ID
-        )
-    );
+            if ($faq_data) {
+                // Insert the review into agqa_faq_history table
+                $inserted = $wpdb->insert(
+                    "{$wpdb->prefix}agqa_faq_history",
+                    array(
+                        'faq_id' => $faq_id,
+                        'question' => $faq_data->question,
+                        'answer' => $faq_data->answer,
+                        'verified_answer' => $faq_data->verified_answer,
+                        'faq_category' => $faq_data->faq_category,
+                        'user_id' => get_current_user_id(), // Use current user ID
+                    )
+                );
 
-    if ($inserted) {
-        // Now update the agqa_faq table with the new data
-        $updated_faq = $wpdb->update(
-            "{$wpdb->prefix}agqa_faq",
-            array(
-                'question' => $question, 
-                'answer' => $answer,      
-                'verified_answer' => 1,  
-                'faq_category' => $faq_category, 
-                'user_id' => get_current_user_id(),
-            ),
-            array('id' => $faq_id) // Update the FAQ where the ID matches
-        );
+                if ($inserted) {
+                    // Now update the agqa_faq table with the new data
+                    $updated_faq = $wpdb->update(
+                        "{$wpdb->prefix}agqa_faq",
+                        array(
+                            'question' => $question,
+                            'answer' => $answer,
+                            'verified_answer' => 1,
+                            'faq_category' => $faq_category,
+                            'user_id' => get_current_user_id(),
+                        ),
+                        array('id' => $faq_id) // Update the FAQ where the ID matches
+                    );
 
-        // Check if FAQ was updated successfully
-        if ($updated_faq !== false) {
-            // Update the FAQ review status to 'approved'
-            $update_status = $wpdb->update(
-                "{$wpdb->prefix}agqa_faq_review",
-                array(
-                    'status' => 'approved',  // Set the status to approved
-                ),
-                array('id' => $review_id) // Update the review based on its ID
-            );
+                    // Check if FAQ was updated successfully
+                    if ($updated_faq !== false) {
+                        // Update the FAQ review status to 'approved'
+                        $update_status = $wpdb->update(
+                            "{$wpdb->prefix}agqa_faq_review",
+                            array(
+                                'status' => 'approved',  // Set the status to approved
+                            ),
+                            array('id' => $review_id) // Update the review based on its ID
+                        );
 
-            if ($update_status !== false) {
-            $response['status']  = 'Success';
-            $response['message'] = 'Successfully Submitted';
-            echo json_encode($response);
+                        if ($update_status !== false) {
+                            $response['status']  = 'Success';
+                            $response['message'] = 'Successfully Submitted';
+                            echo json_encode($response);
+                        } else {
+                            echo 'Failed to update the review status.';
+                        }
                     } else {
-                        echo 'Failed to update the review status.';
+                        echo 'Failed to update the FAQ.';
                     }
                 } else {
-                    echo 'Failed to update the FAQ.';
+                    echo 'Failed to insert into FAQ history.';
                 }
-            } else {
-                echo 'Failed to insert into FAQ history.';
             }
-        }
-
         } else {
-            
+
             // Insert new FAQ into agqa_faq table
             $wpdb->insert(
                 "{$wpdb->prefix}agqa_faq",
@@ -183,11 +184,12 @@ add_action('wp_ajax_nopriv_approve_faq_review', 'handle_faq_review_approval'); /
  * Edit form FAQ handler
  */
 
-function agqa_edit_faq() {
+function agqa_edit_faq()
+{
     global $wpdb;
 
     // Verify nonce
-    if( !isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce') ) {
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
         die('Permission Denied');
     }
     parse_str($_POST['form_data'], $data); // Parse serialized form data
@@ -222,14 +224,15 @@ function agqa_edit_faq() {
     echo json_encode($response);
     wp_die();
 }
-add_action('wp_ajax_agqa_edit_faq', 'agqa_edit_faq'); 
+add_action('wp_ajax_agqa_edit_faq', 'agqa_edit_faq');
 add_action('wp_ajax_nopriv_agqa_edit_faq', 'agqa_edit_faq');
 
 
 /**
  * FAQ like & dislike handler
  */
-function handle_like_dislike_action() {
+function handle_like_dislike_action()
+{
     // Check nonce for security
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
         die('Permission denied.');
@@ -239,9 +242,12 @@ function handle_like_dislike_action() {
     parse_str($_POST['form_data'], $data);
     // Get parameters sent via AJAX
     $faq_id = intval($data['faq-id']);
-    $action_type = sanitize_text_field($data['like']); 
+    $action_type = sanitize_text_field($data['like']);
+
+    // echo $action_type;
+    // wp_die();
     $user_id = get_current_user_id();
-    
+
     global $wpdb;
 
     // Check if the user has already liked/disliked this FAQ
@@ -249,7 +255,8 @@ function handle_like_dislike_action() {
         SELECT action_type FROM {$wpdb->prefix}agqa_faq_likes_dislikes
         WHERE faq_id = %d AND user_id = %d
     ", $faq_id, $user_id));
-
+    //  echo $existing_action;
+    //     wp_die();
     if ($existing_action) {
         // If the user has already liked or disliked, update the action
         if ($existing_action === $action_type) {
@@ -259,7 +266,7 @@ function handle_like_dislike_action() {
                 'user_id' => $user_id,
                 'action_type' => $action_type
             ));
-            echo 'removed';
+            $message = 'You have removed your ' . ($action_type === '1' ? 'like' : 'dislike') . '.';
         } else {
             // If the action is different, update the record
             $wpdb->update($wpdb->prefix . 'agqa_faq_likes_dislikes', array(
@@ -268,7 +275,7 @@ function handle_like_dislike_action() {
                 'faq_id' => $faq_id,
                 'user_id' => $user_id
             ));
-            echo 'updated';
+            $message = 'You ' . ($action_type === '1' ? 'liked' : 'disliked') . ' this FAQ.';
         }
     } else {
         // Insert the like/dislike record if not already present
@@ -277,22 +284,20 @@ function handle_like_dislike_action() {
             'user_id' => $user_id,
             'action_type' => $action_type
         ));
-        echo 'added';
+
+        // Dynamic message based on action type (like or dislike)
+        $message = 'You ' . ($action_type === '1' ? 'liked' : 'disliked') . ' this FAQ.';
     }
-
+    //  echo $action_type;
+    // wp_die();
     // Send back the current like and dislike counts
-    $like_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}agqa_faq_likes_dislikes WHERE faq_id = %d AND action_type = 'like'", $faq_id));
-    $dislike_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}agqa_faq_likes_dislikes WHERE faq_id = %d AND action_type = 'dislike'", $faq_id));
-
-    echo json_encode(array(
-        'like_count' => $like_count,
-        'dislike_count' => $dislike_count
-    ));
+    // If everything went well, return success
+    $response['status']  = 'Success';
+    $response['message'] = 'Successfully Submitted';
+    echo json_encode($response);
 
     wp_die(); // End the request
 }
 
 add_action('wp_ajax_like_dislike_action', 'handle_like_dislike_action');
 add_action('wp_ajax_nopriv_like_dislike_action', 'handle_like_dislike_action');
-
-?>

@@ -323,7 +323,7 @@ $("#agqa-game-filter").on("click", function(event) {
        var $form = jQuery(this);
         var formData = "faq-id=" + $form.find('.agqa-like').val();
         formData += "&like=1";
-         alert(formData);
+        //  alert(formData);
         var faqId = $(this).data('faq-id');  // Get the FAQ ID from the button's data attribute
 
         // Send AJAX request to handle like
@@ -339,7 +339,7 @@ $("#agqa-game-filter").on("click", function(event) {
                 nonce: nonce,
             },
             success: function (response) {
-          // console.log(response);
+          console.log(response);
           if (response.includes("Success")) {
             // alert("Successfully Submitted");
             const $successMsg = $(
@@ -390,11 +390,12 @@ $("#agqa-game-filter").on("click", function(event) {
     });
 
     // When a dislike button is clicked
-    $('.dislike-button').on('click', function() {
+    $('.unlike-button').on('click', function() {
+       var $form = jQuery(this);
+        var formData = "faq-id=" + $form.find('.agqa-dislike').val();
+        formData += "&like=0";
+        //  alert(formData);
         var faqId = $(this).data('faq-id');  // Get the FAQ ID from the button's data attribute
-           var $form = jQuery(this);
-        var formData = $form.serialize();
-         alert(formData);
         // Send AJAX request to handle dislike
         var nonce = agqa_ajax.nonce;
         $.ajax({
@@ -408,11 +409,11 @@ $("#agqa-game-filter").on("click", function(event) {
                 nonce: nonce,
             },
               success: function (response) {
-          // console.log(response);
+          console.log(response);
           if (response.includes("Success")) {
             // alert("Successfully Submitted");
             const $successMsg = $(
-              '<div class="submitted-successfully">dislike/div>'
+              '<div class="submitted-successfully">Dislike</div>'
             );
             $form.append($successMsg);
 
