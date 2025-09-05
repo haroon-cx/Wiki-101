@@ -146,7 +146,7 @@ function custom_faq_shortcode()
                     ?>
 
             <div class="faq-accordion" data-id="<?php echo $faq_value->id ?>">
-                <div class="faq-accodion-status"><?php echo esc_html($faq_value->faq_category); ?></div>
+                <div class="faq-accodion-status"><?php echo $faq_value->faq_category; ?></div>
                 <div class="faq-accordion-head">
                     <h2><?php echo esc_html($faq_value->question); ?></h2>
                     <button class="button agqa-status-toggle"
@@ -238,6 +238,18 @@ function custom_faq_shortcode()
                 </div>
             </div>
             <?php } ?>
+            <div class="section-found">
+                <div class="no-found-ctn">
+                    <div class="search-no-found">
+                        <div class="search-no-found-icon">
+                            <img src="<?php echo AGQA_URL ?>assets/images/search-forund-icon.svg" alt="Search Icon">
+                        </div>
+                        <div class="search-no-found-text">
+                            <h2>Nothing matched your search</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="pagination-ctn">

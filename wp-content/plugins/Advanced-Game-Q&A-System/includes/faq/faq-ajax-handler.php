@@ -30,7 +30,7 @@ function agqa_insert_review_faq()
             'answer' => $answer,
             'verified_answer' => $verified_answer,
             'faq_category' => $faq_category,
-            'status' => 'pending',
+            'status' => 'Pending',
             'user_id' => $current_user_id,
             'time' => current_time('mysql'),
 
