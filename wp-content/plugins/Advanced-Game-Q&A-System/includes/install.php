@@ -98,7 +98,7 @@ function agqa_create_tables()
     //     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     //     UNIQUE(user_id, answer_id, action_type)
     // ) $charset;");
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_faq_likes_dislikes (
+    $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_faq_likes_dislikes (
         id INT AUTO_INCREMENT PRIMARY KEY,
         faq_id INT NOT NULL,
         user_id INT NOT NULL,
@@ -226,7 +226,7 @@ function agqa_create_tables()
     UNIQUE KEY user_sort_unique (user_id)
     ) $charset;");
 
-     // FAQ Table
+    // FAQ Table
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_faq (
         id INT AUTO_INCREMENT PRIMARY KEY,
         question TEXT NOT NULL,
@@ -265,8 +265,7 @@ function agqa_create_tables()
         time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) $charset;");
 
-
-     // Sales Reorder Table
+    // Sales Reorder Table
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}reorder_sales (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id BIGINT NOT NULL,
@@ -305,6 +304,4 @@ function agqa_create_tables()
             ]);
         }
     }
-
 }
-

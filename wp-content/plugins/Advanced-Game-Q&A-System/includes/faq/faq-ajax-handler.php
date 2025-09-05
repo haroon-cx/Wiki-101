@@ -301,3 +301,44 @@ function handle_like_dislike_action()
 
 add_action('wp_ajax_like_dislike_action', 'handle_like_dislike_action');
 add_action('wp_ajax_nopriv_like_dislike_action', 'handle_like_dislike_action');
+
+
+/**
+ * FAQ Delete Table handler
+ */
+function handle_faq_deletion()
+{
+    // Verify nonce for security
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+        die('Permission Denied');
+    }
+
+
+    parse_str($_POST['form_data'], $data);
+
+    // Check if faq_id is set and valid
+
+    global $wpdb;
+    $faq_id = intval($data['faq_id']); // Get the FAQ ID from the request
+    echo $faq_id;
+    // wp_die();
+
+    // Delete the FAQ from the agqa_faq table
+    $table_faq = $wpdb->prefix . 'agqa_faq';
+    $table_history = $wpdb->prefix . 'agqa_faq_history'; // If you want to also delete from history
+
+    // Delete FAQ from both tables (history and FAQ)
+    $wpdb->delete($table_faq, array('id' => $faq_id));
+    $wpdb->delete($table_history, array('faq_id' => $faq_id));
+
+    $response['status']  = 'Success';
+    $response['message'] = 'Successfully Submitted';
+    echo json_encode($response);
+
+
+    wp_die(); // End the AJAX request
+}
+
+// Hook to handle the deletion
+add_action('wp_ajax_delete_faq', 'handle_faq_deletion');
+add_action('wp_ajax_nopriv_delete_faq', 'handle_delete_faq');
