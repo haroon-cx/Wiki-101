@@ -655,35 +655,35 @@ jQuery(document).ready(function ($) {
         hidePopup();
     });
 
-// Handle the removal of fields with confirmation popup
-$(document).on("click", ".remove-field-btn, .delete-button", function () {
-    var fieldToRemove = $(this).closest(".form-field.custom-field-item");
-    var confirmationPopup = $("#confirmation-popup");
+    // Handle the removal of fields with confirmation popup
+    $(document).on("click", ".remove-field-btn, .delete-button", function () {
+        var fieldToRemove = $(this).closest(".form-field.custom-field-item");
+        var confirmationPopup = $("#confirmation-popup");
 
-    // Show the confirmation popup
-    confirmationPopup.show();
+        // Show the confirmation popup
+        confirmationPopup.show();
 
-    // Store the reference to the field being removed
-    var currentField = fieldToRemove;
+        // Store the reference to the field being removed
+        var currentField = fieldToRemove;
 
-    // Handle the "Yes" button click (field will be removed)
-    $("#yes-cancel").on("click", function () {
-        // Remove the field from the DOM
-        currentField.remove();
+        // Handle the "Yes" button click (field will be removed)
+        $("#yes-cancel").on("click", function () {
+            // Remove the field from the DOM
+            currentField.remove();
 
-        // Hide the confirmation popup after removal
-        confirmationPopup.hide();
+            // Hide the confirmation popup after removal
+            confirmationPopup.hide();
 
-        // Call the checkFieldLimit function to verify the field count
-        checkFieldLimit();
+            // Call the checkFieldLimit function to verify the field count
+            checkFieldLimit();
+        });
+
+        // Handle the "No" button click (field will not be removed)
+        $(".no-cancel").on("click", function () {
+            // Just hide the confirmation popup without removing the field
+            confirmationPopup.hide();
+        });
     });
-
-    // Handle the "No" button click (field will not be removed)
-    $(".no-cancel").on("click", function () {
-        // Just hide the confirmation popup without removing the field
-        confirmationPopup.hide();
-    });
-});
 
     // Function to add a custom field dynamically
     function addCustomField(fieldNumber, value) {
