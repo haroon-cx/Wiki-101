@@ -89,14 +89,22 @@ function agqa_create_tables()
         updated_at DATETIME DEFAULT NULL
     ) $charset;");
 
-    // Answer Likes/Dislikes Table
-    $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_faq_likes_dislikes (
+    // // Answer Likes/Dislikes Table
+    // $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_faq_likes_dislikes (
+    //     id INT AUTO_INCREMENT PRIMARY KEY,
+    //     faq_id INT NOT NULL,
+    //     user_id INT NOT NULL,
+    //     action_type ENUM('like', 'dislike') NOT NULL,
+    //     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    //     UNIQUE(user_id, answer_id, action_type)
+    // ) $charset;");
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_faq_likes_dislikes (
         id INT AUTO_INCREMENT PRIMARY KEY,
         faq_id INT NOT NULL,
         user_id INT NOT NULL,
-        action_type ENUM('like', 'dislike') NOT NULL,
+        action_type INT NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE(user_id, answer_id, action_type)
+        UNIQUE(user_id, faq_id, action_type)
     ) $charset;");
 
 

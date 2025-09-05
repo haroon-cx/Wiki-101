@@ -315,5 +315,148 @@ $("#agqa-game-filter").on("click", function(event) {
     }
 });
 
+/**
+ * FAQ like & dislike Script
+ */
+// When a like button is clicked
+    $('.like-button').on('click', function() {
+       var $form = jQuery(this);
+        var formData = "faq-id=" + $form.find('.agqa-like').val();
+        formData += "&like=1";
+         alert(formData);
+        var faqId = $(this).data('faq-id');  // Get the FAQ ID from the button's data attribute
+
+        // Send AJAX request to handle like
+        var nonce = agqa_ajax.nonce;
+        $.ajax({
+            url: agqa_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'like_dislike_action',
+                form_data: formData,
+                faq_id: faqId,
+                action_type: 'like',
+                nonce: nonce,
+            },
+            success: function (response) {
+          // console.log(response);
+          if (response.includes("Success")) {
+            // alert("Successfully Submitted");
+            const $successMsg = $(
+              '<div class="submitted-successfully">Liked</div>'
+            );
+            $form.append($successMsg);
+
+            // Hide after 3 seconds
+            setTimeout(function () {
+              $successMsg.fadeOut(400, function () {
+                $(this).remove();
+              });
+            }, 3000);
+            // Find the *actual* back button
+            const $btn = $(".form-header-row .back-button");
+            const btn = $btn.get(0);
+            if (!btn) {
+              console.warn("Back button not found in DOM at success time.");
+              return;
+            }
+            $btn.trigger("click");
+
+            btn.click();
+
+            btn.dispatchEvent(
+              new MouseEvent("click", { bubbles: true, cancelable: true })
+            );
+          } else {
+            // alert(response);
+            const $successMsg = $(
+              `<div class="submitted-unsuccessfully">${response}</div>`
+            );
+            $form.append($successMsg);
+
+            // Hide after 3 seconds
+            setTimeout(function () {
+              $successMsg.fadeOut(400, function () {
+                $(this).remove();
+              });
+            }, 3000);
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("AJAX Error:", error); // Log the error for debugging
+          alert("An error occurred! Please try again later.");
+        },
+        });
+    });
+
+    // When a dislike button is clicked
+    $('.dislike-button').on('click', function() {
+        var faqId = $(this).data('faq-id');  // Get the FAQ ID from the button's data attribute
+           var $form = jQuery(this);
+        var formData = $form.serialize();
+         alert(formData);
+        // Send AJAX request to handle dislike
+        var nonce = agqa_ajax.nonce;
+        $.ajax({
+            url: agqa_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'like_dislike_action',
+                 form_data: formData,
+                faq_id: faqId,
+                action_type: 'dislike',
+                nonce: nonce,
+            },
+              success: function (response) {
+          // console.log(response);
+          if (response.includes("Success")) {
+            // alert("Successfully Submitted");
+            const $successMsg = $(
+              '<div class="submitted-successfully">dislike/div>'
+            );
+            $form.append($successMsg);
+
+            // Hide after 3 seconds
+            setTimeout(function () {
+              $successMsg.fadeOut(400, function () {
+                $(this).remove();
+              });
+            }, 3000);
+            // Find the *actual* back button
+            const $btn = $(".form-header-row .back-button");
+            const btn = $btn.get(0);
+            if (!btn) {
+              console.warn("Back button not found in DOM at success time.");
+              return;
+            }
+            $btn.trigger("click");
+
+            btn.click();
+
+            btn.dispatchEvent(
+              new MouseEvent("click", { bubbles: true, cancelable: true })
+            );
+          } else {
+            // alert(response);
+            const $successMsg = $(
+              `<div class="submitted-unsuccessfully">${response}</div>`
+            );
+            $form.append($successMsg);
+
+            // Hide after 3 seconds
+            setTimeout(function () {
+              $successMsg.fadeOut(400, function () {
+                $(this).remove();
+              });
+            }, 3000);
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("AJAX Error:", error); // Log the error for debugging
+          alert("An error occurred! Please try again later.");
+        },
+        });
+    });
+
 });
 
