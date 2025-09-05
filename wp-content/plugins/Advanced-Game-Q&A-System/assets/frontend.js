@@ -203,6 +203,8 @@ jQuery(document).ready(function ($) {
             e.stopPropagation();
             $multiDropdown.stop().slideToggle(300);
             $button.toggleClass("active");
+            $('.custom-select-dropdown-lists').slideUp(300);
+            $('.custom-select-dropdown-title').removeClass('active');
         });
         // Select an item
         $multiDropdown.on("click.formMulti", "li", function (e) {
@@ -298,10 +300,24 @@ jQuery(document).ready(function ($) {
                     } else {
                         $field.addClass('error-field');
                     }
-
+                    // alert(labelText)
                     if ($fieldWrapper.find('.error-message').length === 0) {
+                        if(labelText == 'What problem did you encounter?' ){
+                            $fieldWrapper.append(`<div class="error-message">Please select a report type</div>`);
+                        }else if(labelText == 'Detailed Description'){
+                            $fieldWrapper.append(`<div class="error-message">Please enter a description of the issue.</div>`);
+                        }else if(labelText == 'Title'){
+                            $fieldWrapper.append(`<div class="error-message">Please enter a title.</div>`);
+                        }else if(labelText == 'Question Type'){
+                            $fieldWrapper.append(`<div class="error-message">Please select an item</div>`);
+                        }else if(labelText == 'Details'){
+                            $fieldWrapper.append(`<div class="error-message">Content is required.</div>`);
+                        }else{
                         $fieldWrapper.append(`<div class="error-message">${labelText} is required</div>`);
+                        }
                     }
+
+                
                 }
             });
 
@@ -1448,6 +1464,7 @@ jQuery(document).ready(function ($) {
         // Close dropdown
         $list.slideUp(300);
         $title.removeClass("active");
+        $('.custom-select-dropdown').next('.error-message').remove();
     });
 
     // Close dropdown if clicked outside
@@ -1455,6 +1472,13 @@ jQuery(document).ready(function ($) {
         $(".custom-select-dropdown-lists").slideUp(300);
         $(".custom-select-dropdown-title").removeClass("active");
     });
+
+    $('.agqa-popup-form-button').on("click", function () {
+        $(".custom-select-dropdown-lists").slideUp(300);
+        $(".custom-select-dropdown-title").removeClass("active");
+    });
+
+
     (function ($) {
         // Set worker
         if (window.pdfjsLib) {
@@ -1649,104 +1673,104 @@ jQuery(document).ready(function ($) {
 
 
 
-    $('input[type="text"],.faq-template #filter-search').on('input', function() {
-    var maxLength = 100;
-    var $input = $(this);
-    var $errorMessage = $input.next('#error-message'); // Look for the error message next to the input
-    var $formField = $input.closest('.form-field'); // Find the parent .form-field of the current input
-    // Check if input exceeds maxLength
-    if ($input.val().length > maxLength) {
-      $input.val($input.val().substring(0, maxLength)); // Truncate the value to maxLength
-      $formField.addClass('error-field-input'); // Add 'error' class to the parent .form-field
-      // Append error message if it doesn't already exist
-      if ($errorMessage.length === 0) {
-        $('<div id="error-message">Max 100 characters allowed.</div>')
-          .insertAfter($input); // Insert the error message after the input
-      }
-    } else {
-      $formField.removeClass('error-field-input'); // Remove 'error' class if input is valid
-      // Remove the error message if input length is valid
-      if ($errorMessage.length > 0) {
-        $errorMessage.remove();
-      }
-    }
-});
-
-jQuery('form#report_form').submit('submit', function(){
-    const $form = $(this);
- let isValid = true;
-    // Check if all required fields are filled
-    $form.find("[required]").each(function () {
-      const field = $(this);
-      if (!field.val()) {
-        // If the field is empty
-        isValid = false;
-        return false;
-      }
-    });
-    // Extra validation for Game Info Website
-    const $websiteInput = $("#game-info-website");
-    if ($websiteInput.length) {
-      const value = $websiteInput.val().trim();
-      const $fieldWrapper = $websiteInput.closest(
-        ".form-field, .agqa-popup-form-field"
-      );
-      if (/\s/.test(value)) {
-        isValid = false;
-        $websiteInput.addClass("error-field");
-        if ($fieldWrapper.find(".error-message").length === 0) {
-          $fieldWrapper.append(
-            `<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`
-          );
+    $('input[type="text"],.faq-template #filter-search').on('input', function () {
+        var maxLength = 100;
+        var $input = $(this);
+        var $errorMessage = $input.next('#error-message'); // Look for the error message next to the input
+        var $formField = $input.closest('.form-field'); // Find the parent .form-field of the current input
+        // Check if input exceeds maxLength
+        if ($input.val().length > maxLength) {
+            $input.val($input.val().substring(0, maxLength)); // Truncate the value to maxLength
+            $formField.addClass('error-field-input'); // Add 'error' class to the parent .form-field
+            // Append error message if it doesn't already exist
+            if ($errorMessage.length === 0) {
+                $('<div id="error-message">Max 100 characters allowed.</div>')
+                    .insertAfter($input); // Insert the error message after the input
+            }
+        } else {
+            $formField.removeClass('error-field-input'); // Remove 'error' class if input is valid
+            // Remove the error message if input length is valid
+            if ($errorMessage.length > 0) {
+                $errorMessage.remove();
+            }
         }
-      } else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
-        isValid = false;
-        $websiteInput.addClass("error-field");
-        if ($fieldWrapper.find(".error-message").length === 0) {
-          $fieldWrapper.append(
-            `<div class="error-message">Please enter a valid domain(e.g. .com, .net).</div>`
-          );
-        }
-      }
-    }
-    if (!isValid) {
-      return;
-    }
-    
-    const $successMsg = $(
-    '<div class="submitted-successfully">Successful submission</div>'
-);
-    $form.append($successMsg);
-
-// Hide after 3 seconds
-setTimeout(function () {
-    $successMsg.fadeOut(400, function () {
-    $(this).remove();
     });
-    $('.agqa-popup-form.agqa-report-popup-form').removeClass('active')
-}, 3000);
-});
-$('input[type="text"]').on('input', function() {
-    var maxLength = 150;
-    var $input = $(this);
-    var $errorMessage = $input.next('#error-message'); // Look for the error message next to the input
-    var $formField = $input.closest('.form-field'); // Find the parent .form-field of the current input
-    // Check if input exceeds maxLength
-    if ($input.val().length > maxLength) {
-      $input.val($input.val().substring(0, maxLength)); // Truncate the value to maxLength
-      $formField.addClass('error-field-input'); // Add 'error' class to the parent .form-field
-      // Append error message if it doesn't already exist
-      if ($errorMessage.length === 0) {
-        $('<div id="error-message">Max 150 characters allowed.</div>')
-          .insertAfter($input); // Insert the error message after the input
-      }
-    } else {
-      $formField.removeClass('error-field-input'); // Remove 'error' class if input is valid
-      // Remove the error message if input length is valid
-      if ($errorMessage.length > 0) {
-        $errorMessage.remove();
-      }
-    }
-});
+
+    jQuery('form#report_form').submit('submit', function () {
+        const $form = $(this);
+        let isValid = true;
+        // Check if all required fields are filled
+        $form.find("[required]").each(function () {
+            const field = $(this);
+            if (!field.val()) {
+                // If the field is empty
+                isValid = false;
+                return false;
+            }
+        });
+        // Extra validation for Game Info Website
+        const $websiteInput = $("#game-info-website");
+        if ($websiteInput.length) {
+            const value = $websiteInput.val().trim();
+            const $fieldWrapper = $websiteInput.closest(
+                ".form-field, .agqa-popup-form-field"
+            );
+            if (/\s/.test(value)) {
+                isValid = false;
+                $websiteInput.addClass("error-field");
+                if ($fieldWrapper.find(".error-message").length === 0) {
+                    $fieldWrapper.append(
+                        `<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`
+                    );
+                }
+            } else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
+                isValid = false;
+                $websiteInput.addClass("error-field");
+                if ($fieldWrapper.find(".error-message").length === 0) {
+                    $fieldWrapper.append(
+                        `<div class="error-message">Please enter a valid domain(e.g. .com, .net).</div>`
+                    );
+                }
+            }
+        }
+        if (!isValid) {
+            return;
+        }
+
+        const $successMsg = $(
+            '<div class="submitted-successfully">Successful submission</div>'
+        );
+        $form.append($successMsg);
+
+        // Hide after 3 seconds
+        setTimeout(function () {
+            $successMsg.fadeOut(400, function () {
+                $(this).remove();
+            });
+            $('.agqa-popup-form.agqa-report-popup-form').removeClass('active')
+        }, 3000);
+    });
+    $('input[type="text"]').on('input', function () {
+        var maxLength = 150;
+        var $input = $(this);
+        var $errorMessage = $input.next('#error-message'); // Look for the error message next to the input
+        var $formField = $input.closest('.form-field'); // Find the parent .form-field of the current input
+        // Check if input exceeds maxLength
+        if ($input.val().length > maxLength) {
+            $input.val($input.val().substring(0, maxLength)); // Truncate the value to maxLength
+            $formField.addClass('error-field-input'); // Add 'error' class to the parent .form-field
+            // Append error message if it doesn't already exist
+            if ($errorMessage.length === 0) {
+                $('<div id="error-message">Max 150 characters allowed.</div>')
+                    .insertAfter($input); // Insert the error message after the input
+            }
+        } else {
+            $formField.removeClass('error-field-input'); // Remove 'error' class if input is valid
+            // Remove the error message if input length is valid
+            if ($errorMessage.length > 0) {
+                $errorMessage.remove();
+            }
+        }
+    });
 });
 
