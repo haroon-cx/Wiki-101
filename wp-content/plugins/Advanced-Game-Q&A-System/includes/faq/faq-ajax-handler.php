@@ -236,11 +236,10 @@ function handle_like_dislike_action() {
     }
 
     // Parse the form_data from the AJAX request (received as a serialized string)
-    parse_str($_POST['form_data'], $data); // Parse serialized form data
-
+    parse_str($_POST['form_data'], $data);
     // Get parameters sent via AJAX
-    $faq_id = intval($data['faq-id']);  // Get faq_id from the form_data
-    $action_type = sanitize_text_field($data['like']);  // Action type is 'like'
+    $faq_id = intval($data['faq-id']);
+    $action_type = sanitize_text_field($data['like']); 
     $user_id = get_current_user_id();
     
     global $wpdb;

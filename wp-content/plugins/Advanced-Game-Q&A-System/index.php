@@ -21,6 +21,7 @@
     include_once AGQA_PATH . 'includes/api.php';
     include_once AGQA_PATH . 'includes/sale-api.php';
     include_once AGQA_PATH . 'includes/faq/faq-shortcode.php';
+    include_once AGQA_PATH . 'includes/report-system/report-system-shortcode.php';
 
     register_activation_hook(__FILE__, 'agqa_create_tables');
 
@@ -47,7 +48,9 @@ add_action('wp_enqueue_scripts', function () {
     // FAQ faq-responsive.css
     wp_enqueue_style('agqa-faq-responsive', AGQA_URL . 'assets/faq/faq-responsive.css');
     wp_enqueue_style('agqa-responsive', AGQA_URL . 'assets/responsive.css');
-
+    
+    // Report System CSS file
+    wp_enqueue_style('agqa-report-system-css', AGQA_URL . 'assets/report-system/report-style.css');
     // Pdf Library (if you also want to include the pdf-lib library)
     wp_enqueue_script('agqa-pdf-lib', 'https://unpkg.com/pdf-lib/dist/pdf-lib.min.js', [], null, true);
     
@@ -56,6 +59,10 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_script('agqa-faq-js', AGQA_URL . 'assets/faq/faq.js', ['jquery'], null, true);
     wp_enqueue_script('agqa-faq-main-js', AGQA_URL . 'includes/faq/faq-main.js', ['jquery'], null, true);
     wp_enqueue_script('agqa-script', AGQA_URL . 'assets/main.js', ['jquery'], null, true);
+
+    // Report System JS File
+    wp_enqueue_script('agqa-report-system-frontend', AGQA_URL . 'assets/report-system/report-system-frontend.js', ['jquery'], null, true);
+    wp_enqueue_script('agqa-report-system-js', AGQA_URL . 'includes/report-system/report-system.js', ['jquery'], null, true);
 
     wp_localize_script('agqa-script', 'agqa_ajax', [
         'ajax_url'        => admin_url('admin-ajax.php'),
