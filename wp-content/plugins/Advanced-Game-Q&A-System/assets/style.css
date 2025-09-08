@@ -1135,6 +1135,9 @@ a.back-button:hover,
 .add-button:hover {
   background-color: rgb(98, 68, 145);
 }
+.faq-accordion-button.active{
+  pointer-events: none;
+}
 
 a.back-button:hover,
 a.back-button:hover,
