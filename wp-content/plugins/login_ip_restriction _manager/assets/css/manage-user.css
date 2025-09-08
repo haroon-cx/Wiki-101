@@ -1,0 +1,360 @@
+#manage-user-search {
+    text-transform: capitalize;
+    min-width: 409px;
+}
+
+.filter-container button.filter-select-title.select-states {
+    background-image: url(../image/select-states-icon.svg);
+    background-size: 22px;
+}
+
+.filter-container button.filter-select-title.select-roles {
+    background-image: url(../image/select-role-icon.svg);
+    background-size: 20px;
+}
+
+.filter-container button.filter-select-title.select-companies {
+    background-image: url(../image/company-icon.svg);
+    background-size: 20px;
+}
+
+.date-field {
+    position: relative;
+    border-radius: 16px;
+    max-width: 311px;
+}
+
+#creation_time {
+    margin-bottom: 0;
+    background-image: none;
+}
+
+.date-field #creation_time {
+    background-color: transparent !important;
+    border: none !important;
+    height: 100%;
+    padding: 12px 54px 12px 65px;
+    box-sizing: border-box;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    color: transparent;
+    background: transparent;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-clear-button {
+    z-index: -10;
+}
+
+input[type="date"]::-webkit-input-placeholder {
+    z-index: 99;
+}
+
+.date-icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 28px;
+    z-index: 1;
+    display: inline-block;
+    background-image: url(../image/calender-icon.svg);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: left 28px center;
+    width: 18px;
+    height: 20px;
+    margin-block: auto;
+}
+
+.manage-user-template .filter-right-area {
+    width: 20%;
+}
+
+.filter-right-area .add-button {
+    width: max-content;
+}
+
+.manage-user-template .filter-container {
+    align-items: flex-start;
+}
+
+input[type="date"]::placeholder {
+    color: #747474 !important;
+}
+
+.manage-user-template .filter-area form {
+    flex-wrap: wrap;
+}
+
+.custom-table,
+table {
+    color: white;
+    border: 1px solid #747474;
+    border-radius: 8px;
+}
+
+.custom-table-head,
+thead {
+    padding: 4px 18px;
+    font-size: 20px;
+    display: flex;
+}
+
+.table-head-col,
+thead th,
+.table-body-col,
+tbody td {
+    padding: 10px;
+}
+
+.table-head-col,
+thead th,
+td,
+.table-body-col {
+    min-width: 9.017%;
+    box-sizing: border-box;
+}
+
+.custom-table-row,
+tr {
+    background-color: #1D1C25;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.custom-table-row:nth-child(n + 2) {
+    margin-top: 24px;
+}
+
+.custom-table-body {
+    padding: 24px 18px;
+    border-top: .5px solid #747474;
+}
+
+.table-body-col-mail a {
+    color: white;
+}
+
+.table-body-col-userId a {
+    color: #45AFFF;
+}
+
+.table-body-col-buttons button,
+.table-body-col-buttons button:hover {
+    background-color: transparent !important;
+}
+
+.table-body-col-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.table-body-col-buttons button {
+    padding: 0 !important;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.login-history-icon {
+    background-image: url(../image/login-history-icon.svg);
+    background-size: 18px;
+}
+
+.table-row-status span {
+    margin-inline: auto;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+}
+
+.table-row-status.active span {
+    background-color: #52C41A;
+}
+
+.table-row-status.inactive span {
+    background-color: #FF4D4F;
+}
+
+.table-row-status.freeze span {
+    background-color: #1677FF;
+}
+
+.table-row-status.pending span {
+    background-color: #D46B08;
+}
+
+.table-head-col:nth-child(1),
+.table-body-col:nth-child(1),
+.table-head-col:nth-child(6),
+.table-body-col:nth-child(6) {
+    min-width: 13.525%;
+}
+
+.table-head-col:nth-child(2),
+.table-body-col:nth-child(2) {
+    text-align: center;
+}
+
+.table-head-col:nth-child(4),
+.table-body-col:nth-child(4) {
+    min-width: 15.05%;
+}
+
+.table-head-col:nth-child(5),
+.table-body-col:nth-child(5) {
+    min-width: 18.5%;
+}
+
+.table-head-col:nth-child(7),
+.table-body-col:nth-child(7) {
+    min-width: 12.022%;
+    text-align: center;
+}
+
+.popup-head {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.popup-head h2 {
+    margin-bottom: 0;
+}
+
+.userName {
+    color: #747474;
+}
+
+.user-history-records {
+    position: relative;
+    border-radius: 8px;
+    color: white;
+}
+
+.user-history-records-inner,
+.user-history-record-lists {
+    height: 48.545vh;
+}
+
+.user-history-records-inner {
+    overflow-y: auto;
+}
+
+.user-history-record-list,
+.user-history-record-head {
+    display: flex;
+}
+
+.user-history-record-head {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    height: 58px;
+    width: calc(100% - 36px);
+    box-sizing: border-box;
+    border-bottom: .5px solid #747474;
+    box-sizing: border-box;
+    align-items: center;
+    background-color: #515157;
+    border-radius: 8px 8px 0 0;
+}
+
+.user-history-record-head span {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+}
+
+.user-history-record-head {
+    padding: 4px 18px;
+    border-radius: 8px 8px 0 0;
+}
+
+.user-history-record-lists {
+    border-radius: 0 0 8px 8px;
+    margin-right: 4px;
+}
+
+.user-history-record-lists-inner {
+    padding-top: 58px;
+    background-color: #515157;
+    border-radius: 8px;
+}
+
+.user-history-records span {
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.user-history-record-lists span {
+    display: inline-block;
+}
+
+.login-history-popup-inner {
+    padding: 16px 0 27px;
+}
+
+.popup-head,
+.history-record-buttons {
+    padding-inline: 18px;
+}
+
+.user-history-records-inner {
+    margin-inline: 18px 4px;
+}
+
+.user-ip-title,
+.user-ip {
+    width: 44%;
+}
+
+.user-login-time-title,
+.user-login-time {
+    width: 40%;
+}
+
+.user-number-title,
+.user-number {
+    width: 80px;
+}
+
+.user-history-record-list {
+    padding-inline: 18px;
+    font-size: 16px;
+}
+
+
+
+.login-history-popup-inner .close-button:hover {
+    border-color: rgb(98, 68, 145);
+    color: #fff;
+}
+
+.login-history-popup-inner .button {
+    background-color: #7644CE !important;
+    color: white;
+}
+
+.login-history-popup-inner .history-record-buttons .close-button:hover,
+.login-history-popup-inner .button:hover {
+    background-color: rgb(98, 68, 145) !important;
+}

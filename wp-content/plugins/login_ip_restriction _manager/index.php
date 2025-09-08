@@ -19,6 +19,8 @@ include_once URIP_PATH . 'Includes/ajax-ip-handlers.php';
 add_action('wp_enqueue_scripts', function () {
     if (is_user_logged_in()) {
         wp_enqueue_style('cuim-style', plugin_dir_url(__FILE__) . 'assets/css/cuim.css');
+        // manage-user Style sheet
+        wp_enqueue_style('manage-user-style', plugin_dir_url(__FILE__) . 'assets/css/manage-user.css');
         wp_enqueue_script('cuim-script', plugin_dir_url(__FILE__) . 'assets/js/cuim.js', ['jquery'], null, true);
         wp_localize_script('cuim-script', 'cuim_ajax', [
             'ajax_url' => admin_url('admin-ajax.php'),

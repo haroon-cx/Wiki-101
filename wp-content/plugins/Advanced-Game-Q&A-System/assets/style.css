@@ -38,6 +38,7 @@ p {
   --theme-var-page_width: 1860px;
 }
 
+.user-history-records-inner::-webkit-scrollbar,
 .fr-element.fr-view::-webkit-scrollbar,
 #pdfWrapper::-webkit-scrollbar,
 .reorder-selling-price-tiles::-webkit-scrollbar {
@@ -65,6 +66,7 @@ textarea.wp-editor-area::-webkit-scrollbar,
 }
 
 /* Track */
+.user-history-records-inner::-webkit-scrollbar-track,
 .selected-dropdown-item::-webkit-scrollbar-track,
 .selected-dropdown-item::-webkit-scrollbar-thumb {
   background: transparent !important;
@@ -105,6 +107,12 @@ div#agqa-search-results::-webkit-scrollbar-thumb,
   border-radius: 8px;
 }
 
+.user-history-records-inner::-webkit-scrollbar-thumb {
+  background-color: #1D1C25;
+  border-radius: 30px;
+}
+
+
 div#agqa-search-results.active {
   overflow-y: unset !important;
   background-color: transparent;
@@ -136,6 +144,11 @@ input::placeholder,
 select::placeholder,
 textarea::placeholder {
   color: #fff !important;
+}
+
+
+input[type="date"]::placeholder {
+  color: #747474 !important;
 }
 
 /* END */
@@ -2042,7 +2055,8 @@ body.body_style_wide:not(.expand_content) .content_wrap>.content {
 }
 
 .section.open .agqa-status-toggle,
-.faq-accordion-head.active .agqa-status-toggle {
+.faq-accordion-head.active .agqa-status-toggle,
+.faq-accordion-head.expand .agqa-status-toggle {
   transform: rotate(180deg);
 }
 
@@ -2152,7 +2166,8 @@ body .selected-dropdown-item,
 .agqa-popup-form,
 .reorder-popup,
 .cancel-form-confirmation,
-.confirm-submit-popup {
+.confirm-submit-popup,
+.login-history-popup {
   position: fixed;
   top: 0;
   left: 0;
@@ -2169,7 +2184,8 @@ body .selected-dropdown-item,
 .agqa-popup-form::before,
 .reorder-popup::before,
 .cancel-form-confirmation::before,
-.confirm-submit-popup::before {
+.confirm-submit-popup::before,
+.login-history-popup::before {
   content: "";
   position: absolute;
   top: 0;
@@ -2186,7 +2202,8 @@ body .selected-dropdown-item,
 .reorder-popup.active::before,
 .cancel-form-confirmation.active::before,
 .confirm-submit-popup.active::before,
-#custom-faq-field-popup.active::before {
+#custom-faq-field-popup.active::before,
+.login-history-popup.active::before {
   opacity: 1;
   visibility: visible;
 }
@@ -2209,7 +2226,8 @@ body .selected-dropdown-item,
 .agqa-popup-form.active .agqa-popup-form-inner,
 .reorder-popup.active .reorder-popup-inner,
 .cancel-form-confirmation.active .cancel-form-confirmation-box,
-.confirm-submit-popup.active .confirm-submit-popup-box {
+.confirm-submit-popup.active .confirm-submit-popup-box,
+.login-history-popup.active .login-history-popup-inner {
   opacity: 1;
   visibility: visible;
   pointer-events: initial;
@@ -2219,7 +2237,8 @@ body .selected-dropdown-item,
 .agqa-popup-form-inner,
 .reorder-popup-inner,
 .cancel-form-confirmation-box,
-.confirm-submit-popup-box {
+.confirm-submit-popup-box,
+.login-history-popup-inner {
   opacity: 0;
   visibility: hidden;
   transition: all .3s ease-in-out .4s;
@@ -2227,12 +2246,18 @@ body .selected-dropdown-item,
 }
 
 .agqa-popup-form-inner,
-.reorder-popup-inner {
+.reorder-popup-inner{
+  padding: 16px 18px;
+}
+
+.agqa-popup-form-inner,
+.reorder-popup-inner,
+.login-history-popup-inner {
   position: relative;
   width: 572px;
   max-height: 90vh;
   background-color: #fff;
-  padding: 16px 18px;
+  box-sizing: border-box;
   border-radius: 8px;
   z-index: 99;
 }
@@ -2271,7 +2296,8 @@ body .selected-dropdown-item,
 .agqa-popup-form-title h3,
 .agqa-popup-form-title h4,
 .agqa-popup-form-title h5,
-.agqa-popup-form-title h6 {
+.agqa-popup-form-title h6,
+.popup-head h2 {
   color: #7644CE !important;
   font-weight: 500;
   margin-bottom: 16px;
@@ -2741,7 +2767,7 @@ textarea.wp-editor-area {
   padding: 16px !important;
 }
 
-.agqa-popup-form-buttons {
+.agqa-popup-form-buttons,.history-record-buttons {
   justify-content: right;
   margin-top: 16px;
 }
@@ -2786,10 +2812,11 @@ textarea.wp-editor-area {
 }
 
 .agqa-popup-form-buttons input[type="submit"],
-.agqa-popup-form-buttons .cancel-button{
+.agqa-popup-form-buttons .cancel-button {
   margin-bottom: 0;
 }
 
+.history-record-buttons button,
 .agqa-popup-form-buttons input[type="submit"],
 .agqa-popup-form-buttons .cancel-button,
 .form-buttons .reject-button {
@@ -3057,8 +3084,10 @@ textarea {
 }
 
 
+.history-record-buttons .button,
 .agqa-popup-form-field.agqa-popup-form-buttons input,
-.agqa-popup-form-field.agqa-popup-form-buttons .cancel-button {
+.agqa-popup-form-field.agqa-popup-form-buttons .cancel-button,
+.history-record-buttons .close-button {
   padding: 8px 24px !important;
   transition: all .3s ease-in-out;
   display: inline-block;
@@ -3066,6 +3095,7 @@ textarea {
   height: 48px;
 }
 
+.history-record-buttons .close-button,
 .agqa-popup-form-ctn .cancel-button,
 .agqa-popup-form-buttons .no-cancel,
 .cancel-form-confirmation .no-form-cancel,
@@ -3083,7 +3113,7 @@ textarea {
 .agqa-popup-form-buttons .no-cancel,
 .cancel-form-confirmation .no-form-cancel,
 .confirm-submit-popup .no-confirm-submit,
-.agqa-popup-form-buttons .no-submit {
+.agqa-popup-form-buttons .no-submit,.history-record-buttons .close-button {
   border: 1px solid #6B4EBD;
   background-color: transparent;
 }
@@ -4070,9 +4100,12 @@ div#agqa-search-box input {
 
 .filter-container button.filter-select-title {
   background-image: url(images/filter-icon.svg);
-  color: var(--theme-color-input_text);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.02);
   padding: 12px 54px 12px 65px !important;
+}
+
+.filter-container button.filter-select-title,
+.date-field {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.02);
   box-sizing: border-box;
   width: 100%;
   text-align: left;
@@ -4121,7 +4154,8 @@ input::placeholder {
 
 .filter-container button.filter-select-title,
 .filter-select-list,
-.dropdown-lists {
+.dropdown-lists,
+.date-field {
   border: 1px solid #747474;
   background-color: #1D1C25;
 }
@@ -4487,7 +4521,8 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
   .custom-select-dropdown-lists {
     max-height: 43vh;
   }
-  .agqa-popup-form-ctn  .agqa-popup-form-inner {
+
+  .agqa-popup-form-ctn .agqa-popup-form-inner {
     overflow: hidden;
   }
 }
@@ -4501,7 +4536,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 580px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 41vh;
@@ -4509,7 +4544,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 570px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 41vh;
@@ -4517,7 +4552,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 560px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 40vh;
@@ -4525,7 +4560,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 550px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 39vh;
@@ -4533,7 +4568,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 540px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 38vh;
@@ -4541,7 +4576,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 530px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 37vh;
@@ -4549,7 +4584,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 520px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 36vh;
@@ -4557,7 +4592,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 510px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 35vh;
@@ -4565,7 +4600,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 500px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 34vh;
@@ -4573,7 +4608,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 490px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 33vh;
@@ -4581,7 +4616,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 480px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 32vh;
@@ -4589,7 +4624,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 470px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 31vh;
@@ -4597,7 +4632,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 460px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 30vh;
@@ -4605,7 +4640,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 450px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 29vh;
@@ -4613,7 +4648,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 440px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 46vh;
@@ -4621,7 +4656,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 430px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 44vh;
@@ -4629,7 +4664,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 420px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 43vh;
@@ -4637,7 +4672,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 410px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 42vh;
@@ -4645,7 +4680,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
 }
 
 @media (max-height: 400px) {
-  
+
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
     max-height: 41vh;
@@ -4660,24 +4695,30 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
   top: -15px;
 }
 
-body .body_wrap table:not(.wp-calendar-table):not(.shop_attributes):not(.variations):not(.table-condensed),body .page_wrap table,body table {
+body .body_wrap table:not(.wp-calendar-table):not(.shop_attributes):not(.variations):not(.table-condensed),
+body .page_wrap table,
+body table {
   display: inline-block;
-    -webkit-border-radius: 8px !important;
-    -ms-border-radius: 8px !important;
-    border-radius: 8px !important;
-    border: 1px solid #747474 !important;
-    box-shadow: none !important;
-    background-color: rgba(0, 0, 0, .25) !important;
-    padding: 4px 18px !important;
-  }
-  
-  table th+td, table td+th, table td+td ,table th, table td{
-    border: none !important;
-  }
-  
-  body.page_content_blocks:not(.single-post):not(.single-job_listing):not(.elementor-page) .content table:not(.wp-calendar-table):not(.reports-list):not(.pmpro_table):not(.profile-fields):not(.shop_attributes):not(.variations):not(.doctable):not(.notification-settings):not(.toggle-table):not(.profile-settings):not(.post-revisions):not(.form-table):not(.lp-list-table) {
-    -webkit-border-radius: 8px !important;
-    -ms-border-radius: 8px !important;
-    border-radius: 8px !important;
-    border: 1px solid #747474 !important;
+  -webkit-border-radius: 8px !important;
+  -ms-border-radius: 8px !important;
+  border-radius: 8px !important;
+  border: 1px solid #747474 !important;
+  box-shadow: none !important;
+  background-color: rgba(0, 0, 0, .25) !important;
+  padding: 4px 18px !important;
+}
+
+table th+td,
+table td+th,
+table td+td,
+table th,
+table td {
+  border: none !important;
+}
+
+body.page_content_blocks:not(.single-post):not(.single-job_listing):not(.elementor-page) .content table:not(.wp-calendar-table):not(.reports-list):not(.pmpro_table):not(.profile-fields):not(.shop_attributes):not(.variations):not(.doctable):not(.notification-settings):not(.toggle-table):not(.profile-settings):not(.post-revisions):not(.form-table):not(.lp-list-table) {
+  -webkit-border-radius: 8px !important;
+  -ms-border-radius: 8px !important;
+  border-radius: 8px !important;
+  border: 1px solid #747474 !important;
 }

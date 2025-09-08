@@ -296,4 +296,52 @@ jQuery('.faq-accordion-head').click(function () {
             });
         }
     });
+
+  const maxCharLimit = 3000;  // Set character limit to 3000
+  let userTypingTimer;
+  const typingDelay = 2000;  // Delay for showing success message after typing stops
+  
+  // Initialize character count and other elements
+  const $charCounterContainer = jQuery('.char-counter');
+  const $currentCharCount = $charCounterContainer.find('.current-count');
+  const $responseMessage = jQuery('.form-response'); // Assuming you have a response element for error/success
+
+  // Initialize Froala Editor
+  var editor = new FroalaEditor('.editor', {
+    events: {
+      'input': function() {
+        const editorContent = this.html.get(); // Get the content of the editor
+        const currentLength = editorContent.replace(/<[^>]+>/g, '').length; // Remove HTML tags to count plain text length
+
+        // Update character count
+        $currentCharCount.text(currentLength);
+
+        // Disable input and show error message if character limit is reached
+        if (currentLength >= maxCharLimit) {
+          const truncatedContent = editorContent.substring(0, maxCharLimit);
+          this.html.set(truncatedContent);  // Truncate text if it exceeds maxCharLimit
+          $currentCharCount.text(maxCharLimit);  // Update the count to show max limit
+          $responseMessage.text('Unable to add more characters').removeClass('success').addClass('error');
+          $charCounterContainer.addClass('show-message'); // Show error message
+          return; // Prevent further text input
+        }
+
+        // Clear error message if under the limit
+        if ($responseMessage.hasClass('error')) {
+          $responseMessage.text('').removeClass('error');
+          $charCounterContainer.removeClass('show-message');
+        }
+
+        // If length is under maxCharLimit, show success message after typing stops
+        clearTimeout(userTypingTimer);
+        userTypingTimer = setTimeout(function() {
+          if (currentLength < maxCharLimit) {
+            $responseMessage.text('Successfully added').removeClass('error').addClass('success');
+            $charCounterContainer.addClass('show-message'); // Show success message
+          }
+        }, typingDelay);
+      }
+    }
+  });
+
 });
