@@ -89,9 +89,10 @@ jQuery(document).ready(function ($) {
     // alert(formData);
   });
 
-  // END
+  /**
+   * Edit FAQ Form
+   */
 
-  // EDIT FAQ FORM START
   jQuery("#edit-form-faq").submit("submit", function () {
     var $form = jQuery(this);
     var formData = $form.serialize();
@@ -178,6 +179,7 @@ jQuery(document).ready(function ($) {
       },
     });
   });
+
   /**
    * FAQ approvle script
    */
@@ -272,6 +274,7 @@ jQuery(document).ready(function ($) {
   /**
    * FAQ Filter
    */
+
   $("#agqa-game-filter").on("click", function (event) {
     event.preventDefault(); // Prevent form submission
 
@@ -299,6 +302,7 @@ jQuery(document).ready(function ($) {
         faqText.includes(searchTerm) // Check if the search term is found anywhere in the FAQ content
       ) {
         $(this).show(); // Show the FAQ item
+        $(this).find(".faq-accordion-head").addClass("active expand");
         resultsFound = true; // Mark that at least one result is found
       } else if (
         // If no category filter is applied and only search term matches anywhere in the FAQ
@@ -306,9 +310,11 @@ jQuery(document).ready(function ($) {
         faqText.includes(searchTerm)
       ) {
         $(this).show(); // Show the FAQ item
+        this.find(".faq-accordion-head").addClass("active expand");
         resultsFound = true; // Mark that at least one result is found
       } else {
         $(this).hide(); // Hide the FAQ item
+        $(this).find(".faq-accordion-head").removeClass("active expand");
       }
     });
 
@@ -321,63 +327,6 @@ jQuery(document).ready(function ($) {
       $(".no-found-ctn").hide(); // Hide the 'nothing found' message
     }
   });
-
-  // $("#agqa-game-filter").on("click", function (event) {
-  //   event.preventDefault(); // Prevent form submission
-
-  //   var searchTerm = $("#filter-search").val().toLowerCase(); // Get search term
-  //   var selectedCategory = $("input.agqa-filter-select-hidden")
-  //     .val()
-  //     .toLowerCase(); // Get selected category
-  //   var resultsFound = false; // Flag to track if any result is found
-
-  //   // Initially hide pagination and "Nothing Found" message
-  //   $(".no-found-ctn").hide(); // Hide "Nothing Found" message
-  //   $("div#pagination-demo").hide(); // Hide pagination
-
-  //   $(".faq-accordion").each(function () {
-  //     var faqCategory = $(this)
-  //       .find(".faq-accodion-status span") // Select the text inside the <span> tag
-  //       .text()
-  //       .trim(); // Get category of current FAQ
-  //     var questionText = $(this)
-  //       .find(".faq-accordion-head h2")
-  //       .text()
-  //       .toLowerCase(); // Get question text of FAQ
-  //     var answerText = $(this)
-  //       .find(".faq-accordion-body p")
-  //       .text()
-  //       .toLowerCase(); // Get answer text of FAQ
-
-  //     // If a category is selected, and it matches the FAQ category
-  //     // AND search term matches either question or answer text
-  //     if (
-  //       (selectedCategory === "all" || faqCategory === selectedCategory) &&
-  //       (questionText.includes(searchTerm) || answerText.includes(searchTerm))
-  //     ) {
-  //       $(this).show(); // Show the FAQ item
-  //       resultsFound = true; // Mark that at least one result is found
-  //     } else if (
-  //       // If no category filter is applied and only search term matches
-  //       !selectedCategory &&
-  //       (questionText.includes(searchTerm) || answerText.includes(searchTerm))
-  //     ) {
-  //       $(this).show(); // Show the FAQ item
-  //       resultsFound = true; // Mark that at least one result is found
-  //     } else {
-  //       $(this).hide(); // Hide the FAQ item
-  //     }
-  //   });
-
-  //   // If no results are found, show the 'nothing found' message
-  //   if (!resultsFound) {
-  //     $(".no-found-ctn").show(); // Show the 'no results' message
-  //     $("div#pagination-demo").hide(); // Hide pagination
-  //   } else {
-  //     $("div#pagination-demo").show(); // Show pagination
-  //     $(".no-found-ctn").hide(); // Hide the 'nothing found' message
-  //   }
-  // });
 
   /**
    * FAQ like & dislike Script
