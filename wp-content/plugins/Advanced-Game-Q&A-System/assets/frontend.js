@@ -824,7 +824,7 @@ jQuery(document).ready(function ($) {
             // If under limit → show success after 2s of no typing
             typingTimer = setTimeout(function () {
                 if ($textarea.val().length < maxChars) {
-                    $formResponse.removeClass('error').addClass('success').text('Successfully submitted');
+                    $formResponse.removeClass('error').addClass('success').text('Successfull submitted');
                     $charCounter.addClass('show-message');
                 }
             }, typingDelay);

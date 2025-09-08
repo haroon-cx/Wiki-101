@@ -287,7 +287,7 @@ $rows_type_game = $wpdb->get_results("
                                 <div class="form-message">Are you sure you want to submit?</div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
                                     <button class="no-confirm-submit" type="button">No</button>
-                                    <input type="submit" value="Submit" id="confirm-submit">
+                                    <input type="submit" value="Yes" id="confirm-submit">
                                 </div>
                          </div>       
                     </div>
