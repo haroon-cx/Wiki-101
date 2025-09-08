@@ -188,7 +188,7 @@ jQuery(document).ready(function ($) {
     var $form = jQuery(this);
     var formData = $form.serialize();
     // Create an object to store form data values
-    console.log(formData);
+    // console.log(formData);
     let isValid = true;
     // Check if all required fields are filled
     $form.find("[required]").each(function () {
