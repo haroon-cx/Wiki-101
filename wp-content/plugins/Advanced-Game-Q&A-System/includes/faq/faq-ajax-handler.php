@@ -231,67 +231,68 @@ add_action('wp_ajax_nopriv_agqa_edit_faq', 'agqa_edit_faq');
 /**
  * FAQ like & dislike handler
  */
+
 function handle_like_dislike_action()
 {
     // Check nonce for security
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
-        die('Permission denied.');
+        wp_send_json_error(['message' => 'Permission denied.']);
     }
 
-    // Parse the form_data from the AJAX request (received as a serialized string)
+    // Parse the form_data from AJAX request
     parse_str($_POST['form_data'], $data);
-    // Get parameters sent via AJAX
     $faq_id = intval($data['faq-id']);
-    $action_type = sanitize_text_field($data['like']);
-
-    // echo $action_type;
-    // wp_die();
+    $action_type = sanitize_text_field($data['like']); // '1' = like, '0' = dislike
     $user_id = get_current_user_id();
 
-    global $wpdb;
+    if (!$user_id) {
+        wp_send_json_error(['message' => 'You must be logged in to like/dislike.']);
+    }
 
-    // Check if the user has already liked/disliked this FAQ
+    global $wpdb;
+    $table = $wpdb->prefix . 'agqa_faq_likes_dislikes';
+
+    // Check if a record already exists
     $existing_action = $wpdb->get_var($wpdb->prepare("
-        SELECT action_type FROM {$wpdb->prefix}agqa_faq_likes_dislikes
+        SELECT action_type 
+        FROM $table 
         WHERE faq_id = %d AND user_id = %d
     ", $faq_id, $user_id));
-    //  echo $existing_action;
-    //     wp_die();
-    if ($existing_action) {
-        // If the user has already liked or disliked, update the action
-        if ($existing_action === $action_type) {
-            // Remove the like/dislike if it's the same as the current action
-            $wpdb->delete($wpdb->prefix . 'agqa_faq_likes_dislikes', array(
+
+    if ($existing_action !== null) {
+        // Record exists, update it (like or dislike)
+        $wpdb->update(
+            $table,
+            ['action_type' => $action_type],
+            ['faq_id' => $faq_id, 'user_id' => $user_id],
+            ['%d'],
+            ['%d', '%d']
+        );
+        $message = 'Your preference has been updated.';
+    } else {
+        // No record exists, insert new
+        $wpdb->insert(
+            $table,
+            [
                 'faq_id' => $faq_id,
                 'user_id' => $user_id,
                 'action_type' => $action_type
-            ));
-            $message = 'You have removed your ' . ($action_type === '1' ? 'like' : 'dislike') . '.';
-        } else {
-            // If the action is different, update the record
-            $wpdb->update($wpdb->prefix . 'agqa_faq_likes_dislikes', array(
-                'action_type' => $action_type
-            ), array(
-                'faq_id' => $faq_id,
-                'user_id' => $user_id
-            ));
-            $message = 'You ' . ($action_type === '1' ? 'liked' : 'disliked') . ' this FAQ.';
-        }
-    } else {
-        // Insert the like/dislike record if not already present
-        $wpdb->insert($wpdb->prefix . 'agqa_faq_likes_dislikes', array(
-            'faq_id' => $faq_id,
-            'user_id' => $user_id,
-            'action_type' => $action_type
-        ));
-
-        // Dynamic message based on action type (like or dislike)
-        $message = 'You ' . ($action_type === '1' ? 'liked' : 'disliked') . ' this FAQ.';
+            ],
+            ['%d', '%d', '%d']
+        );
+        $message = 'Your preference has been saved.';
     }
-    //  echo $action_type;
-    // wp_die();
-    // Send back the current like and dislike counts
-    // If everything went well, return success
+
+    // Optionally, return updated counts
+    $like_count = $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM $table WHERE faq_id = %d AND action_type = 1",
+        $faq_id
+    ));
+    $dislike_count = $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM $table WHERE faq_id = %d AND action_type = 0",
+        $faq_id
+    ));
+
     $response['status']  = 'Success';
     $response['message'] = 'Successfully Submitted';
     echo json_encode($response);

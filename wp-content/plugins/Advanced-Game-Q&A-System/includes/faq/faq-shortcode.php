@@ -129,6 +129,9 @@ function custom_faq_shortcode()
                         $likes_data = 0;
                         $unlikes_data = 0;
 
+                        // Track the user's action (like or dislike) for this FAQ
+                        $user_action = ''; // empty, 'liked', or 'disliked'
+
                         foreach ($table_data_like as $aga_like) {
                             // Fetch like count for the specific faq_id and user_id
                             if ($aga_like->faq_id == $faq_value->id) {
@@ -137,10 +140,19 @@ function custom_faq_shortcode()
                                 } elseif ($aga_like->action_type == '0') {
                                     $unlikes_data++; // Increment dislike count for this faq_id
                                 }
+
+                                // Check if the current user has liked or disliked this FAQ
+                                if ($aga_like->user_id == get_current_user_id()) {
+                                    if ($aga_like->action_type == '1') {
+                                        $user_action = 'liked'; // User has liked this FAQ
+                                    } elseif ($aga_like->action_type == '0') {
+                                        $user_action = 'disliked'; // User has disliked this FAQ
+                                    }
+                                }
                             }
                         }
 
-                        // Default like count to 0 if no like record found
+                        // Default like and dislike counts
                         $like_count = $likes_data;
                         $unlike_count = $unlikes_data;
                     ?>
@@ -157,13 +169,14 @@ function custom_faq_shortcode()
 
                             <div class="faq-accordion-body">
                                 <?php if ($faq_value->answer) { ?>
-                                    <?php echo esc_html($faq_value->answer); ?>
+                                    <?php echo ($faq_value->answer); ?>
                                 <?php } ?>
                             </div>
 
                             <div class="faq-accordion-bottom">
-                                <!-- Like Button -->
-                                <button class="faq-accordion-button like-button" name="action-type">
+                                <button
+                                    class="faq-accordion-button like-button <?php echo ($user_action == 'liked') ? 'active' : ''; ?>"
+                                    name="action-type">
                                     <div class="faq-accordion-icon">
                                         <input type="hidden" class="agqa-like" name="faq-id"
                                             value="<?php echo esc_attr($faq_value->id); ?>">
@@ -173,7 +186,9 @@ function custom_faq_shortcode()
                                 </button>
 
                                 <!-- Unlike Button -->
-                                <button class="faq-accordion-button unlike-button" name="action-type">
+                                <button
+                                    class="faq-accordion-button unlike-button <?php echo ($user_action == 'disliked') ? 'active' : ''; ?>"
+                                    name="action-type">
                                     <div class="faq-accordion-icon">
                                         <input type="hidden" class="agqa-dislike" name="faq-id"
                                             value="<?php echo esc_attr($faq_value->id); ?>">
@@ -259,42 +274,33 @@ function custom_faq_shortcode()
         </div>
         <script>
             jQuery(document).ready(function($) {
-                // Number of items per page
                 var itemsPerPage = 15;
-
-                // Total number of items (in this case, you have 2 items for demonstration)
                 var totalItems = jQuery('.faq-accordion').length;
 
-                // Calculate total pages based on items per page
-                var totalPages = Math.ceil(totalItems / itemsPerPage);
+                // Only show pagination if more than 16 items exist
+                if (totalItems > 16) {
+                    var totalPages = Math.ceil(totalItems / itemsPerPage);
+                    jQuery('#pagination-demo').twbsPagination({
+                        totalPages: totalPages, // Total pages
+                        visiblePages: 3, // Number of visible pages
+                        onPageClick: function(event, page) {
+                            jQuery('.faq-accordion').hide(); // Hide all items initially
 
-                // Initialize pagination
-                jQuery('#pagination-demo').twbsPagination({
-                    totalPages: totalPages, // Total pages
-                    visiblePages: 3, // Number of visible pages
-                    onPageClick: function(event, page) {
-                        // Show items for the selected page
-                        jQuery('.faq-accordion').hide(); // Hide all items initially
-
-                        // Show only the items that belong to the selected page
-                        jQuery('.faq-accordion').each(function(index) {
-                            // Set the data-page attribute based on the index
-                            var pageIndex = Math.floor(index / itemsPerPage) + 1;
-
-                            // Show only items on the current page
-                            if (pageIndex === page) {
-                                jQuery(this).show();
-                            }
-                        });
-                    }
-                });
-
-                // Initially assign data-page attribute to each item
-                jQuery('.faq-accordion').each(function(index) {
-                    var pageIndex = Math.floor(index / itemsPerPage) + 1;
-                    jQuery(this).attr('data-page', pageIndex);
-                });
-
+                            jQuery('.faq-accordion').each(function(index) {
+                                var pageIndex = Math.floor(index / itemsPerPage) + 1;
+                                if (pageIndex === page) {
+                                    jQuery(this).show();
+                                }
+                            });
+                        }
+                    });
+                    jQuery('.faq-accordion').each(function(index) {
+                        var pageIndex = Math.floor(index / itemsPerPage) + 1;
+                        jQuery(this).attr('data-page', pageIndex);
+                    });
+                } else {
+                    jQuery('#pagination-demo').hide(); // Hide pagination if there are 16 or fewer items
+                }
             });
         </script>
 
