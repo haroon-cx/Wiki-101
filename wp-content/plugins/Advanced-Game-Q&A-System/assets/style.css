@@ -1918,7 +1918,7 @@ input[type="submit"] {
   background-color: #7644CE;
 }
 
-#custom-faq-field-popup #yes-cancel {
+#custom-faq-field-popup #yes-cancel:hover {
   background-color: #624491;
 }
 
@@ -3593,6 +3593,10 @@ form .form-buttons button {
   box-sizing: border-box;
   width: 119px;
   font-size: 20px !important;
+}
+
+#confirm-submit {
+  width: 119px;
 }
 
 .no-found-ctn {

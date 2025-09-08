@@ -106,7 +106,7 @@ if ($edit_faq_review !== 0) {
                             <div class="form-message">Are you sure you want to submit?</div>
                             <div class="form-buttons agqa-popup-form-buttons d-flex">
                                 <button class="no-confirm-submit" type="button">No</button>
-                                <input type="submit" value="Submit" id="confirm-submit">
+                                <input type="submit" value="Yes" id="confirm-submit">
                             </div>
                         </div>
                     </div>
