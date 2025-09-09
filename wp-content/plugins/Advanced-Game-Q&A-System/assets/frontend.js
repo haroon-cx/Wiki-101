@@ -1689,27 +1689,47 @@ jQuery(document).ready(function ($) {
         });
     });
 
-
-
-    $('input[type="text"],.faq-template #filter-search').on('input', function () {
-        var maxLength = 100;
+    $('input[type="text"], input[type="search"], .faq-template #filter-search').on('input', function () {
+        var maxLength = 100; // Default limit for most selectors
         var $input = $(this);
         var $errorMessage = $input.next('#error-message'); // Look for the error message next to the input
         var $formField = $input.closest('.form-field'); // Find the parent .form-field of the current input
+
+        // Check for a specific condition for the "manage-user-search" field
+        if ($input.attr('id') === 'manage-user-search' && $input.val().length > 254) {
+            maxLength = 254; // If it's the "manage-user-search" field, the max length should be 254
+        }
+        
         // Check if input exceeds maxLength
         if ($input.val().length > maxLength) {
             $input.val($input.val().substring(0, maxLength)); // Truncate the value to maxLength
             $formField.addClass('error-field-input'); // Add 'error' class to the parent .form-field
-            // Append error message if it doesn't already exist
-            if ($errorMessage.length === 0) {
-                $('<div id="error-message">Max 100 characters allowed.</div>')
-                    .insertAfter($input); // Insert the error message after the input
+            
+            // Append error message in .filter-search-field if it's "manage-user-search"
+            if ($input.attr('id') === 'manage-user-search') {
+                var $filterSearchField = $('.filter-search-field');
+                if ($filterSearchField.length > 0 && $filterSearchField.find('#error-message').length === 0) {
+                    $('<div id="error-message">Max 254 characters allowed.</div>')
+                        .appendTo($filterSearchField); // Append the error message to .filter-search-field
+                }
+            } else {
+                // Append error message after the input for other fields
+                if ($errorMessage.length === 0) {
+                    $('<div id="error-message">Max ' + maxLength + ' characters allowed.</div>')
+                        .insertAfter($input); // Insert the error message after the input
+                }
             }
         } else {
             $formField.removeClass('error-field-input'); // Remove 'error' class if input is valid
+
             // Remove the error message if input length is valid
             if ($errorMessage.length > 0) {
                 $errorMessage.remove();
+            }
+
+            // Remove the error message specifically from .filter-search-field if it's "manage-user-search"
+            if ($input.attr('id') === 'manage-user-search') {
+                $('.filter-search-field').find('#error-message').remove();
             }
         }
     });

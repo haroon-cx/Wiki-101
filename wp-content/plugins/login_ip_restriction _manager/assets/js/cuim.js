@@ -287,4 +287,31 @@ jQuery(document).ready(function($) {
         }
     });
 });
+
+// ==========================
+  // 6. Pagination
+  // ==========================
+ 
+   var itemsPerPage = 15;
+  var totalItems = jQuery(".custom-table-row").length;
+  var totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  jQuery("#pagination-demo").twbsPagination({
+    totalPages: totalPages,
+    visiblePages: 3,
+    onPageClick: function (event, page) {
+      jQuery(".custom-table-row").hide();
+      jQuery('.custom-table-row[data-page="' + page + '"]').show();
+    },
+  });
+
+  jQuery(".custom-table-row").each(function (index) {
+    var page = Math.floor(index / itemsPerPage) + 1;
+    jQuery(this).attr("data-page", page);
+    if (page === 1) {
+      jQuery(this).show();
+    } else {
+      jQuery(this).hide();
+    }
+  });
 });

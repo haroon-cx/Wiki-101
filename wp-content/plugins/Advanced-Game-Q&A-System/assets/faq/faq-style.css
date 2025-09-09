@@ -457,7 +457,8 @@ textarea.fr-code:focus {
     margin: auto 0 !important;
 }
 
-.faq-template #error-message {
+.faq-template #error-message,
+.manage-user-template #error-message {
     position: absolute;
     bottom: -22px;
 }

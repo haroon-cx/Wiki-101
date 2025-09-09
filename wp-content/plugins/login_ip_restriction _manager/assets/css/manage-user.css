@@ -35,6 +35,12 @@
     height: 100%;
     padding: 12px 54px 12px 65px;
     box-sizing: border-box;
+    font-size: 16px; /* Add font size if necessary */
+}
+
+#creation_time {
+    color: #747474;
+    font-size: 14px; /* Placeholder font size */
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -58,20 +64,21 @@ input[type="date"]::-webkit-input-placeholder {
     z-index: 99;
 }
 
-.date-icon {
+.calendar-icon {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 28px;
+    left: 25px;
     z-index: 1;
     display: inline-block;
-    background-image: url(../image/calender-icon.svg);
-    background-size: 20px;
+    background-image: url(../image/calender-icon.png);
+    background-size: 19px;
     background-repeat: no-repeat;
-    background-position: left 28px center;
-    width: 18px;
-    height: 20px;
+    background-position: center;
+    width: 24px;
+    height: 24px;
     margin-block: auto;
+    pointer-events: none;
 }
 
 .manage-user-template .filter-right-area {
@@ -364,8 +371,6 @@ tr {
     font-size: 16px;
 }
 
-
-
 .login-history-popup-inner .close-button:hover {
     border-color: rgb(98, 68, 145);
     color: #fff;
@@ -383,4 +388,8 @@ tr {
 
 .table-body-col-buttons #custom-faq-field-popup-inner button {
     height: auto;
+}
+
+.filter-search-field {
+    position: relative;
 }

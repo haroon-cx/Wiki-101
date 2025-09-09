@@ -34,16 +34,7 @@ add_action('wp_enqueue_scripts', function () {
 
     wp_enqueue_style('editor-style-css', 'https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css');
 
-    wp_enqueue_script('editor-faq-js', 'https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js', [], null, true);
-
-    // Correctly load PDF.js as a script (not as a style)
-    wp_enqueue_script('pdf-new', 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js', [], null, true);
-    wp_enqueue_script('pagination-js', 'https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js', [], null, true);
-
-    // F
-
-
-    wp_enqueue_style('agqa-style', AGQA_URL . 'assets/style.css');
+     wp_enqueue_style('agqa-style', AGQA_URL . 'assets/style.css');
     // FAQ style.css
     wp_enqueue_style('agqa-faq-style', AGQA_URL . 'assets/faq/faq-style.css');
     // FAQ faq-responsive.css
@@ -52,6 +43,14 @@ add_action('wp_enqueue_scripts', function () {
 
     // Report System CSS file
     wp_enqueue_style('agqa-report-system-css', AGQA_URL . 'assets/report-system/report-style.css');
+
+    wp_enqueue_script('editor-faq-js', 'https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js', [], null, true);
+
+    // Correctly load PDF.js as a script (not as a style)
+    wp_enqueue_script('pdf-new', 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js', [], null, true);
+    wp_enqueue_script( 'pagination-js', 'https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js', array('jquery'), null, true );
+
+    // F
     // Pdf Library (if you also want to include the pdf-lib library)
     wp_enqueue_script('agqa-pdf-lib', 'https://unpkg.com/pdf-lib/dist/pdf-lib.min.js', [], null, true);
 

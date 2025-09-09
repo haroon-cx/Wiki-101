@@ -295,28 +295,31 @@ jQuery(document).ready(function ($) {
       .text()
       .toLowerCase(); // Optionally, get category text
 
-      // If a category is selected, and it matches the FAQ category
-      if (
-        (selectedCategory === "all" ||
-          faqCategory.includes(selectedCategory)) &&
-        faqText.includes(searchTerm) // Check if the search term is found anywhere in the FAQ content
-      ) {
-        $(this).show(); // Show the FAQ item
-        $(this).find(".faq-accordion-head").addClass("active");
-        resultsFound = true; // Mark that at least one result is found
-      } else if (
-        // If no category filter is applied and only search term matches anywhere in the FAQ
-        !selectedCategory &&
-        faqText.includes(searchTerm)
-      ) {
-        $(this).show(); // Show the FAQ item
-        this.find(".faq-accordion-head").addClass("active");
-        resultsFound = true; // Mark that at least one result is found
-      } else {
-        $(this).hide(); // Hide the FAQ item
-        $(this).find(".faq-accordion-head").removeClass("active");
-      }
-    });
+    // If a category is selected, and it matches the FAQ category
+    if (
+      (selectedCategory === "all" ||
+        faqCategory.includes(selectedCategory)) &&
+      faqText.includes(searchTerm) // Check if the search term is found anywhere in the FAQ content
+    ) {
+      $(this).show(); // Show the FAQ item
+      $(this).find(".faq-accordion-head").addClass("active"); // Add active class to the head
+      $(this).find(".faq-accordion-body").slideDown(); // Slide down the body
+      resultsFound = true; // Mark that at least one result is found
+    } else if (
+      // If no category filter is applied and only search term matches anywhere in the FAQ
+      !selectedCategory &&
+      faqText.includes(searchTerm)
+    ) {
+      $(this).show(); // Show the FAQ item
+      $(this).find(".faq-accordion-head").addClass("active"); // Add active class to the head
+      $(this).find(".faq-accordion-body").slideDown(); // Slide down the body
+      resultsFound = true; // Mark that at least one result is found
+    } else {
+      $(this).hide(); // Hide the FAQ item
+      $(this).find(".faq-accordion-head").removeClass("active"); // Remove active class from the head
+      $(this).find(".faq-accordion-body").slideUp(); // Slide up the body
+    }
+  });
 
     // If no results are found, show the 'nothing found' message
     if (!resultsFound) {

@@ -11,7 +11,9 @@
         <div class="filter-container">
                 <div class="filter-area">
                     <form action="#" autocomplete="off" data-inited-validation="1">
-                        <input type="search" name="manage-user-search" id="manage-user-search" placeholder="please enter account name or email">
+                       <div class="filter-search-field">
+                         <input type="search" name="manage-user-search" id="manage-user-search" placeholder="please enter account name or email">
+                       </div>
                         <div class="filter-select">
                             <input type="hidden" name="filter-select-states" class="agqa-filter-select-hidden agqa-filter-select-states">
                             <button class="filter-select-title select-states">
@@ -63,7 +65,7 @@
                         </div>
                         <div class="date-field">
                             <input type="date" id="creation_time" name="creation_time" placeholder="YYYY/MM/DD - YYYY/MM/DD">
-                            <span class="date-icon"></span>
+                            <span class="calendar-icon"></span>
                         </div>
                         <button type="submit" class="filter-select-button" id="agqa-game-filter"><span>Search</span></button>
                     </form>
@@ -685,6 +687,80 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="pagination-ctn">
+            <div id="pagination-demo"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="manage-user-form-ctn">
+    <div class="template-title">
+        <h1>Manage User</h1>
+    </div>
+    <div class="form-header-row">
+        <a href="<?php echo esc_url(home_url('/manage-user')) ?>" class="back-button" type="button">
+            <img decoding="async" src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg" alt="Arrow Left Icon">
+            Back
+        </a>
+        <h2 class="form-heading">Add User</h2>
+    </div>
+    <div class="faq-add-form-ctn manage-user-form-ctn">
+        <div id="manage-user-add-form" class="faq-form">
+            <form autocomplete="off" id="add-form-faq" class="custom-form" novalidate="novalidate"
+                data-inited-validation="1">
+                <div class="form-field required">
+                    <label for="account-field"><span>* </span>Account</label>
+                    <input type="text" name="faq-question" id="account-field" required placeholder="Description">
+                </div>
+                <div class="form-field required">
+                    <label for="new-password-field"><span>* </span>New Password</label>
+                    <input type="password" name="faq-question" id="new-password-field" required placeholder="Description">
+                </div>
+                <div class="form-field required">
+                    <label for="confirm-password-field"><span>* </span>Confirm Password</label>
+                    <input type="password" name="faq-question" id="confirm-password-field" required placeholder="Description">
+                </div>
+                <div class="agqa-popup-form-field required">
+                     <label for="issue_type"><span>* </span>State</label>
+                     <select name="manage-user-state" id="manage-user-state" required disabled>
+                        <option value="Pending">Pending</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="Freeze">Freeze</option>
+                     </select>
+               </div>
+                <div class="form-buttons agqa-popup-form-buttons d-flex full-width agqa-add-update-btn">
+                    <div id="cancel-form-confirmation" class="cancel-form-confirmation" style="">
+                        <div class="cancel-form-confirmation-box">
+                            <h2>Cancel</h2>
+                            <div class="popup-form-cross-icon"></div>
+                            <div class="form-message">Are you sure you want to cancel?</div>
+                            <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                <button class="no-form-cancel" type="button">No</button>
+                                <a href="<?php echo esc_url(home_url('/manage-user')) ?>" class="back-button">Yes</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="<?php echo esc_url(home_url('/manage-user')) ?>" class="back-button"
+                        id="cancel-confirmation-button">Cancel</a>
+                    <div id="confirm-submit-popup" class="confirm-submit-popup">
+                        <div class="confirm-submit-popup-box">
+                            <h2>Submit</h2>
+                            <div class="popup-form-cross-icon"></div>
+                            <div class="form-message">Are you sure you want to submit?</div>
+                            <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                <button class="no-confirm-submit" type="button">No</button>
+                                <input type="submit" value="Yes" id="confirm-submit">
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="submit" value="Submit" class="agqa-edit-submit-btn" id="confirm-submit-popup-button">
+                </div>
+            </form>
         </div>
     </div>
 </div>
