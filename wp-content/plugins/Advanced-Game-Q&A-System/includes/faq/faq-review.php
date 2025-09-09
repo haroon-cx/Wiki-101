@@ -45,7 +45,22 @@ $faq_data_review = $wpdb->get_results("
                 </div>
                 <div class="faq-accordion-body">
                     <?php if ($faq_value->answer) { ?>
-                    <p><?php echo $faq_value->answer; ?></p>
+                    <p>
+                        <?php
+                                // First remove the "Powered by Froala Editor" text (case-insensitive)
+                                $cleaned_answer = preg_replace('/Powered by.*?Froala Editor.*?/is', '', $faq_value->answer);
+
+                                // Remove any empty <p> or <span> tags
+                                $cleaned_answer = preg_replace('/<p[^>]*>\s*<\/p>/is', '', $cleaned_answer);
+                                $cleaned_answer = preg_replace('/<span[^>]*>\s*<\/span>/is', '', $cleaned_answer);
+
+                                // Trim any leading or trailing spaces
+                                $cleaned_answer = trim($cleaned_answer);
+
+                                // Echo the cleaned answer
+                                echo $cleaned_answer;
+                                ?>
+                    </p>
                     <?php } ?>
                 </div>
                 <div class="faq-accordion-bottom">

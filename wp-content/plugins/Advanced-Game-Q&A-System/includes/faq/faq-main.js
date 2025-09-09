@@ -188,7 +188,7 @@ jQuery(document).ready(function ($) {
     var $form = jQuery(this);
     var formData = $form.serialize();
     // Create an object to store form data values
-    // console.log(formData);
+    console.log(formData);
     let isValid = true;
     // Check if all required fields are filled
     $form.find("[required]").each(function () {
@@ -328,6 +328,14 @@ jQuery(document).ready(function ($) {
     } else {
       $("div#pagination-demo").show(); // Show pagination
       $(".no-found-ctn").hide(); // Hide the 'nothing found' message
+    }
+    var itemsPerPage = 15;
+    var totalItems = $(".faq-accordion").filter(":visible").length; // Count only visible items
+
+    if (totalItems > itemsPerPage) {
+      $("#pagination-demo").show(); // Show pagination if more than 15 visible items
+    } else {
+      $("#pagination-demo").hide(); // Hide pagination if 15 or fewer visible items
     }
   });
 
