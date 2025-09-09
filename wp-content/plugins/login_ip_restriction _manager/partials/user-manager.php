@@ -1,165 +1,271 @@
 <?php
 ?>
-<div class="cuim-container">
-    <div class="p-6 max-w-7xl mx-auto mt">
-        <!-- Heading -->
-        <h3 class="eu fz">Existing Users</h3>
-        <!-- Horizontal Rule -->
-        <hr class="heading-divider-user" />
-        <!-- Right-aligned Button -->
-        <?php if (current_user_can('administrator') || current_user_can('editor')) { ?>
-            <div class="button-bar">
-                <button class="button button-primary cuim-show-create"> + Add New User</button>
+<div class="manage-user-template">
+    <div class="manage-user-container">
+        <div id="page-content">
+                <!-- Content will be dynamically updated based on pagination -->
             </div>
-        <?php } ?>
-    </div>
-    <!-- Create Modal -->
-    <div id="cuim-create-modal" class="cuim-modal">
-        <div class="cuim-modal-content">
-            <span class="cuim-close"><i class="fas fa-times"></i></span>
-            <h3>Create User</h3>
-            <form id="cuim-create-form" class="cuim-form">
-                <input type="hidden" name="security" value="<?php echo wp_create_nonce('cuim_nonce'); ?>">
-                <label for="cuim_name">Name</label>
-                <input type="text" name="cuim_name" placeholder="Enter your name..." required />
-                <label for="cuim_email">Email</label>
-                <input type="email" name="cuim_email" placeholder="Enter your email..." required />
-                <label for="cuim_password">Password</label>
-                <input type="password" name="cuim_password" placeholder="Enter your password..." required />
-
-                <!-- 🔽 User Role Dropdown -->
-                <label for="cuim_role">User Role</label>
-                <select name="cuim_role" id="cuim_role" required>
-                    <option value="">Select Role</option>
-                    <?php if (current_user_can('administrator')) { ?>
-                        <option value="editor">Manager</option>
-                    <?php } ?>
-                    <option value="contributor">Contributor</option>
-                    <option value="viewer">Viewer</option>
-                </select>
-
-                <button type="submit" class="button button-primary" style="float: right">Create</button>
-                <div class="cuim-message" id="cuim-create-message"></div>
-            </form>
+        <div class="template-title">
+            <h1>Manage User</h1>
         </div>
-    </div>
-
-    <table class="cuim-table" style="overflow: unset !important;">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <?php if (current_user_can('administrator')) { ?>
-                    <th style="text-align: center">Actions</th>
-                <?php } ?>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach (get_users(['role__not_in' => ['administrator']]) as $u):
-                // Get user role (only first role is used)
-                $roles = $u->roles;
-                $role = !empty($roles) ? $roles[0] : 'subscriber';
-                $requested = get_user_meta($u->ID, 'cuim_requested_role', true);
-                // Map WordPress role to display label
-                if ($role === 'editor') {
-                    $role_key = 'editor';
-                } elseif ($role === 'contributor') {
-                    $role_key = 'contributor';
-                } elseif ($role === 'pending_user') {
-                    $role_key = $requested;
-                } else {
-                    $role_key = 'viewer';
-                }
-
-                // Prepare user data for JS
-                $user_data = [
-                    'ID'    => $u->ID,
-                    'name'  => $u->display_name ?: $u->user_login,
-                    'email' => $u->user_email,
-                    'role'  => $role_key,
-                ];
-
-                // Fetch requested role if user is pending
-                $is_pending = ($role === 'pending_user');
-            ?>
-                <tr data-user-id="<?php echo esc_attr($u->ID); ?>">
-                    <td class="cuim-name"><?php echo esc_html($user_data['name']); ?></td>
-                    <td class="cuim-email"><?php echo esc_html($user_data['email']); ?></td>
-                    <td class="cuim-role">
-                        <?php if ($role_key == 'editor') { ?>
-                            <?php echo 'Manager'; ?>
-                        <?php } else { ?>
-                            <?php echo $role_key; ?>
-                        <?php } ?>
-                        <?php if ($is_pending): ?>
-                            <span style="color: #e67e22;">(Awaiting Approval)</span>
-                            <!-- ✅ Approve Button (Admins only for pending users) -->
-                            <?php if ($is_pending && current_user_can('administrator')): ?>
-                                <button class="cuim-approve-user button" data-user-id="<?php echo esc_attr($u->ID); ?>"
-                                    data-requested-role="<?php echo esc_attr($requested); ?>">
-                                    <i class="fas fa-check-square"></i>
-                                </button>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    </td>
-                    <?php if (current_user_can('administrator')) { ?>
-                        <td style="text-align: center">
-                            <!-- 🔄 Edit Button -->
-                            <button class="cuim-edit-ip button cuim-edit-button"
-                                data-user='<?php echo json_encode($user_data); ?>'>
-                                <i class="fas fa-pencil-alt"></i>
+        <div class="filter-container">
+                <div class="filter-area">
+                    <form action="#" autocomplete="off" data-inited-validation="1">
+                        <input type="search" name="manage-user-search" id="manage-user-search" placeholder="please enter account name or email">
+                        <div class="filter-select">
+                            <input type="hidden" name="filter-select-states" class="agqa-filter-select-hidden agqa-filter-select-states">
+                            <button class="filter-select-title select-states">
+                                <span class="filter-default-text">Select States</span>
+                                <span class="filter-selected-text"></span>
                             </button>
-
-                            <!-- ❌ Delete Button -->
-                            <button class="cuim-delete-ip button cuim-delete">
-                                <i class="far fa-trash-alt"></i>
+                            <div class="filter-select-list">
+                                <ul>
+                                    <li>Active</li>
+                                    <li>Inactive</li>
+                                    <li>Freeze</li>
+                                    <li>Pending</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="filter-select">
+                            <input type="hidden" name="filter-select-roles" class="agqa-filter-select-hidden agqa-filter-select-roles">
+                            <button class="filter-select-title select-roles">
+                                <span class="filter-default-text">Select Role</span>
+                                <span class="filter-selected-text"></span>
                             </button>
-
-                        </td>
-                    <?php } ?>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-
-
-    <!-- Edit Modal -->
-    <div id="cuim-edit-modal" class="cuim-modal">
-        <div class="cuim-modal-content">
-            <span class="cuim-close">&times;</span>
-            <h3>Edit User</h3>
-            <form id="cuim-edit-form" class="cuim-form">
-                <input type="hidden" name="security" value="<?php echo wp_create_nonce('cuim_nonce'); ?>">
-                <input type="hidden" name="user_id" />
-
-                <input type="text" name="cuim_name" placeholder="Name" required />
-                <input type="email" name="cuim_email" placeholder="Email" required />
-                <input type="password" name="cuim_password" placeholder="New Password (optional)" />
-
-                <!-- 🔽 User Role Dropdown -->
-                <!-- <label for="cuim_role">User Role</label> -->
-                <select name="cuim_role" id="cuim_role" required>
-                    <option value="">Select Role</option>
-                    <option value="editor">Manager</option>
-                    <option value="contributor">Contributor</option>
-                    <option value="viewer">Viewer</option>
-                </select>
-
-                <button type="submit" class="button button-primary" style="float: right">Save</button>
-                <div class="cuim-message" id="cuim-edit-message"></div>
-            </form>
+                            <div class="filter-select-list">
+                                <ul>
+                                    <li>All</li>
+                                    <li>Admin</li>
+                                    <li>Manager</li>
+                                    <li>Contributor</li>
+                                    <li>Viewer</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="filter-select">
+                            <input type="hidden" name="filter-select-companies" class="agqa-filter-select-hidden agqa-filter-select-companies">
+                            <button class="filter-select-title select-companies">
+                                <span class="filter-default-text">Select Company</span>
+                                <span class="filter-selected-text"></span>
+                            </button>
+                            <div class="filter-select-list">
+                                <ul>
+                                    <li>Wagner Inc</li>
+                                    <li>Wood and Sons</li>
+                                    <li>Martinez, Nielsen and</li>
+                                    <li>Underwood LLC</li>
+                                    <li>Mack-Peterson</li>
+                                    <li>Mack-Peterson</li>
+                                    <li>Miller Group</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="date-field">
+                            <input type="date" id="creation_time" name="creation_time" placeholder="YYYY/MM/DD - YYYY/MM/DD">
+                            <span class="date-icon"></span>
+                        </div>
+                        <button type="submit" class="filter-select-button" id="agqa-game-filter"><span>Search</span></button>
+                    </form>
+                </div>
+                <div class="filter-right-area">
+                    <div class="add-button-ctn">
+                        <a href="#" class="add-button">
+                            <img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg" alt="Plus Icon">Add User
+                        </a>
+                    </div>
+                </div>
         </div>
-    </div>
-
-
-    <!-- Delete Modal -->
-    <div id="cuim-delete-modal" class="cuim-modal">
-        <div class="cuim-modal-content">
-            <span class="cuim-close">&times;</span>
-            <h3>Confirm Delete</h3>
-            <p>Delete user <strong id="cuim-delete-email"></strong>?</p>
-            <button id="cuim-confirm-delete" class="button button-danger" style="float: right">Delete</button>
+        <div class="manage-user-table custom-table">
+            <div class="custom-table-head">
+                <div class="table-head-col">Account</div>
+                <div class="table-head-col">State</div>
+                <div class="table-head-col">Role</div>
+                <div class="table-head-col">Company Name</div>
+                <div class="table-head-col">Mail</div>
+                <div class="table-head-col">Contact Method</div>
+                <div class="table-head-col">Creation Time</div>
+                <div class="table-head-col">Actions</div>
+            </div>
+            <div class="custom-table-body">
+                <div class="custom-table-row">
+                    <div class="table-body-col">johnsonjoshua</div>
+                    <div class="table-body-col table-row-status active"><span>Active</span></div>
+                    <div class="table-body-col">Viewer</div>
+                    <div class="table-body-col">Wagner Inc</div>
+                    <div class="table-body-col table-body-col-mail"><a href="mailto:jillrhodes@miller.com">jillrhodes@miller.com</a></div>
+                    <div class="table-body-col table-body-col-userId"><a href="#">@johnsonjoshua</a></div>
+                    <div class="table-body-col table-body-col-date">2025/11/12</div>
+                    <div class="table-body-col table-body-col-buttons">
+                         <div class="login-history-ctn">
+                            <button class="login-history-icon"></button>
+                         </div>
+                    </div>
+                </div>
+                <div class="custom-table-row">
+                    <div class="table-body-col">johnsonjoshua</div>
+                    <div class="table-body-col table-row-status inactive"><span>Inactive</span></div>
+                    <div class="table-body-col">Viewer</div>
+                    <div class="table-body-col">Wagner Inc</div>
+                    <div class="table-body-col table-body-col-mail"><a href="mailto:jillrhodes@miller.com">jillrhodes@miller.com</a></div>
+                    <div class="table-body-col table-body-col-userId"><a href="#">@johnsonjoshua</a></div>
+                    <div class="table-body-col table-body-col-date">2025/11/12</div>
+                    <div class="table-body-col table-body-col-buttons">
+                         <div class="login-history-ctn">
+                            <button class="login-history-icon"></button>
+                            <div class="login-history-popup">
+                                <div class="login-history-popup-inner">
+                                    <div class="popup-form-cross-icon"></div>
+                                    <div class="popup-head">
+                                        <h2>Login History</h2>
+                                        <span class="userName">johnsonjoshua</span>
+                                    </div>
+                                    <div class="user-history-records">
+                                        <div class="user-history-records-inner">
+                                            <div class="user-history-record-head">
+                                                <span class="user-number-title">No.</span>
+                                                <span class="user-login-time-title">Login Time</span>
+                                                <span class="user-ip-title">Login IP Address</span>
+                                            </div>
+                                            <div class="user-history-record-lists">
+                                                <div class="user-history-record-lists-inner">
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                    <div class="user-history-record-list">
+                                                        <span class="user-number">1</span>        
+                                                        <span class="user-login-time">2025/12/30 02:46</span>        
+                                                        <span class="user-ip">192.168.1.101</span>        
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div> 
+                                    </div>
+                                    <div class="history-record-buttons d-flex">
+                                        <button class="close-button">close</button>
+                                        <button class="button">Go to Login History</button>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+                <div class="custom-table-row">
+                    <div class="table-body-col">johnsonjoshua</div>
+                    <div class="table-body-col table-row-status freeze"><span>Freeze</span></div>
+                    <div class="table-body-col">Viewer</div>
+                    <div class="table-body-col">Wagner Inc</div>
+                    <div class="table-body-col table-body-col-mail"><a href="mailto:jillrhodes@miller.com">jillrhodes@miller.com</a></div>
+                    <div class="table-body-col table-body-col-userId"><a href="#">@johnsonjoshua</a></div>
+                    <div class="table-body-col table-body-col-date">2025/11/12</div>
+                    <div class="table-body-col table-body-col-buttons">
+                         <div class="login-history-ctn">
+                            <button class="login-history-icon"></button>
+                         </div>
+                    </div>
+                </div>
+                <div class="custom-table-row">
+                    <div class="table-body-col">johnsonjoshua</div>
+                    <div class="table-body-col table-row-status pending"><span>Pending</span></div>
+                    <div class="table-body-col">Viewer</div>
+                    <div class="table-body-col">Wagner Inc</div>
+                    <div class="table-body-col table-body-col-mail"><a href="mailto:jillrhodes@miller.com">jillrhodes@miller.com</a></div>
+                    <div class="table-body-col table-body-col-userId"><a href="#">@johnsonjoshua</a></div>
+                    <div class="table-body-col table-body-col-date">2025/11/12</div>
+                    <div class="table-body-col table-body-col-buttons">
+                         <div class="login-history-ctn">
+                            <button class="login-history-icon"></button>
+                         </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

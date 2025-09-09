@@ -19,6 +19,8 @@ include_once URIP_PATH . 'Includes/ajax-ip-handlers.php';
 add_action('wp_enqueue_scripts', function () {
     if (is_user_logged_in()) {
         wp_enqueue_style('cuim-style', plugin_dir_url(__FILE__) . 'assets/css/cuim.css');
+        // manage-user Style sheet
+        wp_enqueue_style('manage-user-style', plugin_dir_url(__FILE__) . 'assets/css/manage-user.css');
         wp_enqueue_script('cuim-script', plugin_dir_url(__FILE__) . 'assets/js/cuim.js', ['jquery'], null, true);
         wp_localize_script('cuim-script', 'cuim_ajax', [
             'ajax_url' => admin_url('admin-ajax.php'),
@@ -77,6 +79,7 @@ function ipum_get_client_ip() {
     // Fallback to REMOTE_ADDR
     return sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? '' );
 }
+
 add_filter( 'authenticate', 'cui_pm_admin_bypass_ip_whitelist', 30, 3 );
 function cui_pm_admin_bypass_ip_whitelist( $user, $username, $password ) {
     if ( is_wp_error( $user ) || ! $user instanceof WP_User ) {

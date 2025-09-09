@@ -461,3 +461,7 @@ textarea.fr-code:focus {
     position: absolute;
     bottom: -22px;
 }
+
+/* .faq-accordion-head.expand + .faq-accordion-body {
+    display: flex !important;
+} */

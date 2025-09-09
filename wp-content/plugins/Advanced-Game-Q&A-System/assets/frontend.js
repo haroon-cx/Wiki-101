@@ -1,64 +1,69 @@
 jQuery(document).ready(function ($) {
     /*  Filter Accordion (Usama) */
 
-    const $filterWrapper = $(".filter-select");
-    const $toggleBtn = $filterWrapper.find(".filter-select-title");
-    const $dropdownList = $filterWrapper.find(".filter-select-list");
-    const $defaultFilterText = $toggleBtn.find(".filter-default-text");
-    const $selectedLabel = $toggleBtn.find(".filter-selected-text");
-    const $hiddenInput = $filterWrapper.find(".agqa-filter-select-hidden");
+    $(".filter-select").each(function () {
+        const $filterWrapper = $(this);
+        const $toggleBtn = $filterWrapper.find(".filter-select-title");
+        const $dropdownList = $filterWrapper.find(".filter-select-list");
+        const $defaultFilterText = $toggleBtn.find(".filter-default-text");
+        const $selectedLabel = $toggleBtn.find(".filter-selected-text");
+        const $hiddenInput = $filterWrapper.find(".agqa-filter-select-hidden");
 
-    // Initially hide selected text area
-    $selectedLabel.hide();
+        // Initially hide selected text area
+        $selectedLabel.hide();
 
-    // Toggle dropdown only when clicking on button (not selected label or cross)
-    $toggleBtn.on("click", function (e) {
-        // Prevent dropdown toggle if clicked on selected text or cross
-        if ($(e.target).closest(".filter-selected-text").length > 0) return;
+        // Toggle dropdown only when clicking on button (not selected label or cross)
+        $toggleBtn.on("click", function (e) {
+            // Prevent dropdown toggle if clicked on selected text or cross
+            if ($(e.target).closest(".filter-selected-text").length > 0) return;
 
-        e.preventDefault();
-        e.stopPropagation();
+            e.preventDefault();
+            e.stopPropagation();
 
-        const $this = $(this);
-        $(".filter-select-title").not($this).removeClass("active");
-        $this.toggleClass("active");
-        $dropdownList.stop().slideToggle(300);
-    });
+            // Close all other dropdowns (only one dropdown should be open at a time)
+            $(".filter-select-title").not($toggleBtn).removeClass("active");
+            $(".filter-select-list").not($dropdownList).slideUp(300);  // Close other dropdowns
 
-    // Handle dropdown item click
-    $dropdownList.on("click", "li", function (e) {
-        e.stopPropagation();
-        const selectedVal = $(this).text().trim();
-
-        $selectedLabel
-            .html(`<span>${selectedVal}</span><span class="agqa-cross-icon"></span>`)
-            .css({ display: "flex", alignItems: "center", gap: "8px" })
-            .show();
-        $defaultFilterText.hide();
-        $hiddenInput.val(selectedVal);
-        $dropdownList.slideUp(300);
-        $toggleBtn.removeClass("active");
-    });
-    // Handle ONLY cross icon click to remove selection
-    $filterWrapper.on("click", ".agqa-cross-icon", function (e) {
-        e.preventDefault();
-
-        $selectedLabel.fadeOut(200, function () {
-            $selectedLabel.empty();
-            $defaultFilterText.show();
+            // Toggle current dropdown
+            $toggleBtn.toggleClass("active");
+            $dropdownList.stop().slideToggle(300);
         });
-        $hiddenInput.val("");
-        // Set a timeout to allow the hidden input to update and then process the data
 
-    });
+        // Handle dropdown item click
+        $dropdownList.on("click", "li", function (e) {
+            e.stopPropagation();
+            const selectedVal = $(this).text().trim();
 
-    // Close dropdown on outside click
-    $(document).on("click", function (e) {
-        if (!$(e.target).closest(".filter-select").length) {
+            $selectedLabel
+                .html(`<span>${selectedVal}</span><span class="agqa-cross-icon"></span>`)
+                .css({ display: "flex", alignItems: "center", gap: "8px" })
+                .show();
+            $defaultFilterText.hide();
+            $hiddenInput.val(selectedVal);
             $dropdownList.slideUp(300);
-            $(".filter-select-title").removeClass("active");
-        }
+            $toggleBtn.removeClass("active");
+        });
+
+        // Handle ONLY cross icon click to remove selection
+        $filterWrapper.on("click", ".agqa-cross-icon", function (e) {
+            e.preventDefault();
+
+            $selectedLabel.fadeOut(200, function () {
+                $selectedLabel.empty();
+                $defaultFilterText.show();
+            });
+            $hiddenInput.val("");
+        });
+
+        // Close dropdown on outside click
+        $(document).on("click", function (e) {
+            if (!$(e.target).closest($filterWrapper).length) {
+                $dropdownList.slideUp(300);
+                $toggleBtn.removeClass("active");
+            }
+        });
     });
+
     /* New Categories Multi Select script */
     const $multi = $("#select-role");
     const $button = $multi.find(".agqa-popup-form-button");
@@ -302,22 +307,22 @@ jQuery(document).ready(function ($) {
                     }
                     // alert(labelText)
                     if ($fieldWrapper.find('.error-message').length === 0) {
-                        if(labelText == 'What problem did you encounter?' ){
+                        if (labelText == 'What problem did you encounter?') {
                             $fieldWrapper.append(`<div class="error-message">Please select a report type</div>`);
-                        }else if(labelText == 'Detailed Description'){
+                        } else if (labelText == 'Detailed Description') {
                             $fieldWrapper.append(`<div class="error-message">Please enter a description of the issue.</div>`);
-                        }else if(labelText == 'Title'){
+                        } else if (labelText == 'Title') {
                             $fieldWrapper.append(`<div class="error-message">Please enter a title.</div>`);
-                        }else if(labelText == 'Question Type'){
+                        } else if (labelText == 'Question Type') {
                             $fieldWrapper.append(`<div class="error-message">Please select an item</div>`);
-                        }else if(labelText == 'Details'){
+                        } else if (labelText == 'Details') {
                             $fieldWrapper.append(`<div class="error-message">Content is required.</div>`);
-                        }else{
-                        $fieldWrapper.append(`<div class="error-message">${labelText} is required</div>`);
+                        } else {
+                            $fieldWrapper.append(`<div class="error-message">${labelText} is required</div>`);
                         }
                     }
 
-                
+
                 }
             });
 
@@ -1055,9 +1060,9 @@ jQuery(document).ready(function ($) {
     /* Reorder popup */
 
     // Open reorder popup
-    $(".reorder-button").on("click", function (e) {
+    $(".reorder-button,.login-history-icon").on("click", function (e) {
         e.stopPropagation();
-        $(".reorder-popup").addClass("active");
+        $(".reorder-popup,.login-history-popup").addClass("active");
     });
 
     // Close popup on cross icon
@@ -1067,10 +1072,10 @@ jQuery(document).ready(function ($) {
     });
 
     // Close popup on cancel button
-    $(".reorder-popup .cancel-button").on("click", function (e) {
+    $(".reorder-popup .cancel-button,.close-button").on("click", function (e) {
         e.preventDefault(); // prevent form submission if inside a form
         e.stopPropagation();
-        $(".reorder-popup").removeClass("active");
+        $(".reorder-popup,.login-history-popup").removeClass("active");
     });
 
     // Close when clicking outside popup inner
@@ -1633,6 +1638,7 @@ jQuery(document).ready(function ($) {
             e.preventDefault(); // prevent default button behavior if needed
             $("#cancel-form-confirmation").removeClass("active");
             $("#confirm-submit-popup").removeClass("active");
+            $(".login-history-popup").removeClass("active");
         });
 
         // Close modals using No buttons (Cancel and Submit modals)
