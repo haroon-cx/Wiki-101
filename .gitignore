@@ -13,6 +13,9 @@ wp-config.php
 /wp-content/cache/
 /wp-content/backups/
 
+# Ignore WordPress addon data
+/wp-content/uploads/trx_addons/cache/anesta/trx_addons_site_visits/
+
 # Ignore IDE-specific files
 .idea/
 /.vscode/
@@ -20,4 +23,3 @@ wp-config.php
 # Ignore OS-specific files
 .DS_Store
 Thumbs.db
-

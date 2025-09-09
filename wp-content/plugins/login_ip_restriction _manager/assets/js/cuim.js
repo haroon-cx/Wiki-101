@@ -257,6 +257,61 @@ jQuery(document).ready(function($) {
             $('.post_content.entry-content').html('<p>Error loading profile.</p>');
         }
     });
+    $(".custom-table-row").each(function () {
+    const $row = $(this);
+    const $loginHistoryIconRow = $row.find(".login-history-icon");
+    const $closeButtonRow = $row.find(".close-button");
+    const $popupRow = $row.find(".login-history-popup");
+    const $popupInnerRow = $row.find(".login-history-popup-inner");
 
-    
+    // Open the login history popup for the specific row
+    $loginHistoryIconRow.on("click", function (e) {
+        e.stopPropagation();
+        $popupRow.addClass("active");
+    });
+
+    // Close the login history popup for the specific row
+    $closeButtonRow.on("click", function (e) {
+        e.preventDefault(); // Prevent form submission if inside a form
+        e.stopPropagation();
+        $popupRow.removeClass("active");
+    });
+
+    // Close popup when clicking outside the popup inner area
+    $(document).on("click", function (e) {
+        if (
+            !$(e.target).closest($popupInnerRow).length && // Ensure the click is outside the inner popup
+            $popupRow.hasClass("active") // Ensure the popup is active
+        ) {
+            $popupRow.removeClass("active"); // Close the popup for this specific row
+        }
+    });
+});
+
+// ==========================
+  // 6. Pagination
+  // ==========================
+ 
+   var itemsPerPage = 15;
+  var totalItems = jQuery(".custom-table-row").length;
+  var totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  jQuery("#pagination-demo").twbsPagination({
+    totalPages: totalPages,
+    visiblePages: 3,
+    onPageClick: function (event, page) {
+      jQuery(".custom-table-row").hide();
+      jQuery('.custom-table-row[data-page="' + page + '"]').show();
+    },
+  });
+
+  jQuery(".custom-table-row").each(function (index) {
+    var page = Math.floor(index / itemsPerPage) + 1;
+    jQuery(this).attr("data-page", page);
+    if (page === 1) {
+      jQuery(this).show();
+    } else {
+      jQuery(this).hide();
+    }
+  });
 });

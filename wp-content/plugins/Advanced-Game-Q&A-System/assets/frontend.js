@@ -344,40 +344,6 @@ jQuery(document).ready(function ($) {
                     }
                 }
             });
-            // ✅ Extra validation for Game Info Website
-            // const $websiteInput = $('#game-info-website');
-            // if ($websiteInput.length) {
-            //     const value = $websiteInput.val().trim();
-            //     const $fieldWrapper = $websiteInput.closest('.form-field, .agqa-popup-form-field');
-            //     if (/\s/.test(value)) {
-            //         isValid = false;
-            //         $websiteInput.addClass('error-field');
-            //         if ($fieldWrapper.find('.error-message').length === 0) {
-            //             $fieldWrapper.append(`<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`);
-            //         }
-            //     } else if (!/^[a-zA-Z0-9.-]+\.com$/i.test(value)) {
-            //         isValid = false;
-            //         $websiteInput.addClass('error-field');
-            //         if ($fieldWrapper.find('.error-message').length === 0) {
-            //             $fieldWrapper.append(`<div class="error-message">Only .com domain names are allowed. Please re-enter.</div>`);
-            //         }
-            //     }
-            // }
-
-            // ✅ Add success message if valid
-            // if (isValid) {
-            //     const $successMsg = $('<div class="submitted-successfully">Successful submission</div>');
-            //     $form.append($successMsg);
-
-            //     // Hide after 3 seconds
-            //     setTimeout(function () {
-            //         $successMsg.fadeOut(400, function () {
-            //             $(this).remove();
-            //         });
-            //     }, 3000);
-            // } else {
-            //     e.preventDefault();
-            // }
         });
 
         // Remove error on valid input/select change
@@ -1057,12 +1023,60 @@ jQuery(document).ready(function ($) {
         //   }
     }
 
+      // Open the popup when any delete button is clicked
+  jQuery(".delete-button,.delete-user-button").on("click", function () {
+    jQuery("#custom-faq-field-popup").addClass("active");
+  });
+
+  // Close popup on cross icon
+  jQuery(".popup-form-cross-icon").on("click", function () {
+    jQuery("#custom-faq-field-popup").removeClass("active");
+  });
+
+  // Close popup on clicking 'No' or 'Cancel' button
+  jQuery("#custom-faq-field-popup .no-cancel").on("click", function () {
+    jQuery("#custom-faq-field-popup").removeClass("active");
+  });
+
+  // Close popup when clicking outside of the popup inner area
+  jQuery(document).on("click", function () {
+    // Check if the click is outside the popup inner
+    if (!jQuery("#custom-faq-field-popup-inner").length) {
+      jQuery("#custom-faq-field-popup").removeClass("active");
+    }
+  });
+
+  // Prevent click inside the popup from closing it
+  jQuery("#custom-faq-field-popup-inner").on("click", function () {
+    e.stopPropagation();
+  });
+
+  // Add functionality for confirming deletion
+  jQuery("#custom-faq-field-popup #yes-cancel").on("click", function () {
+    // Close the popup immediately after clicking "Yes"
+    jQuery("#custom-faq-field-popup").removeClass("active");
+
+    // Show the success message after a brief delay (0.5s)
+    setTimeout(function () {
+      // Append success message to the body or a specific container
+      jQuery(".faq-main-content,.custom-table").append(
+        '<div class="success-message">Successfully Deleted</div>'
+      );
+
+      // Hide the success message after 3 seconds
+      setTimeout(function () {
+        jQuery(".success-message").fadeOut(function () {
+          jQuery(this).remove(); // Remove the message from the DOM after it fades out
+        });
+      }, 1500); // 3 seconds after showing the message
+    }, 200); // Show the message 0.5 seconds after clicking "Yes"
+  });
+
     /* Reorder popup */
 
-    // Open reorder popup
-    $(".reorder-button,.login-history-icon").on("click", function (e) {
+    $(".reorder-button").on("click", function (e) {
         e.stopPropagation();
-        $(".reorder-popup,.login-history-popup").addClass("active");
+        $(".reorder-popup").addClass("active");
     });
 
     // Close popup on cross icon
@@ -1072,10 +1086,10 @@ jQuery(document).ready(function ($) {
     });
 
     // Close popup on cancel button
-    $(".reorder-popup .cancel-button,.close-button").on("click", function (e) {
+    $(".reorder-popup .cancel-button").on("click", function (e) {
         e.preventDefault(); // prevent form submission if inside a form
         e.stopPropagation();
-        $(".reorder-popup,.login-history-popup").removeClass("active");
+        $(".reorder-popup").removeClass("active");
     });
 
     // Close when clicking outside popup inner
@@ -1087,8 +1101,6 @@ jQuery(document).ready(function ($) {
             $(".reorder-popup").removeClass("active");
         }
     });
-
-
 
     /* Reorder Sort by dropdown */
 
@@ -1677,27 +1689,47 @@ jQuery(document).ready(function ($) {
         });
     });
 
-
-
-    $('input[type="text"],.faq-template #filter-search').on('input', function () {
-        var maxLength = 100;
+    $('input[type="text"], input[type="search"], .faq-template #filter-search').on('input', function () {
+        var maxLength = 100; // Default limit for most selectors
         var $input = $(this);
         var $errorMessage = $input.next('#error-message'); // Look for the error message next to the input
         var $formField = $input.closest('.form-field'); // Find the parent .form-field of the current input
+
+        // Check for a specific condition for the "manage-user-search" field
+        if ($input.attr('id') === 'manage-user-search' && $input.val().length > 254) {
+            maxLength = 254; // If it's the "manage-user-search" field, the max length should be 254
+        }
+        
         // Check if input exceeds maxLength
         if ($input.val().length > maxLength) {
             $input.val($input.val().substring(0, maxLength)); // Truncate the value to maxLength
             $formField.addClass('error-field-input'); // Add 'error' class to the parent .form-field
-            // Append error message if it doesn't already exist
-            if ($errorMessage.length === 0) {
-                $('<div id="error-message">Max 100 characters allowed.</div>')
-                    .insertAfter($input); // Insert the error message after the input
+            
+            // Append error message in .filter-search-field if it's "manage-user-search"
+            if ($input.attr('id') === 'manage-user-search') {
+                var $filterSearchField = $('.filter-search-field');
+                if ($filterSearchField.length > 0 && $filterSearchField.find('#error-message').length === 0) {
+                    $('<div id="error-message">Max 254 characters allowed.</div>')
+                        .appendTo($filterSearchField); // Append the error message to .filter-search-field
+                }
+            } else {
+                // Append error message after the input for other fields
+                if ($errorMessage.length === 0) {
+                    $('<div id="error-message">Max ' + maxLength + ' characters allowed.</div>')
+                        .insertAfter($input); // Insert the error message after the input
+                }
             }
         } else {
             $formField.removeClass('error-field-input'); // Remove 'error' class if input is valid
+
             // Remove the error message if input length is valid
             if ($errorMessage.length > 0) {
                 $errorMessage.remove();
+            }
+
+            // Remove the error message specifically from .filter-search-field if it's "manage-user-search"
+            if ($input.attr('id') === 'manage-user-search') {
+                $('.filter-search-field').find('#error-message').remove();
             }
         }
     });
