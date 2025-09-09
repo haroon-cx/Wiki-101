@@ -288,38 +288,38 @@ jQuery(document).ready(function ($) {
     $(".no-found-ctn").hide(); // Hide "Nothing Found" message
     $("div#pagination-demo").hide(); // Hide pagination
 
-  $(".faq-accordion").each(function () {
-    var faqText = $(this).text().toLowerCase(); // Get all text inside the FAQ accordion
-    var faqCategory = $(this)
-      .find(".faq-accodion-status")
-      .text()
-      .toLowerCase(); // Optionally, get category text
+    $(".faq-accordion").each(function () {
+      var faqText = $(this).text().toLowerCase(); // Get all text inside the FAQ accordion
+      var faqCategory = $(this)
+        .find(".faq-accodion-status")
+        .text()
+        .toLowerCase(); // Optionally, get category text
 
-    // If a category is selected, and it matches the FAQ category
-    if (
-      (selectedCategory === "all" ||
-        faqCategory.includes(selectedCategory)) &&
-      faqText.includes(searchTerm) // Check if the search term is found anywhere in the FAQ content
-    ) {
-      $(this).show(); // Show the FAQ item
-      $(this).find(".faq-accordion-head").addClass("active"); // Add active class to the head
-      $(this).find(".faq-accordion-body").slideDown(); // Slide down the body
-      resultsFound = true; // Mark that at least one result is found
-    } else if (
-      // If no category filter is applied and only search term matches anywhere in the FAQ
-      !selectedCategory &&
-      faqText.includes(searchTerm)
-    ) {
-      $(this).show(); // Show the FAQ item
-      $(this).find(".faq-accordion-head").addClass("active"); // Add active class to the head
-      $(this).find(".faq-accordion-body").slideDown(); // Slide down the body
-      resultsFound = true; // Mark that at least one result is found
-    } else {
-      $(this).hide(); // Hide the FAQ item
-      $(this).find(".faq-accordion-head").removeClass("active"); // Remove active class from the head
-      $(this).find(".faq-accordion-body").slideUp(); // Slide up the body
-    }
-  });
+      // If a category is selected, and it matches the FAQ category
+      if (
+        (selectedCategory === "all" ||
+          faqCategory.includes(selectedCategory)) &&
+        faqText.includes(searchTerm) // Check if the search term is found anywhere in the FAQ content
+      ) {
+        $(this).show(); // Show the FAQ item
+        $(this).find(".faq-accordion-head").addClass("active"); // Add active class to the head
+        $(this).find(".faq-accordion-body").slideDown(); // Slide down the body
+        resultsFound = true; // Mark that at least one result is found
+      } else if (
+        // If no category filter is applied and only search term matches anywhere in the FAQ
+        !selectedCategory &&
+        faqText.includes(searchTerm)
+      ) {
+        $(this).show(); // Show the FAQ item
+        $(this).find(".faq-accordion-head").addClass("active"); // Add active class to the head
+        $(this).find(".faq-accordion-body").slideDown(); // Slide down the body
+        resultsFound = true; // Mark that at least one result is found
+      } else {
+        $(this).hide(); // Hide the FAQ item
+        $(this).find(".faq-accordion-head").removeClass("active"); // Remove active class from the head
+        $(this).find(".faq-accordion-body").slideUp(); // Slide up the body
+      }
+    });
 
     // If no results are found, show the 'nothing found' message
     if (!resultsFound) {
@@ -337,6 +337,72 @@ jQuery(document).ready(function ($) {
     } else {
       $("#pagination-demo").hide(); // Hide pagination if 15 or fewer visible items
     }
+  });
+  //
+  $("#pagination-demo li.page-item").on("click", function (event) {
+    event.preventDefault(); // Prevent form submission
+
+    var searchTerm = $("#filter-search").val().toLowerCase(); // Get search term
+    var selectedCategory = $("input.agqa-filter-select-hidden")
+      .val()
+      .toLowerCase(); // Get selected category
+    var resultsFound = false; // Flag to track if any result is found
+
+    // Initially hide pagination and "Nothing Found" message
+    $(".no-found-ctn").hide(); // Hide "Nothing Found" message
+    $("div#pagination-demo").hide(); // Hide pagination
+    // Hide after 3 seconds
+    setTimeout(function () {
+      $(".faq-accordion").each(function () {
+        var faqText = $(this).text().toLowerCase(); // Get all text inside the FAQ accordion
+        var faqCategory = $(this)
+          .find(".faq-accodion-status")
+          .text()
+          .toLowerCase(); // Optionally, get category text
+
+        // If a category is selected, and it matches the FAQ category
+        if (
+          (selectedCategory === "all" ||
+            faqCategory.includes(selectedCategory)) &&
+          faqText.includes(searchTerm) // Check if the search term is found anywhere in the FAQ content
+        ) {
+          $(this).show(); // Show the FAQ item
+          $(this).find(".faq-accordion-head").addClass("active"); // Add active class to the head
+          $(this).find(".faq-accordion-body").slideDown(); // Slide down the body
+          resultsFound = true; // Mark that at least one result is found
+        } else if (
+          // If no category filter is applied and only search term matches anywhere in the FAQ
+          !selectedCategory &&
+          faqText.includes(searchTerm)
+        ) {
+          $(this).show(); // Show the FAQ item
+          $(this).find(".faq-accordion-head").addClass("active"); // Add active class to the head
+          $(this).find(".faq-accordion-body").slideDown(); // Slide down the body
+          resultsFound = true; // Mark that at least one result is found
+        } else {
+          $(this).hide(); // Hide the FAQ item
+          $(this).find(".faq-accordion-head").removeClass("active"); // Remove active class from the head
+          $(this).find(".faq-accordion-body").slideUp(); // Slide up the body
+        }
+      });
+
+      // If no results are found, show the 'nothing found' message
+      if (!resultsFound) {
+        $(".no-found-ctn").show(); // Show the 'no results' message
+        $("div#pagination-demo").hide(); // Hide pagination
+      } else {
+        $("div#pagination-demo").show(); // Show pagination
+        $(".no-found-ctn").hide(); // Hide the 'nothing found' message
+      }
+      var itemsPerPage = 15;
+      var totalItems = $(".faq-accordion").filter(":visible").length; // Count only visible items
+
+      if (totalItems > itemsPerPage) {
+        $("#pagination-demo").show(); // Show pagination if more than 15 visible items
+      } else {
+        $("#pagination-demo").hide(); // Hide pagination if 15 or fewer visible items
+      }
+    }, 100);
   });
 
   /**
