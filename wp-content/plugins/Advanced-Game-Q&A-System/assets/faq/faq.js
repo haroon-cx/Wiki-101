@@ -103,30 +103,31 @@ jQuery(document).ready(function () {
   // ==========================
   // 2. FAQ Accordion Toggle
   // ==========================
-  jQuery(".faq-accordion-head").click(function () {
-    var currentAccordionBody = jQuery(this).next(".faq-accordion-body");
+  jQuery('.faq-accordion-head').click(function () {
+      var currentAccordionBody = jQuery(this).next('.faq-accordion-body');
 
-    // Slide up all other accordion bodies except the one clicked
-    jQuery(".faq-accordion-body")
-      .not(currentAccordionBody)
-      .slideUp(function () {
-        // Reset display property after slideUp
-        jQuery(this).css("display", "");
+      // Slide up all other accordion bodies except the one clicked
+      jQuery('.faq-accordion-body').not(currentAccordionBody).slideUp(function () {
+          // Reset display property after slideUp
+          jQuery(this).css('display', '');
       });
 
-    // Slide toggle the current accordion body
-    currentAccordionBody.stop(true, true).slideToggle(function () {
-      // If the accordion body is visible, set display: flex
-      if (jQuery(this).is(":visible")) {
-        jQuery(this).css("display", "flex");
-      } else {
-        // Optionally, reset to default when hidden
-        jQuery(this).css("display", "");
-      }
-    });
+      // Slide toggle the current accordion body
+      currentAccordionBody.stop(true, true).slideToggle(function () {
+          // If the accordion body is visible, set display: flex
+          if (jQuery(this).is(':visible')) {
+              jQuery(this).css('display', 'flex');
+          } else {
+              // Optionally, reset to default when hidden
+              jQuery(this).css('display', '');
+          }
+      });
 
-    // Toggle active class on the header
-    jQuery(this).toggleClass("active");
+      // Toggle active class on the clicked header
+      jQuery(this).toggleClass('active');
+
+      // Remove active class from all other accordion heads
+      jQuery('.faq-accordion-head').not(this).removeClass('active');
   });
 
   // ==========================
