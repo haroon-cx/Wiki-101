@@ -148,6 +148,23 @@ tr {
     color: #45AFFF;
 }
 
+.table-body-col-buttons #custom-faq-field-popup-inner .no-cancel:hover{
+    color: white;
+}
+
+.table-body-col-buttons #custom-faq-field-popup-inner .no-cancel:hover,
+.table-body-col-buttons #custom-faq-field-popup-inner #yes-cancel:hover {
+    background-color: rgb(98, 68, 145) !important;
+}
+
+.table-body-col-buttons #custom-faq-field-popup-inner #yes-cancel {
+    background-color: #7644CE !important;
+}
+
+.table-body-col-buttons button:hover {
+    background-color: transparent !important;
+}
+
 .table-body-col-buttons button,
 .table-body-col-buttons button:hover {
     background-color: transparent !important;
@@ -172,6 +189,11 @@ tr {
 .login-history-icon {
     background-image: url(../image/login-history-icon.svg);
     background-size: 18px;
+}
+
+.delete-user-button {
+    background-image: url(../image/delete-icon.svg);
+    background-size: 16px;
 }
 
 .table-row-status span {
@@ -357,4 +379,8 @@ tr {
 .login-history-popup-inner .history-record-buttons .close-button:hover,
 .login-history-popup-inner .button:hover {
     background-color: rgb(98, 68, 145) !important;
+}
+
+.table-body-col-buttons #custom-faq-field-popup-inner button {
+    height: auto;
 }

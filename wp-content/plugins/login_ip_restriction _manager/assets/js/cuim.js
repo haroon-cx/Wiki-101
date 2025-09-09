@@ -257,6 +257,34 @@ jQuery(document).ready(function($) {
             $('.post_content.entry-content').html('<p>Error loading profile.</p>');
         }
     });
+    $(".custom-table-row").each(function () {
+    const $row = $(this);
+    const $loginHistoryIconRow = $row.find(".login-history-icon");
+    const $closeButtonRow = $row.find(".close-button");
+    const $popupRow = $row.find(".login-history-popup");
+    const $popupInnerRow = $row.find(".login-history-popup-inner");
 
-    
+    // Open the login history popup for the specific row
+    $loginHistoryIconRow.on("click", function (e) {
+        e.stopPropagation();
+        $popupRow.addClass("active");
+    });
+
+    // Close the login history popup for the specific row
+    $closeButtonRow.on("click", function (e) {
+        e.preventDefault(); // Prevent form submission if inside a form
+        e.stopPropagation();
+        $popupRow.removeClass("active");
+    });
+
+    // Close popup when clicking outside the popup inner area
+    $(document).on("click", function (e) {
+        if (
+            !$(e.target).closest($popupInnerRow).length && // Ensure the click is outside the inner popup
+            $popupRow.hasClass("active") // Ensure the popup is active
+        ) {
+            $popupRow.removeClass("active"); // Close the popup for this specific row
+        }
+    });
+});
 });

@@ -281,54 +281,54 @@ jQuery(document).ready(function () {
 
   // 3sep 2025 (Usama)
 
-  // Open the popup when any delete button is clicked
-  jQuery(".delete-button").on("click", function () {
-    jQuery("#custom-faq-field-popup").addClass("active");
-  });
+  // // Open the popup when any delete button is clicked
+  // jQuery(".delete-button,.delete-user-button").on("click", function () {
+  //   jQuery("#custom-faq-field-popup").addClass("active");
+  // });
 
-  // Close popup on cross icon
-  jQuery(".popup-form-cross-icon").on("click", function () {
-    jQuery("#custom-faq-field-popup").removeClass("active");
-  });
+  // // Close popup on cross icon
+  // jQuery(".popup-form-cross-icon").on("click", function () {
+  //   jQuery("#custom-faq-field-popup").removeClass("active");
+  // });
 
-  // Close popup on clicking 'No' or 'Cancel' button
-  jQuery("#custom-faq-field-popup .no-cancel").on("click", function () {
-    jQuery("#custom-faq-field-popup").removeClass("active");
-  });
+  // // Close popup on clicking 'No' or 'Cancel' button
+  // jQuery("#custom-faq-field-popup .no-cancel").on("click", function () {
+  //   jQuery("#custom-faq-field-popup").removeClass("active");
+  // });
 
-  // Close popup when clicking outside of the popup inner area
-  jQuery(document).on("click", function () {
-    // Check if the click is outside the popup inner
-    if (!jQuery("#custom-faq-field-popup-inner").length) {
-      jQuery("#custom-faq-field-popup").removeClass("active");
-    }
-  });
+  // // Close popup when clicking outside of the popup inner area
+  // jQuery(document).on("click", function () {
+  //   // Check if the click is outside the popup inner
+  //   if (!jQuery("#custom-faq-field-popup-inner").length) {
+  //     jQuery("#custom-faq-field-popup").removeClass("active");
+  //   }
+  // });
 
-  // Prevent click inside the popup from closing it
-  jQuery("#custom-faq-field-popup-inner").on("click", function () {
-    e.stopPropagation();
-  });
+  // // Prevent click inside the popup from closing it
+  // jQuery("#custom-faq-field-popup-inner").on("click", function () {
+  //   e.stopPropagation();
+  // });
 
-  // Add functionality for confirming deletion
-  jQuery("#custom-faq-field-popup #yes-cancel").on("click", function () {
-    // Close the popup immediately after clicking "Yes"
-    jQuery("#custom-faq-field-popup").removeClass("active");
+  // // Add functionality for confirming deletion
+  // jQuery("#custom-faq-field-popup #yes-cancel").on("click", function () {
+  //   // Close the popup immediately after clicking "Yes"
+  //   jQuery("#custom-faq-field-popup").removeClass("active");
 
-    // Show the success message after a brief delay (0.5s)
-    setTimeout(function () {
-      // Append success message to the body or a specific container
-      jQuery(".faq-main-content").append(
-        '<div class="success-message">Successfully Deleted</div>'
-      );
+  //   // Show the success message after a brief delay (0.5s)
+  //   setTimeout(function () {
+  //     // Append success message to the body or a specific container
+  //     jQuery(".faq-main-content,.custom-table").append(
+  //       '<div class="success-message">Successfully Deleted</div>'
+  //     );
 
-      // Hide the success message after 3 seconds
-      setTimeout(function () {
-        jQuery(".success-message").fadeOut(function () {
-          jQuery(this).remove(); // Remove the message from the DOM after it fades out
-        });
-      }, 1500); // 3 seconds after showing the message
-    }, 200); // Show the message 0.5 seconds after clicking "Yes"
-  });
+  //     // Hide the success message after 3 seconds
+  //     setTimeout(function () {
+  //       jQuery(".success-message").fadeOut(function () {
+  //         jQuery(this).remove(); // Remove the message from the DOM after it fades out
+  //       });
+  //     }, 1500); // 3 seconds after showing the message
+  //   }, 200); // Show the message 0.5 seconds after clicking "Yes"
+  // });
 
   // FAQ accordion body ke andar ke empty p, li, aur child elements ko hide karo
   jQuery(".faq-accordion-body")
