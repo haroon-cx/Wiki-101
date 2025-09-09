@@ -46,6 +46,10 @@
                     <div class="form-field-editor">
                         <textarea name="faq-answer" id="editor-add-faq" class="editor-faq" required
                             placeholder="Please enter a note"></textarea>
+                        <div class="char-counter">
+                            <span class="current-count">0</span> / 3000
+                        </div>
+                        <div class="form-response"></div>
                     </div>
                 </div>
                 <div class="form-buttons agqa-popup-form-buttons d-flex full-width agqa-add-update-btn">

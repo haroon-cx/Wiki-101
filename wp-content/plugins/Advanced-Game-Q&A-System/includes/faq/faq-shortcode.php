@@ -214,7 +214,7 @@ function custom_faq_shortcode()
                                     </div>
                                     Edit
                                 </a>
-                                <div id="custom-faq-field-popup">
+                                <div id="custom-faq-field-popup" class="agqa-delete-popup-faq">
                                     <div id="custom-faq-field-popup-inner">
                                         <h2>Delete</h2>
                                         <div class="popup-form-cross-icon"></div>

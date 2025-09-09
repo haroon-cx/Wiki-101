@@ -554,7 +554,7 @@ jQuery(document).ready(function ($) {
   $("button#yes-cancel").on("click", function () {
     var faqId = "faq_id=" + $(this).val(); // Get the FAQ ID from the hidden input
     var del = $(this).val();
-    $("#custom-faq-field-popup").show(); // Show the confirmation popup
+    // $("#custom-faq-field-popup").show(); // Show the confirmation popup
 
     // When user clicks "Yes", send AJAX request to delete the FAQ
 
@@ -572,9 +572,8 @@ jQuery(document).ready(function ($) {
         // If deletion is successful, hide the popup and remove the FAQ from the DOM
 
         if (response.includes("Success")) {
-          // alert();
           $(".faq-accordion[data-id='" + del + "']").remove();
-          $("#custom-faq-field-popup").hide();
+          $("#custom-faq-field-popup").removeClass("active");
         } else {
           alert(response);
         }
