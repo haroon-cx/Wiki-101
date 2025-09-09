@@ -1,133 +1,135 @@
-jQuery(document).ready(function () {
+jQuery(document).ready(function ($) {
   // ==========================
   // 1. Initialize Froala Editor
   // ==========================
-  jQuery(".editor-faq").each(function () {
-    var editor = new FroalaEditor(this, {
-      toolbarButtons: [
-        "bold",
-        "italic",
-        "underline",
-        "strikeThrough",
-        "fontFamily",
-        "fontSize",
-        "color",
-        "paragraphFormat",
-        "align",
-        "formatOL",
-        "formatUL",
-        "outdent",
-        "indent",
-        "clearFormatting",
-        "insertLink",
-        "undo",
-        "redo",
-        "fullscreen",
-        "html",
-      ],
-      imageUpload: false,
-      videoUpload: false,
-      fileUpload: false,
-    });
+  // jQuery(".editor-faq").each(function () {
+  //   var editor = new FroalaEditor(this, {
+  //     toolbarButtons: [
+  //       "bold",
+  //       "italic",
+  //       "underline",
+  //       "strikeThrough",
+  //       "fontFamily",
+  //       "fontSize",
+  //       "color",
+  //       "paragraphFormat",
+  //       "align",
+  //       "formatOL",
+  //       "formatUL",
+  //       "outdent",
+  //       "indent",
+  //       "clearFormatting",
+  //       "insertLink",
+  //       "undo",
+  //       "redo",
+  //       "fullscreen",
+  //       "html",
+  //     ],
+  //     imageUpload: false,
+  //     videoUpload: false,
+  //     fileUpload: false,
+  //   });
 
-    const maxChars = 2999; // Set the max character count to 3000
-    let typingTimer;
-    const typingDelay = 500;
+  //   const maxChars = 2999; // Set the max character count to 3000
+  //   let typingTimer;
+  //   const typingDelay = 500;
 
-    jQuery(".form-field-editor").on("input", function () {
-      const $editorContent = jQuery(".fr-view");
-      const $charCounter = jQuery(".form-field-editor .char-counter");
-      const $currentCount = $charCounter.find(".current-count");
-      const $formResponse = jQuery(".form-field-editor .form-response");
+  //   jQuery(".form-field-editor").on("input", function () {
+  //     const $editorContent = jQuery(".fr-view");
+  //     const $charCounter = jQuery(".form-field-editor .char-counter");
+  //     const $currentCount = $charCounter.find(".current-count");
+  //     const $formResponse = jQuery(".form-field-editor .form-response");
 
-      // Get the text content and check its length
-      let text = $editorContent.text();
-      let length = text.length;
+  //     // Get the text content and check its length
+  //     let text = $editorContent.text();
+  //     let length = text.length;
 
-      // Limit the text to maxChars
-      if (length > maxChars) {
-        editor.html.set(text.substring(0, maxChars)); // Truncate the text
-        text = editor.html.get();
-      }
+  //     // Limit the text to maxChars
+  //     if (length > maxChars) {
+  //       editor.html.set(text.substring(0, maxChars)); // Truncate the text
+  //       text = editor.html.get();
+  //     }
 
-      // Update the character counter
-      $currentCount.text(length);
+  //     // Update the character counter
+  //     $currentCount.text(length);
 
-      // Reset messages
-      if ($formResponse.hasClass("success")) {
-        $formResponse.text("").removeClass("success");
-        $charCounter.removeClass("show-message");
-      }
+  //     // Reset messages
+  //     if ($formResponse.hasClass("success")) {
+  //       $formResponse.text("").removeClass("success");
+  //       $charCounter.removeClass("show-message");
+  //     }
 
-      // If the input is empty
-      if (length === 0) {
-        $formResponse.text("").removeClass("error success");
-        $charCounter.removeClass("show-message");
-        return;
-      }
+  //     // If the input is empty
+  //     if (length === 0) {
+  //       $formResponse.text("").removeClass("error success");
+  //       $charCounter.removeClass("show-message");
+  //       return;
+  //     }
 
-      // If the character limit is reached
-      if (length === maxChars) {
-        $formResponse
-          .text("Unable to enter more characters")
-          .removeClass("success")
-          .addClass("error");
-        $charCounter.addClass("show-message");
+  //     // If the character limit is reached
+  //     if (length === maxChars) {
+  //       $formResponse
+  //         .text("Unable to enter more characters")
+  //         .removeClass("success")
+  //         .addClass("error");
+  //       $charCounter.addClass("show-message");
 
-        // Prevent further typing beyond the limit
-        // Create a flag to prevent input after limit is reached
-        editor.events.on("input", function (e) {
-          // Block the input event (prevent characters from being added or deleted)
-          if (editor.$el.find(".fr-view").text().length >= maxChars) {
-            e.preventDefault();
-          }
-        });
+  //       // Prevent further typing beyond the limit
+  //       // Create a flag to prevent input after limit is reached
+  //       editor.events.on("input", function (e) {
+  //         // Block the input event (prevent characters from being added or deleted)
+  //         if (editor.$el.find(".fr-view").text().length >= maxChars) {
+  //           e.preventDefault();
+  //         }
+  //       });
 
-        return;
-      }
+  //       return;
+  //     }
 
-      // Under the limit, show success message after typing stops
-      clearTimeout(typingTimer);
-      typingTimer = setTimeout(function () {
-        if (editor.$el.find(".fr-view").text().length < maxChars) {
-          $formResponse
-            .text("Successfully submitted")
-            .removeClass("error")
-            .addClass("success");
-          $charCounter.addClass("show-message");
-        }
-      }, typingDelay);
-    });
-  });
+  //     // Under the limit, show success message after typing stops
+  //     clearTimeout(typingTimer);
+  //     typingTimer = setTimeout(function () {
+  //       if (editor.$el.find(".fr-view").text().length < maxChars) {
+  //         $formResponse
+  //           .text("Successfully submitted")
+  //           .removeClass("error")
+  //           .addClass("success");
+  //         $charCounter.addClass("show-message");
+  //       }
+  //     }, typingDelay);
+  //   });
+  // });
 
   // ==========================
   // 2. FAQ Accordion Toggle
   // ==========================
-  jQuery('.faq-accordion-head').click(function () {
-      var currentAccordionBody = jQuery(this).next('.faq-accordion-body');
+  jQuery(".faq-accordion-head").click(function () {
+    var currentAccordionBody = jQuery(this).next(".faq-accordion-body");
 
-      // Slide up all other accordion bodies except the one clicked
-      jQuery('.faq-accordion-body').not(currentAccordionBody).slideUp(function () {
-          // Reset display property after slideUp
-          jQuery(this).css('display', '');
+    // Slide up all other accordion bodies except the one clicked
+    jQuery(".faq-accordion-body")
+      .not(currentAccordionBody)
+      .slideUp(function () {
+        // Reset display property after slideUp
+        jQuery(this).css("display", "");
       });
 
-      // Slide toggle the current accordion body
-      currentAccordionBody.stop(true, true).slideToggle(function () {
-          // If the accordion body is visible, set display: flex
-          if (jQuery(this).is(':visible')) {
-              jQuery(this).css('display', 'flex');
-          } else {
-              // Optionally, reset to default when hidden
-              jQuery(this).css('display', '');
-          }
-      });
+    // Slide toggle the current accordion body
+    currentAccordionBody.stop(true, true).slideToggle(function () {
+      // If the accordion body is visible, set display: flex
+      if (jQuery(this).is(":visible")) {
+        jQuery(this).css("display", "flex");
+      } else {
+        // Optionally, reset to default when hidden
+        jQuery(this).css("display", "");
+      }
+    });
 
-      // Toggle active class on the clicked header
-      jQuery(this).toggleClass('active');
+    // Toggle active class on the clicked header
+    jQuery(this).toggleClass("active");
 
-      // Remove active class from all other accordion heads
-      jQuery('.faq-accordion-head').not(this).removeClass('active');
+    // Remove active class from all other accordion heads
+    jQuery(".faq-accordion-head").not(this).removeClass("active");
   });
 
   // ==========================
@@ -279,6 +281,20 @@ jQuery(document).ready(function () {
     }
   });
 
+  // 3sep 2025 (Usama)
+
+  jQuery(".delete-button,.delete-user-button").on("click", function () {
+    // First, remove the 'active' class from all popups
+    jQuery("#custom-faq-field-popup").removeClass("active");
+
+    // Then, add the 'active' class to the clicked popup
+    jQuery(this).prev("#custom-faq-field-popup").addClass("active");
+  });
+  // Close popup on cross icon
+  jQuery(".popup-form-cross-icon, .no-cancel").on("click", function () {
+    jQuery(".agqa-delete-popup-faq").removeClass("active");
+  });
+
   // FAQ accordion body ke andar ke empty p, li, aur child elements ko hide karo
   jQuery(".faq-accordion-body")
     .find("p, li")
@@ -305,52 +321,4 @@ jQuery(document).ready(function () {
         });
       }
     });
-
-  const maxCharLimit = 3000;  // Set character limit to 3000
-  let userTypingTimer;
-  const typingDelay = 2000;  // Delay for showing success message after typing stops
-  
-  // Initialize character count and other elements
-  const $charCounterContainer = jQuery('.char-counter');
-  const $currentCharCount = $charCounterContainer.find('.current-count');
-  const $responseMessage = jQuery('.form-response'); // Assuming you have a response element for error/success
-
-  // Initialize Froala Editor
-  var editor = new FroalaEditor('.editor', {
-    events: {
-      'input': function() {
-        const editorContent = this.html.get(); // Get the content of the editor
-        const currentLength = editorContent.replace(/<[^>]+>/g, '').length; // Remove HTML tags to count plain text length
-
-        // Update character count
-        $currentCharCount.text(currentLength);
-
-        // Disable input and show error message if character limit is reached
-        if (currentLength >= maxCharLimit) {
-          const truncatedContent = editorContent.substring(0, maxCharLimit);
-          this.html.set(truncatedContent);  // Truncate text if it exceeds maxCharLimit
-          $currentCharCount.text(maxCharLimit);  // Update the count to show max limit
-          $responseMessage.text('Unable to add more characters').removeClass('success').addClass('error');
-          $charCounterContainer.addClass('show-message'); // Show error message
-          return; // Prevent further text input
-        }
-
-        // Clear error message if under the limit
-        if ($responseMessage.hasClass('error')) {
-          $responseMessage.text('').removeClass('error');
-          $charCounterContainer.removeClass('show-message');
-        }
-
-        // If length is under maxCharLimit, show success message after typing stops
-        clearTimeout(userTypingTimer);
-        userTypingTimer = setTimeout(function() {
-          if (currentLength < maxCharLimit) {
-            $responseMessage.text('Successfully added').removeClass('error').addClass('success');
-            $charCounterContainer.addClass('show-message'); // Show success message
-          }
-        }, typingDelay);
-      }
-    }
-  });
-
 });

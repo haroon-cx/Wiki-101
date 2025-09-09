@@ -121,7 +121,7 @@ function handle_faq_review_approval()
                         $update_status = $wpdb->update(
                             "{$wpdb->prefix}agqa_faq_review",
                             array(
-                                'status' => 'approved',  // Set the status to approved
+                                'status' => 'approve',  // Set the status to approved
                             ),
                             array('id' => $review_id) // Update the review based on its ID
                         );
@@ -319,6 +319,45 @@ add_action('wp_ajax_nopriv_like_dislike_action', 'handle_like_dislike_action');
 /**
  * FAQ Delete Table handler
  */
+// function handle_faq_deletion()
+// {
+//     // Verify nonce for security
+//     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+//         die('Permission Denied');
+//     }
+
+
+//     parse_str($_POST['form_data'], $data);
+
+//     // Check if faq_id is set and valid
+
+//     global $wpdb;
+//     $faq_id = intval($data['faq_id']); // Get the FAQ ID from the request
+
+
+//     // Delete the FAQ from the agqa_faq table
+//     $table_faq = $wpdb->prefix . 'agqa_faq';
+//     // $table_history = $wpdb->prefix . 'agqa_faq_history'; // If you want to also delete from history
+
+//     // Delete FAQ from both tables (history and FAQ)
+//     $wpdb->delete($table_faq, array('id' => $faq_id));
+//     // $wpdb->delete($table_history, array('faq_id' => $faq_id));
+
+//     $response['status']  = 'Success';
+//     $response['message'] = 'Successfully Submitted';
+//     echo json_encode($response);
+
+
+//     wp_die(); // End the AJAX request
+// }
+
+// // Hook to handle the deletion
+// add_action('wp_ajax_delete_faq', 'handle_faq_deletion');
+// add_action('wp_ajax_nopriv_delete_faq', 'handle_delete_faq');
+
+/**
+ * FAQ Delete Table handler
+ */
 function handle_faq_deletion()
 {
     // Verify nonce for security
@@ -326,32 +365,40 @@ function handle_faq_deletion()
         die('Permission Denied');
     }
 
-
     parse_str($_POST['form_data'], $data);
 
     // Check if faq_id is set and valid
-
     global $wpdb;
     $faq_id = intval($data['faq_id']); // Get the FAQ ID from the request
-    echo $faq_id;
-    // wp_die();
 
     // Delete the FAQ from the agqa_faq table
     $table_faq = $wpdb->prefix . 'agqa_faq';
-    $table_history = $wpdb->prefix . 'agqa_faq_history'; // If you want to also delete from history
+    // $table_history = $wpdb->prefix . 'agqa_faq_history'; // If you want to also delete from history
 
-    // Delete FAQ from both tables (history and FAQ)
+    // Delete FAQ from agqa_faq table
     $wpdb->delete($table_faq, array('id' => $faq_id));
-    $wpdb->delete($table_history, array('faq_id' => $faq_id));
 
+    // Update corresponding record in wp_agqa_faq_review table
+    $table_faq_review = $wpdb->prefix . 'agqa_faq_review';
+
+    // Update the record in wp_agqa_faq_review table: set faq_id to 0 and status to 'Pending'
+    $wpdb->update(
+        $table_faq_review,
+        array(
+            'faq_id' => 0, // Set faq_id to 0
+            'status' => 'Pending' // Set status to 'Pending'
+        ),
+        array('faq_id' => $faq_id) // Condition to match the faq_id
+    );
+
+    // Respond with success message
     $response['status']  = 'Success';
     $response['message'] = 'Successfully Submitted';
     echo json_encode($response);
-
 
     wp_die(); // End the AJAX request
 }
 
 // Hook to handle the deletion
 add_action('wp_ajax_delete_faq', 'handle_faq_deletion');
-add_action('wp_ajax_nopriv_delete_faq', 'handle_delete_faq');
+add_action('wp_ajax_nopriv_delete_faq', 'handle_faq_deletion');
