@@ -205,8 +205,9 @@ body{
     margin-top: 24px;
 }
 
-.faq-form {
-    padding: 35px 61px 25px;
+.faq-form,
+#manage-user-add-form {
+    padding: 35px 61px;
 }
 
 .faq-form .form-field {

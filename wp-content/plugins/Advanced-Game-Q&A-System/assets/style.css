@@ -791,7 +791,7 @@ button.sc_button_hover_slide_left {
 /* === FINAL CARD FIX === */
 .api-card-container,
 .api-form-wrapper,
-.faq-form {
+.faq-form,#manage-user-add-form {
   position: relative;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(91.48deg, #252031 31.31%, #7644CE 135.46%);
   transition: all .3s ease-in-out;
@@ -808,7 +808,8 @@ button.sc_button_hover_slide_left {
   padding: 35px 61px 80px;
 }
 
-.api-form-ctn form {
+.api-form-ctn form,
+#manage-user-add-form form {
   margin-bottom: 0;
   position: relative;
   display: flex;
