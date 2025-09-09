@@ -110,6 +110,7 @@ function handle_faq_review_approval()
                             'verified_answer' => 1,
                             'faq_category' => $faq_category,
                             'user_id' => get_current_user_id(),
+
                         ),
                         array('id' => $faq_id) // Update the FAQ where the ID matches
                     );
@@ -198,8 +199,19 @@ function agqa_edit_faq()
     $faq_id = sanitize_text_field($data['faq-id']);
     $question = sanitize_text_field($data['faq-question']);
     $answer = sanitize_textarea_field($data['faq-answer']);
+
     $verified_answer = 0;
     $faq_category = sanitize_text_field($data['faq-category']);
+
+    // First remove the "Powered by Froala Editor" text (case-insensitive)
+    $answer = preg_replace('/Powered by.*?Froala Editor.*?/is', '', $answer);
+
+    // Remove any empty <p> or <span> tags
+    $answer = preg_replace('/<p[^>]*>\s*<\/p>/is', '', $answer);
+    $answer = preg_replace('/<span[^>]*>\s*<\/span>/is', '', $answer);
+
+    // Trim any leading or trailing spaces
+    $answer = trim($answer);
 
     // Insert the FAQ into the database
     $wpdb->insert(

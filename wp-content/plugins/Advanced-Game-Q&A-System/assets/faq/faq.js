@@ -34,7 +34,7 @@ jQuery(document).ready(function () {
     let typingTimer;
     const typingDelay = 500;
 
-    jQuery(document).on("input", function () {
+    jQuery(".form-field-editor").on("input", function () {
       const $editorContent = jQuery(".fr-view");
       const $charCounter = jQuery(".form-field-editor .char-counter");
       const $currentCount = $charCounter.find(".current-count");
