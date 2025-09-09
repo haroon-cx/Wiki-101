@@ -79,6 +79,7 @@ function ipum_get_client_ip() {
     // Fallback to REMOTE_ADDR
     return sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? '' );
 }
+
 add_filter( 'authenticate', 'cui_pm_admin_bypass_ip_whitelist', 30, 3 );
 function cui_pm_admin_bypass_ip_whitelist( $user, $username, $password ) {
     if ( is_wp_error( $user ) || ! $user instanceof WP_User ) {
