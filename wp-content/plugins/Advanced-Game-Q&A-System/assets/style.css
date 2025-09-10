@@ -2169,6 +2169,7 @@ body .selected-dropdown-item,
 #custom-faq-field-popup,
 .agqa-popup-form,
 .reorder-popup,
+.reset-password-confirmation,
 .cancel-form-confirmation,
 .confirm-submit-popup,
 .login-history-popup {
@@ -2187,6 +2188,7 @@ body .selected-dropdown-item,
 #custom-faq-field-popup::before,
 .agqa-popup-form::before,
 .reorder-popup::before,
+.reset-password-confirmation::before,
 .cancel-form-confirmation::before,
 .confirm-submit-popup::before,
 .login-history-popup::before {
@@ -2204,6 +2206,7 @@ body .selected-dropdown-item,
 
 .agqa-popup-form.active::before,
 .reorder-popup.active::before,
+.reset-password-confirmation.active::before,
 .cancel-form-confirmation.active::before,
 .confirm-submit-popup.active::before,
 #custom-faq-field-popup.active::before,
@@ -2230,6 +2233,7 @@ body .selected-dropdown-item,
 .agqa-popup-form.active .agqa-popup-form-inner,
 .reorder-popup.active .reorder-popup-inner,
 .cancel-form-confirmation.active .cancel-form-confirmation-box,
+.reset-password-confirmation.active .reset-password-confirmation-box,
 .confirm-submit-popup.active .confirm-submit-popup-box,
 .login-history-popup.active .login-history-popup-inner {
   opacity: 1;
@@ -2240,6 +2244,7 @@ body .selected-dropdown-item,
 #custom-faq-field-popup-inner,
 .agqa-popup-form-inner,
 .reorder-popup-inner,
+.reset-password-confirmation-box,
 .cancel-form-confirmation-box,
 .confirm-submit-popup-box,
 .login-history-popup-inner {
@@ -3102,6 +3107,7 @@ textarea {
 .history-record-buttons .close-button,
 .agqa-popup-form-ctn .cancel-button,
 .agqa-popup-form-buttons .no-cancel,
+.reset-password-confirmation .no-form-cancel,
 .cancel-form-confirmation .no-form-cancel,
 .confirm-submit-popup .no-confirm-submit,
 .agqa-popup-form-buttons .no-submit,
@@ -3115,6 +3121,7 @@ textarea {
 
 .agqa-popup-form-buttons .cancel-button,
 .agqa-popup-form-buttons .no-cancel,
+.reset-password-confirmation .no-form-cancel,
 .cancel-form-confirmation .no-form-cancel,
 .confirm-submit-popup .no-confirm-submit,
 .agqa-popup-form-buttons .no-submit,.history-record-buttons .close-button {
@@ -3329,6 +3336,7 @@ form .form-buttons button {
   padding: 28px 0 0;
 }
 
+.generate-password-button,
 #add-custom-field-btn {
   border: 1px solid #7644CE;
   background-color: transparent;
@@ -3376,6 +3384,7 @@ form .form-buttons button {
 #custom-faq-field-popup-inner,
 #custom-field-popup-inner,
 .cancel-form-confirmation-box,
+.reset-password-confirmation-box,
 .confirm-submit-popup-box {
   position: relative;
   background-color: #fff;
@@ -3394,6 +3403,7 @@ form .form-buttons button {
 
 #custom-faq-field-popup-inner,
 .submit-confirm,
+.reset-password-confirmation-box ,
 .cancel-form-confirmation-box,
 .cancel-confirm,
 .confirm-submit-popup-box {
@@ -3433,6 +3443,7 @@ form .form-buttons button {
 #custom-field-popup h5,
 #custom-field-popup h6,
 .cancel-form-confirmation h2,
+.reset-password-confirmation h2,
 .confirm-submit-popup h2 {
   color: #7644CE !important;
   max-width: 75%;
@@ -3446,6 +3457,7 @@ form .form-buttons button {
 
 #custom-field-popup .form-buttons,
 .cancel-form-confirmation .form-buttons,
+.reset-password-confirmation .form-buttons,
 .confirm-submit-popup .form-buttons {
   justify-content: flex-end;
   margin-top: 0;
@@ -3620,8 +3632,10 @@ form .form-buttons button {
 #custom-faq-field-popup button,
 .popup-content .form-buttons button,
 .popup-content input[type="submit"],
+.reset-password-confirmation .form-buttons button,
 .cancel-form-confirmation .form-buttons button,
 .confirm-submit-popup .form-buttons button,
+.reset-password-confirmation .back-button,
 .cancel-form-confirmation .back-button,
 .confirm-submit-popup .back-button {
   box-sizing: border-box;
@@ -4451,6 +4465,7 @@ label[for="select-game-type-id"]+.custom-select-dropdown .custom-select-dropdown
   font-size: 20px !important;
 }
 
+.reset-password-confirmation .back-button,
 .cancel-form-confirmation .back-button,
 .confirm-submit-popup .back-button {
   background-color: #7644CE;

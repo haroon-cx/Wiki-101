@@ -24,12 +24,18 @@
     max-width: 311px;
 }
 
-#creation_time {
+.select-date-picker {
     margin-bottom: 0;
     background-image: none;
 }
 
-.date-field #creation_time {
+form .select-date-picker,
+input[type="date"],
+form input[type="date"] {
+    padding-left: 58px !important;
+}
+
+.date-field .select-date-picker {
     background-color: transparent !important;
     border: none !important;
     height: 100%;
@@ -39,7 +45,7 @@
     /* Add font size if necessary */
 }
 
-#creation_time {
+.select-date-picker {
     color: #747474;
     font-size: 14px;
     /* Placeholder font size */
@@ -66,6 +72,14 @@ input[type="date"]::-webkit-input-placeholder {
     z-index: 99;
 }
 
+input[type="date"],
+.calendar-icon {
+    background-image: url(../image/calender-icon.png);
+    background-size: 19px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .calendar-icon {
     position: absolute;
     top: 0;
@@ -73,10 +87,6 @@ input[type="date"]::-webkit-input-placeholder {
     left: 25px;
     z-index: 1;
     display: inline-block;
-    background-image: url(../image/calender-icon.png);
-    background-size: 19px;
-    background-repeat: no-repeat;
-    background-position: center;
     width: 24px;
     height: 24px;
     margin-block: auto;
@@ -184,7 +194,8 @@ tr {
     gap: 10px;
 }
 
-.table-body-col-buttons button {
+.table-body-col-buttons button,
+.table-body-col-buttons a.manage-user-edit-button {
     padding: 0 !important;
     width: 24px;
     height: 24px;
@@ -198,6 +209,10 @@ tr {
 .login-history-icon {
     background-image: url(../image/login-history-icon.svg);
     background-size: 18px;
+}
+
+.manage-user-edit-button {
+    background-image: url(../image/edit-icon.svg);
 }
 
 .delete-user-button {
@@ -396,9 +411,11 @@ tr {
     position: relative;
 }
 
-.manage-user-form-ctn select:disabled {
+input:disabled::placeholder,
+.manage-user-form-ctn select:disabled,
+.manage-user-form-ctn input:disabled {
     color: #1D1C25 !important;
-    cursor: not-allowed;
+    cursor: not-allowed !important;
 }
 
 .manage-user-form-ctn #add-custom-field-btn {
@@ -423,6 +440,7 @@ tr {
     background-position: center;
     box-sizing: border-box;
     transition: background-image .2s linear;
+    cursor: pointer;
 }
 
 .toggle-password.show-pass {
@@ -433,4 +451,61 @@ tr {
 
 .toggle-password+input[type="password"] {
     padding-right: 60px !important;
+}
+
+.generate-password-button {
+    cursor: pointer;
+    color: white;
+    box-sizing: border-box;
+    border-radius: 10px;
+    justify-content: center;
+    transition: all .3s ease-in-out;
+}
+
+.generate-password-button:hover {
+    background-color: #624491;
+    border-color: #624491;
+}
+
+.reset-link {
+    position: absolute;
+    top: 34px;
+    right: 12px;
+    width: max-content;
+}
+
+.reset-link a {
+    display: inline-block;
+    border-radius: 42px;
+    background-color: rgba(234, 221, 255, .16);
+    padding: 6px 12px 6px 43px;
+    background-image: url(../image/white-email-icon.svg);
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: left 14px center;
+    color: white;
+}
+
+.reset-link a:hover {
+    color: white;
+    background-color: rgba(234, 221, 255, .30);
+}
+
+.daterangepicker,
+.daterangepicker .calendar-table {
+    background-color: #1D1C25 !important;
+}
+
+.daterangepicker .calendar-table {
+    border: none !important;
+}
+
+.daterangepicker {
+    border-radius: 16px !important;
+    border: 1px solid #747474 !important;
+    padding: 16px 8px !important;
+}
+
+.drp-selected {
+    display: none !important;
 }

@@ -1,4 +1,4 @@
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
 
     // console.log(cuim_ajax); // ✅ Check if this prints object
 
@@ -19,7 +19,7 @@ jQuery(document).ready(function($) {
     $('.cuim-close').on('click', function () {
         $('.cuim-modal').fadeOut();
     });
-   $('.cuim-show-ip-create').on('click', function () {
+    $('.cuim-show-ip-create').on('click', function () {
         $('#cuim-create-ip-modal').fadeIn();
     });
     $('.cuim-show-create').on('click', function () {
@@ -27,12 +27,12 @@ jQuery(document).ready(function($) {
     });
 
     // Create User (Corrected)
-    $('#cuim-create-form').on('submit', function(e) {
+    $('#cuim-create-form').on('submit', function (e) {
         e.preventDefault();
 
         var formData = $(this).serialize();
 
-        $.post(ajaxurl, formData + '&action=cuim_create_user', function(response) {
+        $.post(ajaxurl, formData + '&action=cuim_create_user', function (response) {
             if (response.success) {
                 $('#cuim-create-message').html('<span style="color: green;">' + response.data + '</span>');
                 $('#cuim-create-form')[0].reset();
@@ -43,7 +43,7 @@ jQuery(document).ready(function($) {
         });
     });
     // Edit User
-    $('.cuim-edit-button').on('click', function() {
+    $('.cuim-edit-button').on('click', function () {
         const user = $(this).data('user'); // assumed to be a JS object
 
         $('#cuim-edit-form [name="user_id"]').val(user.ID);
@@ -54,11 +54,11 @@ jQuery(document).ready(function($) {
     });
 
     // 💾 Save edited user via AJAX
-    $('#cuim-edit-form').on('submit', function(e) {
+    $('#cuim-edit-form').on('submit', function (e) {
         e.preventDefault();
 
         var formData = $(this).serialize();
-        $.post(ajaxurl, formData + '&action=cuim_update_user', function(response) {
+        $.post(ajaxurl, formData + '&action=cuim_update_user', function (response) {
             if (response.success) {
                 $('#cuim-edit-message').html('<span style="color: green;">' + response.data + '</span>');
                 location.reload();
@@ -186,12 +186,12 @@ jQuery(document).ready(function($) {
         });
     });
 
-    $('#cuim-viewer-toggle').on('click', function() {
+    $('#cuim-viewer-toggle').on('click', function () {
         const btn = $(this);
         btn.prop('disabled', true);
         $.post(cuim_ajax.ajax_url, {
             action: 'cuim_toggle_viewer_mode'
-        }, function(response) {
+        }, function (response) {
             if (response.success) {
                 const state = response.data === '1' ? 'On' : 'Off';
                 btn.find('span').text(state);
@@ -204,10 +204,10 @@ jQuery(document).ready(function($) {
         });
     });
 
-    $(document).on('click', '[data-load-profile]', function(e) {
+    $(document).on('click', '[data-load-profile]', function (e) {
         e.preventDefault();
         $('.post_content.entry-content').html('<p>🔄 Loading profile...</p>');
-        $.post(cuim_ajax.ajax_url, { action: 'cuim_get_profile_html' }, function(response) {
+        $.post(cuim_ajax.ajax_url, { action: 'cuim_get_profile_html' }, function (response) {
             if (response.success) {
                 $('.post_content.entry-content').html(response.data.html);
             } else {
@@ -216,7 +216,7 @@ jQuery(document).ready(function($) {
         });
     });
 
-    $(document).on('submit', '#cuim-profile-page-form', function(e) {
+    $(document).on('submit', '#cuim-profile-page-form', function (e) {
         e.preventDefault();
         var formData = new FormData(this);
         formData.append('action', 'cuim_save_profile');
@@ -226,7 +226,7 @@ jQuery(document).ready(function($) {
             data: formData,
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 const msg = $('#cuim-profile-update-message');
                 if (response.success) {
                     msg.html('<p style="color:green;">✅ ' + response.data + '</p>');
@@ -238,12 +238,12 @@ jQuery(document).ready(function($) {
         });
     });
 
-    $(document).on('click', '#cuim-edit-name', function(e) {
+    $(document).on('click', '#cuim-edit-name', function (e) {
         e.preventDefault();
         $('#cuim-edit-fields').slideToggle();
     });
 
-    $.post(cuim_ajax.ajax_url, { action: 'cuim_get_profile_html' }, function(response) {
+    $.post(cuim_ajax.ajax_url, { action: 'cuim_get_profile_html' }, function (response) {
         if (response.success) {
             var isComplete = response.data.profile_complete === true || response.data.profile_complete === '1' || response.data.profile_complete === 1;
             if (!isComplete) {
@@ -258,110 +258,103 @@ jQuery(document).ready(function($) {
         }
     });
     $(".custom-table-row").each(function () {
-    const $row = $(this);
-    const $loginHistoryIconRow = $row.find(".login-history-icon");
-    const $closeButtonRow = $row.find(".close-button");
-    const $popupRow = $row.find(".login-history-popup");
-    const $popupInnerRow = $row.find(".login-history-popup-inner");
+        const $row = $(this);
+        const $loginHistoryIconRow = $row.find(".login-history-icon");
+        const $closeButtonRow = $row.find(".close-button");
+        const $popupRow = $row.find(".login-history-popup");
+        const $popupInnerRow = $row.find(".login-history-popup-inner");
 
-    // Open the login history popup for the specific row
-    $loginHistoryIconRow.on("click", function (e) {
-        e.stopPropagation();
-        $popupRow.addClass("active");
+        // Open the login history popup for the specific row
+        $loginHistoryIconRow.on("click", function (e) {
+            e.stopPropagation();
+            $popupRow.addClass("active");
+        });
+
+        // Close the login history popup for the specific row
+        $closeButtonRow.on("click", function (e) {
+            e.preventDefault(); // Prevent form submission if inside a form
+            e.stopPropagation();
+            $popupRow.removeClass("active");
+        });
+
+        // Close popup when clicking outside the popup inner area
+        $(document).on("click", function (e) {
+            if (
+                !$(e.target).closest($popupInnerRow).length && // Ensure the click is outside the inner popup
+                $popupRow.hasClass("active") // Ensure the popup is active
+            ) {
+                $popupRow.removeClass("active"); // Close the popup for this specific row
+            }
+        });
     });
 
-    // Close the login history popup for the specific row
-    $closeButtonRow.on("click", function (e) {
-        e.preventDefault(); // Prevent form submission if inside a form
-        e.stopPropagation();
-        $popupRow.removeClass("active");
+    // ==========================
+    // 6. Pagination
+    // ==========================
+
+    var itemsPerPage = 15;
+    var totalItems = jQuery(".custom-table-row").length;
+    var totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    jQuery("#pagination-demo").twbsPagination({
+        totalPages: totalPages,
+        visiblePages: 3,
+        onPageClick: function (event, page) {
+            jQuery(".custom-table-row").hide();
+            jQuery('.custom-table-row[data-page="' + page + '"]').show();
+        },
     });
 
-    // Close popup when clicking outside the popup inner area
-    $(document).on("click", function (e) {
-        if (
-            !$(e.target).closest($popupInnerRow).length && // Ensure the click is outside the inner popup
-            $popupRow.hasClass("active") // Ensure the popup is active
-        ) {
-            $popupRow.removeClass("active"); // Close the popup for this specific row
+    jQuery(".custom-table-row").each(function (index) {
+        var page = Math.floor(index / itemsPerPage) + 1;
+        jQuery(this).attr("data-page", page);
+        if (page === 1) {
+            jQuery(this).show();
+        } else {
+            jQuery(this).hide();
         }
     });
+
+
+// Real-time validation on input field (triggered while typing)
+$('#account-field').on('input', function () {
+    validateAccountField();  // Validate as the user types
 });
 
-// ==========================
-  // 6. Pagination
-  // ==========================
- 
-   var itemsPerPage = 15;
-  var totalItems = jQuery(".custom-table-row").length;
-  var totalPages = Math.ceil(totalItems / itemsPerPage);
+// Function to validate the account field in real-time
+function validateAccountField() {
+    var accountValue = $('#account-field').val();
+    var errorMessage = '';
 
-  jQuery("#pagination-demo").twbsPagination({
-    totalPages: totalPages,
-    visiblePages: 3,
-    onPageClick: function (event, page) {
-      jQuery(".custom-table-row").hide();
-      jQuery('.custom-table-row[data-page="' + page + '"]').show();
-    },
-  });
+    // Condition 1: Check if the field is empty
+    if (accountValue === '') {
+        errorMessage = 'Account is required.';
+    }
+    // Condition 2: Check if the input contains only English characters and numbers (no special characters)
+    else if (!/^[A-Za-z0-9]+$/.test(accountValue)) {
+        errorMessage = 'Invalid account format: only A–Z, a–z, and 0–9 are allowed.';
+    }
+    // Condition 3: Check if the input contains at least one number
+    else if (!/\d/.test(accountValue)) {
+        errorMessage = 'Invalid account format: must contain at least one number.';
+    }
+    // Condition 4: Check if the input is at least 4 characters long and no more than 20 characters
+    else if (accountValue.length < 4 || accountValue.length > 20) {
+        errorMessage = 'Account length must be between 4 and 20 characters.';
+    }
 
-  jQuery(".custom-table-row").each(function (index) {
-    var page = Math.floor(index / itemsPerPage) + 1;
-    jQuery(this).attr("data-page", page);
-    if (page === 1) {
-      jQuery(this).show();
+    // Display error message or success message
+    if (errorMessage) {
+        $('#error-message').text(errorMessage);  // Show the error message
+        $('#error-message').css('color', 'red');  // Set the color of the error message to red
     } else {
-      jQuery(this).hide();
+        $('#error-message').text('Input Successful');  // Show success message if all conditions pass
+        $('#error-message').css('color', 'green');  // Set the color of the success message to green
     }
-  });
+}
 
-  
-    // Real-time validation on input field (triggered while typing)
-    $('#account-field').on('input', function() {
-        validateAccountField();  // Validate as the user types
-    });
 
-    // Function to validate the account field in real-time
-    function validateAccountField() {
-        var accountValue = $('#account-field').val();
-        var errorMessage = '';
-
-        // Condition 1: Check if the field is empty
-        if (accountValue === '') {
-            errorMessage = 'Account is required.';
-        }
-        // Condition 2: Check if the input contains only English characters and numbers (no special characters)
-        else if (!/^[A-Za-z0-9]+$/.test(accountValue)) {
-            errorMessage = 'Invalid account format: only A–Z, a–z, and 0–9 are allowed.';
-        }
-        // Condition 3: Check if the input contains at least one number
-        else if (!/\d/.test(accountValue)) {
-            errorMessage = 'Invalid account format: must contain at least one number.';
-        }
-        // Condition 4: Check if the input is at least 4 characters long
-        else if (accountValue.length < 4) {
-            errorMessage = 'Account length must be between 4 and 20 characters.';
-        }
-        // Condition 5: Check if the input is no more than 20 characters long
-        else if (accountValue.length > 20) {
-            errorMessage = 'Account length must be between 4 and 20 characters.';
-        }
-        // Condition 6: Check if the input does not exceed 100 characters
-        else if (accountValue.length > 100) {
-            errorMessage = 'Max 100 characters allowed.';
-        }
-
-        // Display error message or success message
-        if (errorMessage) {
-            $('#error-message').text(errorMessage);  // Show the error message
-            $('#error-message').css('color', 'red');  // Set the color of the error message to red
-        } else {
-            $('#error-message').text('Input Successful');  // Show success message if all conditions pass
-            $('#error-message').css('color', 'green');  // Set the color of the success message to green
-        }
-    }
-
-    $('.toggle-password').on('click', function() {
+    $('.toggle-password').on('click', function () {
         var passwordField = $(this).siblings('input[type="password"]'); // Get the password input inside the same .password-field container
 
         // Toggle password visibility
@@ -371,4 +364,11 @@ jQuery(document).ready(function($) {
         // Toggle the button class and icon
         $(this).toggleClass('show-pass');
     });
+  
+        $('input[name="daterange"]').daterangepicker({
+            opens: 'right', // Position the calendar
+            locale: {
+                format: 'YYYY/MM/DD', // Specify the date format
+            }
+        });
 });

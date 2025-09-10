@@ -574,7 +574,7 @@ jQuery(document).ready(function ($) {
 
   function checkFieldLimit() {
     const count = $(
-      ".api-form-wrapper > form > .form-field.custom-field-item"
+      ".custom-form > .form-field.custom-field-item"
     ).length;
     if (count >= maxFields) {
       addBtn.addClass("disabled").prop("disabled", true);
@@ -1770,16 +1770,24 @@ jQuery(document).ready(function ($) {
   $(function () {
     // Cancel Confirmation Modal
     const $cancelModal = $("#cancel-form-confirmation");
+    const $resetPassword = $("#reset-password-confirmation");
     const openCancelBtnSelector = "#cancel-confirmation-button";
 
     // Submit Confirmation Modal
     const $submitModal = $("#confirm-submit-popup");
     const openSubmitBtnSelector = "#confirm-submit-popup-button";
+    const openResetBtnSelector = ".generate-password-button";
 
     // Open Cancel Modal
     $(document).on("click", openCancelBtnSelector, function (e) {
       e.preventDefault();
       $cancelModal.addClass("active");
+    });
+
+    // Open Cancel Modal
+    $(document).on("click", openResetBtnSelector, function (e) {
+      e.preventDefault();
+      $resetPassword.addClass("active");
     });
 
     // Open Submit Modal
@@ -1792,15 +1800,17 @@ jQuery(document).ready(function ($) {
     $(".popup-form-cross-icon").on("click", function (e) {
       e.preventDefault(); // prevent default button behavior if needed
       $("#cancel-form-confirmation").removeClass("active");
+      $("#reset-password-confirmation").removeClass("active");
       $("#confirm-submit-popup").removeClass("active");
       $(".login-history-popup").removeClass("active");
     });
-
+    
     // Close modals using No buttons (Cancel and Submit modals)
     $(".no-form-cancel").on("click", function (e) {
       e.preventDefault();
       $("#cancel-form-confirmation").removeClass("active");
       $("#confirm-submit-popup").removeClass("active");
+      $("#reset-password-confirmation").removeClass("active");
     });
 
     $(".no-confirm-submit").on("click", function (e) {

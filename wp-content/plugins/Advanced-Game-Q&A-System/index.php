@@ -44,6 +44,8 @@ add_action('wp_enqueue_scripts', function () {
     // Report System CSS file
     wp_enqueue_style('agqa-report-system-css', AGQA_URL . 'assets/report-system/report-style.css');
 
+    
+
     // wp_enqueue_script('editor-faq-js', 'https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js', [], null, true);
 
     // Correctly load PDF.js as a script (not as a style)
