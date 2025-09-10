@@ -15,13 +15,18 @@ define('URIP_URL', plugin_dir_url(__FILE__));
 include_once URIP_PATH . 'Includes/ajax-user-handlers.php';
 include_once URIP_PATH . 'Includes/ajax-ip-handlers.php';
 
+
 // Enqueue assets
 add_action('wp_enqueue_scripts', function () {
     if (is_user_logged_in()) {
+        wp_enqueue_style('date-picker-style', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css');
         wp_enqueue_style('cuim-style', plugin_dir_url(__FILE__) . 'assets/css/cuim.css');
         // manage-user Style sheet
         wp_enqueue_style('manage-user-style', plugin_dir_url(__FILE__) . 'assets/css/manage-user.css');
+           wp_enqueue_script('cuim-script-date', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js', ['jquery'], null, true);
+        wp_enqueue_script('cuim-script-date-picker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', ['jquery', 'cuim-script-date'], null, true);
         wp_enqueue_script('cuim-script', plugin_dir_url(__FILE__) . 'assets/js/cuim.js', ['jquery'], null, true);
+      
         wp_localize_script('cuim-script', 'cuim_ajax', [
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce'    => wp_create_nonce('cuim_nonce'),
