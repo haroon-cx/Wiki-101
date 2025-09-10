@@ -70,7 +70,6 @@ function merged_sale_api_ui_shortcode()
         ORDER BY r.id DESC
     ");
         $sale_back_button = 'back=' . $revenue_id;
-
     }
 
     ob_start();
@@ -82,7 +81,7 @@ function merged_sale_api_ui_shortcode()
     }
     include 'sale-reorder.php';
     include 'report-form.php';
-    ?>
+?>
     <!-- HEADING AREA - PRESERVED -->
     <?php if ($edit_revenue_id == 0 && $add_revenue_id == 0) { ?>
         <div class="merged-ui-wrapper">
@@ -92,7 +91,7 @@ function merged_sale_api_ui_shortcode()
                 <hr class="heading-divider" />
                 <div class="filter-container api-filter">
                     <div class="filter-area">
-                         <?php if ( isset($_GET['sale'])) { ?>
+                        <?php if (isset($_GET['sale'])) { ?>
                             <a href="/sale/" class="back-button">View All</a>
                         <?php } ?>
                         <?php if (empty($_GET['sale'])) { ?>
@@ -115,11 +114,11 @@ function merged_sale_api_ui_shortcode()
                         <?php } ?>
                     </div>
                     <div class="api-filter-buttons">
-                         <?php if (empty($_GET['sale'])) { ?>
+                        <?php if (empty($_GET['sale'])) { ?>
                             <button class="reorder-button"><img src="<?php echo AGQA_URL ?>assets/images/reorder-icon.svg"
-                                alt="Reorder Icon">
-                            Reorder</button>
-                            <?php } ?>
+                                    alt="Reorder Icon">
+                                Reorder</button>
+                        <?php } ?>
                         <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/sale/') . '?add=1'); ?>"
                             class="add-category-button"><img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg"
                                 alt="Plus Icon">
@@ -240,12 +239,12 @@ function merged_sale_api_ui_shortcode()
 
                                     </div>
                                     <!-- <?php
-                                    // List of custom fields (custom_label_1, custom_label_2, etc.)
-                                    for ($i = 1; $i <= 4; $i++) {
-                                        $customLabel = isset($item->{'custom_label_' . $i}) ? $item->{'custom_label_' . $i} : '';
-                                        $customField = isset($item->{'custom_field_' . $i}) ? $item->{'custom_field_' . $i} : '';
+                                            // List of custom fields (custom_label_1, custom_label_2, etc.)
+                                            for ($i = 1; $i <= 4; $i++) {
+                                                $customLabel = isset($item->{'custom_label_' . $i}) ? $item->{'custom_label_' . $i} : '';
+                                                $customField = isset($item->{'custom_field_' . $i}) ? $item->{'custom_field_' . $i} : '';
 
-                                        if (!empty($customLabel)) { // Render only if custom label is not empty
+                                                if (!empty($customLabel)) { // Render only if custom label is not empty
                                             ?>
                                             <div class="api-info-grid-item">
                                                 <span class="api-info-label"><?php echo esc_html($customLabel); ?></span>
@@ -257,7 +256,7 @@ function merged_sale_api_ui_shortcode()
                                                 </h2>
                                             </div>
                                         <?php }
-                                    } ?> -->
+                                            } ?> -->
 
                                     <?php
                                     for ($i = 1; $i <= 4; $i++) {
@@ -265,7 +264,7 @@ function merged_sale_api_ui_shortcode()
                                         $customField = isset($item->{'custom_field_' . $i}) ? $item->{'custom_field_' . $i} : '';
 
                                         if (! empty($customLabel)) { // Render only if custom label is not empty
-                                ?>
+                                    ?>
                                             <div class="api-info-grid-item">
                                                 <span class="api-info-label"><?php echo esc_html($customLabel); ?></span>
                                                 <h2 class="api-info-value">
@@ -274,9 +273,9 @@ function merged_sale_api_ui_shortcode()
                                                     </a>
                                                 </h2>
                                             </div>
-                                <?php }  
+                                    <?php }
                                     }
-                                ?>
+                                    ?>
                                 </div>
                                 <!-- Modal Popup -->
                                 <!--                     <div class="pdf-modal-overlay" style="display: none;">
@@ -386,8 +385,8 @@ function merged_sale_api_ui_shortcode()
                         </div>
                     </div>
                 </div>
-                <?php
-                return ob_get_clean();
+        <?php
+        return ob_get_clean();
     }
 }
 add_shortcode('merged_sale_api_ui', 'merged_sale_api_ui_shortcode');

@@ -200,7 +200,7 @@ jQuery(document).ready(function ($) {
       .text();
     var answer = jQuery(this)
       .closest(".faq-accordion")
-      .find(".faq-accordion-body p")
+      .find(".faq-accordion-body")
       .text();
     var textToCopy = "Q: " + question + " Ans: " + answer;
 

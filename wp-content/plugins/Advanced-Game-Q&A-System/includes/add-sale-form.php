@@ -1,12 +1,12 @@
 <?php
-    $edit_revenue_ids = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
-    // print_r($edit_revenue_ids);
-    global $wpdb;
-    $table_add_sale   = $wpdb->prefix . 'agqa_sales';
-    $table_add_category = $wpdb->prefix . 'game_category';
-    // print_r($table_category_edit);
+$edit_revenue_ids = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
+// print_r($edit_revenue_ids);
+global $wpdb;
+$table_add_sale   = $wpdb->prefix . 'agqa_sales';
+$table_add_category = $wpdb->prefix . 'game_category';
+// print_r($table_category_edit);
 
-    $table_add_game_type = $wpdb->prefix . 'game_type';
+$table_add_game_type = $wpdb->prefix . 'game_type';
 $rows_type_game = $wpdb->get_results("
     SELECT DISTINCT id, provider_name
     FROM {$table_add_sale}
@@ -14,15 +14,13 @@ $rows_type_game = $wpdb->get_results("
       AND provider_name <> ''
     ORDER BY provider_name ASC
 ", ARRAY_A);
-    // print_r($rows_type_game);
+// print_r($rows_type_game);
 
 ?>
 <div class="api-form-main">
     <div class="form-header-row">
         <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/sale/')) ?>" class="back-button" type="button">
-            <img decoding="async"
-                src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg"
-                alt="Arrow Left Icon">
+            <img decoding="async" src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg" alt="Arrow Left Icon">
             Back
         </a>
         <h2 class="form-heading">Add Sale</h2>
@@ -31,11 +29,11 @@ $rows_type_game = $wpdb->get_results("
         <div class="api-form-wrapper" id="UN">
             <form autocomplete="off" id="add-revnue-form" class="custom-form" novalidate="novalidate"
                 data-inited-validation="1">
-                
-                 <!-- NEW Game Type Input -->
+
+                <!-- NEW Game Type Input -->
                 <input type="hidden" name="business-model" value="sale">
                 <div class="form-field required">
-                   <label for="provider-name"><span>*</span> Provider Name</label>
+                    <label for="provider-name"><span>*</span> Provider Name</label>
                     <div class="custom-select-dropdown agqa-main-game-type">
                         <div class="custom-select-dropdown-title">
                             <span class="custom-dropdown-default-value">
@@ -46,8 +44,7 @@ $rows_type_game = $wpdb->get_results("
                         <div class="custom-select-dropdown-lists">
                             <ul>
                                 <?php foreach ($rows_type_game as $value) { ?>
-                                    <li data-value="<?php echo $value['id']; ?>"
-                                        ><?php echo $value['provider_name']; ?></li>
+                                    <li data-value="<?php echo $value['id']; ?>"><?php echo $value['provider_name']; ?></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -55,22 +52,24 @@ $rows_type_game = $wpdb->get_results("
                     </div>
                 </div>
                 <!-- END -->
-                  <!-- New Input type -->
-                    <div class="form-field required">
-                        <label for="select-game-type-id"><span>*</span>  State</label>
-                        <div class="custom-select-dropdown">
-                            <div class="custom-select-dropdown-title">
-                                <span class="custom-dropdown-default-value"><?php echo empty($revenu_data_edit->state) ? 'Disabled' : 'Enabled'; ?></span>
-                                <span class="custom-dropdown-selected-value"></span>
-                                    </div>
-                            <div class="custom-select-dropdown-lists">
-                                <ul>
-                                    <li data-value="1">Enabled</li>
-                                    <li data-value="0">Disabled</li>
-                                </ul>
-                            </div>
-                            <input type="hidden" name="state" id="state" value="<?php echo empty($revenu_data_edit->state) ? '0' : '1'; ?>" required>
+                <!-- New Input type -->
+                <div class="form-field required">
+                    <label for="select-game-type-id"><span>*</span> State</label>
+                    <div class="custom-select-dropdown">
+                        <div class="custom-select-dropdown-title">
+                            <span
+                                class="custom-dropdown-default-value"><?php echo empty($revenu_data_edit->state) ? 'Disabled' : 'Enabled'; ?></span>
+                            <span class="custom-dropdown-selected-value"></span>
                         </div>
+                        <div class="custom-select-dropdown-lists">
+                            <ul>
+                                <li data-value="1">Enabled</li>
+                                <li data-value="0">Disabled</li>
+                            </ul>
+                        </div>
+                        <input type="hidden" name="state" id="state"
+                            value="<?php echo empty($revenu_data_edit->state) ? '0' : '1'; ?>" required>
+                    </div>
                 </div>
                 <!-- END -->
                 <div class="form-field required">
@@ -126,27 +125,26 @@ $rows_type_game = $wpdb->get_results("
                     </div>
                 </div>
                 <div class="form-field required">
-                    <label for="selling-price"><span>*</span> Selling Price (%)</label>
+                    <label for="selling-price"><span>*</span> Min. Resale (%)</label>
                     <!-- <input type="text" name="selling-price" id="selling-price" placeholder="Description"
                         required> -->
-                        <input type="number" name="selling-price" min="0" max="100" step="1" inputmode="numeric" value=""
+                    <input type="number" name="selling-price" min="0" max="100" step="1" inputmode="numeric" value=""
                         id="selling-price" placeholder="Description" required>
                 </div>
                 <div class="form-field required">
-                    <label for="api-cost"><span>*</span> API Cost (%)</label>
+                    <label for="api-cost"><span>*</span> Max. Revenue Share(%)</label>
                     <!-- <input type="text" name="api-cost" id="api-cost" placeholder="Description" required> -->
                     <input type="number" name="api-cost" min="0" max="100" step="1" inputmode="numeric" value=""
                         id="api-cost" placeholder="Description" required>
                 </div>
                 <div class="form-field required">
                     <label for="game-info-website"><span>*</span> Game Info Website</label>
-                    <input type="text" name="game-info-website" id="game-info-website"
-                        placeholder="Description" required>
+                    <input type="text" name="game-info-website" id="game-info-website" placeholder="Description"
+                        required>
                 </div>
                 <div class="form-field">
                     <label for="game-demo-website">Game Demo Website</label>
-                    <input type="text" name="game-demo-website" id="game-demo-website"
-                        placeholder="Description">
+                    <input type="text" name="game-demo-website" id="game-demo-website" placeholder="Description">
                 </div>
                 <div class="form-field required">
                     <label for="select-game-category"><span>*</span> API Type</label>
@@ -171,8 +169,8 @@ $rows_type_game = $wpdb->get_results("
                 </div>
                 <div class="form-field required">
                     <label for="representative-name"><span>*</span> Representative’s Name</label>
-                    <input type="text" name="representative-name" id="representative-name"
-                        placeholder="Description" required>
+                    <input type="text" name="representative-name" id="representative-name" placeholder="Description"
+                        required>
                 </div>
                 <div class="form-field">
                     <label for="representative-telegram">Representative’s Telegram</label>
@@ -189,8 +187,7 @@ $rows_type_game = $wpdb->get_results("
                                 <div class="popup-form-cross-icon"></div>
                                 <div class="form-field">
                                     <label for="first-name">First Name</label>
-                                    <input type="text" name="first-name" id="first-name"
-                                        placeholder="Description">
+                                    <input type="text" name="first-name" id="first-name" placeholder="Description">
                                 </div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
                                     <button class="cancel-button" type="button">Cancel</button>
@@ -244,10 +241,9 @@ $rows_type_game = $wpdb->get_results("
                     <div class="upload-contract">
                         <label for="pdf-upload-input">
                             Contract
-                           <div class="tooltip-wrapper">
-							<img src="<?php echo AGQA_URL ?>assets/images/contract-icon.svg"
-                                alt="Contract Icon">
-							</div>
+                            <div class="tooltip-wrapper">
+                                <img src="<?php echo AGQA_URL ?>assets/images/contract-icon.svg" alt="Contract Icon">
+                            </div>
                         </label>
                         <div class="custom-upload-area-pdf">
                             <div class="browse-link-pdf">Upload Contract</div>
@@ -255,41 +251,44 @@ $rows_type_game = $wpdb->get_results("
                             </div>
                             <h2 class="file-preview-pdf" style="display: none;"></h2>
                         </div>
-                        <input type="file" id="pdf-upload-input" accept="application/pdf"
-                            style="display: none;">
+                        <input type="file" id="pdf-upload-input" accept="application/pdf" style="display: none;">
                         <input type="hidden" name="upload-contract" class="upload-contract">
                     </div>
                 </div>
 
                 <div class="form-buttons agqa-popup-form-buttons d-flex  full-width agqa-add-default-btn">
-                    <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/sale/')) ?>" class="back-button">Cancel</a>
+                    <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/sale/')) ?>"
+                        class="back-button">Cancel</a>
                     <input type="submit" value="Submit" class="">
                 </div>
 
-                <div class="form-buttons agqa-popup-form-buttons d-flex full-width agqa-add-update-btn" style="display:none;">
+                <div class="form-buttons agqa-popup-form-buttons d-flex full-width agqa-add-update-btn"
+                    style="display:none;">
                     <div id="cancel-form-confirmation" class="cancel-form-confirmation" style="">
-                         <div class="cancel-form-confirmation-box">
+                        <div class="cancel-form-confirmation-box">
                             <h2>Cancel</h2>
-                                <div class="popup-form-cross-icon"></div>
-                                <div class="form-message">Are you sure you want to cancel?</div>
-                                <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                    <button class="no-form-cancel" type="button">No</button>
-                                    <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/sale/')) ?>" class="back-button">Yes</a>
-                                </div>
-                         </div>       
+                            <div class="popup-form-cross-icon"></div>
+                            <div class="form-message">Are you sure you want to cancel?</div>
+                            <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                <button class="no-form-cancel" type="button">No</button>
+                                <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/sale/')) ?>"
+                                    class="back-button">Yes</a>
+                            </div>
+                        </div>
                     </div>
-                    <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/sale/')) ?>" class="back-button" id="cancel-confirmation-button">Cancel</a>
+                    <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/sale/')) ?>" class="back-button"
+                        id="cancel-confirmation-button">Cancel</a>
 
                     <div id="confirm-submit-popup" class="confirm-submit-popup">
-                         <div class="confirm-submit-popup-box">
+                        <div class="confirm-submit-popup-box">
                             <h2>Submit</h2>
-                                <div class="popup-form-cross-icon"></div>
-                                <div class="form-message">Are you sure you want to submit?</div>
-                                <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                    <button class="no-confirm-submit" type="button">No</button>
-                                    <input type="submit" value="Yes" id="confirm-submit">
-                                </div>
-                         </div>       
+                            <div class="popup-form-cross-icon"></div>
+                            <div class="form-message">Are you sure you want to submit?</div>
+                            <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                <button class="no-confirm-submit" type="button">No</button>
+                                <input type="submit" value="Yes" id="confirm-submit">
+                            </div>
+                        </div>
                     </div>
                     <input type="submit" value="Submit" class="agqa-edit-submit-btn" id="confirm-submit-popup-button">
                     <!-- <input type="submit" value="Submit" class="agqa-edit-submit-btn"> -->
@@ -300,46 +299,43 @@ $rows_type_game = $wpdb->get_results("
 </div>
 
 <script>
+    jQuery(document).ready(function($) {
+        $('#select-game-category-id li').on('click', function() {
+            var selectedCatId = $(this).data('value');
 
-jQuery(document).ready(function($) {
-    $('#select-game-category-id li').on('click', function() {
-        var selectedCatId = $(this).data('value');
-        
-        // Set a timeout to allow the hidden input to update and then process the data
-        setTimeout(function() {
-            // Get the value from the hidden input (CSV of category IDs)
-            var hiddenInputValue = $("input[name='select-game-category']").val();
-            
-            // Split the CSV string into an array of category IDs
-            var categoryIds = hiddenInputValue.split(',');
+            // Set a timeout to allow the hidden input to update and then process the data
+            setTimeout(function() {
+                // Get the value from the hidden input (CSV of category IDs)
+                var hiddenInputValue = $("input[name='select-game-category']").val();
 
-            // Iterate over each custom type list item
-            $('.agqa-custom-type-list li').each(function() {
-                var optionCatId = $(this).data('id-cat'); // Get the data-id-cat of the li
+                // Split the CSV string into an array of category IDs
+                var categoryIds = hiddenInputValue.split(',');
 
-                // Ensure that optionCatId is defined before using .toString()
-                if (optionCatId && categoryIds.includes(optionCatId.toString())) {
-                    $(this).show(); // Show the li if it matches any category ID
-                } else {
-                    $(this).hide(); // Hide the li if it doesn't match any category ID
-                }
-            });
+                // Iterate over each custom type list item
+                $('.agqa-custom-type-list li').each(function() {
+                    var optionCatId = $(this).data(
+                        'id-cat'); // Get the data-id-cat of the li
 
-        }, 500); // Delay of 500ms
+                    // Ensure that optionCatId is defined before using .toString()
+                    if (optionCatId && categoryIds.includes(optionCatId.toString())) {
+                        $(this).show(); // Show the li if it matches any category ID
+                    } else {
+                        $(this).hide(); // Hide the li if it doesn't match any category ID
+                    }
+                });
 
-        // Reset the game type input and dropdown text
-        $('#select-game-type-id').val('');
+            }, 500); // Delay of 500ms
+
+            // Reset the game type input and dropdown text
+            $('#select-game-type-id').val('');
+        });
+        $('input').keyup(function() {
+            $('.agqa-add-default-btn').hide();
+            $('.agqa-add-update-btn').show();
+        });
+        $('textarea').keyup(function() {
+            $('.agqa-add-default-btn').hide();
+            $('.agqa-add-update-btn').show();
+        });
     });
-   $('input').keyup(function () {
-    $('.agqa-add-default-btn').hide();
-    $('.agqa-add-update-btn').show();
-});
- $('textarea').keyup(function () {
-    $('.agqa-add-default-btn').hide();
-    $('.agqa-add-update-btn').show();
-});
-});
-
-
-
 </script>

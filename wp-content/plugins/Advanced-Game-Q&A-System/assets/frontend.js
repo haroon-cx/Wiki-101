@@ -1839,7 +1839,7 @@ jQuery(document).ready(function ($) {
   $(
     'input[type="text"], input[type="search"], .faq-template #filter-search'
   ).on("input", function () {
-    var maxLength = 250; // Default limit for most selectors
+    var maxLength = 200; // Default limit for most selectors
     var $input = $(this);
     var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
     var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
@@ -1893,18 +1893,31 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  jQuery("form#report_form").submit("submit", function () {
+  jQuery("form#report_form").submit("submit", function (e) {
+    e.preventDefault();
     const $form = $(this);
     let isValid = true;
+
     // Check if all required fields are filled
     $form.find("[required]").each(function () {
       const field = $(this);
-      if (!field.val()) {
-        // If the field is empty
+      const value = field.val().trim(); // Trim leading/trailing spaces
+      if (!value) {
+        // If the field is empty after trimming spaces
         isValid = false;
-        return false;
+        field.addClass("error-field");
+        const $fieldWrapper = field.closest(
+          ".form-field, .agqa-popup-form-field"
+        );
+        if ($fieldWrapper.find(".error-message").length === 0) {
+          $fieldWrapper.append(
+            `<div class="error-message">This field cannot be empty or contain only spaces. Please fill it correctly.</div>`
+          );
+        }
+        return false; // Exit loop early if one field is invalid
       }
     });
+
     // Extra validation for Game Info Website
     const $websiteInput = $("#game-info-website");
     if ($websiteInput.length) {
@@ -1912,6 +1925,8 @@ jQuery(document).ready(function ($) {
       const $fieldWrapper = $websiteInput.closest(
         ".form-field, .agqa-popup-form-field"
       );
+
+      // Check for spaces in the input
       if (/\s/.test(value)) {
         isValid = false;
         $websiteInput.addClass("error-field");
@@ -1920,20 +1935,25 @@ jQuery(document).ready(function ($) {
             `<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`
           );
         }
-      } else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
+      }
+      // Check if the domain is valid
+      else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
         isValid = false;
         $websiteInput.addClass("error-field");
         if ($fieldWrapper.find(".error-message").length === 0) {
           $fieldWrapper.append(
-            `<div class="error-message">Please enter a valid domain(e.g. .com, .net).</div>`
+            `<div class="error-message">Please enter a valid domain (e.g., .com, .net).</div>`
           );
         }
       }
     }
+
+    // If the form is not valid, stop the submission
     if (!isValid) {
       return;
     }
 
+    // Show success message if valid
     const $successMsg = $(
       '<div class="submitted-successfully">Successful submission</div>'
     );
@@ -1947,11 +1967,14 @@ jQuery(document).ready(function ($) {
       $(".agqa-popup-form.agqa-report-popup-form").removeClass("active");
     }, 3000);
   });
+
   $('input[type="text"]').on("input", function () {
-    var maxLength = 150;
+    // var maxLength = 200;
+
     var $input = $(this);
     var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
     var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
+
     // Check if input exceeds maxLength
     if ($input.val().length > maxLength) {
       $input.val($input.val().substring(0, maxLength)); // Truncate the value to maxLength
