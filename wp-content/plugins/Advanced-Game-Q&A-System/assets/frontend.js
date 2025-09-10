@@ -892,8 +892,10 @@ jQuery(document).ready(function ($) {
       $formResponse.removeClass("error success").text("");
       $charCounter.removeClass("show-message");
 
-      // If textarea is empty → hide all messages
-      if (length === 0) return;
+      // If textarea is empty (after trimming all spaces) → hide all messages
+      if (text.trim().length === 0) {
+        return;
+      }
 
       // If exactly at the max limit → show error instantly
       if (length === maxCharsS) {
@@ -907,7 +909,8 @@ jQuery(document).ready(function ($) {
 
       // If under the max limit → show success after 2s of no typing
       typingTimer = setTimeout(function () {
-        if ($textarea.val().length < maxCharsS) {
+        // Only show success if there's actual text (not just spaces)
+        if (text.trim().length > 0 && $textarea.val().length < maxCharsS) {
           $formResponse
             .removeClass("error")
             .addClass("success")
@@ -924,6 +927,7 @@ jQuery(document).ready(function ($) {
       $charCounter.removeClass("show-message"); // Hide counter message
     });
   });
+
   /* Upload Contract Pdf file script (Usama) */
 
   const dropArea = $(".custom-upload-area-pdf");
