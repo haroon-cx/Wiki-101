@@ -1,159 +1,66 @@
 <?php
-// Create User
-add_action('wp_ajax_cuim_create_user', 'cuim_create_user_callback');
+// Action hook for AJAX requests
+add_action('wp_ajax_add_or_update_user', 'handle_add_or_update_user');
+add_action('wp_ajax_nopriv_add_or_update_user', 'handle_add_or_update_user');
 
-function cuim_create_user_callback() {
-    check_ajax_referer('cuim_nonce', 'security');
+function handle_add_or_update_user()
+{
+    global $wpdb;
 
-    $name     = sanitize_user($_POST['cuim_name']);
-    $email    = sanitize_email($_POST['cuim_email']);
-    $password = $_POST['cuim_password'];
-    $selected_role = sanitize_text_field($_POST['cuim_role']);
-
-    if (username_exists($name) || email_exists($email)) {
-        wp_send_json_error('User already exists.');
+    // Check nonce for security (optional)
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        die('Permission Denied');
     }
-    // ✅ Restrict created user’s email to @101infinity.com — regardless of admin status
-    if (!preg_match('/@101infinity\\.com$/', $email)) {
-        wp_send_json_error('Email must be from @101infinity.com domain.');
+    parse_str($_POST['form_data'], $data);
+    // Get the data from the request
+    $account = sanitize_text_field($data['account']);
+    $new_password = sanitize_text_field($data['new_password']);
+    $confirm_password = sanitize_text_field($data['confirm_password']);
+    $state = sanitize_text_field($data['state']);
+    $user_role = sanitize_text_field($data['user_role']);
+    $company_name = sanitize_text_field($data['company_name']);
+    $email = sanitize_email($data['email']);
+    $custom_labels = array_map('sanitize_text_field', $data['custom_labels']);
+    $custom_fields = array_map('sanitize_text_field', $data['custom_fields']);
+
+    // Basic validation
+    if ($new_password !== $confirm_password) {
+        wp_send_json_error(array('message' => 'Passwords do not match.'));
     }
 
-    $current_user = wp_get_current_user();
-    $is_admin = current_user_can('administrator');
+    // Prepare the data
+    $data = array(
+        'account' => $account,
+        'new_password' => wp_hash_password($new_password),  // Hash password
+        'confirm_password' => wp_hash_password($confirm_password),
+        'state' => $state,
+        'user_role' => $user_role,
+        'company_name' => $company_name,
+        'email' => $email,
+        'custom_label_1' => $custom_labels[0],
+        'custom_label_2' => $custom_labels[1],
+        'custom_label_3' => $custom_labels[2],
+        'custom_label_4' => $custom_labels[3],
+        'custom_field_1' => $custom_fields[0],
+        'custom_field_2' => $custom_fields[1],
+        'custom_field_3' => $custom_fields[2],
+        'custom_field_4' => $custom_fields[3]
+    );
 
-    // Real role map
-    $real_role = cuim_map_role($selected_role);
-
-    if ($is_admin) {
-        // ✅ Admin creates user directly with real role
-        $final_role = $real_role;
+    // Determine if it's an insert or update
+    $user_id = isset($data['user_id']) ? intval($data['user_id']) : 0;
+    if ($user_id) {
+        // Update the existing user
+        $wpdb->update(
+            "{$wpdb->prefix}agqa_wiki_add_users",
+            $data,
+            array('id' => $user_id)
+        );
     } else {
-        // ❌ Manager creates user → set as pending
-        $final_role = 'pending_user';
+        // Insert a new user
+        $wpdb->insert("{$wpdb->prefix}agqa_wiki_add_users", $data);
     }
 
-    $user_id = wp_create_user($name, $password, $email);
-    if (is_wp_error($user_id)) {
-        wp_send_json_error('Failed to create user.');
-    }
-
-    // Set role
-    wp_update_user([
-        'ID'   => $user_id,
-        'role' => $final_role,
-    ]);
-
-    // If pending, store requested role for approval
-    if (!$is_admin) {
-        update_user_meta($user_id, 'cuim_requested_role', $real_role);
-    }
-
-    wp_send_json_success($is_admin ? 'User created successfully.' : 'User created and awaiting admin approval.');
+    // Send a success response
+    wp_send_json_success(array('message' => 'User added/updated successfully.'));
 }
-
-// Helper to map role string to WP role
-function cuim_map_role($role) {
-    if ($role === 'editor') return 'manager';
-    if ($role === 'contributor') return 'contributor';
-    if ($role === 'viewer') return 'subscriber';
-    return 'subscriber';
-}
-
-
-
-// Edit User
-add_action('wp_ajax_cuim_update_user', 'cuim_update_user_callback');
-
-function cuim_update_user_callback() {
-    check_ajax_referer('cuim_nonce', 'security');
-
-    $user_id  = intval($_POST['user_id']);
-    $name     = sanitize_user($_POST['cuim_name']);
-    $email    = sanitize_email($_POST['cuim_email']);
-    $password = $_POST['cuim_password'];
-    $role     = sanitize_text_field($_POST['cuim_role']);
-
-    if (!$user_id || !get_user_by('ID', $user_id)) {
-        wp_send_json_error('User not found.');
-    }
-    // ✅ Restrict created user’s email to @101infinity.com — regardless of admin status
-    if (!preg_match('/@101infinity\\.com$/', $email)) {
-        wp_send_json_error('Email must be from @101infinity.com domain.');
-    }
-
-    $wp_role = 'subscriber';
-    if ($role === 'editor') {
-        $wp_role = 'editor';
-    } elseif ($role === 'contributor') {
-        $wp_role = 'contributor';
-    } elseif ($role === 'viewer') {
-        $wp_role = 'subscriber';
-    }
-
-    $update_data = [
-        'ID'         => $user_id,
-        'user_login' => $name,
-        'user_email' => $email,
-        'role'       => $wp_role,
-    ];
-
-    if (!empty($password)) {
-        $update_data['user_pass'] = $password;
-    }
-
-    $result = wp_update_user($update_data);
-
-    if (is_wp_error($result)) {
-        wp_send_json_error('Failed to update user.');
-    }
-
-    wp_send_json_success('User updated successfully.');
-}
-
-
-// Delete User
-add_action('wp_ajax_cuim_delete_user', function () {
-    if (!current_user_can('administrator')) wp_send_json_error('Permission denied.');
-    check_ajax_referer('cuim_nonce', 'security');
-    $uid = intval($_POST['user_id'] ?? 0);
-    if ($uid <= 0) wp_send_json_error('Invalid user.');
-    if ($uid == get_current_user_id()) wp_send_json_error('You cannot delete your own account.');
-
-    require_once ABSPATH . 'wp-admin/includes/user.php';
-    wp_delete_user($uid);
-    wp_send_json_success();
-});
-
-
-add_action('wp_ajax_cuim_approve_user', 'cuim_approve_user_callback');
-
-function cuim_approve_user_callback() {
-    check_ajax_referer('cuim_nonce', 'security');
-
-    if (!current_user_can('administrator')) {
-        wp_send_json_error('Access denied.');
-    }
-
-    $user_id = intval($_POST['user_id']);
-    $role = sanitize_text_field($_POST['role']);
-
-    $user = get_user_by('ID', $user_id);
-    if (!$user) {
-        wp_send_json_error('User not found.');
-    }
-
-    // Update to approved role
-    $result = wp_update_user([
-        'ID'   => $user_id,
-        'role' => $role
-    ]);
-
-    if (is_wp_error($result)) {
-        wp_send_json_error('Failed to approve user.');
-    }
-
-    delete_user_meta($user_id, 'cuim_requested_role');
-
-    wp_send_json_success('User approved successfully.');
-}
-
