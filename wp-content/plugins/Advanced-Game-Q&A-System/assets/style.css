@@ -38,6 +38,7 @@ p {
   --theme-var-page_width: 1860px;
 }
 
+
 .user-history-records-inner::-webkit-scrollbar,
 .fr-element.fr-view::-webkit-scrollbar,
 #pdfWrapper::-webkit-scrollbar,
@@ -65,6 +66,10 @@ textarea.wp-editor-area::-webkit-scrollbar,
   height: 3px !important;
 }
 
+.custom-table-ctn-inner::-webkit-scrollbar {
+  height: 8px !important;
+}
+
 /* Track */
 .user-history-records-inner::-webkit-scrollbar-track,
 .selected-dropdown-item::-webkit-scrollbar-track,
@@ -72,6 +77,7 @@ textarea.wp-editor-area::-webkit-scrollbar,
   background: transparent !important;
 }
 
+.custom-table-ctn-inner:-webkit-scrollbar-track,
 .fr-element.fr-view::-webkit-scrollbar-track,
 .fr-dropdown-menu::-webkit-scrollbar-track,
 .section-content::-webkit-scrollbar-track,
@@ -88,6 +94,7 @@ div#agqa-search-results::-webkit-scrollbar-track,
 }
 
 /* Handle */
+.custom-table-ctn-inner::-webkit-scrollbar-thumb,
 .fr-element.fr-view::-webkit-scrollbar-thumb,
 .fr-dropdown-menu::-webkit-scrollbar-thumb,
 #pdfWrapper::-webkit-scrollbar-thumb,
@@ -98,7 +105,7 @@ div#agqa-search-results::-webkit-scrollbar-thumb,
 .agqa-popup-form-inner::-webkit-scrollbar-thumb,
 .agqa-popup-form-select::-webkit-scrollbar-thumb,
 .menu-main-menu-container::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, .2);
+  background: #a0a0a0;
   border-radius: 8px;
 }
 
@@ -791,7 +798,8 @@ button.sc_button_hover_slide_left {
 /* === FINAL CARD FIX === */
 .api-card-container,
 .api-form-wrapper,
-.faq-form,#manage-user-add-form {
+.faq-form,
+#manage-user-add-form {
   position: relative;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(91.48deg, #252031 31.31%, #7644CE 135.46%);
   transition: all .3s ease-in-out;
@@ -1028,7 +1036,8 @@ button.sc_button_hover_slide_left {
   gap: 16px;
 }
 
-.back-button {
+.back-button,
+.cancelBtn.btn-default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1146,10 +1155,12 @@ a.back-button:hover,
 .browse-link:hover,
 .faq-accordion-button.active,
 .browse-link-pdf:hover,
-.add-button:hover {
+.add-button:hover,
+.cancelBtn.btn-default:hover {
   background-color: rgb(98, 68, 145);
 }
-.faq-accordion-button.active{
+
+.faq-accordion-button.active {
   pointer-events: none;
 }
 
@@ -1335,12 +1346,12 @@ div#agqa-add-game-modal h4 {
 div#agqa-add-game-modal textarea,
 div#agqa-edit-question-modal textarea,
 div#agqa-edit-game-modal textarea,
-/* div#report-featured-popup textarea, */
+  /* div#report-featured-popup textarea, */
 .agqa-admin-edit-box textarea,
 div#agqa-add-game-modal input,
 div#agqa-edit-question-modal input,
 div#agqa-edit-game-modal input,
-/* div#report-featured-popup input, */
+  /* div#report-featured-popup input, */
 .agqa-admin-edit-box input {
   margin: 5px 0 10px;
   border-radius: 10px;
@@ -2255,7 +2266,7 @@ body .selected-dropdown-item,
 }
 
 .agqa-popup-form-inner,
-.reorder-popup-inner{
+.reorder-popup-inner {
   padding: 16px 18px;
 }
 
@@ -2363,8 +2374,8 @@ body .selected-dropdown-item,
 .tab:hover,
 .tab.active {
   background: linear-gradient(90deg,
-      rgba(37, 32, 49, 0.72),
-      rgba(118, 68, 206, 0.72)), rgba(0, 0, 0, 0.2);
+  rgba(37, 32, 49, 0.72),
+  rgba(118, 68, 206, 0.72)), rgba(0, 0, 0, 0.2);
   border-color: #7644ce;
   box-shadow: 0 0 8px rgba(118, 68, 206, 0.4);
   color: #fff;
@@ -2776,7 +2787,8 @@ textarea.wp-editor-area {
   padding: 16px !important;
 }
 
-.agqa-popup-form-buttons,.history-record-buttons {
+.agqa-popup-form-buttons,
+.history-record-buttons {
   justify-content: right;
   margin-top: 16px;
 }
@@ -3124,7 +3136,8 @@ textarea {
 .reset-password-confirmation .no-form-cancel,
 .cancel-form-confirmation .no-form-cancel,
 .confirm-submit-popup .no-confirm-submit,
-.agqa-popup-form-buttons .no-submit,.history-record-buttons .close-button {
+.agqa-popup-form-buttons .no-submit,
+.history-record-buttons .close-button {
   border: 1px solid #6B4EBD;
   background-color: transparent;
 }
@@ -3220,7 +3233,8 @@ body.menu_side_hide .content_wrap>.content+.sidebar {
 }
 
 #filter-search:focus,
-#agqa-search-input:focus {
+#agqa-search-input:focus,
+#manage-user-search:focus {
   background-color: #2b2937 !important;
 }
 
@@ -3266,7 +3280,7 @@ div#agqa-search-box input {
 .custom-select-dropdown-lists {
   position: absolute;
   background: #747474;
-  border: 1px solid rgb(134 133 133 / 85%);
+  border: 1px solid rgb(134 133 133 );
   border-top: none;
   z-index: 99;
   border-radius: 0 0 10px 10px;
@@ -3283,8 +3297,10 @@ div#agqa-search-box input {
   background-color: transparent !important;
 }
 
+form .agqa-popup-form-multi-select,
 .agqa-popup-form-multi-select {
   border-radius: 10px;
+  background-color: transparent;
 }
 
 .agqa-popup-form-ctn .agqa-popup-form-multi-select+.error-message,
@@ -3310,7 +3326,7 @@ div#agqa-search-box input {
 }
 
 .char-counter.show-message {
-  bottom: 25px;
+  bottom: 8px;
 }
 
 .form-buttons {
@@ -3403,7 +3419,7 @@ form .form-buttons button {
 
 #custom-faq-field-popup-inner,
 .submit-confirm,
-.reset-password-confirmation-box ,
+.reset-password-confirmation-box,
 .cancel-form-confirmation-box,
 .cancel-confirm,
 .confirm-submit-popup-box {
@@ -4740,4 +4756,10 @@ body.page_content_blocks:not(.single-post):not(.single-job_listing):not(.element
   -ms-border-radius: 8px !important;
   border-radius: 8px !important;
   border: 1px solid #747474 !important;
+}
+
+.form-field-editor+.error-message {
+  position: absolute;
+  top: auto;
+  bottom: -21px;
 }
