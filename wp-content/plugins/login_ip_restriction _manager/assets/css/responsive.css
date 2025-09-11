@@ -1,0 +1,24 @@
+@media (max-width: 1920px) and (min-width: 1760px) {
+ .custom-table-ctn .custom-table-head,table thead {
+    font-size: 18px;
+}
+}
+
+@media (max-width: 1760px) {
+    .custom-table-ctn-inner {
+        width: 100%;
+        overflow-x: auto;
+        margin-bottom: 10px;
+    }
+    
+    .custom-table {
+        width: 160%;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 1300px){
+    .custom-table {
+        width: 200%;
+    }
+}

@@ -73,7 +73,7 @@ if($add_manage_id !== 0) {
                             </div>
                         </div>
                         <div class="filter-select date-field">
-                        <input type="text" name="daterange" class="select-date-picker" value="ssss" placeholder="YYYY/MM/DD - YYYY/MM/DD">
+                        <input type="text" name="daterange" class="select-date-picker" value="" placeholder="YYYY/MM/DD - YYYY/MM/DD">
                             <span class="calendar-icon"></span>    
                         </div>
                         <button type="submit" class="filter-select-button" id="agqa-game-filter"><span>Search</span></button>
@@ -87,624 +87,628 @@ if($add_manage_id !== 0) {
                     </div>
                 </div>
         </div>
-        <div class="manage-user-table custom-table">
-            <div class="custom-table-head">
-                <div class="table-head-col">Account</div>
-                <div class="table-head-col">State</div>
-                <div class="table-head-col">Role</div>
-                <div class="table-head-col">Company Name</div>
-                <div class="table-head-col">Mail</div>
-                <div class="table-head-col">Contact Method</div>
-                <div class="table-head-col">Creation Time</div>
-                <div class="table-head-col">Actions</div>
-            </div>
-            <div class="custom-table-body">
-                <div class="custom-table-row">
-                    <div class="table-body-col">johnsonjoshua</div>
-                    <div class="table-body-col table-row-status active"><span>Active</span></div>
-                    <div class="table-body-col">Viewer</div>
-                    <div class="table-body-col">Wagner Inc</div>
-                    <div class="table-body-col table-body-col-mail"><a href="mailto:jillrhodes@miller.com">jillrhodes@miller.com</a></div>
-                    <div class="table-body-col table-body-col-userId"><a href="#">@johnsonjoshua</a></div>
-                    <div class="table-body-col table-body-col-date">2025/11/12</div>
-                    <div class="table-body-col table-body-col-buttons">
-                         <div class="login-history-ctn">
-                            <button class="login-history-icon"></button>
-                            <div class="login-history-popup">
-                                <div class="login-history-popup-inner">
-                                    <div class="popup-form-cross-icon"></div>
-                                    <div class="popup-head">
-                                        <h2>Login History</h2>
-                                        <span class="userName">johnsonjoshua</span>
-                                    </div>
-                                    <div class="user-history-records">
-                                        <div class="user-history-records-inner">
-                                            <div class="user-history-record-head">
-                                                <span class="user-number-title">No.</span>
-                                                <span class="user-login-time-title">Login Time</span>
-                                                <span class="user-ip-title">Login IP Address</span>
+        <div class="custom-table-ctn">
+            <div class="custom-table-ctn-inner">
+                <div class="manage-user-table custom-table">
+                    <div class="custom-table-head">
+                        <div class="table-head-col">Account</div>
+                        <div class="table-head-col">State</div>
+                        <div class="table-head-col">Role</div>
+                        <div class="table-head-col">Company Name</div>
+                        <div class="table-head-col">Mail</div>
+                        <div class="table-head-col">Contact Method</div>
+                        <div class="table-head-col">Creation Time</div>
+                        <div class="table-head-col">Actions</div>
+                    </div>
+                    <div class="custom-table-body">
+                        <div class="custom-table-row">
+                            <div class="table-body-col">johnsonjoshua</div>
+                            <div class="table-body-col table-row-status active"><span>Active</span></div>
+                            <div class="table-body-col">Viewer</div>
+                            <div class="table-body-col">Wagner Inc</div>
+                            <div class="table-body-col table-body-col-mail"><a href="mailto:jillrhodes@miller.com">jillrhodes@miller.com</a></div>
+                            <div class="table-body-col table-body-col-userId"><a href="#">@johnsonjoshua</a></div>
+                            <div class="table-body-col table-body-col-date">2025/11/12</div>
+                            <div class="table-body-col table-body-col-buttons">
+                                <div class="login-history-ctn">
+                                    <button class="login-history-icon"></button>
+                                    <div class="login-history-popup">
+                                        <div class="login-history-popup-inner">
+                                            <div class="popup-form-cross-icon"></div>
+                                            <div class="popup-head">
+                                                <h2>Login History</h2>
+                                                <span class="userName">johnsonjoshua</span>
                                             </div>
-                                            <div class="user-history-record-lists">
-                                                <div class="user-history-record-lists-inner">
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
+                                            <div class="user-history-records">
+                                                <div class="user-history-records-inner">
+                                                    <div class="user-history-record-head">
+                                                        <span class="user-number-title">No.</span>
+                                                        <span class="user-login-time-title">Login Time</span>
+                                                        <span class="user-ip-title">Login IP Address</span>
                                                     </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                </div>
-                                            </div> 
-                                        </div> 
-                                    </div>
-                                    <div class="history-record-buttons d-flex">
-                                        <button class="close-button">close</button>
-                                        <button class="button">Go to Login History</button>
-                                    </div>
-                                </div>
-                            </div>
-                         </div>
-                         <div class="manage-user-edit-ctn">
-                            <a href="#" class="manage-user-edit-button"></a>
-                         </div>
-                         <div class="delete-user-ctn">
-                                <button class="delete-user-button"></button>
-                                <div id="custom-faq-field-popup">
-                                    <div id="custom-faq-field-popup-inner">
-                                        <h2>Delete</h2>
-                                        <div class="popup-form-cross-icon"></div>
-                                        <div class="form-message">Are you sure you want to Delete?</div>
-                                        <div class="agqa-popup-form-buttons d-flex">
-                                            <button class="no-cancel" type="button">No</button>
-                                            <button id="yes-cancel" type="submit" value="">Yes</button>
+                                                    <div class="user-history-record-lists">
+                                                        <div class="user-history-record-lists-inner">
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                </div> 
+                                            </div>
+                                            <div class="history-record-buttons d-flex">
+                                                <button class="close-button">close</button>
+                                                <button class="button">Go to Login History</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                         </div>
-                    </div>
-                </div>
-                <div class="custom-table-row">
-                    <div class="table-body-col">johnsonjoshua</div>
-                    <div class="table-body-col table-row-status inactive"><span>Inactive</span></div>
-                    <div class="table-body-col">Viewer</div>
-                    <div class="table-body-col">Wagner Inc</div>
-                    <div class="table-body-col table-body-col-mail"><a href="mailto:jillrhodes@miller.com">jillrhodes@miller.com</a></div>
-                    <div class="table-body-col table-body-col-userId"><a href="#">@johnsonjoshua</a></div>
-                    <div class="table-body-col table-body-col-date">2025/11/12</div>
-                    <div class="table-body-col table-body-col-buttons">
-                         <div class="login-history-ctn">
-                            <button class="login-history-icon"></button>
-                            <div class="login-history-popup">
-                                <div class="login-history-popup-inner">
-                                    <div class="popup-form-cross-icon"></div>
-                                    <div class="popup-head">
-                                        <h2>Login History</h2>
-                                        <span class="userName">johnsonjoshua</span>
-                                    </div>
-                                    <div class="user-history-records">
-                                        <div class="user-history-records-inner">
-                                            <div class="user-history-record-head">
-                                                <span class="user-number-title">No.</span>
-                                                <span class="user-login-time-title">Login Time</span>
-                                                <span class="user-ip-title">Login IP Address</span>
-                                            </div>
-                                            <div class="user-history-record-lists">
-                                                <div class="user-history-record-lists-inner">
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                </div>
-                                            </div> 
-                                        </div> 
-                                    </div>
-                                    <div class="history-record-buttons d-flex">
-                                        <button class="close-button">close</button>
-                                        <button class="button">Go to Login History</button>
-                                    </div>
+                                <div class="manage-user-edit-ctn">
+                                    <a href="#" class="manage-user-edit-button"></a>
                                 </div>
-                            </div>
-                         </div>
-                         <div class="manage-user-edit-ctn">
-                            <a href="#" class="manage-user-edit-button"></a>
-                         </div>
-                         <div class="delete-user-ctn">
-                                <button class="delete-user-button"></button>
-                                <div id="custom-faq-field-popup">
-                                    <div id="custom-faq-field-popup-inner">
-                                        <h2>Delete</h2>
-                                        <div class="popup-form-cross-icon"></div>
-                                        <div class="form-message">Are you sure you want to Delete?</div>
-                                        <div class="agqa-popup-form-buttons d-flex">
-                                            <button class="no-cancel" type="button">No</button>
-                                            <button id="yes-cancel" type="submit" value="">Yes</button>
+                                <div class="delete-user-ctn">
+                                        <button class="delete-user-button"></button>
+                                        <div id="custom-faq-field-popup">
+                                            <div id="custom-faq-field-popup-inner">
+                                                <h2>Delete</h2>
+                                                <div class="popup-form-cross-icon"></div>
+                                                <div class="form-message">Are you sure you want to Delete?</div>
+                                                <div class="agqa-popup-form-buttons d-flex">
+                                                    <button class="no-cancel" type="button">No</button>
+                                                    <button id="yes-cancel" type="submit" value="">Yes</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                         </div>
-                    </div>
-                </div>
-                <div class="custom-table-row">
-                    <div class="table-body-col">johnsonjoshua</div>
-                    <div class="table-body-col table-row-status freeze"><span>Freeze</span></div>
-                    <div class="table-body-col">Viewer</div>
-                    <div class="table-body-col">Wagner Inc</div>
-                    <div class="table-body-col table-body-col-mail"><a href="mailto:jillrhodes@miller.com">jillrhodes@miller.com</a></div>
-                    <div class="table-body-col table-body-col-userId"><a href="#">@johnsonjoshua</a></div>
-                    <div class="table-body-col table-body-col-date">2025/11/12</div>
-                    <div class="table-body-col table-body-col-buttons">
-                        <div class="login-history-ctn">
-                            <button class="login-history-icon"></button>
-                            <div class="login-history-popup">
-                                <div class="login-history-popup-inner">
-                                    <div class="popup-form-cross-icon"></div>
-                                    <div class="popup-head">
-                                        <h2>Login History</h2>
-                                        <span class="userName">johnsonjoshua</span>
-                                    </div>
-                                    <div class="user-history-records">
-                                        <div class="user-history-records-inner">
-                                            <div class="user-history-record-head">
-                                                <span class="user-number-title">No.</span>
-                                                <span class="user-login-time-title">Login Time</span>
-                                                <span class="user-ip-title">Login IP Address</span>
-                                            </div>
-                                            <div class="user-history-record-lists">
-                                                <div class="user-history-record-lists-inner">
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                </div>
-                                            </div> 
-                                        </div> 
-                                    </div>
-                                    <div class="history-record-buttons d-flex">
-                                        <button class="close-button">close</button>
-                                        <button class="button">Go to Login History</button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="manage-user-edit-ctn">
-                            <a href="#" class="manage-user-edit-button"></a>
-                         </div>
-                        <div class="delete-user-ctn">
-                                <button class="delete-user-button"></button>
-                                <div id="custom-faq-field-popup">
-                                    <div id="custom-faq-field-popup-inner">
-                                        <h2>Delete</h2>
-                                        <div class="popup-form-cross-icon"></div>
-                                        <div class="form-message">Are you sure you want to Delete?</div>
-                                        <div class="agqa-popup-form-buttons d-flex">
-                                            <button class="no-cancel" type="button">No</button>
-                                            <button id="yes-cancel" type="submit" value="">Yes</button>
+                        <div class="custom-table-row">
+                            <div class="table-body-col">johnsonjoshua</div>
+                            <div class="table-body-col table-row-status inactive"><span>Inactive</span></div>
+                            <div class="table-body-col">Viewer</div>
+                            <div class="table-body-col">Wagner Inc</div>
+                            <div class="table-body-col table-body-col-mail"><a href="mailto:jillrhodes@miller.com">jillrhodes@miller.com</a></div>
+                            <div class="table-body-col table-body-col-userId"><a href="#">@johnsonjoshua</a></div>
+                            <div class="table-body-col table-body-col-date">2025/11/12</div>
+                            <div class="table-body-col table-body-col-buttons">
+                                <div class="login-history-ctn">
+                                    <button class="login-history-icon"></button>
+                                    <div class="login-history-popup">
+                                        <div class="login-history-popup-inner">
+                                            <div class="popup-form-cross-icon"></div>
+                                            <div class="popup-head">
+                                                <h2>Login History</h2>
+                                                <span class="userName">johnsonjoshua</span>
+                                            </div>
+                                            <div class="user-history-records">
+                                                <div class="user-history-records-inner">
+                                                    <div class="user-history-record-head">
+                                                        <span class="user-number-title">No.</span>
+                                                        <span class="user-login-time-title">Login Time</span>
+                                                        <span class="user-ip-title">Login IP Address</span>
+                                                    </div>
+                                                    <div class="user-history-record-lists">
+                                                        <div class="user-history-record-lists-inner">
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                </div> 
+                                            </div>
+                                            <div class="history-record-buttons d-flex">
+                                                <button class="close-button">close</button>
+                                                <button class="button">Go to Login History</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                         </div>
-                    </div>
-                </div>
-                <div class="custom-table-row">
-                    <div class="table-body-col">johnsonjoshua</div>
-                    <div class="table-body-col table-row-status pending"><span>Pending</span></div>
-                    <div class="table-body-col">Viewer</div>
-                    <div class="table-body-col">Wagner Inc</div>
-                    <div class="table-body-col table-body-col-mail"><a href="mailto:jillrhodes@miller.com">jillrhodes@miller.com</a></div>
-                    <div class="table-body-col table-body-col-userId"><a href="#">@johnsonjoshua</a></div>
-                    <div class="table-body-col table-body-col-date">2025/11/12</div>
-                    <div class="table-body-col table-body-col-buttons">
-                        <div class="login-history-ctn">
-                            <button class="login-history-icon"></button>
-                            <div class="login-history-popup">
-                                <div class="login-history-popup-inner">
-                                    <div class="popup-form-cross-icon"></div>
-                                    <div class="popup-head">
-                                        <h2>Login History</h2>
-                                        <span class="userName">johnsonjoshua</span>
-                                    </div>
-                                    <div class="user-history-records">
-                                        <div class="user-history-records-inner">
-                                            <div class="user-history-record-head">
-                                                <span class="user-number-title">No.</span>
-                                                <span class="user-login-time-title">Login Time</span>
-                                                <span class="user-ip-title">Login IP Address</span>
-                                            </div>
-                                            <div class="user-history-record-lists">
-                                                <div class="user-history-record-lists-inner">
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
-                                                    <div class="user-history-record-list">
-                                                        <span class="user-number">1</span>        
-                                                        <span class="user-login-time">2025/12/30 02:46</span>        
-                                                        <span class="user-ip">192.168.1.101</span>        
-                                                    </div>
+                                <div class="manage-user-edit-ctn">
+                                    <a href="#" class="manage-user-edit-button"></a>
+                                </div>
+                                <div class="delete-user-ctn">
+                                        <button class="delete-user-button"></button>
+                                        <div id="custom-faq-field-popup">
+                                            <div id="custom-faq-field-popup-inner">
+                                                <h2>Delete</h2>
+                                                <div class="popup-form-cross-icon"></div>
+                                                <div class="form-message">Are you sure you want to Delete?</div>
+                                                <div class="agqa-popup-form-buttons d-flex">
+                                                    <button class="no-cancel" type="button">No</button>
+                                                    <button id="yes-cancel" type="submit" value="">Yes</button>
                                                 </div>
-                                            </div> 
-                                        </div> 
-                                    </div>
-                                    <div class="history-record-buttons d-flex">
-                                        <button class="close-button">close</button>
-                                        <button class="button">Go to Login History</button>
-                                    </div>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="manage-user-edit-ctn">
-                            <a href="#" class="manage-user-edit-button"></a>
-                         </div>
-                        <div class="delete-user-ctn">
-                                <button class="delete-user-button"></button>
-                                <div id="custom-faq-field-popup">
-                                    <div id="custom-faq-field-popup-inner">
-                                        <h2>Delete</h2>
-                                        <div class="popup-form-cross-icon"></div>
-                                        <div class="form-message">Are you sure you want to Delete?</div>
-                                        <div class="agqa-popup-form-buttons d-flex">
-                                            <button class="no-cancel" type="button">No</button>
-                                            <button id="yes-cancel" type="submit" value="">Yes</button>
+                        <div class="custom-table-row">
+                            <div class="table-body-col">johnsonjoshua</div>
+                            <div class="table-body-col table-row-status freeze"><span>Freeze</span></div>
+                            <div class="table-body-col">Viewer</div>
+                            <div class="table-body-col">Wagner Inc</div>
+                            <div class="table-body-col table-body-col-mail"><a href="mailto:jillrhodes@miller.com">jillrhodes@miller.com</a></div>
+                            <div class="table-body-col table-body-col-userId"><a href="#">@johnsonjoshua</a></div>
+                            <div class="table-body-col table-body-col-date">2025/11/12</div>
+                            <div class="table-body-col table-body-col-buttons">
+                                <div class="login-history-ctn">
+                                    <button class="login-history-icon"></button>
+                                    <div class="login-history-popup">
+                                        <div class="login-history-popup-inner">
+                                            <div class="popup-form-cross-icon"></div>
+                                            <div class="popup-head">
+                                                <h2>Login History</h2>
+                                                <span class="userName">johnsonjoshua</span>
+                                            </div>
+                                            <div class="user-history-records">
+                                                <div class="user-history-records-inner">
+                                                    <div class="user-history-record-head">
+                                                        <span class="user-number-title">No.</span>
+                                                        <span class="user-login-time-title">Login Time</span>
+                                                        <span class="user-ip-title">Login IP Address</span>
+                                                    </div>
+                                                    <div class="user-history-record-lists">
+                                                        <div class="user-history-record-lists-inner">
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                </div> 
+                                            </div>
+                                            <div class="history-record-buttons d-flex">
+                                                <button class="close-button">close</button>
+                                                <button class="button">Go to Login History</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                         </div>
+                                <div class="manage-user-edit-ctn">
+                                    <a href="#" class="manage-user-edit-button"></a>
+                                </div>
+                                <div class="delete-user-ctn">
+                                        <button class="delete-user-button"></button>
+                                        <div id="custom-faq-field-popup">
+                                            <div id="custom-faq-field-popup-inner">
+                                                <h2>Delete</h2>
+                                                <div class="popup-form-cross-icon"></div>
+                                                <div class="form-message">Are you sure you want to Delete?</div>
+                                                <div class="agqa-popup-form-buttons d-flex">
+                                                    <button class="no-cancel" type="button">No</button>
+                                                    <button id="yes-cancel" type="submit" value="">Yes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="custom-table-row">
+                            <div class="table-body-col">johnsonjoshua</div>
+                            <div class="table-body-col table-row-status pending"><span>Pending</span></div>
+                            <div class="table-body-col">Viewer</div>
+                            <div class="table-body-col">Wagner Inc</div>
+                            <div class="table-body-col table-body-col-mail"><a href="mailto:jillrhodes@miller.com">jillrhodes@miller.com</a></div>
+                            <div class="table-body-col table-body-col-userId"><a href="#">@johnsonjoshua</a></div>
+                            <div class="table-body-col table-body-col-date">2025/11/12</div>
+                            <div class="table-body-col table-body-col-buttons">
+                                <div class="login-history-ctn">
+                                    <button class="login-history-icon"></button>
+                                    <div class="login-history-popup">
+                                        <div class="login-history-popup-inner">
+                                            <div class="popup-form-cross-icon"></div>
+                                            <div class="popup-head">
+                                                <h2>Login History</h2>
+                                                <span class="userName">johnsonjoshua</span>
+                                            </div>
+                                            <div class="user-history-records">
+                                                <div class="user-history-records-inner">
+                                                    <div class="user-history-record-head">
+                                                        <span class="user-number-title">No.</span>
+                                                        <span class="user-login-time-title">Login Time</span>
+                                                        <span class="user-ip-title">Login IP Address</span>
+                                                    </div>
+                                                    <div class="user-history-record-lists">
+                                                        <div class="user-history-record-lists-inner">
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                            <div class="user-history-record-list">
+                                                                <span class="user-number">1</span>        
+                                                                <span class="user-login-time">2025/12/30 02:46</span>        
+                                                                <span class="user-ip">192.168.1.101</span>        
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                </div> 
+                                            </div>
+                                            <div class="history-record-buttons d-flex">
+                                                <button class="close-button">close</button>
+                                                <button class="button">Go to Login History</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="manage-user-edit-ctn">
+                                    <a href="#" class="manage-user-edit-button"></a>
+                                </div>
+                                <div class="delete-user-ctn">
+                                        <button class="delete-user-button"></button>
+                                        <div id="custom-faq-field-popup">
+                                            <div id="custom-faq-field-popup-inner">
+                                                <h2>Delete</h2>
+                                                <div class="popup-form-cross-icon"></div>
+                                                <div class="form-message">Are you sure you want to Delete?</div>
+                                                <div class="agqa-popup-form-buttons d-flex">
+                                                    <button class="no-cancel" type="button">No</button>
+                                                    <button id="yes-cancel" type="submit" value="">Yes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

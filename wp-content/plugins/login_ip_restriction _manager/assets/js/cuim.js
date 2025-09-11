@@ -315,45 +315,6 @@ jQuery(document).ready(function ($) {
         }
     });
 
-
-// Real-time validation on input field (triggered while typing)
-$('#account-field').on('input', function () {
-    validateAccountField();  // Validate as the user types
-});
-
-// Function to validate the account field in real-time
-function validateAccountField() {
-    var accountValue = $('#account-field').val();
-    var errorMessage = '';
-
-    // Condition 1: Check if the field is empty
-    if (accountValue === '') {
-        errorMessage = 'Account is required.';
-    }
-    // Condition 2: Check if the input contains only English characters and numbers (no special characters)
-    else if (!/^[A-Za-z0-9]+$/.test(accountValue)) {
-        errorMessage = 'Invalid account format: only A–Z, a–z, and 0–9 are allowed.';
-    }
-    // Condition 3: Check if the input contains at least one number
-    else if (!/\d/.test(accountValue)) {
-        errorMessage = 'Invalid account format: must contain at least one number.';
-    }
-    // Condition 4: Check if the input is at least 4 characters long and no more than 20 characters
-    else if (accountValue.length < 4 || accountValue.length > 20) {
-        errorMessage = 'Account length must be between 4 and 20 characters.';
-    }
-
-    // Display error message or success message
-    if (errorMessage) {
-        $('#error-message').text(errorMessage);  // Show the error message
-        $('#error-message').css('color', 'red');  // Set the color of the error message to red
-    } else {
-        $('#error-message').text('Input Successful');  // Show success message if all conditions pass
-        $('#error-message').css('color', 'green');  // Set the color of the success message to green
-    }
-}
-
-
     $('.toggle-password').on('click', function () {
         var passwordField = $(this).siblings('input[type="password"]'); // Get the password input inside the same .password-field container
 
@@ -364,11 +325,11 @@ function validateAccountField() {
         // Toggle the button class and icon
         $(this).toggleClass('show-pass');
     });
-  
-        $('input[name="daterange"]').daterangepicker({
-            opens: 'right', // Position the calendar
-            locale: {
-                format: 'YYYY/MM/DD', // Specify the date format
-            }
-        });
+
+    $('input[name="daterange"]').daterangepicker({
+        opens: 'right', // Position the calendar
+        locale: {
+            format: 'YYYY/MM/DD', // Specify the date format
+        }
+    });
 });

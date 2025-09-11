@@ -21,6 +21,7 @@ add_action('wp_enqueue_scripts', function () {
     if (is_user_logged_in()) {
         wp_enqueue_style('date-picker-style', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css');
         wp_enqueue_style('cuim-style', plugin_dir_url(__FILE__) . 'assets/css/cuim.css');
+        wp_enqueue_style('cuim-responsive-style', plugin_dir_url(__FILE__) . 'assets/css/responsive.css');
         // manage-user Style sheet
         wp_enqueue_style('manage-user-style', plugin_dir_url(__FILE__) . 'assets/css/manage-user.css');
            wp_enqueue_script('cuim-script-date', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js', ['jquery'], null, true);
