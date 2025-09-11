@@ -108,11 +108,11 @@ jQuery(document).ready(function ($) {
 
     // Slide up all other accordion bodies except the one clicked
     jQuery(".faq-accordion-body")
-      .not(currentAccordionBody)
-      .slideUp(function () {
-        // Reset display property after slideUp
-        jQuery(this).css("display", "");
-      });
+        .not(currentAccordionBody)
+        .slideUp(function () {
+          // Reset display property after slideUp
+          jQuery(this).css("display", "");
+        });
 
     // Slide toggle the current accordion body
     currentAccordionBody.stop(true, true).slideToggle(function () {
@@ -195,15 +195,14 @@ jQuery(document).ready(function ($) {
   // ==========================
   jQuery(".copy-button").click(function () {
     var question = jQuery(this)
-      .closest(".faq-accordion")
-      .find(".faq-accordion-head h2")
-      .text();
+        .closest(".faq-accordion")
+        .find(".faq-accordion-head h2")
+        .text();
     var answer = jQuery(this)
-      .closest(".faq-accordion")
-      .find(".faq-accordion-body")
-      .text();
-    var textToCopy = "Q: " + question + " Ans: " + answer;
-
+        .closest(".faq-accordion")
+        .find(".faq-accordion-body")
+        .text().trim();
+    var textToCopy = "Q: " + question + "\nAns: " + answer;
     var tempInput = document.createElement("textarea");
     tempInput.value = textToCopy;
     document.body.appendChild(tempInput);
@@ -246,40 +245,6 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  // ==========================
-  // 7. Search with Highlighting
-  // ==========================
-  jQuery("input[type='search']").on("input", function () {
-    var query = jQuery(this).val().toLowerCase();
-
-    if (query !== "") {
-      jQuery(".faq-main-content")
-        .find("*")
-        .each(function () {
-          var $node = jQuery(this);
-          var text = $node.text();
-          if (
-            $node.children().length === 0 &&
-            text.toLowerCase().includes(query)
-          ) {
-            var newText = text.replace(
-              new RegExp("\\b" + query + "\\b", "gi"),
-              function (match) {
-                return '<span class="highlighted">' + match + "</span>";
-              }
-            );
-            $node.html(newText);
-          }
-        });
-    } else {
-      jQuery(".faq-main-content")
-        .find(".highlighted")
-        .each(function () {
-          var $highlightedNode = jQuery(this);
-          $highlightedNode.replaceWith($highlightedNode.text());
-        });
-    }
-  });
 
   // 3sep 2025 (Usama)
 
@@ -297,28 +262,28 @@ jQuery(document).ready(function ($) {
 
   // FAQ accordion body ke andar ke empty p, li, aur child elements ko hide karo
   jQuery(".faq-accordion-body")
-    .find("p, li")
-    .each(function () {
-      // Check agar content empty ho (text ya html content ke hisaab se)
-      if (jQuery(this).html().trim() === "") {
-        jQuery(this).css({
-          position: "absolute",
-          opacity: "0",
-          visibility: "hidden", // Optional, agar aap chahein ki woh element visually aur interactively bhi disappear ho
-        });
-      }
-    });
+      .find("p, li")
+      .each(function () {
+        // Check agar content empty ho (text ya html content ke hisaab se)
+        if (jQuery(this).html().trim() === "") {
+          jQuery(this).css({
+            position: "absolute",
+            opacity: "0",
+            visibility: "hidden", // Optional, agar aap chahein ki woh element visually aur interactively bhi disappear ho
+          });
+        }
+      });
 
   // Agar kisi aur empty element ko hide karna hai
   jQuery(".faq-accordion-body")
-    .children()
-    .each(function () {
-      if (jQuery(this).is(":empty")) {
-        jQuery(this).css({
-          position: "absolute",
-          opacity: "0",
-          visibility: "hidden",
-        });
-      }
-    });
+      .children()
+      .each(function () {
+        if (jQuery(this).is(":empty")) {
+          jQuery(this).css({
+            position: "absolute",
+            opacity: "0",
+            visibility: "hidden",
+          });
+        }
+      });
 });
