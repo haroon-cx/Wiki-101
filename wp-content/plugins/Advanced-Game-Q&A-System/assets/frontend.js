@@ -613,65 +613,30 @@ jQuery(document).ready(function ($) {
 
   /*  Add Custom Field Script (Usama)  */
 
-let editMode = false;
-let editTarget = null;
-let removeTarget = null;
-const maxFields = 4;
+  let editMode = false;
+  let editTarget = null;
+  let removeTarget = null;
+  const maxFields = 4;
 
-const popupWrapper = $("#custom-field-popup");
-const addFieldPopup = $(".popup-content.add-field");
-const submitConfirmPopup = $(".popup-content.submit-confirm");
-const cancelConfirmPopup = $(".popup-content.cancel-confirm");
-const firstNameInput = $("#first-name");
-const addBtn = $("#add-custom-field-btn");
+  const popupWrapper = $("#custom-field-popup");
+  const addFieldPopup = $(".popup-content.add-field");
+  const submitConfirmPopup = $(".popup-content.submit-confirm");
+  const cancelConfirmPopup = $(".popup-content.cancel-confirm");
+  const firstNameInput = $("#first-name");
+  const addBtn = $("#add-custom-field-btn");
 
-// This finds the .form-field containing the add button
-const addBtnContainer = addBtn.closest(".form-field");
+  // This finds the .form-field containing the add button
+  const addBtnContainer = addBtn.closest(".form-field");
 
-function showPopup(popupEl) {
-  $(".popup-content").hide();
-  popupEl.show();
-  popupWrapper.fadeIn(200);
-}
-
-function hidePopup() {
-  popupWrapper.fadeOut(200);
-  removeTarget = null;
-}
-
-function checkFieldLimit() {
-  const count = $(".custom-form > .form-field.custom-field-item").length;
-  if (count >= maxFields) {
-    addBtn.addClass("disabled").prop("disabled", true);
-  } else {
-    addBtn.removeClass("disabled").prop("disabled", false);
-  }
-}
-
-// Open Add Custom Field popup
-addBtn.on("click", function () {
-  editMode = false;
-  editTarget = null;
-  firstNameInput.val("").attr("placeholder", "Description"); // Reset placeholder to "Description"
-  showPopup(addFieldPopup);
-});
-
-// Save button → go to submit confirmation popup
-$("#save-custom-field").on("click", function (e) {
-  e.preventDefault();
-
-  const value = $.trim(firstNameInput.val());
-
-  // Condition 1: Check if any characters have been entered
-  if (!value) {
-    alert("Please enter a valid contact number. Letters or unsupported symbols are not allowed.");
-    return;
+  function showPopup(popupEl) {
+    $(".popup-content").hide();
+    popupEl.show();
+    popupWrapper.fadeIn(200);
   }
 
-  // Condition 2: Check if the input length is less than or equal to 50 characters
-  if (value.length > 50) {
-    alert("Maximum length for this field is 50 characters. Please shorten your input.");
-    return;
+  function hidePopup() {
+    popupWrapper.fadeOut(200);
+    removeTarget = null;
   }
 
   function checkFieldLimit() {
@@ -679,6 +644,69 @@ $("#save-custom-field").on("click", function (e) {
         ".custom-form > .form-field.custom-field-item"
     ).length;
     if (count >= maxFields) {
+      addBtn.addClass("disabled").prop("disabled", true);
+    } else {
+      addBtn.removeClass("disabled").prop("disabled", false);
+    }
+  }
+
+  // Open Add Custom Field popup
+  addBtn.on("click", function () {
+    editMode = false;
+    editTarget = null;
+    firstNameInput.val("").attr("placeholder", "Description");
+    showPopup(addFieldPopup);
+  });
+
+  // Save button → go to submit confirmation popup
+  $("#save-custom-field").on("click", function (e) {
+    e.preventDefault();
+    showPopup(submitConfirmPopup);
+  });
+
+  // YES submit → save or update
+  // $(".yes-submit").on("click", function (e) {
+  //     e.preventDefault();
+  //     const value = $.trim(firstNameInput.val());
+  //     if (!value) {
+  //         hidePopup();
+  //         return;
+  //     }
+
+  //     if (editMode && editTarget) {
+  //         editTarget.find("label").text(value);
+  //         editTarget.find("input[type='text']").attr("placeholder", value);
+  //     } else {
+  //         const count = $(".api-form-wrapper > form > .form-field.custom-field-item").length;
+  //         if (count >= maxFields) {
+  //             hidePopup();
+  //             return;
+  //         }
+
+  //         const newField = $(`
+  //             <div class="form-field custom-field-item">
+  //             <input type="hidden" name="custom-label-${count + 1}" value="${value}">
+  //                 <label>${value}</label>
+  //                 <div class="custom-append-field">
+  //                     <input type="text" name="custom-field-${count + 1}" placeholder="${value}">
+  //                     <button type="button" class="edit-field-btn"></button>
+  //                     <button type="button" class="remove-field-btn"></button>
+  //                 </div>
+  //             </div>
+  //         `);
+
+  //         // Append directly before the "Add Custom Field" .form-field
+  //         addBtnContainer.before(newField);
+  //     }
+
+  //     checkFieldLimit();
+  //     hidePopup();
+  // });
+  // YES submit → save or update
+  $(".yes-submit").on("click", function (e) {
+    e.preventDefault();
+    const value = $.trim(firstNameInput.val());
+    if (!value) {
       hidePopup();
       return;
     }
@@ -760,18 +788,18 @@ $("#save-custom-field").on("click", function (e) {
   // Function to add a custom field dynamically
   function addCustomField(fieldNumber, value) {
     const newField = $(`
-      <div class="form-field custom-field-item">
-          <input type="hidden" name="custom-label-${count + 1}" value="${value}">
-          <label>${value}</label>
-          <div class="custom-append-field">
-              <input type="text" name="custom-field-${count + 1}" placeholder="${value}">
-              <button type="button" class="edit-field-btn"></button>
-              <button type="button" class="remove-field-btn"></button>
-          </div>
-      </div>
+        <div class="form-field custom-field-item">
+            <input type="hidden" name="custom-label-${fieldNumber}" value="${value}">
+            <label>${value}</label>
+            <div class="custom-append-field">
+                <input type="text" name="custom-field-${fieldNumber}" placeholder="${value}">
+                <button type="button" class="edit-field-btn"></button>
+                <button type="button" class="remove-field-btn"></button>
+            </div>
+        </div>
     `);
 
-    // Append new field before the "Add Custom Field" button
+    // Append the new field
     addBtnContainer.before(newField);
   }
 
@@ -830,112 +858,6 @@ $("#save-custom-field").on("click", function (e) {
   });
 
   checkFieldLimit();
-  hidePopup();
-});
-
-// Handle the removal of fields with confirmation popup
-$(document).on("click", ".remove-field-btn, .delete-button", function () {
-  var fieldToRemove = $(this).closest(".form-field.custom-field-item");
-  var confirmationPopup = $("#confirmation-popup");
-
-  // Show the confirmation popup
-  confirmationPopup.show();
-
-  // Store the reference to the field being removed
-  var currentField = fieldToRemove;
-
-  // Handle the "Yes" button click (field will be removed)
-  $("#yes-cancel").on("click", function () {
-    // Remove the field from the DOM
-    currentField.remove();
-
-    // Hide the confirmation popup after removal
-    confirmationPopup.hide();
-
-    // Call the checkFieldLimit function to verify the field count
-    checkFieldLimit();
-  });
-
-  // Handle the "No" button click (field will not be removed)
-  $(".no-cancel").on("click", function () {
-    // Just hide the confirmation popup without removing the field
-    confirmationPopup.hide();
-  });
-});
-
-// Function to add a custom field dynamically
-function addCustomField(fieldNumber, value) {
-  const newField = $(`
-    <div class="form-field custom-field-item">
-        <input type="hidden" name="custom-label-${fieldNumber}" value="${value}">
-        <label>${value}</label>
-        <div class="custom-append-field">
-            <input type="text" name="custom-field-${fieldNumber}" placeholder="${value}">
-            <button type="button" class="edit-field-btn"></button>
-            <button type="button" class="remove-field-btn"></button>
-        </div>
-    </div>
-  `);
-
-  // Append the new field
-  addBtnContainer.before(newField);
-}
-
-// NO submit → back to Add Field popup
-$(".no-submit").on("click", function () {
-  showPopup(addFieldPopup);
-});
-
-// Cancel button → show cancel confirmation popup
-$(".popup-content .cancel-button").on("click", function () {
-  showPopup(cancelConfirmPopup);
-});
-
-// YES cancel → remove target field
-$("#yes-cancel").on("click", function (e) {
-  e.preventDefault();
-  if (removeTarget) {
-    removeTarget.remove();
-    checkFieldLimit();
-  }
-  hidePopup();
-});
-
-// NO cancel → back to Add Field popup
-$(".no-cancel").on("click", function () {
-  showPopup(addFieldPopup);
-});
-
-// Cross icon click → close popup
-$(".popup-form-cross-icon").on("click", function () {
-  hidePopup();
-});
-
-// Edit field
-$(document).on("click", ".edit-field-btn", function () {
-  editMode = true;
-  editTarget = $(this).closest(".form-field.custom-field-item");
-  firstNameInput.val(editTarget.find("label").text());
-  showPopup(addFieldPopup);
-});
-
-// Remove field → show cancel confirmation popup
-$(document).on("click", ".remove-field-btn", function () {
-  removeTarget = $(this).closest(".form-field.custom-field-item");
-  showPopup(cancelConfirmPopup);
-});
-
-// Click outside to close
-$(document).on("mousedown", function (e) {
-  if (
-    popupWrapper.is(":visible") &&
-    !$(e.target).closest(".popup-content").length
-  ) {
-    hidePopup();
-  }
-});
-
-checkFieldLimit();
 
   /* Textarea Characters Limit Script (Usama) */
 
