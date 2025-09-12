@@ -373,6 +373,21 @@ tr {
     margin-inline: 18px 4px;
 }
 
+.user-history-record-head::before,
+.user-history-record-head::after,
+.user-history-records-inner::before,
+.user-history-records-inner::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    border-top: 1px solid white;
+    border-right: 1px solid white;
+    border-radius: 8px;
+}
+
 .user-ip-title,
 .user-ip {
     width: 44%;

@@ -261,7 +261,7 @@
                                 <h2>Add Custom Field</h2>
                                 <div class="popup-form-cross-icon"></div>
                                 <div class="form-field">
-                                    <label for="first-name">First Name</label>
+                                    <label for="first-name">Field Name</label>
                                     <input type="text" name="first-name" id="first-name" placeholder="Description">
                                 </div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
