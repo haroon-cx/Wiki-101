@@ -11,6 +11,7 @@ function agqa_create_tables_ip_users()
 
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_wiki_add_users (
             id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,  -- Added user_id for referencing wp_users table
             account VARCHAR(255) NOT NULL,
             new_password VARCHAR(255) NOT NULL,
             confirm_password VARCHAR(255) NOT NULL,
