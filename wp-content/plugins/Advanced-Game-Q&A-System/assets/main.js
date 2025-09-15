@@ -263,8 +263,6 @@ jQuery(document).ready(function ($) {
     '<span class="submenu-toggle"></span>'
   );
 
-
-
   // Close popup
   $(".pdf-close, .pdf-modal-overlay").on("click", function (e) {
     if ($(e.target).is(".pdf-modal-overlay") || $(e.target).is(".pdf-close")) {
@@ -316,13 +314,12 @@ jQuery(document).ready(function ($) {
   /* New Categories Popup script */
 
   // Open popup
-  $(".agqa-popup-form-ctn .add-category-button,.api-report-button,.report-button").on(
-    "click",
-    function (e) {
-      e.stopPropagation();
-      $(".agqa-popup-form").addClass("active");
-    }
-  );
+  $(
+    ".agqa-popup-form-ctn .add-category-button,.api-report-button,.report-button"
+  ).on("click", function (e) {
+    e.stopPropagation();
+    $(".agqa-popup-form").addClass("active");
+  });
 
   // Close popup on cross icon
   $(".popup-form-cross-icon").on("click", function (e) {
@@ -751,10 +748,12 @@ jQuery(document).ready(function ($) {
         const box = $("#agqa-search-results").empty();
         if (res.success && res.data.length > 0) {
           res.data.forEach((row) => {
-            box.append(`<div class="agqa-search-result" data-question-id="${row.question_id
-              }">
-                    <strong>${row.type.toUpperCase()}</strong> in <em>${row.post_title
-              }</em>:<br>
+            box.append(`<div class="agqa-search-result" data-question-id="${
+              row.question_id
+            }">
+                    <strong>${row.type.toUpperCase()}</strong> in <em>${
+              row.post_title
+            }</em>:<br>
                     ${row.content}
                 </div>`);
           });
@@ -1193,16 +1192,16 @@ jQuery(document).ready(function ($) {
     // Check if all required fields are filled
     $form.find("[required]").each(function () {
       const field = $(this);
-          // Trim spaces and check if the field is only spaces or empty
-        const trimmedValue = field.val().trim();
-        
-        if (!trimmedValue) {
-            // If the field is empty or contains only spaces
-            isValid = false;
-            const fieldName = field.attr("name") || field.prev("label").text();
-            // alert(fieldName + " cannot be empty or just spaces.");
-            return false; // Exit the loop and stop further validation
-        }
+      // Trim spaces and check if the field is only spaces or empty
+      const trimmedValue = field.val().trim();
+
+      if (!trimmedValue) {
+        // If the field is empty or contains only spaces
+        isValid = false;
+        const fieldName = field.attr("name") || field.prev("label").text();
+        // alert(fieldName + " cannot be empty or just spaces.");
+        return false; // Exit the loop and stop further validation
+      }
       if (!field.val()) {
         // If the field is empty
         isValid = false;
@@ -1273,11 +1272,11 @@ jQuery(document).ready(function ($) {
           console.log(response);
           if (response.includes("Success")) {
             // alert("Game provider added successfully!");
-             // alert("Provider data updated!");
+            // alert("Provider data updated!");
             const $successMsg = $(
               '<div class="submitted-successfully">Game provider added successfully!</div>'
             );
-              $form.append($successMsg);
+            $form.append($successMsg);
 
             // Hide after 3 seconds
             setTimeout(function () {
@@ -1292,8 +1291,8 @@ jQuery(document).ready(function ($) {
           } else {
             // alert(response);
             // alert(response);
-            $('.file-preview span').text('');
-            
+            $(".file-preview span").text("");
+
             const $successMsg = $(
               `<div class="submitted-unsuccessfully">${response}</div>`
             );
@@ -1303,7 +1302,6 @@ jQuery(document).ready(function ($) {
             setTimeout(function () {
               $successMsg.fadeOut(400, function () {
                 $(this).remove();
-            
               });
             }, 3000);
           }
@@ -1332,10 +1330,10 @@ jQuery(document).ready(function ($) {
           console.log(response);
           if (response.includes("Success")) {
             // alert("Game provider added successfully!");
-             const $successMsg = $(
+            const $successMsg = $(
               '<div class="submitted-successfully">Game provider added successfully!</div>'
             );
-              $form.append($successMsg);
+            $form.append($successMsg);
 
             // Hide after 3 seconds
             setTimeout(function () {
@@ -1349,8 +1347,8 @@ jQuery(document).ready(function ($) {
             location.reload(); // Page reload after success message
           } else {
             // alert(response);
-             $('.file-preview span').text('');
-            
+            $(".file-preview span").text("");
+
             const $successMsg = $(
               `<div class="submitted-unsuccessfully">${response}</div>`
             );
@@ -1360,10 +1358,8 @@ jQuery(document).ready(function ($) {
             setTimeout(function () {
               $successMsg.fadeOut(400, function () {
                 $(this).remove();
-            
               });
             }, 3000);
-            
           }
         },
         error: function () {
@@ -1438,8 +1434,6 @@ jQuery(document).ready(function ($) {
     );
     $form.append($successMsg);
 
-
-
     $.ajax({
       url: agqa_ajax.ajax_url,
       type: "POST",
@@ -1469,16 +1463,16 @@ jQuery(document).ready(function ($) {
             $(this).remove();
           });
           if (formDataObject["business-model"] == "sale") {
-            imageUrls = '';
+            imageUrls = "";
             agqaEditSales(imageUrls);
           } else {
-            imageUrls = '';
+            imageUrls = "";
             agqaEditRevnue(imageUrls);
           }
         }
       },
       error: function (xhr) {
-        alert(xhr)
+        alert(xhr);
         $("#ddmu-response").html(
           "<p>Something went wrong. Please try again.</p>"
         );
@@ -1493,11 +1487,11 @@ jQuery(document).ready(function ($) {
       var formData = $form.serialize();
 
       // Remove the 'upload-contract' parameter and its value
-      formData = formData.replace(/&upload-contract=[^&]*/, '');
+      formData = formData.replace(/&upload-contract=[^&]*/, "");
 
       // If 'upload-contract' is the first parameter, you might need to handle the leading "&"
-      if (formData.startsWith('&')) {
-        formData = formData.substring(1);  // Remove the leading '&'
+      if (formData.startsWith("&")) {
+        formData = formData.substring(1); // Remove the leading '&'
       }
       formData += "&imageurls=" + encodeURIComponent(imageUrls);
 
@@ -1727,10 +1721,10 @@ jQuery(document).ready(function ($) {
         } else {
           $("#ddmu-response").html("<p>" + parsedResponse.message + "</p>");
           if (formDataObject["business-model"] == "sale") {
-            imageUrls = '';
+            imageUrls = "";
             agqaAddSales(imageUrls);
           } else {
-            imageUrls = '';
+            imageUrls = "";
             agqaAddRevnue(imageUrls);
           }
         }
@@ -2051,7 +2045,7 @@ jQuery(document).ready(function ($) {
   // });
   // END
 
-$("#agqa-game-filter").click(function (e) {
+  $("#agqa-game-filter").click(function (e) {
     e.preventDefault();
 
     // Get the selected filter and the search text
@@ -2065,186 +2059,177 @@ $("#agqa-game-filter").click(function (e) {
 
     // Check if the active tab is the "All" tab
     if (activeTab.attr("aria-controls") === "panel-all") {
-              $(".provider-card").show();
+      $(".provider-card").show();
 
-          if (selectedFilter === "New Game Categories") {
-            $(".provider-card").each(function () {
-              if (!$(this).find(".agqa-new-label").length) {
-                $(this).hide();
-              }
-            });
-          } else if (selectedFilter === "API Not Filled in") {
-            $(".provider-card").each(function () {
-              if (!$(this).find(".agqa-api-not-filled").length) {
-                $(this).hide();
-              }
-            });
-          } else if (selectedFilter === "All") {
-            $(".provider-card").show();
+      if (selectedFilter === "New Game Categories") {
+        $(".provider-card").each(function () {
+          if (!$(this).find(".agqa-new-label").length) {
+            $(this).hide();
           }
-
-          if (textFilter.length > 0) {
-            $(".provider-card").each(function () {
-              var title = $(this).attr("title").toLowerCase();
-              if (title.indexOf(textFilter) === -1) {
-                $(this).hide();
-              }
-            });
+        });
+      } else if (selectedFilter === "API Not Filled in") {
+        $(".provider-card").each(function () {
+          if (!$(this).find(".agqa-api-not-filled").length) {
+            $(this).hide();
           }
+        });
+      } else if (selectedFilter === "All") {
+        $(".provider-card").show();
+      }
 
-          $(".section").each(function () {
-            var hasVisibleCard = false;
-            $(this)
-              .find(".provider-card")
-              .each(function () {
-                if ($(this).css("display") !== "none") {
-                  hasVisibleCard = true;
-                }
-              });
+      if (textFilter.length > 0) {
+        $(".provider-card").each(function () {
+          var title = $(this).attr("title").toLowerCase();
+          if (title.indexOf(textFilter) === -1) {
+            $(this).hide();
+          }
+        });
+      }
 
-            // Hide the section if there are no visible provider cards
-            if (!hasVisibleCard) {
-              $(this).hide();
-            } else {
-              $(this).show();
+      $(".section").each(function () {
+        var hasVisibleCard = false;
+        $(this)
+          .find(".provider-card")
+          .each(function () {
+            if ($(this).css("display") !== "none") {
+              hasVisibleCard = true;
             }
           });
 
-          // Check if each main section should be hidden based on its sections
-          $(".agqa-main-section-card").each(function () {
-            var hasVisibleSection = false;
+        // Hide the section if there are no visible provider cards
+        if (!hasVisibleCard) {
+          $(this).hide();
+        } else {
+          $(this).show();
+        }
+      });
 
-            // Check if any of the sections inside the main section are visible
-            $(this)
-              .find(".section")
-              .each(function () {
-                if ($(this).css("display") !== "none") {
-                  hasVisibleSection = true; // Set flag to true if the section is visible
-                }
-              });
+      // Check if each main section should be hidden based on its sections
+      $(".agqa-main-section-card").each(function () {
+        var hasVisibleSection = false;
 
-            // Hide the main section if none of its sections are visible
-            if (!hasVisibleSection) {
-              $(this).hide();
-              $(this).find(".category-heading").hide();
-            } else {
-              $(this).show(); // Show the main section if any of its sections are visible
-              $(this).find(".category-heading").show();
+        // Check if any of the sections inside the main section are visible
+        $(this)
+          .find(".section")
+          .each(function () {
+            if ($(this).css("display") !== "none") {
+              hasVisibleSection = true; // Set flag to true if the section is visible
             }
           });
-          // Check if there are any visible provider cards after filtering
-          var anyVisibleProviderCards = $(".provider-card").is(":visible");
 
-          // Show or hide the "No results found" message based on the visibility of provider cards
-          if (!anyVisibleProviderCards) {
-            $(".section-found").show(); // Show the no-results message
-          } else {
-            $(".section-found").hide(); // Hide the no-results message if there are results
-          }
+        // Hide the main section if none of its sections are visible
+        if (!hasVisibleSection) {
+          $(this).hide();
+          $(this).find(".category-heading").hide();
+        } else {
+          $(this).show(); // Show the main section if any of its sections are visible
+          $(this).find(".category-heading").show();
+        }
+      });
+      // Check if there are any visible provider cards after filtering
+      var anyVisibleProviderCards = $(".provider-card").is(":visible");
+
+      // Show or hide the "No results found" message based on the visibility of provider cards
+      if (!anyVisibleProviderCards) {
+        $(".section-found").show(); // Show the no-results message
+      } else {
+        $(".section-found").hide(); // Hide the no-results message if there are results
+      }
     } else {
-        
-          // Initially show all cards in the active section
-          activeSection.find(".provider-card").show();
-          
-          
+      // Initially show all cards in the active section
+      activeSection.find(".provider-card").show();
 
-          // Apply selected filter (New Game Categories / API Not Filled In / All)
-          if (selectedFilter === "New Game Categories") {
-              activeSection.find(".provider-card").each(function () {
-                  if (!$(this).find(".agqa-new-label").length) {
-                      $(this).hide();
-                  }
-              });
-          } else if (selectedFilter === "API Not Filled in") {
-              activeSection.find(".provider-card").each(function () {
-                  if (!$(this).find(".agqa-api-not-filled").length) {
-                      $(this).hide();
-                  }
-              });
-          } else if (selectedFilter === "All") {
-              activeSection.find(".provider-card").show(); // Show all cards if "All" is selected
+      // Apply selected filter (New Game Categories / API Not Filled In / All)
+      if (selectedFilter === "New Game Categories") {
+        activeSection.find(".provider-card").each(function () {
+          if (!$(this).find(".agqa-new-label").length) {
+            $(this).hide();
           }
-
-          // Filter based on the search text
-          if (textFilter.length > 0) {
-              activeSection.find(".provider-card").each(function () {
-                  var title = $(this).attr("title").toLowerCase();
-                  if (title.indexOf(textFilter) === -1) {
-                      $(this).hide();
-                  }
-              });
+        });
+      } else if (selectedFilter === "API Not Filled in") {
+        activeSection.find(".provider-card").each(function () {
+          if (!$(this).find(".agqa-api-not-filled").length) {
+            $(this).hide();
           }
+        });
+      } else if (selectedFilter === "All") {
+        activeSection.find(".provider-card").show(); // Show all cards if "All" is selected
+      }
 
-          // Check visibility of cards and sections within the active section
-          var anyVisibleProviderCardsInActiveSection = activeSection.find(".provider-card").is(":visible");
-
-          // Show or hide the "No results found" message based on the visibility of provider cards in the active section
-          if (!anyVisibleProviderCardsInActiveSection) {
-              activeSection.find(".section-found").show(); // Show the no-results message for the active section
-          } else {
-              activeSection.find(".section-found").hide(); // Hide the no-results message if there are results in the active section
+      // Filter based on the search text
+      if (textFilter.length > 0) {
+        activeSection.find(".provider-card").each(function () {
+          var title = $(this).attr("title").toLowerCase();
+          if (title.indexOf(textFilter) === -1) {
+            $(this).hide();
           }
+        });
+      }
 
-          // Check visibility of sections within the active section
-          activeSection.find(".section").each(function () {
-              var hasVisibleCard = false;
-              $(this)
-                  .find(".provider-card")
-                  .each(function () {
-                      if ($(this).css("display") !== "none") {
-                          hasVisibleCard = true;
-                      }
-                  });
+      // Check visibility of cards and sections within the active section
+      var anyVisibleProviderCardsInActiveSection = activeSection
+        .find(".provider-card")
+        .is(":visible");
 
-              // Hide the section if there are no visible provider cards
-              if (!hasVisibleCard) {
-                  $(this).hide();
-              } else {
-                  $(this).show();
-              }
-              
+      // Show or hide the "No results found" message based on the visibility of provider cards in the active section
+      if (!anyVisibleProviderCardsInActiveSection) {
+        activeSection.find(".section-found").show(); // Show the no-results message for the active section
+      } else {
+        activeSection.find(".section-found").hide(); // Hide the no-results message if there are results in the active section
+      }
+
+      // Check visibility of sections within the active section
+      activeSection.find(".section").each(function () {
+        var hasVisibleCard = false;
+        $(this)
+          .find(".provider-card")
+          .each(function () {
+            if ($(this).css("display") !== "none") {
+              hasVisibleCard = true;
+            }
           });
 
-          // Check if each main section inside the active section should be visible or not
-          activeSection.find(".agqa-main-section-card").each(function () {
-              var hasVisibleSection = false;
+        // Hide the section if there are no visible provider cards
+        if (!hasVisibleCard) {
+          $(this).hide();
+        } else {
+          $(this).show();
+        }
+      });
 
-              $(this)
-                  .find(".section")
-                  .each(function () {
-                      if ($(this).css("display") !== "none") {
-                          hasVisibleSection = true;
-                      }
-                  });
+      // Check if each main section inside the active section should be visible or not
+      activeSection.find(".agqa-main-section-card").each(function () {
+        var hasVisibleSection = false;
 
-                
-
-              // Hide the main section if none of its sections are visible
-              if (!hasVisibleSection) {
-                  $(this).hide();
-                  $(this).find(".category-heading").hide();
-              } else {
-                  $(this).show();
-                  $(this).find(".category-heading").show();
-              }
+        $(this)
+          .find(".section")
+          .each(function () {
+            if ($(this).css("display") !== "none") {
+              hasVisibleSection = true;
+            }
           });
 
-          
-              // Check if there are any visible provider cards after filtering
-                var anyVisibleProviderCards = $(".provider-card").is(":visible");
+        // Hide the main section if none of its sections are visible
+        if (!hasVisibleSection) {
+          $(this).hide();
+          $(this).find(".category-heading").hide();
+        } else {
+          $(this).show();
+          $(this).find(".category-heading").show();
+        }
+      });
 
-                // Show or hide the "No results found" message based on the visibility of provider cards
-                if (!anyVisibleProviderCards) {
-                  $(".section-found").show(); // Show the no-results message
-                } else {
-                  $(".section-found").hide(); // Hide the no-results message if there are results
-                }
+      // Check if there are any visible provider cards after filtering
+      var anyVisibleProviderCards = $(".provider-card").is(":visible");
+
+      // Show or hide the "No results found" message based on the visibility of provider cards
+      if (!anyVisibleProviderCards) {
+        $(".section-found").show(); // Show the no-results message
+      } else {
+        $(".section-found").hide(); // Hide the no-results message if there are results
+      }
     }
-
-    
-
-});
-
+  });
 
   /**
    * Reorder Sort Revenue Script
@@ -2265,7 +2250,6 @@ $("#agqa-game-filter").click(function (e) {
         nonce: nonce,
       },
       success: function (response) {
-
         // console.log(response.data);
         // alert("Provider data updated!");
         const $successMsg = $(
@@ -2281,7 +2265,6 @@ $("#agqa-game-filter").click(function (e) {
           });
         }, 3000);
         location.reload();
-
       },
       error: function (xhr, status, error) {
         console.error("AJAX Error:", error); // Log the error for debugging
@@ -2291,10 +2274,9 @@ $("#agqa-game-filter").click(function (e) {
   });
   // END
 
-
   /**
-     * Reorder Sort Sales Script
-     */
+   * Reorder Sort Sales Script
+   */
   $("#agqa-sort-sales").submit(function (e) {
     e.preventDefault();
     const $form = $(this);
@@ -2311,7 +2293,6 @@ $("#agqa-game-filter").click(function (e) {
         nonce: nonce,
       },
       success: function (response) {
-
         // console.log(response.data);
         // alert("Provider data updated!");
         const $successMsg = $(
@@ -2327,7 +2308,6 @@ $("#agqa-game-filter").click(function (e) {
           });
         }, 3000);
         location.reload();
-
       },
       error: function (xhr, status, error) {
         console.error("AJAX Error:", error); // Log the error for debugging
@@ -2336,6 +2316,4 @@ $("#agqa-game-filter").click(function (e) {
     });
   });
   // END
-
-
 });

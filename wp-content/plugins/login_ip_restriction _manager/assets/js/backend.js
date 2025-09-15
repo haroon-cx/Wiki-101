@@ -32,4 +32,40 @@ jQuery(document).ready(function ($) {
       },
     });
   });
+
+  /**
+   * edit user script
+   */
+  // Handle form submission
+  $("#add-form-faq").on("submit", function (e) {
+    e.preventDefault(); // Prevent page refresh on form submit
+
+    // Get form data
+    var formData = $form.serialize();
+    alert("dfd");
+
+    // Make the AJAX request
+    $.ajax({
+      url: cuim_ajax.ajax_url,
+      type: "POST",
+      data: {
+        action: "update_user",
+        form_data: formData, // Pass the form data to the server
+        nonce: nonce,
+      },
+      success: function (response) {
+        if (response.success) {
+          // Display success message or update the DOM
+          alert(response.data.message);
+          // Optionally, update the DOM to reflect the new changes
+        } else {
+          // Display error message
+          alert(response.data.message);
+        }
+      },
+      error: function (xhr, status, error) {
+        alert("Something went wrong, please try again.");
+      },
+    });
+  });
 });

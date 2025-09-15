@@ -26,6 +26,7 @@ function agqa_create_tables_ip_users()
             custom_field_1 VARCHAR(255),
             custom_field_2 VARCHAR(255),
             custom_field_3 VARCHAR(255),
-            custom_field_4 VARCHAR(255)
+            custom_field_4 VARCHAR(255),
+            created_at DATE NOT NULL DEFAULT (CURRENT_DATE)
         ) $charsets;");
 }
