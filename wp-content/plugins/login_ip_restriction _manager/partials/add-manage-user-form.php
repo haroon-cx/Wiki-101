@@ -1,4 +1,3 @@
-
 <div class="manage-user-form-ctn">
     <div class="template-title">
         <h1>Manage User</h1>
@@ -12,33 +11,36 @@
     </div>
     <div class="faq-add-form-ctn manage-user-form-ctn">
         <div id="manage-user-add-form">
-            <form autocomplete="off" id="add-form-faq" class="custom-form" novalidate="novalidate"
+            <form autocomplete="off" id="cuim-add-form-user-man" class="custom-form" novalidate="novalidate"
                 data-inited-validation="1">
                 <div class="form-field required">
                     <label for="account-field"><span>* </span>Account</label>
-                    <input type="text" name="faq-question" id="account-field" required placeholder="Description">
+                    <input type="text" name="account" id="account-field" required placeholder="Description">
                     <div id="error-message"></div>
                 </div>
                 <div class="form-field required">
                     <label for="new-password-field"><span>* </span>New Password</label>
                     <button class="toggle-password"></button>
-                    <input type="password" name="faq-question" id="new-password-field" required placeholder="Description">
+                    <input type="password" name="new-password" id="new-password-field" required
+                        placeholder="Description">
                 </div>
                 <div class="form-field required">
                     <label for="confirm-password-field"><span>* </span>Confirm Password</label>
                     <button class="toggle-password"></button>
-                    <input type="password" name="faq-question" id="confirm-password-field" required placeholder="Description">
+                    <input type="password" name="confirm-password" id="confirm-password-field" required
+                        placeholder="Description">
                 </div>
                 <div class="form-field required">
-                     <label for="issue_type"><span>* </span>State</label>
-                     <select name="manage-user-state" id="manage-user-state" required disabled>
+                    <label for="issue_type"><span>* </span>State</label>
+                    <input type="hidden" name="state" value="pending">
+                    <select name="state" id="manage-user-state" required disabled>
                         <option value="Pending">Pending</option>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
                         <option value="Freeze">Freeze</option>
-                     </select>
-               </div>
-                   <div class="form-field required">
+                    </select>
+                </div>
+                <div class="form-field required">
                     <label for="question-type"><span>* </span>User Role </label>
                     <div class="custom-select-dropdown">
                         <div class="custom-select-dropdown-title">
@@ -54,16 +56,16 @@
                                 <li data-value="Viewer">Viewer</li>
                             </ul>
                         </div>
-                        <input type="hidden" name="faq-category" id="issue_type" required="">
+                        <input type="hidden" name="user-role" id="issue_type" required="">
                     </div>
                 </div>
                 <div class="form-field required">
                     <label for="comapany-name-field"><span>* </span>Company Name</label>
-                    <input type="text" name="faq-question" id="comapany-name-field" required placeholder="Description">
+                    <input type="text" name="company-name" id="comapany-name-field" required placeholder="Description">
                 </div>
                 <div class="form-field required">
                     <label for="manage-user-email-field"><span>* </span>Email</label>
-                    <input type="text" name="faq-question" id="manage-user-email-field" required placeholder="Description">
+                    <input type="text" name="company-name" id="comapany-name-field" required placeholder="Description">
                 </div>
                 <div class="form-field">
                     <div class="add-custom-field-ctn">
@@ -134,7 +136,7 @@
                             <div class="form-message">Are you sure you want to submit?</div>
                             <div class="form-buttons agqa-popup-form-buttons d-flex">
                                 <button class="no-confirm-submit" type="button">No</button>
-                                <input type="submit" value="Yes" id="confirm-submit">
+                                <button type="submit" value="Yes" id="confirm-submit">Yes</button>
                             </div>
                         </div>
                     </div>

@@ -54,7 +54,7 @@ jQuery(document).ready(function ($) {
    * edit user script
    */
   // Handle form submission
-  $("#add-form-faq").on("submit", function (e) {
+  $("#edit-form-user-manage").on("submit", function (e) {
     e.preventDefault(); // Prevent page refresh on form submit
 
     // Get form data

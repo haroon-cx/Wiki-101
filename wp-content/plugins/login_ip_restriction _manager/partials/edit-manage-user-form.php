@@ -14,7 +14,7 @@
     ?>
         <div class="faq-add-form-ctn manage-user-form-ctn">
             <div id="manage-user-add-form">
-                <form autocomplete="off" id="add-form-faq" class="custom-form" novalidate="novalidate"
+                <form autocomplete="off" id="edit-form-user-manage" class="custom-form" novalidate="novalidate"
                     data-inited-validation="1">
                     <div class="form-field required">
                         <label for="account-field"><span>* </span>Account</label>
