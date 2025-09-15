@@ -35,11 +35,11 @@ jQuery(document).ready(function ($) {
       const selectedVal = $(this).text().trim();
 
       $selectedLabel
-          .html(
-              `<span>${selectedVal}</span><span class="agqa-cross-icon"></span>`
-          )
-          .css({ display: "flex", alignItems: "center", gap: "8px" })
-          .show();
+        .html(
+          `<span>${selectedVal}</span><span class="agqa-cross-icon"></span>`
+        )
+        .css({ display: "flex", alignItems: "center", gap: "8px" })
+        .show();
       $defaultFilterText.hide();
       $hiddenInput.val(selectedVal);
       $dropdownList.slideUp(300);
@@ -87,7 +87,7 @@ jQuery(document).ready(function ($) {
     const text = $li.text();
     if (!$selectedItemBox.find(`[data-value="${value}"]`).length) {
       $selectedItemBox.append(
-          `<span class="tag" data-value="${value}">${text}<span class="agqa-cross-icon"></span></span>`
+        `<span class="tag" data-value="${value}">${text}<span class="agqa-cross-icon"></span></span>`
       );
       $li.addClass("select-item");
       updateState();
@@ -151,8 +151,8 @@ jQuery(document).ready(function ($) {
     if ($tag.length) {
       $tag.remove();
       $multiDropdown
-          .find(`li[data-value="${value}"]`)
-          .removeClass("select-item");
+        .find(`li[data-value="${value}"]`)
+        .removeClass("select-item");
       updateState();
     }
   });
@@ -169,8 +169,8 @@ jQuery(document).ready(function ($) {
     if ($tag.length) {
       $tag.remove();
       $multiDropdown
-          .find(`li[data-value="${value}"]`)
-          .removeClass("select-item");
+        .find(`li[data-value="${value}"]`)
+        .removeClass("select-item");
       updateState();
     }
     // 🔽 Close the dropdown popup just like .popup-form-cross-icon
@@ -179,11 +179,11 @@ jQuery(document).ready(function ($) {
   // Dummy updateState function (make sure your real one is defined elsewhere)
   function updateState() {
     const selectedValues = $selectedItemBox
-        .find(".tag")
-        .map(function () {
-          return $(this).data("value");
-        })
-        .get();
+      .find(".tag")
+      .map(function () {
+        return $(this).data("value");
+      })
+      .get();
 
     $input.val(selectedValues.join(","));
   }
@@ -191,10 +191,10 @@ jQuery(document).ready(function ($) {
   function updateState() {
     const tags = $selectedItemBox.find(".tag");
     const values = tags
-        .map(function () {
-          return $(this).data("value");
-        })
-        .get();
+      .map(function () {
+        return $(this).data("value");
+      })
+      .get();
     $input.val(values.join(","));
     $defaultText.toggle(tags.length === 0);
   }
@@ -221,7 +221,7 @@ jQuery(document).ready(function ($) {
       const text = $li.text();
       if (!$selectedItemBox.find(`[data-value="${value}"]`).length) {
         $selectedItemBox.append(
-            `<span class="tag" data-value="${value}">${text}<span class="agqa-cross-icon"></span></span>`
+          `<span class="tag" data-value="${value}">${text}<span class="agqa-cross-icon"></span></span>`
         );
         $li.addClass("select-item");
         updateState();
@@ -234,8 +234,8 @@ jQuery(document).ready(function ($) {
       const value = $tag.data("value");
       $tag.remove();
       $multiDropdown
-          .find(`li[data-value="${value}"]`)
-          .removeClass("select-item");
+        .find(`li[data-value="${value}"]`)
+        .removeClass("select-item");
       updateState();
       setTimeout(function () {
         // Get the value from the hidden input (CSV of category IDs)
@@ -262,11 +262,11 @@ jQuery(document).ready(function ($) {
     // Update hidden input & default text
     function updateState() {
       const selectedValues = $selectedItemBox
-          .find(".tag")
-          .map(function () {
-            return $(this).data("value");
-          })
-          .get();
+        .find(".tag")
+        .map(function () {
+          return $(this).data("value");
+        })
+        .get();
       $input.val(selectedValues.join(","));
       $defaultText.toggle(selectedValues.length === 0);
     }
@@ -294,22 +294,22 @@ jQuery(document).ready(function ($) {
         const $field = $(this);
         const value = $field.val().trim();
         const $fieldWrapper = $field.closest(
-            ".form-field, .agqa-popup-form-field"
+          ".form-field, .agqa-popup-form-field"
         );
 
         if (!value) {
           isValid = false;
           const labelText = $fieldWrapper
-              .find("label")
-              .text()
-              .replace("*", "")
-              .trim();
+            .find("label")
+            .text()
+            .replace("*", "")
+            .trim();
 
           if ($field.is(":hidden") && $field.hasClass("selected-values")) {
             // Custom select hidden input
             $fieldWrapper
-                .find(".agqa-popup-form-button")
-                .addClass("error-field");
+              .find(".agqa-popup-form-button")
+              .addClass("error-field");
           } else if ($field.hasClass("upload-file")) {
             $fieldWrapper.find(".browse-link").addClass("error-field");
           } else {
@@ -319,27 +319,27 @@ jQuery(document).ready(function ($) {
           if ($fieldWrapper.find(".error-message").length === 0) {
             if (labelText == "What problem did you encounter?") {
               $fieldWrapper.append(
-                  `<div class="error-message">Please select a report type</div>`
+                `<div class="error-message">Please select a report type</div>`
               );
             } else if (labelText == "Detailed Description") {
               $fieldWrapper.append(
-                  `<div class="error-message">Please enter a description of the issue.</div>`
+                `<div class="error-message">Please enter a description of the issue.</div>`
               );
             } else if (labelText == "Title") {
               $fieldWrapper.append(
-                  `<div class="error-message">Please enter a title.</div>`
+                `<div class="error-message">Please enter a title.</div>`
               );
             } else if (labelText == "Question Type") {
               $fieldWrapper.append(
-                  `<div class="error-message">Please select an item</div>`
+                `<div class="error-message">Please select an item</div>`
               );
             } else if (labelText == "Details") {
               $fieldWrapper.append(
-                  `<div class="error-message">Content is required.</div>`
+                `<div class="error-message">Content is required.</div>`
               );
             } else {
               $fieldWrapper.append(
-                  `<div class="error-message">${labelText} is required</div>`
+                `<div class="error-message">${labelText} is required</div>`
               );
             }
           }
@@ -352,7 +352,7 @@ jQuery(document).ready(function ($) {
         const $hiddenInput = $multiSelect.find("input.selected-values");
         const value = $hiddenInput.val().trim();
         const $fieldWrapper = $multiSelect.closest(
-            ".form-field, .agqa-popup-form-field"
+          ".form-field, .agqa-popup-form-field"
         );
 
         if ($hiddenInput.prop("required") && !value) {
@@ -360,14 +360,14 @@ jQuery(document).ready(function ($) {
           $multiSelect.find(".agqa-popup-form-button").addClass("error-field");
 
           const labelText = $fieldWrapper
-              .find("label")
-              .text()
-              .replace("*", "")
-              .trim();
+            .find("label")
+            .text()
+            .replace("*", "")
+            .trim();
 
           if ($fieldWrapper.find(".error-message").length === 0) {
             $fieldWrapper.append(
-                `<div class="error-message">${labelText} is required</div>`
+              `<div class="error-message">${labelText} is required</div>`
             );
           }
         }
@@ -384,22 +384,22 @@ jQuery(document).ready(function ($) {
         const $field = $(this);
         const value = $field.val().trim();
         const $fieldWrapper = $field.closest(
-            ".form-field, .agqa-popup-form-field"
+          ".form-field, .agqa-popup-form-field"
         );
 
         if (!value) {
           isValid = false;
           const labelText = $fieldWrapper
-              .find("label")
-              .text()
-              .replace("*", "")
-              .trim();
+            .find("label")
+            .text()
+            .replace("*", "")
+            .trim();
 
           if ($field.is(":hidden") && $field.hasClass("selected-values")) {
             // Custom select hidden input
             $fieldWrapper
-                .find(".agqa-popup-form-button")
-                .addClass("error-field");
+              .find(".agqa-popup-form-button")
+              .addClass("error-field");
           } else if ($field.hasClass("upload-file")) {
             $fieldWrapper.find(".browse-link").addClass("error-field");
           } else {
@@ -409,27 +409,27 @@ jQuery(document).ready(function ($) {
           if ($fieldWrapper.find(".error-message").length === 0) {
             if (labelText == "What problem did you encounter?") {
               $fieldWrapper.append(
-                  `<div class="error-message">Please select a report type</div>`
+                `<div class="error-message">Please select a report type</div>`
               );
             } else if (labelText == "Detailed Description") {
               $fieldWrapper.append(
-                  `<div class="error-message">Please enter a description of the issue.</div>`
+                `<div class="error-message">Please enter a description of the issue.</div>`
               );
             } else if (labelText == "Title") {
               $fieldWrapper.append(
-                  `<div class="error-message">Please enter a title.</div>`
+                `<div class="error-message">Please enter a title.</div>`
               );
             } else if (labelText == "Question Type") {
               $fieldWrapper.append(
-                  `<div class="error-message">Please select an item</div>`
+                `<div class="error-message">Please select an item</div>`
               );
             } else if (labelText == "Details") {
               $fieldWrapper.append(
-                  `<div class="error-message">Content is required.</div>`
+                `<div class="error-message">Content is required.</div>`
               );
             } else {
               $fieldWrapper.append(
-                  `<div class="error-message">${labelText} is required</div>`
+                `<div class="error-message">${labelText} is required</div>`
               );
             }
           }
@@ -438,7 +438,7 @@ jQuery(document).ready(function ($) {
       if (!isValid) {
         return;
       }
-      $("#confirm-submit-popup").addClass('active');
+      $("#confirm-submit-popup").addClass("active");
     });
 
     // Remove error on valid input/select change
@@ -446,14 +446,14 @@ jQuery(document).ready(function ($) {
       const $field = $(this);
       const value = $field.val().trim();
       const $fieldWrapper = $field.closest(
-          ".form-field, .agqa-popup-form-field"
+        ".form-field, .agqa-popup-form-field"
       );
 
       if (value) {
         if ($field.is(":hidden") && $field.hasClass("selected-values")) {
           $fieldWrapper
-              .find(".agqa-popup-form-button")
-              .removeClass("error-field");
+            .find(".agqa-popup-form-button")
+            .removeClass("error-field");
         } else {
           $field.removeClass("error-field");
         }
@@ -464,41 +464,41 @@ jQuery(document).ready(function ($) {
 
     // Remove error when hidden input (multi-select) value changes
     $form
-        .find(".form-multi-select input.selected-values")
-        .on("change", function () {
-          const $hiddenInput = $(this);
-          const value = $hiddenInput.val().trim();
-          const $multiSelect = $hiddenInput.closest(".form-multi-select");
-          const $fieldWrapper = $multiSelect.closest(
-              ".form-field, .agqa-popup-form-field"
-          );
+      .find(".form-multi-select input.selected-values")
+      .on("change", function () {
+        const $hiddenInput = $(this);
+        const value = $hiddenInput.val().trim();
+        const $multiSelect = $hiddenInput.closest(".form-multi-select");
+        const $fieldWrapper = $multiSelect.closest(
+          ".form-field, .agqa-popup-form-field"
+        );
 
-          if (value) {
-            $multiSelect
-                .find(".agqa-popup-form-button")
-                .removeClass("error-field");
-            $fieldWrapper.find(".error-message").remove();
-          }
-        });
+        if (value) {
+          $multiSelect
+            .find(".agqa-popup-form-button")
+            .removeClass("error-field");
+          $fieldWrapper.find(".error-message").remove();
+        }
+      });
 
     // Remove error on selecting an item from multi-select
     $form
-        .find(".form-multi-select .agqa-popup-form-select li")
-        .on("click", function () {
-          const $multiSelect = $(this).closest(".form-multi-select");
-          const $fieldWrapper = $multiSelect.closest(
-              ".form-field, .agqa-popup-form-field"
-          );
+      .find(".form-multi-select .agqa-popup-form-select li")
+      .on("click", function () {
+        const $multiSelect = $(this).closest(".form-multi-select");
+        const $fieldWrapper = $multiSelect.closest(
+          ".form-field, .agqa-popup-form-field"
+        );
 
-          $multiSelect.find(".agqa-popup-form-button").removeClass("error-field");
-          $fieldWrapper.find(".error-message").remove();
-        });
+        $multiSelect.find(".agqa-popup-form-button").removeClass("error-field");
+        $fieldWrapper.find(".error-message").remove();
+      });
 
     // Remove error when file is uploaded
     $form.find('input[type="file"]').on("change", function () {
       const $fileInput = $(this);
       const $fieldWrapper = $fileInput.closest(
-          ".form-field, .agqa-popup-form-field"
+        ".form-field, .agqa-popup-form-field"
       );
 
       $fieldWrapper.find(".browse-link").removeClass("error-field");
@@ -509,14 +509,14 @@ jQuery(document).ready(function ($) {
 
   // Clear errors on popup close
   $(document).on(
-      "click",
-      ".cancel-button, .popup-form-cross-icon, .agqa-popup-overlay",
-      function () {
-        $(".agqa-popup-form-inner form").each(function () {
-          $(this).find(".error-message").remove();
-          $(this).find(".error-field").removeClass("error-field");
-        });
-      }
+    "click",
+    ".cancel-button, .popup-form-cross-icon, .agqa-popup-overlay",
+    function () {
+      $(".agqa-popup-form-inner form").each(function () {
+        $(this).find(".error-message").remove();
+        $(this).find(".error-field").removeClass("error-field");
+      });
+    }
   );
 
   // Reusable function to clear errors with delay
@@ -533,9 +533,9 @@ jQuery(document).ready(function ($) {
   $(document).on("mousedown", function (e) {
     const $popupInner = $(".agqa-popup-form-inner");
     if (
-        $popupInner.length &&
-        !$popupInner.is(e.target) &&
-        $popupInner.has(e.target).length === 0
+      $popupInner.length &&
+      !$popupInner.is(e.target) &&
+      $popupInner.has(e.target).length === 0
     ) {
       const $form = $popupInner.find("form");
       clearPopupFormErrors($form);
@@ -570,15 +570,15 @@ jQuery(document).ready(function ($) {
 
     // Get label and value for #3 (provider section)
     const label3 = $(".api-provider-section-inner")
-        .find("span.api-info-label")
-        .first()
-        .text()
-        .trim();
+      .find("span.api-info-label")
+      .first()
+      .text()
+      .trim();
     const value3 = $(".api-provider-section-inner")
-        .find("span.provider-name-text")
-        .first()
-        .text()
-        .trim();
+      .find("span.provider-name-text")
+      .first()
+      .text()
+      .trim();
 
     // Format copied text
     const copiedText = `1: ${label1}: ${value1}\n2: ${label2}: ${value2}\n3: ${label3}: ${value3}`;
@@ -640,9 +640,7 @@ jQuery(document).ready(function ($) {
   }
 
   function checkFieldLimit() {
-    const count = $(
-        ".custom-form > .form-field.custom-field-item"
-    ).length;
+    const count = $(".custom-form > .form-field.custom-field-item").length;
     if (count >= maxFields) {
       addBtn.addClass("disabled").prop("disabled", true);
     } else {
@@ -722,9 +720,7 @@ jQuery(document).ready(function ($) {
       editTarget.find("input[type='text']").attr("placeholder", value);
     } else {
       // Recount fields to ensure the next field number is correct
-      const count = $(
-          ".api-form-wrapper > form > .form-field.custom-field-item"
-      ).length;
+      const count = $("form > .form-field.custom-field-item").length;
       if (count >= maxFields) {
         hidePopup();
         return;
@@ -734,13 +730,13 @@ jQuery(document).ready(function ($) {
       const newField = $(`
             <div class="form-field custom-field-item">
                 <input type="hidden" name="custom-label-${
-          count + 1
-      }" value="${value}">
+                  count + 1
+                }" value="${value}">
                 <label>${value}</label>
                 <div class="custom-append-field">
                     <input type="text" name="custom-field-${
-          count + 1
-      }" placeholder="${value}">
+                      count + 1
+                    }" placeholder="${value}">
                     <button type="button" class="edit-field-btn"></button>
                     <button type="button" class="remove-field-btn"></button>
                 </div>
@@ -850,8 +846,8 @@ jQuery(document).ready(function ($) {
   // Click outside to close
   $(document).on("mousedown", function (e) {
     if (
-        popupWrapper.is(":visible") &&
-        !$(e.target).closest(".popup-content").length
+      popupWrapper.is(":visible") &&
+      !$(e.target).closest(".popup-content").length
     ) {
       hidePopup();
     }
@@ -901,9 +897,9 @@ jQuery(document).ready(function ($) {
       // If exactly at limit → show error instantly
       if (length === maxChars) {
         $formResponse
-            .removeClass("success")
-            .addClass("error")
-            .text("Unable to enter more characters");
+          .removeClass("success")
+          .addClass("error")
+          .text("Unable to enter more characters");
         $charCounter.addClass("show-message");
         return;
       }
@@ -912,9 +908,9 @@ jQuery(document).ready(function ($) {
       typingTimer = setTimeout(function () {
         if ($textarea.val().length < maxChars) {
           $formResponse
-              .removeClass("error")
-              .addClass("success")
-              .text("Successfull submitted");
+            .removeClass("error")
+            .addClass("success")
+            .text("Successfull submitted");
           $charCounter.addClass("show-message");
         }
       }, typingDelay);
@@ -967,9 +963,9 @@ jQuery(document).ready(function ($) {
       // If exactly at the max limit → show error instantly
       if (length === maxCharsS) {
         $formResponse
-            .removeClass("success")
-            .addClass("error")
-            .text("Unable to enter more characters");
+          .removeClass("success")
+          .addClass("error")
+          .text("Unable to enter more characters");
         $charCounter.addClass("show-message");
         return;
       }
@@ -979,9 +975,9 @@ jQuery(document).ready(function ($) {
         // Only show success if there's actual text (not just spaces)
         if (text.trim().length > 0 && $textarea.val().length < maxCharsS) {
           $formResponse
-              .removeClass("error")
-              .addClass("success")
-              .text("You can submit now");
+            .removeClass("error")
+            .addClass("success")
+            .text("You can submit now");
           $charCounter.addClass("show-message");
         }
       }, typingDelayS);
@@ -1073,32 +1069,32 @@ jQuery(document).ready(function ($) {
 
     // Apply watermark
     applyPdfWatermark(file)
-        .then(function (watermarkedFile) {
-          if (!watermarkedFile) {
-            throw new Error("Watermarked file is not available");
-          }
+      .then(function (watermarkedFile) {
+        if (!watermarkedFile) {
+          throw new Error("Watermarked file is not available");
+        }
 
-          // Create a new DataTransfer object to simulate file input
-          const dataTransfer = new DataTransfer();
-          dataTransfer.items.add(watermarkedFile);
+        // Create a new DataTransfer object to simulate file input
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(watermarkedFile);
 
-          // Update the file input with the new file
-          document.getElementById("pdf-upload-input").files = dataTransfer.files;
+        // Update the file input with the new file
+        document.getElementById("pdf-upload-input").files = dataTransfer.files;
 
-          // Display the file name in the preview
-          filePreview.html(`<span>${watermarkedFile.name}</span>`).show();
+        // Display the file name in the preview
+        filePreview.html(`<span>${watermarkedFile.name}</span>`).show();
 
-          // Read the file as a Data URL to store it in a hidden input (for further use)
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            hiddenInput.val(e.target.result);
-          };
-          reader.readAsDataURL(watermarkedFile);
-        })
-        .catch(function (err) {
-          console.error(err);
-          errorMessage.text("❌ Failed to apply watermark.").show();
-        });
+        // Read the file as a Data URL to store it in a hidden input (for further use)
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          hiddenInput.val(e.target.result);
+        };
+        reader.readAsDataURL(watermarkedFile);
+      })
+      .catch(function (err) {
+        console.error(err);
+        errorMessage.text("❌ Failed to apply watermark.").show();
+      });
 
     // Function to apply watermark to PDF
     async function applyPdfWatermark(file) {
@@ -1111,19 +1107,19 @@ jQuery(document).ready(function ($) {
 
         // Image path (Ensure the path is correct and accessible)
         const imagePath =
-            "/wp-content/plugins/Advanced-Game-Q&A-System/assets/images/watermaxk.png";
+          "/wp-content/plugins/Advanced-Game-Q&A-System/assets/images/watermaxk.png";
         // Fetch the image as an ArrayBuffer
         const imageUrl = await fetch(imagePath)
-            .then((res) => {
-              if (!res.ok) {
-                throw new Error("Image not found or failed to fetch");
-              }
-              return res.arrayBuffer();
-            })
-            .catch((error) => {
-              console.error("Error fetching the image:", error);
-              return null;
-            });
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error("Image not found or failed to fetch");
+            }
+            return res.arrayBuffer();
+          })
+          .catch((error) => {
+            console.error("Error fetching the image:", error);
+            return null;
+          });
 
         if (!imageUrl) {
           throw new Error("Image could not be fetched or is invalid");
@@ -1259,7 +1255,7 @@ jQuery(document).ready(function ($) {
     setTimeout(function () {
       // Append success message to the body or a specific container
       jQuery(".faq-main-content,.custom-table").append(
-          '<div class="success-message">Successfully Deleted</div>'
+        '<div class="success-message">Successfully Deleted</div>'
       );
 
       // Hide the success message after 3 seconds
@@ -1294,8 +1290,8 @@ jQuery(document).ready(function ($) {
   // Close when clicking outside popup inner
   $(document).on("click", function (e) {
     if (
-        !$(e.target).closest(".reorder-popup-inner").length &&
-        $(".reorder-popup").hasClass("active")
+      !$(e.target).closest(".reorder-popup-inner").length &&
+      $(".reorder-popup").hasClass("active")
     ) {
       $(".reorder-popup").removeClass("active");
     }
@@ -1349,8 +1345,8 @@ jQuery(document).ready(function ($) {
 
       // Close all others & remove their active state
       $(".api-card-approval-history .dropdown-lists")
-          .not($historyList)
-          .slideUp(300);
+        .not($historyList)
+        .slideUp(300);
       $(".approval-history-head").not($historyHead).removeClass("active");
 
       // Toggle current one
@@ -1364,14 +1360,14 @@ jQuery(document).ready(function ($) {
     if (!$(e.target).closest(".api-card-approval-history").length) {
       $(".dropdown-lists").slideUp(300);
       $(".api-card-approval-history .approval-history-head").removeClass(
-          "active"
+        "active"
       );
     }
   });
 
   const reportUploadAreaEl = $(".report-upload-area");
   const reportBrowseLinkEl = $(
-      ".report-browse-link, label[for='report-upload-input']"
+    ".report-browse-link, label[for='report-upload-input']"
   );
   const reportFileInputEl = $("#report-upload-input");
   const reportFilePreviewEl = $(".report-file-preview");
@@ -1473,14 +1469,14 @@ jQuery(document).ready(function ($) {
 
     reportUploadedFiles.forEach((file, i) => {
       fileReaders.push(
-          new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              base64Files[i] = e.target.result;
-              resolve();
-            };
-            reader.readAsDataURL(file);
-          })
+        new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            base64Files[i] = e.target.result;
+            resolve();
+          };
+          reader.readAsDataURL(file);
+        })
       );
     });
 
@@ -1618,7 +1614,7 @@ jQuery(document).ready(function ($) {
       if ((typedDigit || fromPaste) && n > 100) {
         let safe = String(prevVal).replace(/\D/g, "");
         let safeNum =
-            safe === "" ? "" : Math.max(0, Math.min(100, parseInt(safe, 10)));
+          safe === "" ? "" : Math.max(0, Math.min(100, parseInt(safe, 10)));
         this.value = safeNum === "" ? "" : String(safeNum);
         return;
       }
@@ -1658,8 +1654,8 @@ jQuery(document).ready(function ($) {
   $(document).on("click", ".custom-select-dropdown-title", function (e) {
     e.stopPropagation();
     const $dropdown = $(this).closest(".custom-select-dropdown"),
-        $title = $dropdown.find(".custom-select-dropdown-title"),
-        $list = $dropdown.find(".custom-select-dropdown-lists");
+      $title = $dropdown.find(".custom-select-dropdown-title"),
+      $list = $dropdown.find(".custom-select-dropdown-lists");
 
     // Close other dropdowns
     $(".custom-select-dropdown-lists").not($list).slideUp(300);
@@ -1675,12 +1671,12 @@ jQuery(document).ready(function ($) {
   // Select item
   $(document).on("click", ".custom-select-dropdown-lists li", function () {
     const $item = $(this),
-        $dropdown = $item.closest(".custom-select-dropdown"),
-        $title = $dropdown.find(".custom-select-dropdown-title"),
-        $default = $title.find(".custom-dropdown-default-value"),
-        $selected = $title.find(".custom-dropdown-selected-value"),
-        $hidden = $dropdown.find("input[type=hidden]"),
-        $list = $dropdown.find(".custom-select-dropdown-lists");
+      $dropdown = $item.closest(".custom-select-dropdown"),
+      $title = $dropdown.find(".custom-select-dropdown-title"),
+      $default = $title.find(".custom-dropdown-default-value"),
+      $selected = $title.find(".custom-dropdown-selected-value"),
+      $hidden = $dropdown.find("input[type=hidden]"),
+      $list = $dropdown.find(".custom-select-dropdown-lists");
     $dataValue = $item.data("value");
 
     // Update active item
@@ -1713,7 +1709,7 @@ jQuery(document).ready(function ($) {
     // Set worker
     if (window.pdfjsLib) {
       pdfjsLib.GlobalWorkerOptions.workerSrc =
-          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js";
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js";
     }
 
     const $overlay = $(".pdf-modal-overlay");
@@ -1770,17 +1766,17 @@ jQuery(document).ready(function ($) {
       currentPdfUrl = pdfUrl;
 
       pdfjsLib
-          .getDocument(pdfUrl)
-          .promise.then(function (pdf) {
-        pdfDoc = pdf;
-        renderAllPages();
-      })
-          .catch(function (err) {
-            console.error("Error loading PDF:", err);
-            $wrapper.html(
-                '<div style="padding:24px;text-align:center;color:#a00;">Failed to load PDF.</div>'
-            );
-          });
+        .getDocument(pdfUrl)
+        .promise.then(function (pdf) {
+          pdfDoc = pdf;
+          renderAllPages();
+        })
+        .catch(function (err) {
+          console.error("Error loading PDF:", err);
+          $wrapper.html(
+            '<div style="padding:24px;text-align:center;color:#a00;">Failed to load PDF.</div>'
+          );
+        });
     }
 
     // Render all pages into #pdfWrapper
@@ -1837,13 +1833,13 @@ jQuery(document).ready(function ($) {
       };
     };
     $(window).on(
-        "resize",
-        debounce(function () {
-          if (!$overlay.hasClass("active") || !pdfDoc) return;
-          // Re-render all pages at the new width
-          const url = currentPdfUrl;
-          loadPDF(url);
-        }, 200)
+      "resize",
+      debounce(function () {
+        if (!$overlay.hasClass("active") || !pdfDoc) return;
+        // Re-render all pages at the new width
+        const url = currentPdfUrl;
+        loadPDF(url);
+      }, 200)
     );
   })(jQuery);
 
@@ -1902,7 +1898,7 @@ jQuery(document).ready(function ($) {
     $(document).on("click", function (e) {
       if (!$cancelModal.hasClass("active")) return;
       if (
-          !$(e.target).closest($cancelModal.add(openCancelBtnSelector)).length
+        !$(e.target).closest($cancelModal.add(openCancelBtnSelector)).length
       ) {
         $cancelModal.removeClass("active");
       }
@@ -1912,7 +1908,7 @@ jQuery(document).ready(function ($) {
     $(document).on("click", function (e) {
       if (!$submitModal.hasClass("active")) return;
       if (
-          !$(e.target).closest($submitModal.add(openSubmitBtnSelector)).length
+        !$(e.target).closest($submitModal.add(openSubmitBtnSelector)).length
       ) {
         $submitModal.removeClass("active");
       }
@@ -1927,7 +1923,7 @@ jQuery(document).ready(function ($) {
   });
 
   $(
-      'input[type="text"], input[type="search"], .faq-template #filter-search'
+    'input[type="text"], input[type="search"], .faq-template #filter-search'
   ).on("input", function () {
     var maxLength = 200; // Default limit for most selectors
     var $input = $(this);
@@ -1936,8 +1932,8 @@ jQuery(document).ready(function ($) {
 
     // Check for a specific condition for the "manage-user-search" field
     if (
-        $input.attr("id") === "manage-user-search" &&
-        $input.val().length > 254
+      $input.attr("id") === "manage-user-search" &&
+      $input.val().length > 254
     ) {
       maxLength = 254; // If it's the "manage-user-search" field, the max length should be 254
     }
@@ -1951,18 +1947,18 @@ jQuery(document).ready(function ($) {
       if ($input.attr("id") === "manage-user-search") {
         var $filterSearchField = $(".filter-search-field");
         if (
-            $filterSearchField.length > 0 &&
-            $filterSearchField.find("#error-message").length === 0
+          $filterSearchField.length > 0 &&
+          $filterSearchField.find("#error-message").length === 0
         ) {
           $(
-              '<div id="error-message">Max 254 characters allowed.</div>'
+            '<div id="error-message">Max 254 characters allowed.</div>'
           ).appendTo($filterSearchField); // Append the error message to .filter-search-field
         }
       } else {
         // Append error message after the input for other fields
         if ($errorMessage.length === 0) {
           $(
-              '<div id="error-message">Max ' +
+            '<div id="error-message">Max ' +
               maxLength +
               " characters allowed.</div>"
           ).insertAfter($input); // Insert the error message after the input
@@ -1997,11 +1993,11 @@ jQuery(document).ready(function ($) {
         isValid = false;
         field.addClass("error-field");
         const $fieldWrapper = field.closest(
-            ".form-field, .agqa-popup-form-field"
+          ".form-field, .agqa-popup-form-field"
         );
         if ($fieldWrapper.find(".error-message").length === 0) {
           $fieldWrapper.append(
-              `<div class="error-message">This field cannot be empty or contain only spaces. Please fill it correctly.</div>`
+            `<div class="error-message">This field cannot be empty or contain only spaces. Please fill it correctly.</div>`
           );
         }
         return false; // Exit loop early if one field is invalid
@@ -2013,7 +2009,7 @@ jQuery(document).ready(function ($) {
     if ($websiteInput.length) {
       const value = $websiteInput.val().trim();
       const $fieldWrapper = $websiteInput.closest(
-          ".form-field, .agqa-popup-form-field"
+        ".form-field, .agqa-popup-form-field"
       );
 
       // Check for spaces in the input
@@ -2022,7 +2018,7 @@ jQuery(document).ready(function ($) {
         $websiteInput.addClass("error-field");
         if ($fieldWrapper.find(".error-message").length === 0) {
           $fieldWrapper.append(
-              `<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`
+            `<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`
           );
         }
       }
@@ -2032,7 +2028,7 @@ jQuery(document).ready(function ($) {
         $websiteInput.addClass("error-field");
         if ($fieldWrapper.find(".error-message").length === 0) {
           $fieldWrapper.append(
-              `<div class="error-message">Please enter a valid domain (e.g., .com, .net).</div>`
+            `<div class="error-message">Please enter a valid domain (e.g., .com, .net).</div>`
           );
         }
       }
@@ -2045,7 +2041,7 @@ jQuery(document).ready(function ($) {
 
     // Show success message if valid
     const $successMsg = $(
-        '<div class="submitted-successfully">Successful submission</div>'
+      '<div class="submitted-successfully">Successful submission</div>'
     );
     $form.append($successMsg);
 
@@ -2072,7 +2068,7 @@ jQuery(document).ready(function ($) {
       // Append error message if it doesn't already exist
       if ($errorMessage.length === 0) {
         $(
-            '<div id="error-message">Max 200 characters allowed.</div>'
+          '<div id="error-message">Max 200 characters allowed.</div>'
         ).insertAfter($input); // Insert the error message after the input
       }
     } else {
@@ -2084,7 +2080,7 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  $('.agqa-faq-validation-100').on("input", function () {
+  $(".agqa-faq-validation-100").on("input", function () {
     var maxLengthInputFaq = 100;
 
     var $input = $(this);
@@ -2098,7 +2094,7 @@ jQuery(document).ready(function ($) {
       // Append error message if it doesn't already exist
       if ($errorMessage.length === 0) {
         $(
-            '<div id="error-message">Max 100 characters allowed.</div>'
+          '<div id="error-message">Max 100 characters allowed.</div>'
         ).insertAfter($input); // Insert the error message after the input
       }
     } else {
