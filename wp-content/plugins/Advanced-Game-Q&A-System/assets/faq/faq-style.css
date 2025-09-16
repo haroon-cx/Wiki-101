@@ -161,7 +161,7 @@ body{
 
 .page-item.first,
 .page-item.last {
-    display: none;
+    display: none !important;
 }
 
 .pagination {
