@@ -64,7 +64,7 @@ if ($add_manage_id !== 0) {
 // }
 if (strtolower($state) === 'pending') {
     include 'edit-manage-user-pending-form.php';
-} elseif (strtolower($state) === 'active') {
+} elseif (in_array(strtolower($state), ['active', 'freeze', 'inactive'])) {
     // Include the Active form file if state is 'Active'
     include 'edit-manage-user-form.php';
 }

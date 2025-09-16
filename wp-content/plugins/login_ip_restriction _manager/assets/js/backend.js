@@ -37,7 +37,6 @@ jQuery(document).ready(function ($) {
   /**
    * edit user script
    */
-  // Handle form submission
   $("#edit-form-user-manage").on("submit", function (e) {
     e.preventDefault(); // Prevent the default form submission
     var $form = jQuery(this);
