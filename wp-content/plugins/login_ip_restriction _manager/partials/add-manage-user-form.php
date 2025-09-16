@@ -65,7 +65,7 @@
                 </div>
                 <div class="form-field required">
                     <label for="manage-user-email-field"><span>* </span>Email</label>
-                    <input type="text" name="company-name" id="comapany-name-field" required placeholder="Description">
+                    <input type="email" name="email" id="email-field" required placeholder="Description">
                 </div>
                 <div class="form-field">
                     <div class="add-custom-field-ctn">
@@ -77,7 +77,7 @@
                                 <div class="popup-form-cross-icon"></div>
                                 <div class="form-field">
                                     <label for="field-name">Field Name</label>
-                                    <input type="text" name="field-name" id="field-name" placeholder="Description">
+                                    <input type="text" name="first-name" id="first-name" placeholder="Description">
                                 </div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
                                     <button class="cancel-button" type="button">Cancel</button>

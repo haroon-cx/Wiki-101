@@ -266,12 +266,10 @@ function map_user_role($role)
 /**
  * Edit user handler
  */
-add_action('wp_ajax_update_user', 'handle_update_user');
+add_action('wp_ajax_edit_user_manage', 'handle_edit_user_manage');
+add_action('wp_ajax_nopriv_edit_user_manage', 'handle_edit_user_manage');
 
-// Hook for non-logged-in users (optional)
-add_action('wp_ajax_nopriv_update_user', 'handle_update_user');
-
-function handle_update_user()
+function handle_edit_user_manage()
 {
     // Check nonce for security
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
