@@ -226,12 +226,41 @@ jQuery(document).ready(function ($) {
   var totalItems = jQuery(".faq-accordion").length;
   var totalPages = Math.ceil(totalItems / itemsPerPage);
 
+
   jQuery("#pagination-demo").twbsPagination({
     totalPages: totalPages,
     visiblePages: 3,
     onPageClick: function (event, page) {
       jQuery(".faq-accordion").hide();
       jQuery('.faq-accordion[data-page="' + page + '"]').show();
+      var totalActiveItems = jQuery(".faq-accordion.active").length;
+      var totalActivePages = Math.ceil(totalActiveItems / itemsPerPage);
+
+      // Loop through each page <li> (exclude Prev/Next)
+      // Loop through each page <li> (exclude Prev/Next)
+      jQuery('.pagination-ctn ul li.page-item').nextAll().not('.next').show();
+      jQuery(".pagination-ctn ul li.page-item").not(".prev, .next").each(function() {
+        var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
+
+        if (pageNumberss === totalActivePages && totalActivePages !== 0) {
+
+          // Remove all <li> items that come after this one
+          jQuery(this).nextAll().not('.next').hide();
+
+          // Check the <li> just before the Next button
+          var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
+
+          // If the next page is hidden or .next button is visible, disable the next button
+          if (prevLi.is(":hidden")) {
+            jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+          } else {
+            jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+          }
+
+          // Break the loop since we found the match
+          // return false;
+        }
+      });
     },
   });
 
