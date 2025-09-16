@@ -88,7 +88,6 @@ function handle_add_or_update_user()
         wp_send_json_error(['message' => 'Error inserting data into custom table.']);
     }
 
-    // ✅ Send welcome email with password reset link (safer than emailing password)
     $user   = get_user_by('id', $user_id);
     $key    = get_password_reset_key($user);
     if (is_wp_error($key)) {
@@ -143,53 +142,116 @@ function map_user_role($role)
 add_action('wp_ajax_edit_user_manage', 'handle_edit_user_manage');
 add_action('wp_ajax_nopriv_edit_user_manage', 'handle_edit_user_manage');
 
-function handle_edit_user_manage()
-{
+function handle_edit_user_manage() {
+    global $wpdb;
     // Check nonce for security
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
         wp_send_json_error(['message' => 'Permission Denied']);
     }
-    parse_str($_POST['form_data'], $data);
-    // Get the form data
-    $user_id = intval($data['user_id']);
-    $account = sanitize_text_field($data['account']);
-    $password = sanitize_text_field($data['password']);
-    $email = sanitize_email($data['email']);
-    $state = sanitize_text_field($data['state']);
-    $user_role = sanitize_text_field($data['user_role']);
-    $company_name = sanitize_text_field($data['company_name']);
 
-    // Ensure the user exists
-    $user = get_user_by('id', $user_id);
-    if (!$user) {
-        wp_send_json_error(array('message' => 'User not found.'));
+    parse_str($_POST['form_data'], $data);
+    // echo '<pre>' . print_r($data, true) . '</pre>';
+
+    // Get the form data
+    $user_id = intval($data['user-id']);
+    $account = sanitize_text_field($data['account']);
+    $new_password = sanitize_text_field($data['new-password']);
+    $confirm_password = sanitize_text_field($data['confirm-password']);
+    $user_state = sanitize_text_field($data['state']);
+    $user_role_input = sanitize_text_field($data['user-role']);
+    $company_name = sanitize_text_field($data['company-name']);
+    $email = sanitize_email($data['email']);
+    $custom_label_1 = sanitize_text_field($data['custom-label-1']);
+    $custom_label_2 = sanitize_text_field($data['custom-label-2']);
+    $custom_label_3 = sanitize_text_field($data['custom-label-3']);
+    $custom_label_4 = sanitize_text_field($data['custom-label-4']);
+    $custom_field_1 = sanitize_text_field($data['custom-field-1']);
+    $custom_field_2 = sanitize_text_field($data['custom-field-2']);
+    $custom_field_3 = sanitize_text_field($data['custom-field-3']);
+    $custom_field_4 = sanitize_text_field($data['custom-field-4']);
+  
+        $user_exists = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE user_id = %d", 
+                $user_id
+            )
+        );
+    //   echo $user_id;
+    //   wp_die();
+
+
+    if ($user_exists == 0) {
+        wp_send_json_error(['message' => 'User not found in custom table.']);
         return;
     }
 
-    // Update user data
-    $user_data = array(
+    // Prepare the data to update in the custom table
+  $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
+
+// Prepare the data to update
+$update_data = [
+    'account'        => $account,
+    'state'          => $user_state,
+    'user_role'      => $user_role_input,
+    'company_name'   => $company_name,
+    'email'          => $email,
+    'custom_label_1' => $custom_label_1,
+    'custom_label_2' => $custom_label_2,
+    'custom_label_3' => $custom_label_3,
+    'custom_label_4' => $custom_label_4,
+    'custom_field_1' => $custom_field_1,
+    'custom_field_2' => $custom_field_2,
+    'custom_field_3' => $custom_field_3,
+    'custom_field_4' => $custom_field_4,
+];
+
+    // If new password is provided, update it
+    if (!empty($new_password) && $new_password === $confirm_password) {
+        $update_data['new_password'] = wp_hash_password($new_password);
+    }
+
+// Always proceed with the update, no need to check if data has changed
+    $result = $wpdb->update(
+        $table_name, 
+        $update_data,
+        array('user_id' => $user_id),  // Condition: where user_id = $user_id
+        array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'),  // Format for fields
+        array('%d')  // Format for user_id
+    );
+
+  // Check if the update was successful
+    if ($result === false) {
+        wp_send_json_error(['message' => 'Failed to update user data in custom table.']);
+        return;
+    }
+
+    wp_send_json_success(['message' => 'User data updated successfully in the custom table.']);
+
+    // Update the record in the default WordPress user table using wp_update_user
+    $user_data = [
         'ID' => $user_id,
         'user_login' => $account,
         'user_email' => $email,
         'display_name' => $account,
-        'role' => $user_role,
-    );
+        'role' => $user_role_input,
+    ];
 
-    if (!empty($password)) {
-        $user_data['user_pass'] = wp_hash_password($password);  // Set password if provided
+    // If password is provided, update the password as well
+    if (!empty($new_password) && $new_password === $confirm_password) {
+        $user_data['user_pass'] = wp_hash_password($new_password);
     }
 
+    // Update WordPress user data
     $user_update = wp_update_user($user_data);
 
     if (is_wp_error($user_update)) {
-        wp_send_json_error(array('message' => $user_update->get_error_message()));
+        wp_send_json_error(['message' => $user_update->get_error_message()]);
         return;
     }
 
-    // Update user meta (for custom fields, user state, etc.)
-    update_user_meta($user_id, 'company_name', $company_name);
-    update_user_meta($user_id, 'state', $state);
-
     // Send success response
-    wp_send_json_success(array('message' => 'User data updated successfully.'));
+    $response['status']  = 'Success';
+    $response['message'] = 'Successfully Submitted';
+    echo json_encode($response);
+  wp_die(); // End the AJAX request
 }

@@ -661,46 +661,9 @@ jQuery(document).ready(function ($) {
     e.preventDefault();
     showPopup(submitConfirmPopup);
   });
-
-  // YES submit → save or update
-  // $(".yes-submit").on("click", function (e) {
-  //     e.preventDefault();
-  //     const value = $.trim(firstNameInput.val());
-  //     if (!value) {
-  //         hidePopup();
-  //         return;
-  //     }
-
-  //     if (editMode && editTarget) {
-  //         editTarget.find("label").text(value);
-  //         editTarget.find("input[type='text']").attr("placeholder", value);
-  //     } else {
-  //         const count = $(".api-form-wrapper > form > .form-field.custom-field-item").length;
-  //         if (count >= maxFields) {
-  //             hidePopup();
-  //             return;
-  //         }
-
-  //         const newField = $(`
-  //             <div class="form-field custom-field-item">
-  //             <input type="hidden" name="custom-label-${count + 1}" value="${value}">
-  //                 <label>${value}</label>
-  //                 <div class="custom-append-field">
-  //                     <input type="text" name="custom-field-${count + 1}" placeholder="${value}">
-  //                     <button type="button" class="edit-field-btn"></button>
-  //                     <button type="button" class="remove-field-btn"></button>
-  //                 </div>
-  //             </div>
-  //         `);
-
-  //         // Append directly before the "Add Custom Field" .form-field
-  //         addBtnContainer.before(newField);
-  //     }
-
-  //     checkFieldLimit();
-  //     hidePopup();
-  // });
-  // YES submit → save or update
+  /**
+   * Add Custom field Script
+   */
   $(".yes-submit").on("click", function (e) {
     e.preventDefault();
     const value = $.trim(firstNameInput.val());
