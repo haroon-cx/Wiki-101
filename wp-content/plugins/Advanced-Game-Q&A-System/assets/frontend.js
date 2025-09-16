@@ -708,7 +708,6 @@ jQuery(document).ready(function ($) {
       hidePopup();
       return;
     }
-    alert(value);
     if (editMode && editTarget) {
       // Update label text
       editTarget.find("label").text(value);

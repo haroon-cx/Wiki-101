@@ -18,8 +18,11 @@
                     data-inited-validation="1">
                     <div class="form-field required">
                         <label for="account-field"><span>* </span>Account</label>
-                        <input type="text" name="faq-question" id="account-field" required placeholder="Description"
+                        <input type="text" name="account" id="account-field" required placeholder="Description"
                             value="<?php echo $value->account; ?>" disabled>
+
+                        <input type="hidden" name="account" id="account-field" required placeholder="Description"
+                            value="<?php echo $value->account; ?>">
                         <div id="error-message"></div>
                     </div>
                     <div class="form-field required">
@@ -55,7 +58,8 @@
                                     <li data-value="Freeze">Freeze</li>
                                 </ul>
                             </div>
-                            <input type="hidden" name="manage-user-state" id="manage-user-state" required="">
+                            <input type="hidden" name="manage-user-state" id="manage-user-state" required=""
+                                value="<?php echo $value->state; ?>">
                         </div>
                     </div>
                     <div class="form-field required">
@@ -74,19 +78,19 @@
                                     <li data-value="Viewer">Viewer</li>
                                 </ul>
                             </div>
-                            <input type="hidden" name="faq-category" id="issue_type" required=""
+                            <input type="hidden" name="user_role" id="issue_type" required=""
                                 value="<?php echo $value->user_role; ?>">
                         </div>
                     </div>
                     <div class="form-field required">
                         <label for="comapany-name-field"><span>* </span>Company Name</label>
-                        <input type="text" name="faq-question" id="comapany-name-field" required placeholder="Description"
+                        <input type="text" name="company_name" id="comapany-name-field" required placeholder="Description"
                             value="<?php echo $value->company_name; ?>">
                     </div>
                     <div class="form-field required">
                         <label for="manage-user-email-field"><span>* </span>Email</label>
-                        <input type="text" name="faq-question" id="manage-user-email-field" required
-                            placeholder="<?php echo $value->email; ?>" value="<?php echo $value->email; ?>">
+                        <input type="text" name="email" id="email-field" required placeholder="<?php echo $value->email; ?>"
+                            value="<?php echo $value->email; ?>">
                         <!-- <div class="reset-link">
                         <a href="#">Reset Link</a>
                     </div> -->
@@ -197,7 +201,7 @@
                                 <div class="form-message">Are you sure you want to submit?</div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
                                     <button class="no-confirm-submit" type="button">No</button>
-                                    <input type="submit" value="Yes" id="confirm-submit">
+                                    <button type="submit" value="Yes" id="confirm-submit">YES</button>
                                 </div>
                             </div>
                         </div>
