@@ -20,3 +20,24 @@ wp-config.php
 # Ignore OS-specific files
 .DS_Store
 Thumbs.db
+wp-content/themes/anesta/skins/default/plugins/gutenberg/gutenberg-preview.css
+wp-content/themes/anesta/skins/default/plugins/gutenberg/gutenberg-preview-responsive.css
+wp-content/themes/anesta/skins/default/css/__single.css
+wp-content/themes/anesta/skins/default/css/__single-responsive.css
+wp-content/themes/anesta/skins/default/css/__responsive.css
+wp-content/themes/anesta/skins/default/css/__responsive-full.css
+wp-content/themes/anesta/skins/default/css/__plugins.css
+wp-content/themes/anesta/skins/default/css/__plugins-full.css
+wp-content/themes/anesta/skins/default/css/__custom.css
+wp-content/themes/anesta/js/__scripts.js
+wp-content/themes/anesta/js/__scripts-full.js
+wp-content/plugins/trx_addons/js/__scripts.js
+wp-content/plugins/trx_addons/js/__scripts-full.js
+wp-content/plugins/trx_addons/css/__styles.css
+wp-content/plugins/trx_addons/css/__styles-full.css
+wp-content/plugins/trx_addons/css/__responsive.css
+wp-content/plugins/trx_addons/css/__responsive-full.css
+wp-content/plugins/trx_addons/components/cpt/layouts/export/layouts.responsive.css
+wp-content/plugins/trx_addons/components/cpt/layouts/export/layouts.css
+wp-content/plugins/trx_addons/components/api/gutenberg/gutenberg-preview.responsive.css
+wp-content/plugins/trx_addons/components/api/gutenberg/gutenberg-preview.css

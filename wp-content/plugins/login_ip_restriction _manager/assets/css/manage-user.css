@@ -72,6 +72,10 @@ input[type="date"]::-webkit-input-placeholder {
     z-index: 99;
 }
 
+.select-date-picker::-webkit-input-placeholder {
+    color: #747474 !important;
+}
+
 input[type="date"],
 .calendar-icon {
     background-image: url(../image/calender-icon.png);
@@ -373,19 +377,38 @@ tr {
     margin-inline: 18px 4px;
 }
 
+.user-history-record-head::before {
+    top: 0;
+    left: 0;
+    transform: rotate(90deg);
+}
+
+.user-history-record-head::after {
+    top: 0;
+    right: 0;
+    transform: rotate(180deg);
+}
+
+.user-history-records-inner::before {
+    bottom: 0;
+    left: 18px;
+}
+
+.user-history-records-inner::after {
+    bottom: 0;
+    right: 18px;
+    transform: rotate(270deg);
+}
+
 .user-history-record-head::before,
 .user-history-record-head::after,
 .user-history-records-inner::before,
 .user-history-records-inner::after {
     content: "";
     position: absolute;
-    top: 0;
-    right: 0;
     width: 8px;
     height: 8px;
-    border-top: 1px solid white;
-    border-right: 1px solid white;
-    border-radius: 8px;
+    background-image: url(../image/corner-shap.svg);
 }
 
 .user-ip-title,
