@@ -28,8 +28,8 @@
                         value="<?php echo $value->user_id; ?>">
                     <div id="error-message"></div>
                 </div>
-                <div class="form-field required">
-                    <label for="reset-password"><span>* </span>Reset Password</label>
+                <div class="form-field">
+                    <label for="reset-password">Reset Password</label>
                     <div class="generate-password-button">
                         Generate New Password
                     </div>
@@ -74,7 +74,6 @@
                         </div>
                         <div class="custom-select-dropdown-lists">
                             <ul>
-                                <li>All</li>
                                 <li data-value="Admin">Admin</li>
                                 <li data-value="Manager">Manager</li>
                                 <li data-value="Contributor">Contributor</li>

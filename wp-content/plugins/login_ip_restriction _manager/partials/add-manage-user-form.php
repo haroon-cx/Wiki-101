@@ -49,7 +49,6 @@
                         </div>
                         <div class="custom-select-dropdown-lists">
                             <ul>
-                                <li>All</li>
                                 <li data-value="Admin">Admin</li>
                                 <li data-value="Manager">Manager</li>
                                 <li data-value="Contributor">Contributor</li>

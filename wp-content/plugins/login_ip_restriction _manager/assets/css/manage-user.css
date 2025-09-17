@@ -32,7 +32,7 @@
 form .select-date-picker,
 input[type="date"],
 form input[type="date"] {
-    padding-left: 58px !important;
+    padding-left: 65px !important;
 }
 
 .date-field .select-date-picker {
@@ -45,10 +45,20 @@ form input[type="date"] {
     /* Add font size if necessary */
 }
 
+.drp-calendar.left thead tr:nth-child(1) th:last-child,
+.drp-calendar.right thead tr:nth-child(1) th:first-child {
+    display: none;
+}
+
 .select-date-picker {
     color: #747474;
     font-size: 14px;
     /* Placeholder font size */
+}
+
+.date-field input[type="date"]::-webkit-input-placeholder,
+.select-date-picker::-webkit-input-placeholder {
+    color: #747474 !important;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -290,6 +300,8 @@ tr {
 
 .userName {
     color: #747474;
+    position: relative;
+    top: -3px;
 }
 
 .user-history-records {
@@ -300,7 +312,7 @@ tr {
 
 .user-history-records-inner,
 .user-history-record-lists {
-    height: 48.545vh;
+    height: 42.745vh;
 }
 
 .user-history-records-inner {
@@ -379,13 +391,35 @@ tr {
 .user-history-records-inner::after {
     content: "";
     position: absolute;
-    top: 0;
-    right: 0;
     width: 8px;
     height: 8px;
-    border-top: 1px solid white;
-    border-right: 1px solid white;
-    border-radius: 8px;
+    background-image: url(../image/corner-shape.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.user-history-record-head::before {
+    top: 0;
+    left: 0;
+    transform: rotate(90deg);
+}
+
+.user-history-record-head::after {
+    top: 0;
+    right: 0;
+    transform: rotate(180deg);
+}
+
+.user-history-records-inner::before {
+    bottom: 0;
+    left: 18px;
+}
+
+.user-history-records-inner::after {
+    bottom: 0;
+    right: 18px;
+    transform: rotate(270deg);
 }
 
 .user-ip-title,
@@ -646,4 +680,8 @@ thead {
 
 .daterangepicker .drp-buttons .btn {
     margin-left: 0 !important;
+}
+
+#manage-user-search,input#filter-search {
+    text-transform: initial;
 }

@@ -102,7 +102,6 @@ if (strtolower($state) === 'pending') {
                         </button>
                         <div class="filter-select-list">
                             <ul>
-                                <li data-value="">Select State</li>
                                 <li data-value="Active">Active</li>
                                 <li data-value="Inactive">Inactive</li>
                                 <li data-value="Freeze">Freeze</li>
@@ -119,7 +118,6 @@ if (strtolower($state) === 'pending') {
                         </button>
                         <div class="filter-select-list">
                             <ul>
-                                <li data-value="">Select Role</li>
                                 <li data-value="Admin">Admin</li>
                                 <li data-value="Manager">Manager</li>
                                 <li data-value="Contributor">Contributor</li>
@@ -136,7 +134,6 @@ if (strtolower($state) === 'pending') {
                         </button>
                         <div class="filter-select-list">
                             <ul>
-                                <li data-value="">Select Company</li>
                                 <li data-value="Wagner Inc">Wagner Inc</li>
                                 <li data-value="Wood and Sons">Wood and Sons</li>
                                 <li data-value="Martinez, Nielsen and">Martinez, Nielsen</li>
