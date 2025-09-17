@@ -18,6 +18,14 @@ if ($add_manage_id == 0 && $edit_manage_id == 0) {
                 user_role,
                 company_name,
                 email,
+                   custom_label_1,
+                custom_label_2,
+                custom_label_3,
+                custom_label_4,
+                custom_field_1,
+                custom_field_2,
+                custom_field_3,
+                custom_field_4,
                 created_at
             FROM $table_agqa_manage_user
             ORDER BY id DESC
@@ -168,7 +176,8 @@ if (strtolower($state) === 'pending') {
                     </div>
                     <div class="custom-table-body">
                         <?php
-                            foreach ($add_manage_users_data as $key => $user_data) { ?>
+                            foreach ($add_manage_users_data as $key => $user_data) { 
+                                ?>
                         <div class="custom-table-row">
                             <div class="table-body-col"><?php echo $user_data->account; ?></div>
                             <div class="table-body-col table-row-status <?php echo strtolower($user_data->state); ?>">
@@ -178,8 +187,10 @@ if (strtolower($state) === 'pending') {
                             <div class="table-body-col"><?php echo $user_data->company_name; ?></div>
                             <div class="table-body-col table-body-col-mail"><a
                                     href="mailto:jillrhodes@miller.com"><?php echo $user_data->email; ?></a></div>
-                            <div class="table-body-col table-body-col-userId"><a
-                                    href="#">@<?php echo $user_data->account; ?></a></div>
+                            <div class="table-body-col table-body-col-userId">
+                                <a href="https://t.me/<?php echo $user_data->custom_field_1; ?>"
+                                    target="_blank"><?php echo $user_data->custom_field_1; ?></a>
+                            </div>
                             <div class="table-body-col table-body-col-date">
                                 <?php echo str_replace('-', '/', $user_data->created_at); ?>
                             </div>
