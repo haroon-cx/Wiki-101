@@ -272,38 +272,6 @@ function custom_faq_shortcode()
             </div>
             <!-- Main Content End -->
         </div>
-        <script>
-            jQuery(document).ready(function($) {
-                var itemsPerPage = 15;
-                var totalItems = jQuery('.faq-accordion').length;
-
-                // Only show pagination if more than 16 items exist
-                if (totalItems > 16) {
-                    var totalPages = Math.ceil(totalItems / itemsPerPage);
-                    jQuery('#pagination-demo').twbsPagination({
-                        totalPages: totalPages, // Total pages
-                        visiblePages: 3, // Number of visible pages
-                        onPageClick: function(event, page) {
-                            jQuery('.faq-accordion').hide(); // Hide all items initially
-
-                            jQuery('.faq-accordion').each(function(index) {
-                                var pageIndex = Math.floor(index / itemsPerPage) + 1;
-                                if (pageIndex === page) {
-                                    jQuery(this).show();
-                                }
-                            });
-                        }
-                    });
-                    jQuery('.faq-accordion').each(function(index) {
-                        var pageIndex = Math.floor(index / itemsPerPage) + 1;
-                        jQuery(this).attr('data-page', pageIndex);
-                    });
-                } else {
-                    jQuery('#pagination-demo').hide(); // Hide pagination if there are 16 or fewer items
-                }
-            });
-        </script>
-
     <?php } ?>
 <?php
     return ob_get_clean();

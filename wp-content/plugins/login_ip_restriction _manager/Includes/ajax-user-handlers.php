@@ -64,7 +64,6 @@ function handle_add_or_update_user()
     $insert_data = [
         'user_id'        => $user_id,
         'account'        => $account,
-        // If you must store, store hash; better: store NULL and drop these columns later.
         'new_password'   => wp_hash_password($new_password),
         'confirm_password' => wp_hash_password($confirm_password),
         'state'          => $user_state,
@@ -79,8 +78,7 @@ function handle_add_or_update_user()
         'custom_field_2' => $custom_field_2,
         'custom_field_3' => $custom_field_3,
         'custom_field_4' => $custom_field_4,
-        // If you added a DATE column:
-        // 'created_at'   => current_time('Y-m-d'),
+        'created_at'   => current_time('Y-m-d')
     ];
     $result = $wpdb->insert("{$wpdb->prefix}agqa_wiki_add_users", $insert_data);
     if ($result === false) {
@@ -169,7 +167,7 @@ function map_user_role($role)
 //     $custom_field_2 = sanitize_text_field($data['custom-field-2']);
 //     $custom_field_3 = sanitize_text_field($data['custom-field-3']);
 //     $custom_field_4 = sanitize_text_field($data['custom-field-4']);
-  
+
 //         $user_exists = $wpdb->get_var(
 //             $wpdb->prepare(
 //                 "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE user_id = %d", 
@@ -306,7 +304,7 @@ function handle_edit_user_manage() {
     // Check if user exists in the custom table
     $user_exists = $wpdb->get_var(
         $wpdb->prepare(
-            "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE user_id = %d", 
+            "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE user_id = %d",
             $user_id
         )
     );
@@ -341,7 +339,7 @@ function handle_edit_user_manage() {
 
     // Update custom table
     $result = $wpdb->update(
-        $table_name, 
+        $table_name,
         $update_data,
         ['user_id' => $user_id],
         array_fill(0, count($update_data), '%s'),

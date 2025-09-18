@@ -34,13 +34,13 @@ jQuery(document).ready(function ($) {
     $.post(ajaxurl, formData + "&action=cuim_create_user", function (response) {
       if (response.success) {
         $("#cuim-create-message").html(
-          '<span style="color: green;">' + response.data + "</span>"
+            '<span style="color: green;">' + response.data + "</span>"
         );
         $("#cuim-create-form")[0].reset();
         location.reload();
       } else {
         $("#cuim-create-message").html(
-          '<span style="color: red;">' + response.data + "</span>"
+            '<span style="color: red;">' + response.data + "</span>"
         );
       }
     });
@@ -64,12 +64,12 @@ jQuery(document).ready(function ($) {
     $.post(ajaxurl, formData + "&action=cuim_update_user", function (response) {
       if (response.success) {
         $("#cuim-edit-message").html(
-          '<span style="color: green;">' + response.data + "</span>"
+            '<span style="color: green;">' + response.data + "</span>"
         );
         location.reload();
       } else {
         $("#cuim-edit-message").html(
-          '<span style="color: red;">' + response.data + "</span>"
+            '<span style="color: red;">' + response.data + "</span>"
         );
       }
     });
@@ -85,19 +85,19 @@ jQuery(document).ready(function ($) {
 
   $("#cuim-confirm-delete").on("click", function () {
     $.post(
-      cuim_ajax.ajax_url,
-      {
-        action: "cuim_delete_user",
-        user_id: deleteUserId,
-        security: cuim_ajax.nonce,
-      },
-      function (res) {
-        if (res.success) {
-          location.reload();
-        } else {
-          alert(res.data);
+        cuim_ajax.ajax_url,
+        {
+          action: "cuim_delete_user",
+          user_id: deleteUserId,
+          security: cuim_ajax.nonce,
+        },
+        function (res) {
+          if (res.success) {
+            location.reload();
+          } else {
+            alert(res.data);
+          }
         }
-      }
     );
   });
 
@@ -121,22 +121,22 @@ jQuery(document).ready(function ($) {
 
   function loadIpList() {
     $.post(
-      cuim_ajax.ajax_url,
-      {
-        action: "cuim_get_ip_list",
-        security: cuim_ajax.nonce,
-      },
-      function (res) {
-        // console.log('IP LIST RESPONSE:', res); // Add this line
+        cuim_ajax.ajax_url,
+        {
+          action: "cuim_get_ip_list",
+          security: cuim_ajax.nonce,
+        },
+        function (res) {
+          // console.log('IP LIST RESPONSE:', res); // Add this line
 
-        if (!res.success) {
-          console.warn("IP list load failed:", res.data);
-          return;
-        }
-        const tbody = $("#cuim-ip-list tbody").empty();
-        res.data.forEach((row) => {
-          if (!row.ip) return;
-          tbody.append(`
+          if (!res.success) {
+            console.warn("IP list load failed:", res.data);
+            return;
+          }
+          const tbody = $("#cuim-ip-list tbody").empty();
+          res.data.forEach((row) => {
+            if (!row.ip) return;
+            tbody.append(`
                 <tr data-user-id="${row.id}" data-user-email="${row.email}" data-ip="${row.ip}" class="${row.role}">
                     <td>${row.email}</td>
                     <td class="cuim-ip">${row.ip}</td>
@@ -146,8 +146,8 @@ jQuery(document).ready(function ($) {
                     </td>
                 </tr>
             `);
-        });
-      }
+          });
+        }
     );
   }
 
@@ -163,30 +163,30 @@ jQuery(document).ready(function ($) {
   $("#cuim-edit-ip-form").on("submit", function (e) {
     e.preventDefault();
     $.post(
-      cuim_ajax.ajax_url,
-      $(this).serialize() + "&action=cuim_save_ip",
-      function (res) {
-        $("#cuim-edit-ip-message").text(res.data);
-        if (res.success) {
-          $(".cuim-modal").fadeOut();
-          loadIpList();
+        cuim_ajax.ajax_url,
+        $(this).serialize() + "&action=cuim_save_ip",
+        function (res) {
+          $("#cuim-edit-ip-message").text(res.data);
+          if (res.success) {
+            $(".cuim-modal").fadeOut();
+            loadIpList();
+          }
         }
-      }
     );
   });
 
   $(document).on("click", ".cuim-delete-ip", function () {
     const uid = $(this).closest("tr").data("user-id");
     $.post(
-      cuim_ajax.ajax_url,
-      {
-        action: "cuim_delete_ip",
-        user_id: uid,
-        security: cuim_ajax.nonce,
-      },
-      function (res) {
-        if (res.success) loadIpList();
-      }
+        cuim_ajax.ajax_url,
+        {
+          action: "cuim_delete_ip",
+          user_id: uid,
+          security: cuim_ajax.nonce,
+        },
+        function (res) {
+          if (res.success) loadIpList();
+        }
     );
   });
 
@@ -195,17 +195,17 @@ jQuery(document).ready(function ($) {
     var role = jQuery(this).data("requested-role");
 
     jQuery.post(
-      ajaxurl,
-      {
-        action: "cuim_approve_user",
-        security: cuim_ajax.nonce,
-        user_id: userId,
-        role: role,
-      },
-      function (response) {
-        alert(response.data);
-        if (response.success) location.reload();
-      }
+        ajaxurl,
+        {
+          action: "cuim_approve_user",
+          security: cuim_ajax.nonce,
+          user_id: userId,
+          role: role,
+        },
+        function (response) {
+          alert(response.data);
+          if (response.success) location.reload();
+        }
     );
   });
 
@@ -213,21 +213,21 @@ jQuery(document).ready(function ($) {
     const btn = $(this);
     btn.prop("disabled", true);
     $.post(
-      cuim_ajax.ajax_url,
-      {
-        action: "cuim_toggle_viewer_mode",
-      },
-      function (response) {
-        if (response.success) {
-          const state = response.data === "1" ? "On" : "Off";
-          btn.find("span").text(state);
-          btn.toggleClass("active", response.data === "1");
-          window.location.href = "/";
-        } else {
-          alert("❌ " + response.data);
+        cuim_ajax.ajax_url,
+        {
+          action: "cuim_toggle_viewer_mode",
+        },
+        function (response) {
+          if (response.success) {
+            const state = response.data === "1" ? "On" : "Off";
+            btn.find("span").text(state);
+            btn.toggleClass("active", response.data === "1");
+            window.location.href = "/";
+          } else {
+            alert("❌ " + response.data);
+          }
+          btn.prop("disabled", false);
         }
-        btn.prop("disabled", false);
-      }
     );
   });
 
@@ -235,17 +235,17 @@ jQuery(document).ready(function ($) {
     e.preventDefault();
     $(".post_content.entry-content").html("<p>🔄 Loading profile...</p>");
     $.post(
-      cuim_ajax.ajax_url,
-      { action: "cuim_get_profile_html" },
-      function (response) {
-        if (response.success) {
-          $(".post_content.entry-content").html(response.data.html);
-        } else {
-          $(".post_content.entry-content").html(
-            '<p style="color:red;">❌ ' + response.data + "</p>"
-          );
+        cuim_ajax.ajax_url,
+        { action: "cuim_get_profile_html" },
+        function (response) {
+          if (response.success) {
+            $(".post_content.entry-content").html(response.data.html);
+          } else {
+            $(".post_content.entry-content").html(
+                '<p style="color:red;">❌ ' + response.data + "</p>"
+            );
+          }
         }
-      }
     );
   });
 
@@ -277,24 +277,24 @@ jQuery(document).ready(function ($) {
   });
 
   $.post(
-    cuim_ajax.ajax_url,
-    { action: "cuim_get_profile_html" },
-    function (response) {
-      if (response.success) {
-        var isComplete =
-          response.data.profile_complete === true ||
-          response.data.profile_complete === "1" ||
-          response.data.profile_complete === 1;
-        if (!isComplete) {
-          $("#cuim-edit-modal").fadeIn();
-          $(".post_content.entry-content").html(response.data.html);
-          alert("Please complete your profile before proceeding.");
+      cuim_ajax.ajax_url,
+      { action: "cuim_get_profile_html" },
+      function (response) {
+        if (response.success) {
+          var isComplete =
+              response.data.profile_complete === true ||
+              response.data.profile_complete === "1" ||
+              response.data.profile_complete === 1;
+          if (!isComplete) {
+            $("#cuim-edit-modal").fadeIn();
+            $(".post_content.entry-content").html(response.data.html);
+            alert("Please complete your profile before proceeding.");
+          } else {
+          }
         } else {
+          $(".post_content.entry-content").html("<p>Error loading profile.</p>");
         }
-      } else {
-        $(".post_content.entry-content").html("<p>Error loading profile.</p>");
       }
-    }
   );
   $(".custom-table-row").each(function () {
     const $row = $(this);
@@ -319,8 +319,8 @@ jQuery(document).ready(function ($) {
     // Close popup when clicking outside the popup inner area
     $(document).on("click", function (e) {
       if (
-        !$(e.target).closest($popupInnerRow).length && // Ensure the click is outside the inner popup
-        $popupRow.hasClass("active") // Ensure the popup is active
+          !$(e.target).closest($popupInnerRow).length && // Ensure the click is outside the inner popup
+          $popupRow.hasClass("active") // Ensure the popup is active
       ) {
         $popupRow.removeClass("active"); // Close the popup for this specific row
       }
@@ -341,6 +341,34 @@ jQuery(document).ready(function ($) {
     onPageClick: function (event, page) {
       jQuery(".custom-table-row").hide();
       jQuery('.custom-table-row[data-page="' + page + '"]').show();
+      var totalActiveItems = jQuery(".custom-table-row.active").length;
+      var totalActivePages = Math.ceil(totalActiveItems / itemsPerPage);
+
+      // Loop through each page <li> (exclude Prev/Next)
+      // Loop through each page <li> (exclude Prev/Next)
+      jQuery('.pagination-ctn ul li.page-item').nextAll().not('.next').show();
+      jQuery(".pagination-ctn ul li.page-item").not(".prev, .next").each(function() {
+        var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
+
+        if (pageNumberss === totalActivePages && totalActivePages !== 0) {
+
+          // Remove all <li> items that come after this one
+          jQuery(this).nextAll().not('.next').hide();
+
+          // Check the <li> just before the Next button
+          var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
+
+          // If the next page is hidden or .next button is visible, disable the next button
+          if (prevLi.is(":hidden")) {
+            jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+          } else {
+            jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+          }
+
+          // Break the loop since we found the match
+          // return false;
+        }
+      });
     },
   });
 
@@ -359,17 +387,33 @@ jQuery(document).ready(function ($) {
 
     // Toggle password visibility
     var fieldType =
-      passwordField.attr("type") === "password" ? "text" : "password";
+        passwordField.attr("type") === "password" ? "text" : "password";
     passwordField.attr("type", fieldType); // Toggle the password visibility
 
     // Toggle the button class and icon
     $(this).toggleClass("show-pass");
   });
 
+  setTimeout(function() {
+    // Clear the date range input field
+    $('input[name="daterange"]').val('');
+  }, 2000); // 3000 milliseconds = 3 seconds
+
+
+  // Initialize the date range picker with max 30 days selection
   $('input[name="daterange"]').daterangepicker({
-    opens: "right", // Position the calendarr
+    opens: "right", // Position the calendar
     locale: {
       format: "YYYY/MM/DD", // Specify the date format
     },
+    maxSpan: {
+      "days": 30 // Limit the date range selection to a maximum of 30 days
+    },
   });
+
+  // Handle the cancel or clear action
+  $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+    $(this).val(''); // Reset the input field to empty when the user cancels or clears the date range
+  });
+
 });
