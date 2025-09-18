@@ -1349,12 +1349,12 @@ div#agqa-add-game-modal h4 {
 div#agqa-add-game-modal textarea,
 div#agqa-edit-question-modal textarea,
 div#agqa-edit-game-modal textarea,
-  /* div#report-featured-popup textarea, */
+/* div#report-featured-popup textarea, */
 .agqa-admin-edit-box textarea,
 div#agqa-add-game-modal input,
 div#agqa-edit-question-modal input,
 div#agqa-edit-game-modal input,
-  /* div#report-featured-popup input, */
+/* div#report-featured-popup input, */
 .agqa-admin-edit-box input {
   margin: 5px 0 10px;
   border-radius: 10px;
@@ -2377,8 +2377,8 @@ body .selected-dropdown-item,
 .tab:hover,
 .tab.active {
   background: linear-gradient(90deg,
-  rgba(37, 32, 49, 0.72),
-  rgba(118, 68, 206, 0.72)), rgba(0, 0, 0, 0.2);
+      rgba(37, 32, 49, 0.72),
+      rgba(118, 68, 206, 0.72)), rgba(0, 0, 0, 0.2);
   border-color: #7644ce;
   box-shadow: 0 0 8px rgba(118, 68, 206, 0.4);
   color: #fff;
@@ -3283,7 +3283,7 @@ div#agqa-search-box input {
 .custom-select-dropdown-lists {
   position: absolute;
   background: #747474;
-  border: 1px solid rgb(134 133 133 );
+  border: 1px solid rgb(134 133 133);
   border-top: none;
   z-index: 99;
   border-radius: 0 0 10px 10px;
@@ -4200,8 +4200,12 @@ input::placeholder {
 .filter-select-list {
   top: 70px;
   width: 100%;
-  max-height: 385px;
+  max-height: 492px;
   overflow-y: auto;
+}
+
+.filter-select-list ul li:nth-child(n + 2) {
+  margin-top: 2px !important;
 }
 
 .enabled {
