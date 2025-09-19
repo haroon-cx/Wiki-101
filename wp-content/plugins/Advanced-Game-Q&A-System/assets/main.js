@@ -14,16 +14,14 @@ jQuery(document).ready(function ($) {
 
   /* Api Card slide effect script */
 
-  $(".api-toggle-header").on("click", function (e) {
-    e.stopPropagation(); // Prevent bubbling to document
+  $(".api-card-header").on("click", function (e) {
+    e.stopPropagation(); // Prevent bubbling so it doesn't trigger the document click handler
 
     const $card = $(this).closest(".api-card-container-box"); // Get the closest card
-    const $details = $(this).siblings(".api-details"); // Get the details section
+    const $details = $card.find(".api-details"); // Get the .api-details section
 
-    // Hide all other .api-details
+    // Slide toggle for only the clicked .api-details
     $(".api-details").not($details).stop(true, true).slideUp();
-
-    // Remove .active from all other cards
     $(".api-card-container-box").not($card).removeClass("active");
 
     // Toggle active state on the clicked card
@@ -31,6 +29,27 @@ jQuery(document).ready(function ($) {
 
     // Toggle the clicked details section
     $details.stop(true, true).slideToggle();
+  });
+
+  // Prevent the default behavior when clicking on .api-edit-button, .api-price-api-cost or other non-toggleable areas
+  jQuery('.api-edit-button, .api-price-api-cost').click(function (e) {
+    e.stopPropagation(); // Prevent event bubbling to the .api-card-header
+    return true; // Allow other actions (e.g., form submission, navigation) on these elements
+  });
+
+  // Prevent .api-details toggle when clicking inside the .api-card-container-box but outside .api-toggle-header
+  $(".api-card-container").on("click", function (e) {
+    if (!$(e.target).closest(".api-toggle-header").length) {
+      e.stopPropagation(); // Prevent triggering toggle if clicked outside of .api-toggle-header inside .api-card-container
+    }
+  });
+
+  // Close all .api-details if clicked outside of the .api-card-container
+  $(document).on("click", function (e) {
+    if (!$(e.target).closest(".api-card-container-box").length) {
+      $(".api-details").slideUp(); // Close all .api-details
+      $(".api-card-container-box").removeClass("active"); // Remove active state from all cards
+    }
   });
 
   // Prevent clicks inside .api-details from bubbling to document
@@ -328,11 +347,11 @@ jQuery(document).ready(function ($) {
   });
 
   // Close when clicking outside popup inner
-  $(document).on("click", function (e) {
-    if (!$(e.target).closest(".agqa-popup-form-inner").length) {
-      $(".agqa-popup-form").removeClass("active");
-    }
-  });
+  // $(document).on("click", function (e) {
+  //   if (!$(e.target).closest(".agqa-popup-form-inner").length) {
+  //     $(".agqa-popup-form").removeClass("active");
+  //   }
+  // });
 
   // Close the report popup when clicking the Cancel button
   $(".cancel-button").click(function () {
@@ -748,12 +767,10 @@ jQuery(document).ready(function ($) {
         const box = $("#agqa-search-results").empty();
         if (res.success && res.data.length > 0) {
           res.data.forEach((row) => {
-            box.append(`<div class="agqa-search-result" data-question-id="${
-              row.question_id
-            }">
-                    <strong>${row.type.toUpperCase()}</strong> in <em>${
-              row.post_title
-            }</em>:<br>
+            box.append(`<div class="agqa-search-result" data-question-id="${row.question_id
+              }">
+                    <strong>${row.type.toUpperCase()}</strong> in <em>${row.post_title
+              }</em>:<br>
                     ${row.content}
                 </div>`);
           });

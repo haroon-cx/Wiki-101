@@ -16,25 +16,24 @@
         width: 60%;
     }
 
-    .filter-selected-text {
-        font-size: 14px;
-    }
-
-    .agqa-popup-form-ctn .add-category-button {
-        font-size: 16px !important;
-        padding: 18px 20px;
-    }
-
     .filter-area .filter-select-button {
         padding: 15px 20px !important;
-    }
+    } 
 
     .filter-area form {
         gap: 20px 16px;
     }
 
     .filter-area input[type="search"] {
-        min-width: 280px;
+        min-width: 260px;
+        max-width: 260px;
+    }
+}
+
+@media (max-width: 1680px) and (min-width: 1200px) {
+        .agqa-popup-form-ctn .add-category-button {
+        font-size: 16px !important;
+        padding: 18px 20px;
     }
 }
 
@@ -93,7 +92,7 @@
     }
 }
 
-@media (max-width: 1440px) and (min-width: 748px) {
+@media (max-width: 1439px) and (min-width: 748px) {
 
     .filter-area input[type="search"] {
         min-width: auto;
@@ -116,18 +115,28 @@
     #manage-user-add-form {
         padding: 32px 40px 25px;
     }
-}
 
-@media (max-width: 1440px) and (min-width: 1024px) {
+    .filter-area {
+        min-width: 64%;
+        width: 64%;
+    }
+
+    .api-filter .filter-area {
+        min-width: max-content;
+        width: max-content;
+    }
+
+    .api-filter .filter-select {
+        width: max-content;
+    }
 
     .filter-area form {
         flex-wrap: wrap;
+        gap: 16px;
     }
+}
 
-    .filter-area {
-        min-width: 60%;
-        width: 60%;
-    }
+@media (max-width: 1439px) and (min-width: 1024px) {
 
     .filter-container {
         flex-wrap: nowrap;
@@ -136,10 +145,6 @@
     .filter-area input[type="search"] {
         min-width: 100%;
         max-width: 100%;
-    }
-
-    .filter-select {
-        width: calc(100% - 140px);
     }
 
     div.large-text,
@@ -161,7 +166,12 @@
     }
 }
 
-@media (max-width: 1440px) and (min-width: 1200px) {
+@media (max-width: 1439px) and (min-width: 1200px) {
+
+
+    .filter-select {
+        width: calc(100% - 130px);
+    }
 
     body.body_style_wide:not(.expand_content) .page_content_wrap .content_wrap>.content,
     body.body_style_wide:not(.expand_content) .content_wrap>.content {
@@ -210,6 +220,11 @@
 }
 
 @media (max-width: 1199px) and (min-width: 748px) {
+
+    button, .reorder-button, a.add-category-button, .add-button {
+    border-radius: 10px;
+    padding: 12px 18px;
+}
 
     .api-price-api-cost {
         padding: 13px 22px;
@@ -312,7 +327,6 @@
     .api-card-approval-history .dropdown-lists {
         padding: 12px;
         width: 450px;
-        bottom: 25px;
         left: 0;
     }
 
@@ -331,9 +345,23 @@
     .api-revenue-states-buttons span {
         font-size: 14px;
     }
+
+    .filter-area input[type="search"] {
+        min-width: auto;
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 1199px) and (min-width: 1024px) {
+
+
+    .filter-select {
+        width: calc(100% - 108px);
+    }
+
+    .filter-area .filter-select button {
+        font-size: 14px !important;
+    }
 
     .page_content_wrap .content_wrap>.widget_area,
     .content_wrap>.widget_area,
@@ -407,13 +435,18 @@
         font-size: 16px !important;
     }
 
+    .filter-area .filter-select-button,
+    .agqa-popup-form-ctn .add-category-button {
+        padding: 15px !important;
+    }
+
+    .agqa-popup-form-ctn .add-category-button {
+        font-size: 15px !important;
+    }
+
     .filter-area input[type="search"],
     div.filter-container button.filter-select-title {
         height: 54px;
-    }
-
-    .filter-area input[type="search"] {
-        min-width: auto;
     }
 
     body form button:not(.components-button),
@@ -673,7 +706,7 @@
     }
 }
 
-@media (max-width: 1023px) and (min-width: 748px) {
+@media (max-width: 1023px) and (min-width: 768px) {
 
     a.agqa-site-logo,
     .agqa-site-logo {
@@ -783,6 +816,10 @@
 
     .provider-card {
         width: 31%;
+    }
+
+    .filter-select {
+        min-width: calc(100% - 114px);
     }
 }
 

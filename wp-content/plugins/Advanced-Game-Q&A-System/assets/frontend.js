@@ -660,10 +660,18 @@ jQuery(document).ready(function ($) {
   $("#save-custom-field").on("click", function (e) {
     e.preventDefault();
     showPopup(submitConfirmPopup);
+     let hasEditClass = $('#edit-revnue-form').hasClass('custom-form');
+
+     if(hasEditClass){
+      $('.yes-submit').trigger('click');
+      $("#custom-field-popup").hide();
+     }
   });
-  /**
+
+  /*
    * Add Custom field Script
    */
+
   $(".yes-submit").on("click", function (e) {
     e.preventDefault();
     const value = $.trim(firstNameInput.val());
@@ -691,14 +699,12 @@ jQuery(document).ready(function ($) {
       // Create new field
       const newField = $(`
             <div class="form-field custom-field-item">
-                <input type="hidden" name="custom-label-${
-                  count + 1
-                }" value="${value}">
+                <input type="hidden" name="custom-label-${count + 1
+        }" value="${value}">
                 <label>${value}</label>
                 <div class="custom-append-field">
-                    <input type="text" name="custom-field-${
-                      count + 1
-                    }" placeholder="${value}">
+                    <input type="text" name="custom-field-${count + 1
+        }" placeholder="${value}">
                     <button type="button" class="edit-field-btn"></button>
                     <button type="button" class="remove-field-btn"></button>
                 </div>
@@ -797,12 +803,19 @@ jQuery(document).ready(function ($) {
     editTarget = $(this).closest(".form-field.custom-field-item");
     firstNameInput.val(editTarget.find("label").text());
     showPopup(addFieldPopup);
+    jQuery('input#save-custom-field').addClass('edit-save-coustom-field');
   });
 
   // Remove field → show cancel confirmation popup
   $(document).on("click", ".remove-field-btn", function () {
     removeTarget = $(this).closest(".form-field.custom-field-item");
     showPopup(cancelConfirmPopup);
+     let hasEditClass = $('#edit-revnue-form').hasClass('custom-form');
+
+     if(hasEditClass){
+      $('#yes-cancel').trigger('click');
+      $("#custom-field-popup").hide();
+     }
   });
 
   // Click outside to close
@@ -1250,14 +1263,14 @@ jQuery(document).ready(function ($) {
   });
 
   // Close when clicking outside popup inner
-  $(document).on("click", function (e) {
-    if (
-      !$(e.target).closest(".reorder-popup-inner").length &&
-      $(".reorder-popup").hasClass("active")
-    ) {
-      $(".reorder-popup").removeClass("active");
-    }
-  });
+  // $(document).on("click", function (e) {
+  //   if (
+  //     !$(e.target).closest(".reorder-popup-inner").length &&
+  //     $(".reorder-popup").hasClass("active")
+  //   ) {
+  //     $(".reorder-popup").removeClass("active");
+  //   }
+  // });
 
   /* Reorder Sort by dropdown */
 
@@ -1297,25 +1310,66 @@ jQuery(document).ready(function ($) {
 
   /* Approval History by dropdown */
 
-  $(".api-card-approval-history").each(function () {
-    const $thisHistory = $(this);
-    const $historyHead = $thisHistory.find(".approval-history-head");
-    const $historyList = $thisHistory.find(".dropdown-lists");
+  // $(".api-card-approval-history").each(function () {
+  //   const $thisHistory = $(this);
+  //   const $historyHead = $thisHistory.find(".approval-history-head");
+  //   const $historyList = $thisHistory.find(".dropdown-lists");
 
-    $historyHead.on("click", function (e) {
-      e.stopPropagation();
+  //   $historyHead.on("click", function (e) {
+  //     e.stopPropagation();
 
-      // Close all others & remove their active state
-      $(".api-card-approval-history .dropdown-lists")
-        .not($historyList)
-        .slideUp(300);
-      $(".approval-history-head").not($historyHead).removeClass("active");
+  //     // Close all others & remove their active state
+  //     $(".api-card-approval-history .dropdown-lists")
+  //       .not($historyList)
+  //       .slideUp(300);
+  //     $(".approval-history-head").not($historyHead).removeClass("active");
 
-      // Toggle current one
-      $historyList.slideToggle(300);
-      $historyHead.toggleClass("active");
-    });
+  //     // Toggle current one
+  //     $historyList.slideToggle(300);
+  //     $historyHead.toggleClass("active");
+  //   });
+  // });
+$(".api-card-approval-history").each(function () {
+  const $thisHistory = $(this);
+  const $historyHead = $thisHistory.find(".approval-history-head");
+  const $historyList = $thisHistory.find(".dropdown-lists");
+
+  $historyHead.on("click", function (e) {
+    e.stopPropagation();
+
+    // Close all others & remove their active state
+    $(".api-card-approval-history .dropdown-lists")
+      .not($historyList)
+      .slideUp(300);
+    $(".approval-history-head").not($historyHead).removeClass("active");
+
+    // Toggle current one
+    $historyList.slideToggle(300);
+    $historyHead.toggleClass("active");
+
+    // Adjust dropdown position dynamically
+    var windowHeight = $(window).height();
+    var windowTop = $(window).scrollTop();
+    var dropdownHeight = $historyList.outerHeight();
+    var dropdownTop = $historyList.offset().top;
+    var dropdownBottomDistance = windowHeight - (dropdownTop - windowTop + dropdownHeight);
+
+    // If dropdown would overflow from the bottom, position upwards
+    if (dropdownTop + dropdownHeight > windowHeight) {
+      $historyList.css({ top: '', bottom: '25px' });
+    }
+    // If enough space at the bottom, show it downward
+    else if (dropdownTop - windowTop + dropdownHeight + 40 <= windowHeight) {
+      $historyList.css({ top: '45px', bottom: '' });
+    }
+    // Default positioning for middle cases
+    else {
+      $historyList.css({ top: '45px', bottom: '' });
+    }
   });
+});
+
+  
 
   // Close all when clicking outside
   $(document).on("click", function (e) {
@@ -1921,8 +1975,8 @@ jQuery(document).ready(function ($) {
         if ($errorMessage.length === 0) {
           $(
             '<div id="error-message">Max ' +
-              maxLength +
-              " characters allowed.</div>"
+            maxLength +
+            " characters allowed.</div>"
           ).insertAfter($input); // Insert the error message after the input
         }
       }
@@ -2067,4 +2121,31 @@ jQuery(document).ready(function ($) {
       }
     }
   });
+  jQuery('#provider-name,.custom-select-dropdown-title').click(function () {
+    jQuery('.agqa-popup-form-button').removeClass('active');
+    jQuery('.agqa-popup-form-select').slideUp();
+  });
+
+  // $(window).on('resize scroll', function () {
+  //   var $dropdown = $('.dropdown-lists');
+  //   var windowHeight = $(window).height(); // Window ki height
+  //   var windowTop = $(window).scrollTop(); // Window ke top se scroll position
+  //   var dropdownHeight = $dropdown.outerHeight(); // Dropdown ki height
+  //   var dropdownTop = $dropdown.offset().top; // Dropdown ka top position from document
+  //   var dropdownBottomDistance = windowHeight - (dropdownTop - windowTop + dropdownHeight); // Distance from bottom of the screen
+
+  //   // Condition 1: Dropdown ka distance from window top + height + 40px is less than window height
+  //   if (dropdownTop - windowTop + dropdownHeight + 40 <= windowHeight) {
+  //     // If dropdown can fit from the top, open downwards
+  //     $dropdown.css({ top: '45px', bottom: '' });
+  //   }
+  //   // Condition 2: Dropdown ka distance from window bottom + height + 40px is less than window height
+  //   else if (dropdownBottomDistance + 40 <= windowHeight) {
+  //     // If dropdown would overflow from the bottom, open upwards
+  //     $dropdown.css({ top: '', bottom: '25px' });
+  //   } else {
+  //     // Default case: If no conditions are met, open downwards by default
+  //     $dropdown.css({ top: '45px', bottom: '' });
+  //   }
+  // }).trigger('resize');
 });

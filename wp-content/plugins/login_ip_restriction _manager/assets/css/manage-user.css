@@ -540,17 +540,40 @@ input:disabled::placeholder,
 }
 
 .reset-link a {
+    position: relative;
     display: inline-block;
     border-radius: 42px;
     background-color: rgba(234, 221, 255, .16);
     padding: 6px 12px 6px 43px;
-    background-image: url(../image/white-email-icon.svg);
-    background-repeat: no-repeat;
-    background-size: 20px;
-    background-position: left 14px center;
     color: white;
 }
 
+.reset-link a::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    left: 14px;
+    width: 20px;
+    height: 20px;
+    background-image: url(../image/white-email-icon.svg);
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: center;
+}
+
+.reset-link a.reset-link-disabled,
+.reset-link a.reset-link-disabled:hover {
+    color: #A8A8A8;
+    background-color: rgba(234, 221, 255, .16);
+    cursor: not-allowed;
+}
+
+.reset-link a.reset-link-disabled::before,
+.reset-link a.reset-link-disabled:hover::before {
+    filter: brightness(0) saturate(100%) invert(59%) sepia(42%) saturate(0%) hue-rotate(257deg) brightness(103%) contrast(98%);
+}
 .reset-link a:hover {
     color: white;
     background-color: rgba(234, 221, 255, .30);
@@ -693,13 +716,14 @@ thead {
     margin-left: 0 !important;
 }
 
-#manage-user-search,input#filter-search {
+#manage-user-search,
+input#filter-search {
     text-transform: initial;
 }
 
 .search-no-found-text h2 {
-  margin-bottom: 0;
-  text-transform: capitalize;
+    margin-bottom: 0;
+    text-transform: capitalize;
 }
 
 .successfull-message-ctn-content {
