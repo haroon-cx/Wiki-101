@@ -240,7 +240,6 @@ jQuery(document).ready(function ($) {
         // Perform the AJAX request once the countdown finishes
       }
     }, 1000); // Update every second (1000 ms)
-    alert(formData);
     $.ajax({
       url: cuim_ajax.ajax_url,
       type: "POST",
