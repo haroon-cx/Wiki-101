@@ -118,7 +118,7 @@ jQuery(document).ready(function ($) {
     currentAccordionBody.stop(true, true).slideToggle(function () {
       // If the accordion body is visible, set display: flex
       if (jQuery(this).is(":visible")) {
-        jQuery(this).css("display", "flex");
+        jQuery(this).css("display", "block");
       } else {
         // Optionally, reset to default when hidden
         jQuery(this).css("display", "");

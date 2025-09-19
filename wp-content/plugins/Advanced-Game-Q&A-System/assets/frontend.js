@@ -156,12 +156,12 @@ jQuery(document).ready(function ($) {
       updateState();
     }
   });
-  // Close dropdown on outside click
-  $(document).on("click", function (e) {
-    if (!$(e.target).closest(".agqa-popup-form-multi-select").length) {
-      $multiDropdown.slideUp(300);
-    }
-  });
+  // // Close dropdown on outside click
+  // $(document).on("click", function (e) {
+  //   if (!$(e.target).closest(".agqa-popup-form-multi-select").length) {
+  //     $multiDropdown.slideUp(300);
+  //   }
+  // });
   $(".agqa-popup-form-buttons").on("click", "input:button", function (e) {
     e.stopPropagation();
     const value = $(this).data("value");

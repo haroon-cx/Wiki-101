@@ -154,6 +154,7 @@ input::placeholder,
 select::placeholder,
 textarea::placeholder {
   color: #fff !important;
+  text-transform: capitalize;
 }
 
 
@@ -1883,7 +1884,6 @@ h6 {
 .filter-container,
 .filter-area form {
   display: flex;
-  align-items: center;
 }
 
 .filter-area input[type="search"] {
@@ -3562,13 +3562,7 @@ form .form-buttons button {
 }
 
 .submit-warning,
-.success-message,
-.submitted-successfully,
 .submitted-unsuccessfully {
-  position: fixed;
-  top: 10%;
-  left: 0;
-  right: 0;
   padding: 8px 16px;
 }
 
@@ -3597,14 +3591,18 @@ form .form-buttons button {
 .submitted-successfully,
 .copied-success {
   background-color: #34C759;
-}
-
-.copied-success {
-  padding: 8px 16px 8px 48px;
   background-image: url(images/submitted-icon.svg);
   background-repeat: no-repeat;
-  background-position: center left 18px;
+  background-position: top 10px left 18px;
   background-size: 20px;
+  padding: 8px 16px 8px 48px;
+}
+
+.copied-success,
+.submit-warning,
+.success-message,
+.submitted-successfully,
+.submitted-unsuccessfully {
   position: fixed;
   top: calc(10% + 40px);
   left: auto;
@@ -3682,9 +3680,11 @@ form .form-buttons button {
 
 .search-no-found-text h2 {
   margin-bottom: 0;
+  text-transform: capitalize;
 }
 
-.section-found {
+.section-found,
+.footer_wrap {
   display: none;
 }
 

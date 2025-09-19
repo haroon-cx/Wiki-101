@@ -3,6 +3,17 @@
     min-width: 409px;
 }
 
+
+.manage-user-template .agqa-cross-icon {
+    display: none;
+}
+
+.manage-user-template .filter-selected-text {
+    background-color: transparent;
+    padding: 0;
+    pointer-events: none;
+}
+
 .filter-container button.filter-select-title.select-states {
     background-image: url(../image/select-states-icon.svg);
     background-size: 22px;
@@ -684,4 +695,29 @@ thead {
 
 #manage-user-search,input#filter-search {
     text-transform: initial;
+}
+
+.search-no-found-text h2 {
+  margin-bottom: 0;
+  text-transform: capitalize;
+}
+
+.successfull-message-ctn-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    max-width: 804px;
+    text-align: center;
+    margin-inline: auto;
+}
+
+.successfull-message-icon {
+    line-height: .65;
+    max-width: 297px;
+}
+
+.footer_wrap {
+    display: none;
 }

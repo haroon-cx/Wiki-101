@@ -569,17 +569,17 @@ jQuery(document).ready(function ($) {
                 console.log(response);
                 if (response.includes("Success")) {
                     // alert("Successfully Submitted");
-                    const $successMsg = $(
-                        '<div class="submitted-successfully">Liked</div>'
-                    );
-                    $form.append($successMsg);
+                    // const $successMsg = $(
+                    //     '<div class="submitted-successfully">Liked</div>'
+                    // );
+                    // $form.append($successMsg);
 
-                    // Hide after 3 seconds
-                    setTimeout(function () {
-                        $successMsg.fadeOut(400, function () {
-                            $(this).remove();
-                        });
-                    }, 3000);
+                    // // Hide after 3 seconds
+                    // setTimeout(function () {
+                    //     $successMsg.fadeOut(400, function () {
+                    //         $(this).remove();
+                    //     });
+                    // }, 3000);
                     // Find the *actual* back button
                     const $btn = $(".form-header-row .back-button");
                     const btn = $btn.get(0);
@@ -639,17 +639,17 @@ jQuery(document).ready(function ($) {
                 console.log(response);
                 if (response.includes("Success")) {
                     // alert("Successfully Submitted");
-                    const $successMsg = $(
-                        '<div class="submitted-successfully">Dislike</div>'
-                    );
-                    $form.append($successMsg);
+                    // const $successMsg = $(
+                    //     '<div class="submitted-successfully">Dislike</div>'
+                    // );
+                    // $form.append($successMsg);
 
-                    // Hide after 3 seconds
-                    setTimeout(function () {
-                        $successMsg.fadeOut(400, function () {
-                            $(this).remove();
-                        });
-                    }, 3000);
+                    // // Hide after 3 seconds
+                    // setTimeout(function () {
+                    //     $successMsg.fadeOut(400, function () {
+                    //         $(this).remove();
+                    //     });
+                    // }, 3000);
                     // Find the *actual* back button
                     const $btn = $(".form-header-row .back-button");
                     const btn = $btn.get(0);

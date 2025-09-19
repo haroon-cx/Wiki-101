@@ -132,9 +132,9 @@ foreach ($providers_sales as $sale) {
                     </button>
                     <div class="filter-select-list">
                         <ul>
+                            <li>All</li>
                             <li>New Game Categories</li>
                             <li>API Not Filled in</li>
-                            <li>All</li>
                         </ul>
                     </div>
                 </div>
@@ -204,8 +204,8 @@ foreach ($providers_sales as $sale) {
                                                     </div>
                                             <div class="custom-select-dropdown-lists">
                                                 <ul>
-                                                    <li data-value="Sale">Sale</li>
                                                     <li data-value="Revenue">Revenue</li>
+                                                    <li data-value="Sale">Sale</li>
                                                 </ul>
                                             </div>
                                             <input type="hidden" name="business-model" id="business-model" required>
