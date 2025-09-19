@@ -23,6 +23,8 @@
                     <button class="toggle-password"></button>
                     <input type="password" name="new-password" id="new-password-field" required
                         placeholder="Description">
+
+
                 </div>
                 <div class="form-field required">
                     <label for="confirm-password-field"><span>* </span>Confirm Password</label>

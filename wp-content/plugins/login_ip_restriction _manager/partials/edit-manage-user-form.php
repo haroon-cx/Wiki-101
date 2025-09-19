@@ -30,7 +30,7 @@
                 </div>
                 <div class="form-field">
                     <label for="reset-password">Reset Password</label>
-                    <div class="generate-password-button">
+                    <div class="generate-password-button" id="generate-password-button">
                         Generate New Password
                     </div>
                     <div id="reset-password-confirmation" class="reset-password-confirmation" style="">
@@ -40,8 +40,7 @@
                             <div class="form-message">Are you sure you want to reset your password?</div>
                             <div class="form-buttons agqa-popup-form-buttons d-flex">
                                 <button class="no-form-cancel" type="button">No</button>
-                                <a href="<?php echo esc_url(home_url('/edit-manage-user-form')) ?>"
-                                    class="back-button">Yes</a>
+                                <a href="#" id="agqa-reset-password" class="back-button">Yes</a>
                             </div>
                         </div>
                     </div>

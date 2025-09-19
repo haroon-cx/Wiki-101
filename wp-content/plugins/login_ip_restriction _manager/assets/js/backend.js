@@ -221,7 +221,7 @@ jQuery(document).ready(function ($) {
     const $this = $("#generate-password-button"); // Cache the reference to the button element
 
     // Hide the confirmation popup
-    $("#reset-password-confirmation").hide();
+    $("#reset-password-confirmation").removeClass("active");
 
     // Disable the button and update the text
     $this.addClass("reset-link-disabled");
