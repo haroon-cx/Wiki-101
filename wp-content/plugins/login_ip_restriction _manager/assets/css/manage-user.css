@@ -745,3 +745,13 @@ input#filter-search {
 .footer_wrap {
     display: none;
 }
+
+.resend-password-disabled {
+    color: rgba(255, 255, 555,.2);
+    pointer-events: none;
+}
+
+.resend-password-disabled:hover {
+    background-color: transparent;
+    border-color: #7644CE;
+}
