@@ -31,7 +31,7 @@ function handle_add_or_update_user()
 
     // Basic validation
     if ($new_password !== $confirm_password) {
-        wp_send_json_error(['message' => 'Passwords do not match.']);
+        wp_send_json_error(['message' => 'Passwords does not match.']);
     }
     if (!is_email($email)) {
         wp_send_json_error(['message' => 'Invalid email address.']);
@@ -40,7 +40,7 @@ function handle_add_or_update_user()
         wp_send_json_error(['message' => 'This username is already taken.']);
     }
     if (email_exists($email)) {
-        wp_send_json_error(['message' => 'User already exists.']);
+        wp_send_json_error(['message' => 'Email already exists.']);
     }
 
     // Map role
@@ -139,127 +139,14 @@ function map_user_role($role)
             return 'subscriber';
     }
 }
+
+add_action('wp_ajax_edit_user_manage', 'handle_edit_user_manage');
+add_action('wp_ajax_nopriv_edit_user_manage', 'handle_edit_user_manage');
+
+
 /**
  * Edit user handler
  */
-// add_action('wp_ajax_edit_user_manage', 'handle_edit_user_manage');
-// add_action('wp_ajax_nopriv_edit_user_manage', 'handle_edit_user_manage');
-
-// function handle_edit_user_manage() {
-//     global $wpdb;
-//     // Check nonce for security
-//     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
-//         wp_send_json_error(['message' => 'Permission Denied']);
-//     }
-
-//     parse_str($_POST['form_data'], $data);
-//     // echo '<pre>' . print_r($data, true) . '</pre>';
-
-//     // Get the form data
-//     $user_id = intval($data['user-id']);
-//     $account = sanitize_text_field($data['account']);
-//     $new_password = sanitize_text_field($data['new-password']);
-//     $confirm_password = sanitize_text_field($data['confirm-password']);
-//     $user_state = sanitize_text_field($data['state']);
-//     $user_role_input = sanitize_text_field($data['user-role']);
-//     $company_name = sanitize_text_field($data['company-name']);
-//     $email = sanitize_email($data['email']);
-//     $custom_label_1 = sanitize_text_field($data['custom-label-1']);
-//     $custom_label_2 = sanitize_text_field($data['custom-label-2']);
-//     $custom_label_3 = sanitize_text_field($data['custom-label-3']);
-//     $custom_label_4 = sanitize_text_field($data['custom-label-4']);
-//     $custom_field_1 = sanitize_text_field($data['custom-field-1']);
-//     $custom_field_2 = sanitize_text_field($data['custom-field-2']);
-//     $custom_field_3 = sanitize_text_field($data['custom-field-3']);
-//     $custom_field_4 = sanitize_text_field($data['custom-field-4']);
-
-//         $user_exists = $wpdb->get_var(
-//             $wpdb->prepare(
-//                 "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE user_id = %d",
-//                 $user_id
-//             )
-//         );
-//     //   echo $user_id;
-//     //   wp_die();
-
-
-//     if ($user_exists == 0) {
-//         wp_send_json_error(['message' => 'User not found in custom table.']);
-//         return;
-//     }
-
-//     // Prepare the data to update in the custom table
-//   $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
-
-// // Prepare the data to update
-// $update_data = [
-//     'account'        => $account,
-//     'state'          => $user_state,
-//     'user_role'      => $user_role_input,
-//     'company_name'   => $company_name,
-//     'email'          => $email,
-//     'custom_label_1' => $custom_label_1,
-//     'custom_label_2' => $custom_label_2,
-//     'custom_label_3' => $custom_label_3,
-//     'custom_label_4' => $custom_label_4,
-//     'custom_field_1' => $custom_field_1,
-//     'custom_field_2' => $custom_field_2,
-//     'custom_field_3' => $custom_field_3,
-//     'custom_field_4' => $custom_field_4,
-// ];
-
-//     // If new password is provided, update it
-//     if (!empty($new_password) && $new_password === $confirm_password) {
-//         $update_data['new_password'] = wp_hash_password($new_password);
-//     }
-
-// // Always proceed with the update, no need to check if data has changed
-//     $result = $wpdb->update(
-//         $table_name,
-//         $update_data,
-//         array('user_id' => $user_id),  // Condition: where user_id = $user_id
-//         array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'),  // Format for fields
-//         array('%d')  // Format for user_id
-//     );
-
-//   // Check if the update was successful
-//     if ($result === false) {
-//         wp_send_json_error(['message' => 'Failed to update user data in custom table.']);
-//         return;
-//     }
-
-//     wp_send_json_success(['message' => 'User data updated successfully in the custom table.']);
-
-//     // Update the record in the default WordPress user table using wp_update_user
-//     $user_data = [
-//         'ID' => $user_id,
-//         'user_login' => $account,
-//         'user_email' => $email,
-//         'display_name' => $account,
-//         'role' => $user_role_input,
-//     ];
-
-//     // If password is provided, update the password as well
-//     if (!empty($new_password) && $new_password === $confirm_password) {
-//         $user_data['user_pass'] = wp_hash_password($new_password);
-//     }
-
-//     // Update WordPress user data
-//     $user_update = wp_update_user($user_data);
-
-//     if (is_wp_error($user_update)) {
-//         wp_send_json_error(['message' => $user_update->get_error_message()]);
-//         return;
-//     }
-
-//     // Send success response
-//     $response['status']  = 'Success';
-//     $response['message'] = 'Successfully Submitted';
-//     echo json_encode($response);
-//   wp_die(); // End the AJAX request
-// }
-add_action('wp_ajax_edit_user_manage', 'handle_edit_user_manage');
-add_action('wp_ajax_nopriv_edit_user_manage', 'handle_edit_user_manage');
 
 function map_user_roles($role)
 {
@@ -387,6 +274,11 @@ function handle_edit_user_manage() {
 add_action('wp_ajax_verification_user_email', 'handle_verification_user_email');
 add_action('wp_ajax_nopriv_verification_user_email', 'handle_verification_user_email');
 
+
+/**
+ * Verification email handler
+ */
+
 function handle_verification_user_email()
 {
     global $wpdb;
@@ -435,4 +327,120 @@ function handle_verification_user_email()
 
     // Optional: Send a success response after updating
     wp_send_json_success(['message' => 'User status updated successfully.']);
+}
+/**
+ * resend pending user handler
+ */
+add_action('wp_ajax_resend_pending_email', 'handle_resend_pending_email');
+add_action('wp_ajax_nopriv_resend_pending_email', 'handle_resend_pending_email');
+
+function handle_resend_pending_email()
+{
+
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        wp_send_json_error(['message' => 'Permission Denied']);
+    }
+    parse_str($_POST['form_data'], $data);
+    $account          = sanitize_text_field($data['account']);
+    $user_id          = sanitize_text_field($data['user-id']);
+    $email = sanitize_email($data['email']);
+    $user   = get_user_by('id', $user_id);
+    $key    = get_password_reset_key($user);
+
+        $reset_url = network_site_url('verification') . '?username=' . urlencode($account) . '&key=' . rawurlencode($key) . '&code=' . rawurlencode(current_time('Y-m-d'));
+        $subject = sprintf(__('Email verification %s'), get_bloginfo('name'));
+        $message = '<div class="email-ctn" style="background-color: #1D1C25; padding: 20px; width: 70%; margin:0 auto; border-radius: 16px; color: white; font-size: 16px; font-family: \'Poppins\', sans-serif;">'
+            . '<p style="color: white">Hello ' . esc_html($account) . ',</p>'
+            . '<h2 style="font-size: 20px; color: #00a000;">Thank you for registering with Wiki101</h2>'
+            . '<p style="color: white">To complete your account setup, please verify your email address by clicking the button below:</p>'
+            . '<p style="color: white">'
+            . '<a href="' . $reset_url . '" style="background-color: #7644CE; font-size: 20px; padding: 16px 24px; border-radius: 16px; color: white; margin: 5px 0; display: inline-block; text-decoration: none;">'
+            . 'Verify Link'
+            . '</a>'
+            . '</p>'
+            . '<p style="color: white">This link will expire in 7 days for security reasons. If you did not create this account, please ignore this email.</p>'
+            . '<h2 style="font-size: 24px; color: #fff"><strong>Best regards,</strong></h2>'
+            . '<p style="color: white">The <strong>Wiki101</strong> Team</p>'
+            . '</div>';
+
+        $headers = ['Content-Type: text/html; charset=UTF-8'];
+        wp_mail($email, $subject, $message, $headers);
+    
+
+    // Optional: Send a success response after updating
+    wp_send_json_success(['message' => 'Email have been send successfully.']);
+}
+/**
+ * Generate new password handler
+ */
+add_action('wp_ajax_reset_password_handler', 'handle_reset_password');
+function handle_reset_password() {
+    // Security check
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        wp_send_json_error(['message' => 'Permission Denied']);
+    }
+    parse_str($_POST['form_data'], $data);
+    // Extract and sanitize inputs
+    $password = sanitize_text_field($data['reset-password']);
+    $user_id  = intval($data['user-id']);
+    $email    = sanitize_email($data['email']);
+    $account  = sanitize_text_field($data['account']);
+    // echo $password;
+    // echo $user_id;
+    // echo $email;
+    // echo $account;
+
+    // wp_die();
+    // Get WP user object
+    $user = get_user_by('ID', $user_id);
+    if (!$user) {
+        wp_send_json_error(['message' => 'User not found']);
+    }
+
+    // ✅ Update password in WordPress
+    wp_set_password($password, $user_id);
+
+    // ✅ Update password in custom table
+    global $wpdb;
+        $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
+
+   $update_data = [
+       
+        'new_password'   => wp_hash_password($password),
+        'confirm_password' => wp_hash_password($password),
+    ];
+
+    // If new password is provided, update it
+    if (!empty($new_password) && $new_password === $confirm_password) {
+        $update_data['new_password'] = wp_hash_password($new_password);
+    }
+
+    // Update custom table
+    $result = $wpdb->update(
+        $table_name,
+        $update_data,
+        ['user_id' => $user_id],
+        array_fill(0, count($update_data), '%s'),
+        ['%d']
+    );
+
+    if ($updated === false) {
+        wp_send_json_error(['message' => 'Failed to update custom user table']);
+    }
+
+    // ✅ Send email with new password
+    $subject = 'Your password has been reset';
+    $message = '<div class="email-ctn" style="background-color: #1D1C25; padding: 20px; width: 70%; margin:0 auto; border-radius: 16px; color: white; font-size: 16px; font-family: \'Poppins\', sans-serif;">'
+        . '<h2 style="color: #00a000;">Hello ' . esc_html($account) . ',</h2>'
+        . '<p>Your new password has been generated successfully.</p>'
+        . '<p style="color: white"><strong>New Password:</strong> ' . esc_html($password) . '</p>'
+        . '<p style="color: white">Please use this password to login and change it after logging in for security reasons.</p>'
+        . '<p style="color: white">Best regards,<br><strong>Wiki101 Team</strong></p>'
+        . '</div>';
+    $headers = ['Content-Type: text/html; charset=UTF-8'];
+
+    wp_mail($email, $subject, $message, $headers);
+
+    // ✅ Return success response
+    wp_send_json_success(['message' => 'Password reset and email sent successfully']);
 }
