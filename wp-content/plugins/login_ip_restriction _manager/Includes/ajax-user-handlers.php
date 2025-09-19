@@ -99,16 +99,21 @@ function handle_add_or_update_user()
         );
         wp_mail($email, $subject, $message, ['Content-Type: text/plain; charset=UTF-8']);
     } else {
-        $reset_url = network_site_url('wp-login.php?action=rp&key=' . rawurlencode($key) . '&login=' . rawurlencode($user->user_login), 'login');
-
-        $subject = sprintf(__('Welcome to %s'), get_bloginfo('name'));
-        $message = '<p>Hi ' . esc_html($account) . ',</p>'
-            . '<p>Your account has been created successfully.</p>'
-            . '<p><strong>Username:</strong> ' . esc_html($account) . '</p>'
-            . '<p>Click the link below to set your password:</p>'
-            . '<p><a href="' . esc_url($reset_url) . '">' . esc_html($reset_url) . '</a></p>'
-            . '<p>Login page: <a href="' . esc_url(wp_login_url()) . '">' . esc_html(wp_login_url()) . '</a></p>'
-            . '<p>Thanks,<br>' . esc_html(get_bloginfo('name')) . '</p>';
+        $reset_url = network_site_url('verification') . '?username=' . urlencode($account) . '&key=' . rawurlencode($key) . '&code=' . rawurlencode(current_time('Y-m-d'));
+        $subject = sprintf(__('Email verification %s'), get_bloginfo('name'));
+        $message = '<div class="email-ctn" style="background-color: #1D1C25; padding: 20px; width: 70%; margin:0 auto; border-radius: 16px; color: white; font-size: 16px; font-family: \'Poppins\', sans-serif;">'
+            . '<p style="color: white">Hello ' . esc_html($account) . ',</p>'
+            . '<h2 style="font-size: 20px; color: #00a000;">Thank you for registering with Wiki101</h2>'
+            . '<p style="color: white">To complete your account setup, please verify your email address by clicking the button below:</p>'
+            . '<p style="color: white">'
+            . '<a href="' . $reset_url . '" style="background-color: #7644CE; font-size: 20px; padding: 16px 24px; border-radius: 16px; color: white; margin: 5px 0; display: inline-block; text-decoration: none;">'
+            . 'Verify Link'
+            . '</a>'
+            . '</p>'
+            . '<p style="color: white">This link will expire in 7 days for security reasons. If you did not create this account, please ignore this email.</p>'
+            . '<h2 style="font-size: 24px; color: #fff"><strong>Best regards,</strong></h2>'
+            . '<p style="color: white">The <strong>Wiki101</strong> Team</p>'
+            . '</div>';
 
         $headers = ['Content-Type: text/html; charset=UTF-8'];
         wp_mail($email, $subject, $message, $headers);
@@ -170,7 +175,7 @@ function map_user_role($role)
 
 //         $user_exists = $wpdb->get_var(
 //             $wpdb->prepare(
-//                 "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE user_id = %d", 
+//                 "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE user_id = %d",
 //                 $user_id
 //             )
 //         );
@@ -210,7 +215,7 @@ function map_user_role($role)
 
 // // Always proceed with the update, no need to check if data has changed
 //     $result = $wpdb->update(
-//         $table_name, 
+//         $table_name,
 //         $update_data,
 //         array('user_id' => $user_id),  // Condition: where user_id = $user_id
 //         array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'),  // Format for fields
@@ -377,4 +382,57 @@ function handle_edit_user_manage() {
 
     // 3️⃣ Return success response
     wp_send_json_success(['message' => 'User data updated successfully in both the custom table and WordPress table.']);
+}
+
+add_action('wp_ajax_verification_user_email', 'handle_verification_user_email');
+add_action('wp_ajax_nopriv_verification_user_email', 'handle_verification_user_email');
+
+function handle_verification_user_email()
+{
+    global $wpdb;
+
+    // Check nonce for security
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        wp_send_json_error(['message' => 'Permission Denied']);
+    }
+
+    parse_str($_POST['form_data'], $data);
+
+    // Get the form data
+    $account = sanitize_text_field($data['username']);
+
+    // Check if user exists in the custom table
+    $user_exists = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE account = %s",  // Use %s for strings
+            $account
+        )
+    );
+
+    // Echo the result for debugging
+
+    // Check if user doesn't exist
+    if ($user_exists == 0) {
+        wp_send_json_error(['message' => 'User not found in custom table.']);
+        return;
+    }
+
+    // 1️⃣ Update custom table
+    $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
+    $update_data = [
+        'account' => $account,
+        'state' => "active",
+    ];
+
+    // Update custom table
+    $wpdb->update(
+        $table_name,
+        $update_data,
+        ['account' => $account],
+        array_fill(0, count($update_data), '%s'),
+        ['%s'] // Use %s for string (account) comparison
+    );
+
+    // Optional: Send a success response after updating
+    wp_send_json_success(['message' => 'User status updated successfully.']);
 }

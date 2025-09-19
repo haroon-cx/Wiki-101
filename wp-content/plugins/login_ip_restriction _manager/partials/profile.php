@@ -34,18 +34,18 @@ function cuim_render_frontend_profile() {
 
     <script>
         jQuery(document).ready(function($) {
-        var $input = $('#upload-file-button');
+            var $input = $('#upload-file-button');
 
-        $input.on('change', function() {
-            var input = this;
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#cuim-avatar-preview').attr('src', e.target.result);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        });
+            $input.on('change', function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#cuim-avatar-preview').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
         });
 
     </script>
@@ -110,13 +110,14 @@ function cuim_save_profile() {
 add_action('wp_body_open', 'cui_pm_add_logout_button_footer');
 function cui_pm_add_logout_button_footer() {
 
-    echo '<header class="header">';
-    echo '<div class="header-wrapper">';
     if (is_user_logged_in() && (
             current_user_can('administrator') ||
             current_user_can('editor') ||
             current_user_can('contributor')
         )) {
+        echo '<header class="header">';
+        echo '<div class="header-wrapper">';
+
 
         // Get saved viewer mode flag for current user
         $user_id = get_current_user_id();
@@ -124,25 +125,25 @@ function cui_pm_add_logout_button_footer() {
         $is_on = ($viewer_mode === '1'); // boolean
 
         if (function_exists('the_custom_logo') && has_custom_logo()) {
-        $custom_logo_id = get_theme_mod('custom_logo');
-        $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
+            $custom_logo_id = get_theme_mod('custom_logo');
+            $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
 
-        if ($logo) {
-            echo '<a href="' . esc_url(home_url('/')) . '" class="agqa-site-logo" rel="home">
+            if ($logo) {
+                echo '<a href="' . esc_url(home_url('/')) . '" class="agqa-site-logo" rel="home">
                         <img src="' . URIP_URL . '/assets/image/site-logo.svg" alt="Site logo">
                     </a>';
+            }
         }
-    }
 
-     $user_id = get_current_user_id();
-    $first = get_user_meta($user_id, 'first_name', true);
-    $last = get_user_meta($user_id, 'last_name', true);
-    $user = wp_get_current_user();
-    $avatar_id = get_user_meta($user_id, 'cuim_profile_avatar', true);
-    $avatar_url = $avatar_id ? wp_get_attachment_url($avatar_id) : get_avatar_url($user_id);
-    $logout_url = wp_logout_url(home_url());
+        $user_id = get_current_user_id();
+        $first = get_user_meta($user_id, 'first_name', true);
+        $last = get_user_meta($user_id, 'last_name', true);
+        $user = wp_get_current_user();
+        $avatar_id = get_user_meta($user_id, 'cuim_profile_avatar', true);
+        $avatar_url = $avatar_id ? wp_get_attachment_url($avatar_id) : get_avatar_url($user_id);
+        $logout_url = wp_logout_url(home_url());
 
-     echo '<div class="header-right">';
+        echo '<div class="header-right">';
 
         echo '
         <label class="viewer-toggle-wrapper">
@@ -150,9 +151,9 @@ function cui_pm_add_logout_button_footer() {
             <input type="checkbox" id="cuim-viewer-toggle" ' . ($is_on ? 'checked' : '') . ' />
             <span class="slider"></span>
         </label>';
-    }
 
-    echo '
+
+        echo '
         <div id="agqa-search-box">
             <input type="text" id="agqa-search-input" placeholder="search...">
             <div id="agqa-search-results"></div>
@@ -182,13 +183,14 @@ function cui_pm_add_logout_button_footer() {
         <span></span>
         </div>
         ';
-    
-        
-        
-         echo '</div>';
 
-    echo '</div>';
-    echo '</header>';
+
+
+        echo '</div>';
+
+        echo '</div>';
+        echo '</header>';
+    }
     ?>
 
     <style>
@@ -236,7 +238,7 @@ function cui_pm_add_logout_button_footer() {
             align-items: center;
             padding: 19px 0;
         }
-        
+
         .header-right{
             display: flex;
             align-items: center;

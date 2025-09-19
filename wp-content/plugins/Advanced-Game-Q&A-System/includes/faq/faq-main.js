@@ -290,6 +290,12 @@ jQuery(document).ready(function ($) {
 
         // highlighted
         var query = searchTerm;
+        jQuery(".faq-main-content")
+            .find(".highlighted")
+            .each(function () {
+                var $highlightedNode = jQuery(this);
+                $highlightedNode.replaceWith($highlightedNode.text());
+            });
 
         if (query !== "") {
             jQuery(".faq-main-content")
@@ -310,28 +316,53 @@ jQuery(document).ready(function ($) {
                         $node.html(newText);
                     }
                 });
-        } else {
-            jQuery(".faq-main-content")
-                .find(".highlighted")
-                .each(function () {
-                    var $highlightedNode = jQuery(this);
-                    $highlightedNode.replaceWith($highlightedNode.text());
-                });
         }
 
         if (!searchTerm && !selectedCategory) {
             $(".no-found-ctn").hide(); // Hide the 'nothing found' message
             $('.faq-accordion').show(); // Show the FAQ item
-            var itemsPerPage = 15;
-            var totalItems = $(".faq-accordion").filter(":visible").length; // Count only visible items
+            $('#pagination-demo').show(); // Show the FAQ item
 
-            if (totalItems > itemsPerPage) {
-                $("#pagination-demo").show(); // Show pagination if more than 15 visible items
-            } else {
-                $("#pagination-demo").hide(); // Hide pagination if 15 or fewer visible items
-            }
+
             $(document).find(".faq-accordion-head").removeClass("active"); // Add active class to the head
             $(document).find(".faq-accordion-body").slideUp(); // Slide down the body
+
+
+            // Recalculate pagination based on the filtered visible items
+            var itemsPerPages = 15;
+            var totalItemss = $(".faq-accordion").length; // Count only visible items after filtering
+            var totalPages = Math.ceil(totalItemss / itemsPerPages);
+            $(".faq-accordion").removeAttr("data-page"); // Remove the data-page attribute
+            // Reinitialize pagination
+            $(".faq-accordion").each(function (index) {
+                var pageNumber = Math.floor(index / itemsPerPages) + 1;
+                // var pageNumber = "sajid";
+                jQuery(this).attr("data-page", pageNumber);
+                jQuery(".pagination-ctn ul li.page-item:nth-child(3)").addClass('active').siblings().removeClass('active');
+                jQuery(".faq-accordion").hide();
+                jQuery('.faq-accordion[data-page="' + '1' + '"]').show();
+            });
+            jQuery('.pagination-ctn ul li.page-item').show();
+            jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+            // jQuery(".pagination-ctn ul li.page-item").not(".prev, .next").each(function () {
+            //     var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+            //     if (pageNumbers === totalPages && totalPages !== 0) {
+            //
+            //         // Remove all <li> items that come after this one
+            //         jQuery(this).nextAll().not('.next').hide();
+            //
+            //         // Check the <li> just before the Next button
+            //         var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
+            //
+            //         // If the next page is hidden or .next button is visible, disable the next button
+            //         if (prevLi.is(":hidden")) {
+            //             jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+            //         } else {
+            //             jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+            //         }
+            //
+            //     }
+            // });
             return; // Return early if either is empty
         }
 
@@ -543,9 +574,6 @@ jQuery(document).ready(function ($) {
 
         }, 100);
     });
-    /**
-     * FAQ like & dislike Script
-     */
     $(".like-button").on("click", function () {
         var $form = jQuery(this);
         var formData = "faq-id=" + $form.find(".agqa-like").val();

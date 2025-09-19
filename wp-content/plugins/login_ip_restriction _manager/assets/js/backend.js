@@ -133,14 +133,13 @@ jQuery(document).ready(function ($) {
     if (!searchTerm && !selectedStat && !selectedRole && !selectedCompany && !dateRange) {
       $(".section-found").hide(); // Hide the 'nothing found' message
       $('.custom-table-row').show(); // Show the FAQ item
-
+      $('#pagination-demo').show(); // Show the FAQ item
 
       setTimeout(function() {
         // Recalculate pagination based on the filtered visible items
         var itemsPerPages = 15;
         var totalItemss = $(".custom-table-row").length; // Count only visible items after filtering
         var totalPages = Math.ceil(totalItemss / itemsPerPages);
-        alert(totalPages);
         $(".custom-table-row").removeAttr("data-page"); // Remove the data-page attribute
         // Reinitialize pagination
         $(".custom-table-row").each(function (index) {
@@ -152,26 +151,27 @@ jQuery(document).ready(function ($) {
           jQuery('.custom-table-row[data-page="' + '1' + '"]').show();
         });
         jQuery('.pagination-ctn ul li.page-item').show();
-        jQuery(".pagination-ctn ul li.page-item").not(".prev, .next").each(function () {
-          var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
-          if (pageNumbers === totalPages && totalPages !== 0) {
-
-            // Remove all <li> items that come after this one
-            jQuery(this).nextAll().not('.next').hide();
-
-            // Check the <li> just before the Next button
-            var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
-
-            // If the next page is hidden or .next button is visible, disable the next button
-            if (prevLi.is(":hidden")) {
-              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
-            } else {
-              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
-            }
-
-
-          }
-        });
+        jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+        // jQuery(".pagination-ctn ul li.page-item").not(".prev, .next").each(function () {
+        //   var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+        //   if (pageNumbers === totalPages && totalPages !== 0) {
+        //
+        //     // Remove all <li> items that come after this one
+        //     jQuery(this).nextAll().not('.next').hide();
+        //
+        //     // Check the <li> just before the Next button
+        //     var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
+        //
+        //     // If the next page is hidden or .next button is visible, disable the next button
+        //     if (prevLi.is(":hidden")) {
+        //       jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+        //     } else {
+        //       jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+        //     }
+        //
+        //
+        //   }
+        // });
 
       }, 500); // Delay of 500 milliseconds
       return; // Return early if either is empty

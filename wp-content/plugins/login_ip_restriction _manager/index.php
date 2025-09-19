@@ -21,22 +21,20 @@ include_once URIP_PATH . 'Includes/ajax-ip-handlers.php';
 
 // Enqueue assets
 add_action('wp_enqueue_scripts', function () {
-    if (is_user_logged_in()) {
-        wp_enqueue_style('date-picker-style', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css');
-        wp_enqueue_style('cuim-style', plugin_dir_url(__FILE__) . 'assets/css/cuim.css');
-        wp_enqueue_style('cuim-responsive-style', plugin_dir_url(__FILE__) . 'assets/css/responsive.css');
-        // manage-user Style sheet
-        wp_enqueue_style('manage-user-style', plugin_dir_url(__FILE__) . 'assets/css/manage-user.css');
-        wp_enqueue_script('cuim-script-date', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js', ['jquery'], null, true);
-        wp_enqueue_script('cuim-script-date-picker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', ['jquery', 'cuim-script-date'], null, true);
-        wp_enqueue_script('cuim-script', plugin_dir_url(__FILE__) . 'assets/js/cuim.js', ['jquery'], null, true);
-        wp_enqueue_script('cuim-backend', plugin_dir_url(__FILE__) . 'assets/js/backend.js', ['jquery'], null, true);
+    wp_enqueue_style('date-picker-style', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css');
+    wp_enqueue_style('cuim-style', plugin_dir_url(__FILE__) . 'assets/css/cuim.css');
+    wp_enqueue_style('cuim-responsive-style', plugin_dir_url(__FILE__) . 'assets/css/responsive.css');
+    // manage-user Style sheet
+    wp_enqueue_style('manage-user-style', plugin_dir_url(__FILE__) . 'assets/css/manage-user.css');
+    wp_enqueue_script('cuim-script-date', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js', ['jquery'], null, true);
+    wp_enqueue_script('cuim-script-date-picker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', ['jquery', 'cuim-script-date'], null, true);
+    wp_enqueue_script('cuim-script', plugin_dir_url(__FILE__) . 'assets/js/cuim.js', ['jquery'], null, true);
+    wp_enqueue_script('cuim-backend', plugin_dir_url(__FILE__) . 'assets/js/backend.js', ['jquery'], null, true);
 
-        wp_localize_script('cuim-script', 'cuim_ajax', [
-            'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce'    => wp_create_nonce('cuim_nonce'),
-        ]);
-    }
+    wp_localize_script('cuim-script', 'cuim_ajax', [
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce'    => wp_create_nonce('cuim_nonce'),
+    ]);
 });
 
 // Shortcode: [user_manager]
@@ -56,6 +54,13 @@ add_shortcode('user_ip_whitelist', function () {
     }
     ob_start();
     include URIP_PATH . 'partials/ip-whitelist.php';
+    return ob_get_clean();
+});
+// Shortcode: [verification_email_user]
+add_shortcode('verification_email_user', function () {
+
+    ob_start();
+    include URIP_PATH . 'partials/verification-email.php';
     return ob_get_clean();
 });
 include URIP_PATH . 'partials/profile.php';
@@ -121,7 +126,7 @@ function cui_pm_admin_bypass_ip_whitelist($user, $username, $password)
         return new WP_Error(
             'ip_blocked',
             sprintf(
-                /* translators: IP */
+            /* translators: IP */
                 __('Access denied. Your IP (%s) is not whitelisted.', 'custom-user-ip-manager'),
                 esc_html($current_ip)
             )
@@ -132,9 +137,9 @@ function cui_pm_admin_bypass_ip_whitelist($user, $username, $password)
 }
 
 
-add_filter('show_admin_bar', function () {
-    return is_admin(); // true in wp-admin, false on frontend
-});
+//add_filter('show_admin_bar', function () {
+//    return is_admin(); // true in wp-admin, false on frontend
+//});
 
 add_filter('login_redirect', 'cui_pm_role_based_login_redirect', 1, 3);
 function cui_pm_role_based_login_redirect($redirect_to, $requested_redirect_to, $user)
@@ -150,12 +155,32 @@ function cui_pm_role_based_login_redirect($redirect_to, $requested_redirect_to, 
     return home_url();
 }
 
+add_action('template_redirect', 'force_redirect_if_not_logged_in');
+
+function force_redirect_if_not_logged_in()
+{
+
+    // Check if the user is visiting the verification page with username and key parameters
+    if (is_page('verification') && isset($_GET['username']) && isset($_GET['key'])) {
+        // If the user is not logged in, they should stay on the verification page
+        if (!is_user_logged_in()) {
+            return; // Do not redirect, stay on the verification page
+        }
+    }
+
+    // If the user is not logged in and not already on the login page
+    if (!is_user_logged_in() && !is_page('wp-login.php')) {
+        wp_redirect(wp_login_url()); // Redirect to login page
+        exit; // Make sure the script stops after the redirect
+    }
+}
+
 add_action('login_enqueue_scripts', 'cui_pm_login_css_for_non_admins');
 function cui_pm_login_css_for_non_admins()
 {
     // Only apply to non-administrators
     if (! current_user_can('administrator')) {
-?>
+        ?>
         <style type="text/css">
             /* Your custom styling for the login logo container */
             .loginlogo {
@@ -183,7 +208,7 @@ function cui_pm_login_css_for_non_admins()
                 background: #7644CE !important;
             }
         </style>
-<?php
+        <?php
     }
 }
 
