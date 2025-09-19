@@ -93,9 +93,6 @@
                     <label for="manage-user-email-field"><span>* </span>Email</label>
                     <input type="text" name="email" id="email-field" required placeholder="<?php echo $value->email; ?>"
                         value="<?php echo $value->email; ?>">
-                    <!-- <div class="reset-link">
-                        <a href="#">Reset Link</a>
-                    </div> -->
                 </div>
                 <?php
                     // Initialize the fields array

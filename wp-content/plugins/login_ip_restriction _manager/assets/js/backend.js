@@ -18,13 +18,47 @@ jQuery(document).ready(function ($) {
         nonce: nonce,
       },
       success: function (response) {
-        alert(response);
+        // alert(response);
+
+        // Check if the response contains success
         if (response.success) {
-          // Success message
-          alert(response.data.message);
+          // If successful, show a success message
+          jQuery("div#confirm-submit-popup").removeClass("active");
+          const $successMsg = $(
+            `<div class="submitted-successfully">${response.data.message}</div>`
+          );
+          $form.append($successMsg);
+          // Hide after 3 seconds
+          setTimeout(function () {
+            $successMsg.fadeOut(400, function () {
+              $(this).remove();
+            });
+            // Find the *actual* back button
+            const $btn = $(".form-header-row .back-button");
+            const btn = $btn.get(0);
+            if (!btn) {
+              console.warn("Back button not found in DOM at success time.");
+              return;
+            }
+
+            $btn.trigger("click");
+            btn.click();
+            btn.dispatchEvent(
+              new MouseEvent("click", { bubbles: true, cancelable: true })
+            );
+          }, 3000);
         } else {
-          // Failure message
-          alert(response.data.message);
+          jQuery("div#confirm-submit-popup").removeClass("active");
+          const $successMsg = $(
+            `<div class="submitted-unsuccessfully">${response.data.message}</div>`
+          );
+          $form.append($successMsg);
+          // Hide after 3 seconds
+          setTimeout(function () {
+            $successMsg.fadeOut(400, function () {
+              $(this).remove();
+            });
+          }, 3000);
         }
       },
       error: function (response) {
@@ -60,7 +94,7 @@ jQuery(document).ready(function ($) {
         if (response.success) {
           // If successful, show a success message
           const $successMsg = $(
-              '<div class="submitted-successfully">Successfully Submitted</div>'
+            '<div class="submitted-successfully">Successfully Submitted</div>'
           );
           $form.append($successMsg);
 
@@ -82,12 +116,12 @@ jQuery(document).ready(function ($) {
           $btn.trigger("click");
           btn.click();
           btn.dispatchEvent(
-              new MouseEvent("click", { bubbles: true, cancelable: true })
+            new MouseEvent("click", { bubbles: true, cancelable: true })
           );
         } else {
           // If the response is not successful, show an error message
           const $errorMsg = $(
-              '<div class="submitted-unsuccessfully">' +
+            '<div class="submitted-unsuccessfully">' +
               response.data.message +
               "</div>"
           );
@@ -109,6 +143,142 @@ jQuery(document).ready(function ($) {
   });
 
   /**
+   * Rest link pending user script
+   */
+  $("#reset-link-pending-user").on("click", function (e) {
+    e.preventDefault(); // Prevent the default form submission
+    var $form = jQuery("#edit-form-user-manage");
+    var formData = $form.serialize();
+    var nonce = cuim_ajax.nonce; // Nonce for security
+    jQuery(this).addClass("reset-link-disabled");
+
+    // Start the countdown from 60 seconds
+    let countdown = 60;
+
+    // Replace the text with the countdown
+    jQuery(this).text(`Resend(${countdown})`);
+
+    // Set an interval to update the countdown every second
+    let countdownInterval = setInterval(function () {
+      countdown--; // Decrease the countdown by 1
+
+      // Update the text with the current countdown value
+      jQuery("#reset-link-pending-user").text(`Resend(${countdown})`);
+
+      // Once the countdown reaches 0, stop the interval and reset the text
+      if (countdown === 0) {
+        clearInterval(countdownInterval);
+        jQuery("#reset-link-pending-user")
+          .removeClass("reset-link-disabled")
+          .text("Reset link");
+      }
+    }, 1000); // Update every second (1000 ms)
+
+    // Send the AJAX request
+    $.ajax({
+      url: cuim_ajax.ajax_url,
+      type: "POST",
+      data: {
+        action: "resend_pending_email",
+        form_data: formData, // Pass the form data to the server
+        nonce: nonce,
+      },
+      success: function (response) {
+        // alert(response);
+
+        // Check if the response contains success
+        if (response.success) {
+          // If successful, show a success message
+          const $successMsg = $(
+            '<div class="submitted-successfully">Email have been send successfully.</div>'
+          );
+          $form.append($successMsg);
+          // Hide after 3 seconds
+          setTimeout(function () {
+            $successMsg.fadeOut(400, function () {
+              $(this).remove();
+            });
+          }, 3000);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("AJAX Error:", error); // Log the error for debugging
+        alert("An error occurred! Please try again later.");
+      },
+    });
+  });
+
+  /**
+   * Generate new password script
+   */
+
+  // When "Yes" is clicked in the confirmation popup
+  $("#agqa-reset-password").on("click", function () {
+    var $form = jQuery("#edit-form-user-manage");
+    var formData = $form.serialize();
+    var nonce = cuim_ajax.nonce; // Nonce for security
+    let countdown = 58; // Set initial countdown value (58 seconds)
+    const $this = $("#generate-password-button"); // Cache the reference to the button element
+
+    // Hide the confirmation popup
+    $("#reset-password-confirmation").hide();
+
+    // Disable the button and update the text
+    $this.addClass("reset-link-disabled");
+    // Start the countdown
+    let countdownInterval = setInterval(function () {
+      countdown--; // Decrease countdown by 1
+
+      // Update the text with the current countdown
+      $this.text(`Resend (${countdown}s)`);
+
+      // Once the countdown reaches 0, stop the interval and reset the text
+      if (countdown === 0) {
+        clearInterval(countdownInterval);
+        $this.removeClass("reset-link-disabled").text("Generate New Password");
+
+        // Perform the AJAX request once the countdown finishes
+      }
+    }, 1000); // Update every second (1000 ms)
+    alert(formData);
+    $.ajax({
+      url: cuim_ajax.ajax_url,
+      type: "POST",
+      data: {
+        action: "reset_password_handler",
+        form_data: formData, // Pass the form data to the server
+        nonce: nonce,
+      },
+      success: function (response) {
+        console.log(response);
+        // alert(response);
+        if (response.success) {
+          const $successMsg = $(
+            '<div class="submitted-successfully">Password sent successfully</div>'
+          );
+          $("body").append($successMsg);
+          setTimeout(
+            () => $successMsg.fadeOut(400, () => $successMsg.remove()),
+            3000
+          );
+        } else {
+          const $errorMsg = $(
+            `<div class="submitted-unsuccessfully">${response.data.message}</div>`
+          );
+          $("body").append($errorMsg);
+          setTimeout(
+            () => $errorMsg.fadeOut(400, () => $errorMsg.remove()),
+            3000
+          );
+        }
+      },
+      error: function () {
+        alert("There was an error processing your request.");
+      },
+    });
+  });
+
+  /**
    * user manage filter
    **/
   $(".manage-user-template #agqa-user-filters").on("click", function (event) {
@@ -117,7 +287,9 @@ jQuery(document).ready(function ($) {
     var searchTerm = $("#manage-user-search").val().toLowerCase(); // Get search term
     var selectedStat = $("input#filter-select-states").val().toLowerCase(); // Get selected state
     var selectedRole = $("input#filter-select-roles").val().toLowerCase(); // Get selected role
-    var selectedCompany = $("input#filter-select-companies").val().toLowerCase(); // Get selected company
+    var selectedCompany = $("input#filter-select-companies")
+      .val()
+      .toLowerCase(); // Get selected company
     var dateRange = $("#daterange").val(); // Get selected date range from inputa
 
     // If date range is selected, parse the start and end dates as strings
@@ -127,15 +299,21 @@ jQuery(document).ready(function ($) {
 
     // alert(selectedStat + " " + selectedRole + " " + selectedCompany + " " + dateRange);
     // alert(endDate);
-    jQuery('.custom-table-row').removeClass("active");
+    jQuery(".custom-table-row").removeClass("active");
     var resultsFound = false; // Flag to track if any result is found
 
-    if (!searchTerm && !selectedStat && !selectedRole && !selectedCompany && !dateRange) {
+    if (
+      !searchTerm &&
+      !selectedStat &&
+      !selectedRole &&
+      !selectedCompany &&
+      !dateRange
+    ) {
       $(".section-found").hide(); // Hide the 'nothing found' message
-      $('.custom-table-row').show(); // Show the FAQ item
-      $('#pagination-demo').show(); // Show the FAQ item
+      $(".custom-table-row").show(); // Show the FAQ item
+      $("#pagination-demo").show(); // Show the FAQ item
 
-      setTimeout(function() {
+      setTimeout(function () {
         // Recalculate pagination based on the filtered visible items
         var itemsPerPages = 15;
         var totalItemss = $(".custom-table-row").length; // Count only visible items after filtering
@@ -146,11 +324,14 @@ jQuery(document).ready(function ($) {
           var pageNumber = Math.floor(index / itemsPerPages) + 1;
           // var pageNumber = "sajid";
           jQuery(this).attr("data-page", pageNumber);
-          jQuery(".pagination-ctn ul li.page-item:nth-child(3)").addClass('active').siblings().removeClass('active');
+          jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
+            .addClass("active")
+            .siblings()
+            .removeClass("active");
           jQuery(".custom-table-row").hide();
-          jQuery('.custom-table-row[data-page="' + '1' + '"]').show();
+          jQuery('.custom-table-row[data-page="' + "1" + '"]').show();
         });
-        jQuery('.pagination-ctn ul li.page-item').show();
+        jQuery(".pagination-ctn ul li.page-item").show();
         jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
         // jQuery(".pagination-ctn ul li.page-item").not(".prev, .next").each(function () {
         //   var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
@@ -172,11 +353,9 @@ jQuery(document).ready(function ($) {
         //
         //   }
         // });
-
       }, 500); // Delay of 500 milliseconds
       return; // Return early if either is empty
     }
-
 
     // Initially hide pagination and "Nothing Found" message
     $(".section-found").hide(); // Hide "Nothing Found" message
@@ -190,19 +369,20 @@ jQuery(document).ready(function ($) {
       var rowDateText = $(this).find(".table-body-col-date").text().trim(); // Get the date from the row (e.g., "2025/09/17")
 
       // Apply filters based on exact match for state, role, company, and search term
-      var isStateMatch = (selectedStat === "" || rowCategory.trim() === selectedStat); // Exact match for state
-      var isRoleMatch = (selectedRole === "" || rowRole === selectedRole); // Exact match for role
-      var isCompanyMatch = (selectedCompany === "" || rowCompany === selectedCompany); // Exact match for company
+      var isStateMatch =
+        selectedStat === "" || rowCategory.trim() === selectedStat; // Exact match for state
+      var isRoleMatch = selectedRole === "" || rowRole === selectedRole; // Exact match for role
+      var isCompanyMatch =
+        selectedCompany === "" || rowCompany === selectedCompany; // Exact match for company
       var isSearchMatch = rowText.includes(searchTerm); // Check if the search term is found anywhere in the row content
 
       // alert(rowDateText);
-
 
       // Ensure that the row date matches the selected date range
       var isDateMatch = true; // Default to true (if no date range is selected)
       if (startDate && endDate) {
         // Check if the row's date is within the range
-        isDateMatch = (rowDateText >= startDate && rowDateText <= endDate); // Lexicographical comparison works for "YYYY/MM/DD"
+        isDateMatch = rowDateText >= startDate && rowDateText <= endDate; // Lexicographical comparison works for "YYYY/MM/DD"
       } else if (startDate) {
         isDateMatch = rowDateText >= startDate; // If only start date is selected, check if the row's date is after start date
       } else if (endDate) {
@@ -212,11 +392,11 @@ jQuery(document).ready(function ($) {
       // alert(isDateMatch);
       // Apply filter only if the row matches the selected state exactly
       if (
-          isStateMatch &&
-          isRoleMatch &&
-          isCompanyMatch &&
-          isSearchMatch &&
-          isDateMatch
+        isStateMatch &&
+        isRoleMatch &&
+        isCompanyMatch &&
+        isSearchMatch &&
+        isDateMatch
       ) {
         $(this).show(); // Show the row if it matches the filters
         resultsFound = true; // Mark that at least one result is found
@@ -234,7 +414,7 @@ jQuery(document).ready(function ($) {
       $(".section-found").hide(); // Hide the 'nothing found' message
     }
 
-    setTimeout(function() {
+    setTimeout(function () {
       // Recalculate pagination based on the filtered visible items
       var itemsPerPages = 15;
       var totalItemss = $(".custom-table-row:visible").length; // Count only visible items after filtering
@@ -247,36 +427,38 @@ jQuery(document).ready(function ($) {
         // var pageNumber = "sajid";
         jQuery(this).attr("data-page", pageNumber);
         jQuery(this).addClass("active");
-        jQuery(".pagination-ctn ul li.page-item:nth-child(3)").addClass('active').siblings().removeClass('active');
+        jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
+          .addClass("active")
+          .siblings()
+          .removeClass("active");
         if (pageNumber === 1) {
           $(this).show(); // Show items that belong to the current page
         } else {
           $(this).hide(); // Hide items that do not belong to the current page
         }
       });
-      jQuery('.pagination-ctn ul li.page-item').show();
-      jQuery(".pagination-ctn ul li.page-item").not(".prev, .next").each(function () {
-        var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
-        if (pageNumbers === totalPages && totalPages !== 0) {
+      jQuery(".pagination-ctn ul li.page-item").show();
+      jQuery(".pagination-ctn ul li.page-item")
+        .not(".prev, .next")
+        .each(function () {
+          var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+          if (pageNumbers === totalPages && totalPages !== 0) {
+            // Remove all <li> items that come after this one
+            jQuery(this).nextAll().not(".next").hide();
 
-          // Remove all <li> items that come after this one
-          jQuery(this).nextAll().not('.next').hide();
+            // Check the <li> just before the Next button
+            var prevLi = jQuery(
+              ".pagination-ctn ul li.page-item.active"
+            ).next();
 
-          // Check the <li> just before the Next button
-          var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
-
-          // If the next page is hidden or .next button is visible, disable the next button
-          if (prevLi.is(":hidden")) {
-            jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
-          } else {
-            jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+            // If the next page is hidden or .next button is visible, disable the next button
+            if (prevLi.is(":hidden")) {
+              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+            } else {
+              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+            }
           }
-
-
-        }
-      });
-
+        });
     }, 100); // Delay of 500 milliseconds
-
   });
 });

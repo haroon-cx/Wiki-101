@@ -14,18 +14,23 @@
         foreach ($edit_user_data as $key => $value) {
         ?>
         <div id="manage-user-add-form">
-            <form autocomplete="off" id="add-form-faq" class="custom-form" novalidate="novalidate"
+            <form autocomplete="off" id="edit-form-user-manage" class="custom-form" novalidate="novalidate"
                 data-inited-validation="1">
                 <div class="form-field required">
                     <label for="account-field"><span>* </span>Account</label>
-                    <input type="text" name="faq-question" id="account-field" required placeholder="Description"
+                    <input type="text" name="account" id="account-field" required placeholder="Description"
                         value="<?php echo $value->account; ?>" disabled>
 
+                    <input type="hidden" name="account" id="account-field" required placeholder="Description"
+                        value="<?php echo $value->account; ?>">
+
+                    <input type="hidden" name="user-id" id="account-field" required placeholder="Description"
+                        value="<?php echo $value->user_id; ?>">
                     <div id="error-message"></div>
                 </div>
                 <div class="form-field">
                     <label for="reset-password">Reset Password</label>
-                    <div class="generate-password-button">
+                    <div class="generate-password-button" id="generate-password-button">
                         Generate New Password
                     </div>
                     <div id="reset-password-confirmation" class="reset-password-confirmation" style="">
@@ -35,40 +40,22 @@
                             <div class="form-message">Are you sure you want to reset your password?</div>
                             <div class="form-buttons agqa-popup-form-buttons d-flex">
                                 <button class="no-form-cancel" type="button">No</button>
-                                <a href="<?php echo esc_url(home_url('/edit-manage-user-form')) ?>"
-                                    class="back-button">Yes</a>
+                                <a href="#" id="agqa-reset-password" class="back-button">Yes</a>
                             </div>
                         </div>
                     </div>
-                    <input type="hidden" name="reset-password" id="reset-password">
+                    <input type="hidden" name="reset-password" id="reset-password" value="stuvwxyz0123456789!@#$%">
                 </div>
-                <?php if ($value->state === 'pending') { ?>
                 <div class="form-field required">
                     <label for="issue_type"><span>* </span>State</label>
                     <select name="manage-user-state" id="manage-user-state" required disabled>
                         <option value="Pending"><?php echo $value->state; ?></option>
                     </select>
+                    <input type="hidden" name="state" id="manage-user-state" required=""
+                        value="<?php echo $value->state; ?>">
                 </div>
-                <?php } ?>
-                <?php if ($value->state === 'Active') { ?>
-                <div class="form-field required">
-                    <label for="manage-user-state"><span>* </span>State</label>
-                    <div class="custom-select-dropdown">
-                        <div class="custom-select-dropdown-title active">
-                            <span class="custom-dropdown-default-value">Select Role</span>
-                            <span class="custom-dropdown-selected-value"></span>
-                        </div>
-                        <div class="custom-select-dropdown-lists" style="display: block;">
-                            <ul>
-                                <li data-value="Active">Active</li>
-                                <li data-value="Inactive">Inactive</li>
-                                <li data-value="Freeze">Freeze</li>
-                            </ul>
-                        </div>
-                        <input type="hidden" name="manage-user-state" id="manage-user-state" required="">
-                    </div>
-                </div>
-                <?php } ?>
+
+
                 <div class="form-field required">
                     <label for="question-type"><span>* </span>User Role </label>
                     <div class="custom-select-dropdown">
@@ -84,21 +71,23 @@
                                 <li data-value="Viewer">Viewer</li>
                             </ul>
                         </div>
-                        <input type="hidden" name="faq-category" id="issue_type" required=""
+                        <input type="hidden" name="user-role" id="issue_type" required=""
                             value="<?php echo $value->user_role; ?>">
                     </div>
                 </div>
                 <div class="form-field required">
                     <label for="comapany-name-field"><span>* </span>Company Name</label>
-                    <input type="text" name="faq-question" id="comapany-name-field" required placeholder="Description"
+                    <input type="text" name="company-name" id="comapany-name-field" required placeholder="Description"
                         value="<?php echo $value->company_name; ?>">
                 </div>
                 <div class="form-field required">
                     <label for="manage-user-email-field"><span>* </span>Email</label>
-                    <input type="text" name="faq-question" id="manage-user-email-field" required placeholder="Email>"
+                    <input type="text" name="email" id="manage-user-email-field" required placeholder="Email>"
                         value="<?php echo $value->email; ?>">
                     <div class="reset-link">
-                        <a href="#">Reset Link</a>
+                        <a href="#" onclick="event.preventDefault();" id="reset-link-pending-user" role="button">Reset
+                            Link</a>
+
                     </div>
                 </div>
                 <?php
@@ -208,7 +197,7 @@
                             <div class="form-message">Are you sure you want to submit?</div>
                             <div class="form-buttons agqa-popup-form-buttons d-flex">
                                 <button class="no-confirm-submit" type="button">No</button>
-                                <input type="submit" value="Yes" id="confirm-submit">
+                                <button type="submit" value="Yes" id="confirm-submit">Yes</button>
                             </div>
                         </div>
                     </div>
