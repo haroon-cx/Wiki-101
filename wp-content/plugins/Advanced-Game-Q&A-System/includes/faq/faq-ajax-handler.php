@@ -244,6 +244,76 @@ add_action('wp_ajax_nopriv_agqa_edit_faq', 'agqa_edit_faq');
  * FAQ like & dislike handler
  */
 
+// function handle_like_dislike_action()
+// {
+//     // Check nonce for security
+//     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+//         wp_send_json_error(['message' => 'Permission denied.']);
+//     }
+
+//     // Parse the form_data from AJAX request
+//     parse_str($_POST['form_data'], $data);
+//     $faq_id = intval($data['faq-id']);
+//     $action_type = sanitize_text_field($data['like']); // '1' = like, '0' = dislike
+//     $user_id = get_current_user_id();
+
+//     if (!$user_id) {
+//         wp_send_json_error(['message' => 'You must be logged in to like/dislike.']);
+//     }
+
+//     global $wpdb;
+//     $table = $wpdb->prefix . 'agqa_faq_likes_dislikes';
+
+//     // Check if a record already exists
+//     $existing_action = $wpdb->get_var($wpdb->prepare("
+//         SELECT action_type 
+//         FROM $table 
+//         WHERE faq_id = %d AND user_id = %d
+//     ", $faq_id, $user_id));
+
+//     if ($existing_action !== null) {
+//         // Record exists, update it (like or dislike)
+//         $wpdb->update(
+//             $table,
+//             ['action_type' => $action_type],
+//             ['faq_id' => $faq_id, 'user_id' => $user_id],
+//             ['%d'],
+//             ['%d', '%d']
+//         );
+//         $message = 'Your preference has been updated.';
+//     } else {
+//         // No record exists, insert new
+//         $wpdb->insert(
+//             $table,
+//             [
+//                 'faq_id' => $faq_id,
+//                 'user_id' => $user_id,
+//                 'action_type' => $action_type
+//             ],
+//             ['%d', '%d', '%d']
+//         );
+//         $message = 'Your preference has been saved.';
+//     }
+
+//     // Optionally, return updated counts
+//     $like_count = $wpdb->get_var($wpdb->prepare(
+//         "SELECT COUNT(*) FROM $table WHERE faq_id = %d AND action_type = 1",
+//         $faq_id
+//     ));
+//     $dislike_count = $wpdb->get_var($wpdb->prepare(
+//         "SELECT COUNT(*) FROM $table WHERE faq_id = %d AND action_type = 0",
+//         $faq_id
+//     ));
+
+//     $response['status']  = 'Success';
+//     $response['message'] = 'Successfully Submitted';
+//     echo json_encode($response);
+
+//     wp_die(); // End the request
+// }
+
+// add_action('wp_ajax_like_dislike_action', 'handle_like_dislike_action');
+// add_action('wp_ajax_nopriv_like_dislike_action', 'handle_like_dislike_action');
 function handle_like_dislike_action()
 {
     // Check nonce for security
@@ -272,15 +342,33 @@ function handle_like_dislike_action()
     ", $faq_id, $user_id));
 
     if ($existing_action !== null) {
-        // Record exists, update it (like or dislike)
-        $wpdb->update(
-            $table,
-            ['action_type' => $action_type],
-            ['faq_id' => $faq_id, 'user_id' => $user_id],
-            ['%d'],
-            ['%d', '%d']
-        );
-        $message = 'Your preference has been updated.';
+        if ($existing_action == 1 && $action_type == 1) {
+            // User already liked, so delete the like record
+            $wpdb->delete(
+                $table,
+                ['faq_id' => $faq_id, 'user_id' => $user_id],
+                ['%d', '%d']
+            );
+            $message = 'Your like has been removed.';
+        } elseif ($existing_action == 0 && $action_type == 0) {
+            // User already disliked, so delete the dislike record
+            $wpdb->delete(
+                $table,
+                ['faq_id' => $faq_id, 'user_id' => $user_id],
+                ['%d', '%d']
+            );
+            $message = 'Your dislike has been removed.';
+        } else {
+            // User wants to change the action (like -> dislike or dislike -> like)
+            $wpdb->update(
+                $table,
+                ['action_type' => $action_type],
+                ['faq_id' => $faq_id, 'user_id' => $user_id],
+                ['%d'],
+                ['%d', '%d']
+            );
+            $message = 'Your preference has been updated.';
+        }
     } else {
         // No record exists, insert new
         $wpdb->insert(
@@ -305,8 +393,11 @@ function handle_like_dislike_action()
         $faq_id
     ));
 
-    $response['status']  = 'Success';
-    $response['message'] = 'Successfully Submitted';
+    $response['status'] = 'Success';
+    $response['message'] = $message;
+    $response['like_count'] = $like_count;
+    $response['dislike_count'] = $dislike_count;
+
     echo json_encode($response);
 
     wp_die(); // End the request

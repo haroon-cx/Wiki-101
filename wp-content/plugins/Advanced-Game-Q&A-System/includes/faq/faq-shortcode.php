@@ -78,7 +78,7 @@ function custom_faq_shortcode()
                 <!-- Content will be dynamically updated based on pagination -->
             </div>
             <div class="template-title">
-                <h1>FAQ</h1>
+                <h1>FAQs</h1>
             </div>
             <!-- filter Start -->
             <div class="filter-container">

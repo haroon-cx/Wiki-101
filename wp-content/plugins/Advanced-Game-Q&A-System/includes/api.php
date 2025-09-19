@@ -120,7 +120,7 @@ function merged_api_ui_shortcode() {
                              <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/revenue/') . '?add=1'); ?>"
                             class="add-category-button"><img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg"
                                 alt="Plus Icon">
-                            Add Api</a>
+                            Add API</a>
                     </div>
                 </div>
             </div>
