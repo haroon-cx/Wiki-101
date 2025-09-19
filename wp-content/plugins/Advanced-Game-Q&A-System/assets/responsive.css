@@ -16,11 +16,6 @@
         width: 60%;
     }
 
-    .agqa-popup-form-ctn .add-category-button {
-        font-size: 16px !important;
-        padding: 18px 20px;
-    }
-
     .filter-area .filter-select-button {
         padding: 15px 20px !important;
     } 
@@ -32,6 +27,13 @@
     .filter-area input[type="search"] {
         min-width: 260px;
         max-width: 260px;
+    }
+}
+
+@media (max-width: 1680px) and (min-width: 1200px) {
+        .agqa-popup-form-ctn .add-category-button {
+        font-size: 16px !important;
+        padding: 18px 20px;
     }
 }
 
@@ -435,7 +437,7 @@
 
     .filter-area .filter-select-button,
     .agqa-popup-form-ctn .add-category-button {
-        padding: 15px 18px !important;
+        padding: 15px !important;
     }
 
     .agqa-popup-form-ctn .add-category-button {
