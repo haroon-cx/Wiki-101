@@ -2,7 +2,7 @@
 $username = isset($_GET['username']) ? sanitize_text_field($_GET['username']) : '';
 $code = isset($_GET['code']) ? sanitize_text_field($_GET['code']) : '2025-01-01';
 $date_diff = 10;
-$user_info = "";
+$user_info = false;
 global $wpdb;
 $table_agqa_manage_user = $wpdb->prefix . 'agqa_wiki_add_users';
 if ($code) {
@@ -41,47 +41,55 @@ if ($username) {
 ?>
 
 <style>
-    .sidebar.widget_area.left.sidebar_below.sidebar_default {
-        display: none;
-    }
+.sidebar.widget_area.left.sidebar_below.sidebar_default {
+    display: none;
+}
 
-    .page_content_wrap .content_wrap, .page_content_wrap .content_container, .content_wrap, .content_container {
-        width: 100% !important;
-        max-width: 100%;
-    }
+.page_content_wrap .content_wrap,
+.page_content_wrap .content_container,
+.content_wrap,
+.content_container {
+    width: 100% !important;
+    max-width: 100%;
+}
 </style>
 
 
 <?php if ($date_diff > 7) { ?>
 
-    <div class="successfull-message-ctn">
-        <div class="successfull-message-ctn-content">
-            <div class="successfull-message-icon">
-                <img src="<?php echo URIP_URL ?>assets/image/successfull-message-icon.svg" alt="Success Icon">
-            </div>
-            <div class="successfull-message-text">
-                <div class="error-message"><h2> The link has expired. Please request a new one. </h2></div>
+<div class="successfull-message-ctn">
+    <div class="successfull-message-ctn-content">
+        <div class="successfull-message-icon">
+            <img src="<?php echo URIP_URL ?>assets/image/successfull-message-icon.svg" alt="Success Icon">
+        </div>
+        <div class="successfull-message-text">
+            <div class="error-message">
+                <h2> The link has expired. Please request a new one. </h2>
             </div>
         </div>
     </div>
+</div>
 
-    <?php exit;
+<?php return;
 } ?>
 
 <?php if (!$user_info) { ?>
-    <div class="successfull-message-ctn">
-        <div class="successfull-message-ctn-content">
-            <div class="successfull-message-icon">
-                <img src="<?php echo URIP_URL ?>assets/image/successfull-message-icon.svg" alt="Success Icon">
-            </div>
-            <div class="successfull-message-text">
-                <div class="error-message"><h2> User not found. </h2></div>
+<div class="successfull-message-ctn">
+    <div class="successfull-message-ctn-content">
+        <div class="successfull-message-icon">
+            <img src="<?php echo URIP_URL ?>assets/image/successfull-message-icon.svg" alt="Success Icon">
+        </div>
+        <div class="successfull-message-text">
+            <div class="error-message">
+                <h2> User not found. </h2>
             </div>
         </div>
     </div>
-    <?php exit;
+</div>
+<?php return;
 } ?>
 
+<?php if ($user_info && $date_diff < 7) { ?>
 
 <div class="successfull-message-ctn">
     <div class="successfull-message-ctn-content">
@@ -97,36 +105,37 @@ if ($username) {
 </div>
 
 <script>
-    jQuery(document).ready(function ($) {
-        var formData =  "username=" + jQuery('.username').val();
-        // var formData = $form.serialize();
+jQuery(document).ready(function($) {
+    var formData = "username=" + jQuery('.username').val();
+    // var formData = $form.serialize();
 
 
-        var nonce = cuim_ajax.nonce; // Nonce for security
+    var nonce = cuim_ajax.nonce; // Nonce for security
 
-        // Send the AJAX request
-        $.ajax({
-            url: cuim_ajax.ajax_url,
-            type: "POST",
-            data: {
-                action: "verification_user_email",
-                form_data: formData, // Pass the form data to the server
-                nonce: nonce,
-            },
-            success: function (response) {
-                if (response.success) {
-                    // Success message
-                } else {
-                    // Failure message
-                }
-            },
-            error: function (response) {
-                // Error message if AJAX fails
-                alert("An error occurred.");
-            },
-        });
+    // Send the AJAX request
+    $.ajax({
+        url: cuim_ajax.ajax_url,
+        type: "POST",
+        data: {
+            action: "verification_user_email",
+            form_data: formData, // Pass the form data to the server
+            nonce: nonce,
+        },
+        success: function(response) {
+            if (response.success) {
+                // Success message
+            } else {
+                // Failure message
+            }
+        },
+        error: function(response) {
+            // Error message if AJAX fails
+            alert("An error occurred.");
+        },
     });
+});
 </script>
+<?php } ?>
 
 <!--<div class="email-ctn" style="background-color: #1D1C25;  padding: 20px; width: 70%; margin:0 auto; border-radius: 16px; color: white; font-size: 16px; font-family: 'Poppins', sans-serif;">-->
 <!--    <p style="color: white">Hello [User Name]</p>-->
