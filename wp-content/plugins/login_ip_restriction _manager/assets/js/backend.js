@@ -224,7 +224,7 @@ jQuery(document).ready(function ($) {
     $("#reset-password-confirmation").removeClass("active");
 
     // Disable the button and update the text
-    $this.addClass("reset-link-disabled");
+    $this.addClass("resend-password-disabled");
     // Start the countdown
     let countdownInterval = setInterval(function () {
       countdown--; // Decrease countdown by 1
@@ -235,7 +235,9 @@ jQuery(document).ready(function ($) {
       // Once the countdown reaches 0, stop the interval and reset the text
       if (countdown === 0) {
         clearInterval(countdownInterval);
-        $this.removeClass("reset-link-disabled").text("Generate New Password");
+        $this
+          .removeClass("resend-password-disabled")
+          .text("Generate New Password");
 
         // Perform the AJAX request once the countdown finishes
       }
