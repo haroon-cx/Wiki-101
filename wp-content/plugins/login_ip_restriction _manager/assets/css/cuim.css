@@ -324,27 +324,26 @@
       opacity: 0;
       visibility: hidden;
       transition: all .3s ease-in-out;
-      width: 300px;
+      width: 341px;
+      box-sizing: border-box;
       background: #fff;
-      padding: 28px;
-      border-radius: 10px;
+      padding: 24px 18px;
+      border-radius: 16px;
       z-index: 9999;
+      cursor: default;
   }
 
   .cuim-profile-dropdown .cuim-user-name {
-      font-weight: 600;
-      font-size: 24px;
+      font-weight: 500;
       line-height: 28px;
-      color: var(--cuim-color-accent);
-      text-transform: capitalize;
-
-
+      color: #7644CE !important;
+      margin-bottom: 0px;
   }
 
   .cuim-profile-button-box {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       gap: 16px;
 
   }
@@ -352,7 +351,7 @@
   .cuim-profile-button-box a {
       padding: 12px 24px;
       font-weight: 400;
-      font-size: 16px;
+      font-size: 20px;
       text-align: center;
       text-transform: capitalize;
       border-radius: 16px;
@@ -381,6 +380,7 @@
   .cuim-profile-name {
       display: inline-block;
       vertical-align: middle;
+      color: #747474;
   }
 
   .cuim-logout-button,
@@ -443,19 +443,46 @@
 
   /* Profile Form Section */
   .cuim-profile-form-wrapper {
-      padding: 20px 33px;
-      max-width: 600px;
-      margin: 8% auto;
-      background: #252031;
-      border-radius: 8px;
-      border: 1px solid var(--cuim-border-color);
-
+      padding: 24px;
+      max-width: 500px;
+      box-sizing: border-box;
+      background: #fff;
+      border-radius: 16px;
+      margin: 0 auto;
   }
 
-  .cuim-profile-form-wrapper div img {
-      width: 186px;
+  .cuim-file-upload-label {
+      cursor: default;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto;
+  }
+
+  .cuim-file-upload-label:hover .camera-icon {
+      background-color: rgba(0, 0, 0, .5);
+  }
+
+  .cuim-profile-form-wrapper h2 {
+      color: #7644CE !important;
+      font-weight: 500;
+  }
+
+  .edit-profile-image {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      box-sizing: border-box;
       border-radius: 50%;
-      border: 8px solid var(--cuim-text-color);
+      border: 1.5px solid #7644CE;
+  }
+
+  .edit-profile-image img {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      object-fit: cover;
+      border-radius: 50%;
   }
 
   .cuim-profile-form-wrapper .cuim-name-block h2 {
@@ -465,12 +492,9 @@
   }
 
   .cuim-profile-form-wrapper input {
-      background: transparent !important;
-      border-radius: 10px !important;
       border: 1px solid var(--cuim-border-color);
       color: var(--cuim-border-color);
       font-size: 16px;
-      margin-bottom: 14px;
   }
 
   .cuim-profile-form-wrapper input[type="file"] {
@@ -566,17 +590,9 @@
       width: 100%;
   }
 
-  div#cuim-edit-fields button {
-      background: var(--cuim-color-accent) !important;
-      font-size: 20px;
-      font-weight: 400;
-      padding: 18px;
-      align-self: flex-start;
-      border: none;
-      border-radius: 8px;
+  #cuim-edit-fields button {
+      font-size: 20px !important;
       color: white;
-      cursor: pointer;
-      transition: background-color 0.3s;
   }
 
   /*theme css*/
@@ -813,6 +829,98 @@
   .cuim-profile-dropdown-head {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 16px 24px;
       margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #D9D9D9;
+  }
+
+  #cuim-edit-fields {
+      margin-top: 24px;
+  }
+
+  #cuim-edit-fields .form-field {
+      width: 100%;
+  }
+
+  .camera-icon {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      display: inline-block;
+      width: 100%;
+      height: 27px;
+      background-color: rgba(0, 0, 0, .2);
+      background-image: url(../image/camera-icon.svg);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 13px;
+      border-radius: 0 0 50% 50%;
+      transition: background-color .3s linear;
+  }
+
+  .edit-form-buttons {
+      margin-top: 36px;
+      justify-content: flex-end;
+  }
+
+  .edit-form-buttons input#save-custom-field {
+      margin-bottom: 0;
+      width: max-content;
+  }
+
+
+  .cancel-button,
+  #cuim-edit-fields .cancel-button,
+  #cancel-btn {
+      background-color: transparent;
+      color: #C770FE;
+      border: 1px solid #6B4EBD;
+  }
+
+  #cuim-edit-fields .reset-password-button {
+      color: #C770FE;
+      background-color: transparent;
+      border: 1px solid #7644CE;
+      height: 44px;
+      padding: 6px 24px !important;
+  }
+
+  .cancel-button:hover,
+  #cuim-edit-fields .reset-password-button:hover,
+  #cuim-edit-fields .cancel-button:hover,
+  #cancel-btn:hover {
+      background-color: #624491;
+      border-color: #624491;
+      color: white;
+  }
+
+  .manage-user-email-field {
+      padding-right: 160px !important;
+  }
+
+
+  @media (max-width: 1600px) and (min-width: 748px) {
+
+      .generate-password-button,
+      #add-custom-field-btn {
+          font-size: 18px !important;
+      }
+  }
+
+  .cropper-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px 24px;
+      margin-top: 24px;
+  }
+
+  #cropper-modal .cropper-buttons button {
+      padding: 8px 24px !important;
+      font-size: 20px !important;
+  }
+
+  .cropper-view-box,
+  .cropper-face {
+      border-radius: 50%;
   }

@@ -55,7 +55,6 @@
                         value="<?php echo $value->state; ?>">
                 </div>
 
-
                 <div class="form-field required">
                     <label for="question-type"><span>* </span>User Role </label>
                     <div class="custom-select-dropdown">
@@ -87,7 +86,6 @@
                     <div class="reset-link">
                         <a href="#" onclick="event.preventDefault();" id="reset-link-pending-user" role="button">Reset
                             Link</a>
-
                     </div>
                 </div>
                 <?php

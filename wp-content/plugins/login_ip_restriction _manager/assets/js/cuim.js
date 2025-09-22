@@ -415,5 +415,112 @@ jQuery(document).ready(function ($) {
   $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
     $(this).val(''); // Reset the input field to empty when the user cancels or clears the date range
   });
+  
+});
 
+jQuery(function($){
+  console.log('cuim.js loaded ✅');
+
+  var cropper = null;
+
+  // Helpers to access current DOM nodes (since HTML may be injected later)
+  function els(){
+    return {
+      $input:  $('#upload-file-button'),
+      $modal:  $('#cropper-modal'),
+      imgEl:   document.getElementById('cropper-image'),
+      $preview:$('#cuim-avatar-preview')
+    };
+  }
+
+  // 1) Change handler (delegated) — fires even if HTML is added later
+  $(document).on('change', '#upload-file-button', function(){
+    console.log('File input changed ✅');
+    var file = this.files && this.files[0];
+    if(!file){
+      console.warn('No file selected');
+      return;
+    }
+
+    // Spec: JPG only, ≤ 2 MB
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Max size 2 MB');
+      this.value = '';
+      return;
+    }
+    var isJpg = /^image\/(jpeg|jpg|pjpeg)$/i.test(file.type || '') || /\.(jpe?g)$/i.test(file.name || '');
+    if (!isJpg) {
+      alert('Only JPG images are allowed');
+      this.value = '';
+      return;
+    }
+
+    var { $modal, imgEl } = els();
+    if (!$modal.length || !imgEl) {
+      console.error('Cropper modal/image elements not found in DOM.');
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onerror = function(e){
+      console.error('FileReader error', e);
+      alert('Could not read the image.');
+    };
+    reader.onload = function(e){
+      // Show modal and start Cropper
+      imgEl.src = e.target.result;
+      $modal.css('display','flex');
+
+      try { if (cropper) cropper.destroy(); } catch(e){}
+      cropper = new Cropper(imgEl, {
+        aspectRatio: 1,
+        viewMode: 1,
+        autoCropArea: 1
+      });
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // 2) Crop
+  $(document).on('click', '#crop-btn', function(){
+    if(!cropper){ console.warn('Cropper not initialized'); return; }
+
+    var { $modal, $preview, $input } = els();
+    var canvas = cropper.getCroppedCanvas({ width:128, height:128 });
+    if(!canvas){ alert('Cropping failed.'); return; }
+
+    canvas.toBlob(function(blob){
+      // Update preview (front-end) — you can also send blob/base64 to server if needed
+      var url = URL.createObjectURL(blob);
+      $preview.attr('src', url);
+
+      // Cleanup
+      try { cropper.destroy(); } catch(e){}
+      cropper = null;
+      $modal.hide();
+      // reset input so same file can be picked again
+      if ($input && $input.length) $input.val('');
+    }, 'image/jpeg', 0.92);
+  });
+
+  // 3) Cancel
+  $(document).on('click', '#cancel-btn', function(){
+    var { $modal, $input } = els();
+    try { if (cropper) cropper.destroy(); } catch(e){}
+    cropper = null;
+    $modal.hide();
+    if ($input && $input.length) $input.val('');
+  });
+
+  // 4) Optional: basic preview fallback (for quick sanity check)
+  // Uncomment to verify change event + FileReader, even if Cropper missing
+  /*
+  $(document).on('change', '#upload-file-button', function(){
+    var file = this.files && this.files[0];
+    if(!file) return;
+    var r = new FileReader();
+    r.onload = function(e){ $('#cuim-avatar-preview').attr('src', e.target.result); };
+    r.readAsDataURL(file);
+  });
+  */
 });
