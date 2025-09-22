@@ -10,22 +10,74 @@ function cuim_render_frontend_profile() {
 
     ob_start(); ?>
     <div class="cuim-profile-form-wrapper">
-        <form method="post" enctype="multipart/form-data" id="cuim-profile-page-form">
+        <form autocomplete="off" method="post" enctype="multipart/form-data" id="cuim-profile-page-form" class="custom-form" novalidate="novalidate"
+                data-inited-validation="1">
             <div style="text-align: center">
-                <label for="upload-file-button" class="cuim-file-upload-label" style="display: block; cursor: pointer">
-                    <img id="cuim-avatar-preview" src="<?php echo esc_url($avatar_url); ?>" alt="Avatar" style="max-width:150px; border-radius: 50%;">
-                </label>
-                <input type="file" name="cuim_avatar" accept="image/*" id="upload-file-button" style="display: none;">
-
-                <div class="cuim-name-block">
-                    <h2><?php echo esc_html($first . ' ' . $last); ?></h2>
+                <div class="edit-profile-image-ctn">
+                    <h2>Edit Profile</h2>
+                    <label for="upload-file-button" class="cuim-file-upload-label" style="display: block;">
+                        <div class="edit-profile-image">
+                            <img id="cuim-avatar-preview" src="<?php echo esc_url($avatar_url); ?>" alt="Avatar">
+                            <span class='camera-icon'></span>
+                        </div>
+                    </label>
+                    <input type="file" name="cuim_avatar" accept="image/*" id="upload-file-button" style="display: none;">
+                    <div id="cropper-modal" style="display:none;align-items:center;justify-content:center;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;">
+                        <div style="background:#1D1C25; padding:24px;">
+                            <img id="cropper-image" src="" style="max-width:90vw;max-height:70vh;">
+                            <div class="cropper-buttons" style="margin-top:24px;text-align:center;">
+                                <button type="button" id="cancel-btn">Cancel</button>
+                                <button type="button" id="crop-btn">Save</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- <div class="cuim-name-block">
+                    <h2><?php echo esc_html($first . ' ' . $last); ?></h2>
+                </div> -->
             </div>
             <div id="cuim-edit-fields" >
-                <input type="text" name="cuim_first" value="<?php echo esc_attr($first); ?>" required>
-                <input type="text" name="cuim_last" value="<?php echo esc_attr($last); ?>" required>
-                <div style="text-align: right">
+                <div class="form-field required">
+                    <label for="user-name"><span>* </span>User Name</label>
+                    <input type="text" id="user-name" placeholder="Please add User Name" required>
+                </div>
+                <div class="form-field required">
+                    <label for="company-name"><span>* </span>Company Name</label>
+                    <input type="text" id="company-name" placeholder="Description" required>
+                </div> 
+                <div class="form-field required">
+                    <label for="question-type"><span>* </span>User Role</label>
+                    <div class="custom-select-dropdown">
+                        <div class="custom-select-dropdown-title">
+                            <span class="custom-dropdown-default-value">User Role</span>
+                            <span class="custom-dropdown-selected-value"></span>
+                        </div>
+                        <div class="custom-select-dropdown-lists">
+                            <ul>
+                                <li data-value="Admin">Admin</li>
+                                <li data-value="Manager">Manager</li>
+                                <li data-value="Contributor">Contributor</li>
+                                <li data-value="Viewer">Viewer</li>
+                            </ul>
+                        </div>
+                        <input type="hidden" name="user-role" id="issue_type" required=""
+                            value="<?php echo $value->user_role; ?>">
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label for="rest-password">Reset Password</label>
+                    <button class="reset-password-button">Reset password</button>
+                    
+                </div>
+                <!-- <input type="text" name="cuim_first" value="<?php echo esc_attr($first); ?>" required>
+                <input type="text" name="cuim_last" value="<?php echo esc_attr($last); ?>" required> -->
+                <!-- <div style="text-align: right">
                     <button type="submit">Update Profile</button>
+                </div> -->
+                <div class="form-buttons edit-form-buttons d-flex">
+                    <button class="cancel-button" type="button">Cancel</button>
+                    <input id="save-custom-field" type="submit" value="Save">
                 </div>
             </div>
         </form>
@@ -166,13 +218,13 @@ function cui_pm_add_logout_button_footer() {
                 <div class="cuim-profile-dropdown-head">
                     <img src="' . esc_url($avatar_url) . '" alt="Avatar" />
                     <div>
-                        <div class="cuim-user-name">' . esc_html($first . ' ' . $last) . '</div>
+                        <h2 class="cuim-user-name">' . esc_html($first . ' ' . $last) . '</h2>
                         <span class="cuim-profile-name">' . esc_html($user->user_email) . '</span>
                     </div>
                 </div>
                 <div class="cuim-profile-button-box">
                     <a href="#" class="cuim-edit-profile-button" data-load-profile>Edit Profile</a>
-                    <a href="' . esc_url($logout_url) . '" class="cuim-logout-button">Logout</a>
+                    <a href="' . esc_url($logout_url) . '" class="cuim-logout-button">Log Out</a>
                 </div>
             </div>
             </div>

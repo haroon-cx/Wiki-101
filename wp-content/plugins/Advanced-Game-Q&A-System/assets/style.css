@@ -1047,7 +1047,7 @@ button.sc_button_hover_slide_left {
   border: 1px solid #7644CE;
   color: #fff;
   border-radius: 16px;
-  padding: 9px 18.5px;
+  padding: 8px 18.5px;
   cursor: pointer;
   background-color: transparent;
   font-family: 'Poppins', sans-serif;
@@ -1056,6 +1056,10 @@ button.sc_button_hover_slide_left {
 .back-button svg {
   width: 30px;
   height: 30px;
+}
+
+.form-buttons .back-button {
+  padding: 8px 23px;
 }
 
 .grid-3 {
@@ -3458,7 +3462,7 @@ form .form-buttons button {
 }
 
 #save-custom-field {
-  padding: 9px 35px !important;
+  padding: 8px 35px !important;
   font-size: 20px !important;
 }
 

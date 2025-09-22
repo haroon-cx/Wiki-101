@@ -767,3 +767,8 @@ input#filter-search {
 .login-button a {
     font-size: 20px;
 }
+
+.table-body-disabled .table-body-col {
+    opacity: .3;
+    pointer-events: none;
+}
