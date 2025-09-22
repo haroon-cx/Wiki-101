@@ -484,7 +484,7 @@ function handle_faq_deletion()
 
     // Respond with success message
     $response['status']  = 'Success';
-    $response['message'] = 'Successfully Submitted';
+    $response['message'] = 'Successfully Deleted.';
     echo json_encode($response);
 
     wp_die(); // End the AJAX request

@@ -26,7 +26,8 @@ if ($add_manage_id == 0 && $edit_manage_id == 0) {
                 custom_field_2,
                 custom_field_3,
                 custom_field_4,
-                created_at
+                created_at,
+                delete_status
             FROM $table_agqa_manage_user
             ORDER BY id DESC
             ");
@@ -188,7 +189,7 @@ if (strtolower($state) === 'pending') {
                         <?php
                             foreach ($add_manage_users_data as $key => $user_data) {
                                 ?>
-                        <div class="custom-table-row">
+                        <div class="custom-table-row <?php echo $user_data->delete_status; ?>">
                             <div class="table-body-col table-body-col-text"><?php echo $user_data->account; ?></div>
                             <div class="table-body-col table-row-status <?php echo strtolower($user_data->state); ?>">
                                 <span><?php echo $user_data->state; ?></span>
@@ -342,9 +343,10 @@ if (strtolower($state) === 'pending') {
                                             <h2>Delete</h2>
                                             <div class="popup-form-cross-icon"></div>
                                             <div class="form-message">Are you sure you want to Delete?</div>
-                                            <div class="agqa-popup-form-buttons d-flex">
+                                            <div class="agqa-popup-form-buttons d-flex" id="delete-manage-users">
                                                 <button class="no-cancel" type="button">No</button>
-                                                <button id="yes-cancel" type="submit" value="">Yes</button>
+                                                <button id="yes-cancel" type="submit"
+                                                    value="<?php echo $user_data->account; ?>">Yes</button>
                                             </div>
                                         </div>
                                     </div>

@@ -19,6 +19,7 @@ function agqa_create_tables_ip_users()
             user_role VARCHAR(255) NOT NULL,
             company_name VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
+            delete_status VARCHAR(255) NOT NULL,
             custom_label_1 VARCHAR(255),
             custom_label_2 VARCHAR(255),
             custom_label_3 VARCHAR(255),

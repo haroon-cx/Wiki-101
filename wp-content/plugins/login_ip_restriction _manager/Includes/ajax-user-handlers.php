@@ -274,63 +274,76 @@ function handle_edit_user_manage() {
     wp_send_json_success(['message' => 'User data updated successfully in both the custom table and WordPress table.']);
 }
 
-add_action('wp_ajax_verification_user_email', 'handle_verification_user_email');
-add_action('wp_ajax_nopriv_verification_user_email', 'handle_verification_user_email');
 
 
 /**
  * Verification email handler
- */
+*/
+add_action('wp_ajax_verification_user_email', 'handle_verification_user_email');
+add_action('wp_ajax_nopriv_verification_user_email', 'handle_verification_user_email');
 
-function handle_verification_user_email()
-{
+function handle_verification_user_email() {
     global $wpdb;
 
-    // Check nonce for security
-    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+    // Security: nonce check
+    if ( ! isset($_POST['nonce']) || ! wp_verify_nonce($_POST['nonce'], 'cuim_nonce') ) {
         wp_send_json_error(['message' => 'Permission Denied']);
     }
 
-    parse_str($_POST['form_data'], $data);
+    // Parse form data safely
+    parse_str(isset($_POST['form_data']) ? wp_unslash($_POST['form_data']) : '', $data);
 
-    // Get the form data
-    $account = sanitize_text_field($data['username']);
+    // Get and sanitize input
+    $account = isset($data['username']) ? sanitize_text_field($data['username']) : '';
+    if ($account === '') {
+        wp_send_json_error(['message' => 'Username is required.']);
+    }
 
-    // Check if user exists in the custom table
-    $user_exists = $wpdb->get_var(
+    $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
+
+    // Check if user exists & fetch current state
+    $current = $wpdb->get_row(
         $wpdb->prepare(
-            "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE account = %s",  // Use %s for strings
+            "SELECT account, state FROM {$table_name} WHERE account = %s LIMIT 1",
             $account
         )
     );
 
-    // Echo the result for debugging
-
-    // Check if user doesn't exist
-    if ($user_exists == 0) {
+    if ( ! $current ) {
         wp_send_json_error(['message' => 'User not found in custom table.']);
-        return;
     }
 
-    // 1️⃣ Update custom table
-    $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
-    $update_data = [
-        'account' => $account,
-        'state' => "active",
-    ];
+    // Only allow update when current state is 'pending'
+    if ( strtolower($current->state) !== 'pending' ) {
+        // You can tailor this message based on actual state
+        wp_send_json_error(['message' => 'User status is not pending; no changes made.']);
+    }
 
-    // Update custom table
-    $wpdb->update(
+    // Update: set state to active ONLY if currently pending (extra safety in WHERE)
+    $updated = $wpdb->update(
         $table_name,
-        $update_data,
-        ['account' => $account],
-        array_fill(0, count($update_data), '%s'),
-        ['%s'] // Use %s for string (account) comparison
+        [
+            'state'   => 'active',
+        ],
+        [
+            'account' => $account,
+            'state'   => 'pending', // ensures we only flip pending -> active
+        ],
+        ['%s'],
+        ['%s', '%s']
     );
 
-    // Optional: Send a success response after updating
-    wp_send_json_success(['message' => 'User status updated successfully.']);
+    if ($updated === false) {
+        // DB error
+        wp_send_json_error(['message' => 'Database error while updating status.']);
+    } elseif ($updated === 0) {
+        // Nothing changed (race condition or already updated)
+        wp_send_json_error(['message' => 'No change performed. The status may have already been updated.']);
+    } else {
+        wp_send_json_success(['message' => 'User status updated to active successfully.']);
+    }
 }
+
 /**
  * resend pending user handler
  */
@@ -446,4 +459,63 @@ function handle_reset_password() {
 
     // ✅ Return success response
     wp_send_json_success(['message' => 'Password reset and email sent successfully']);
+}
+/**
+ * Delete users
+ */
+
+add_action('wp_ajax_delete_manage_user', 'handle_delete_manage_user');
+add_action('wp_ajax_nopriv_delete_manage_user', 'handle_delete_manage_user');
+
+function handle_delete_manage_user()
+{
+    global $wpdb;
+
+    // Check nonce for security
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        wp_send_json_error(['message' => 'Permission Denied']);
+    }
+
+    parse_str($_POST['form_data'], $data);
+
+    // Get the form data
+    $account = sanitize_text_field($data['username']);
+
+    // Check if user exists in the custom table
+    $user_exists = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE account = %s",  // Use %s for strings
+            $account
+        )
+    );
+
+    // Check if user doesn't exist
+    if ($user_exists == 0) {
+        wp_send_json_error(['message' => 'User not found in custom table.']);
+        return;
+    }
+
+    // 1️⃣ Update custom table: set delete_status to 'deleted'
+    $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
+    $update_data = [
+        'delete_status' => 'table-body-disabled', // Set delete status to 'deleted'
+    ];
+
+    // Update custom table
+    $updated = $wpdb->update(
+        $table_name,
+        $update_data,
+        ['account' => $account], // Where condition
+        ['%s'], // Format for delete_status
+        ['%s']  // Format for account
+    );
+
+    // Check if the update was successful
+    if ($updated === false) {
+        wp_send_json_error(['message' => 'Error occurred while updating delete status.']);
+    } elseif ($updated === 0) {
+        wp_send_json_error(['message' => 'No changes made, the user might already be marked as deleted.']);
+    } else {
+        wp_send_json_success(['message' => 'User marked as deleted successfully.']);
+    }
 }

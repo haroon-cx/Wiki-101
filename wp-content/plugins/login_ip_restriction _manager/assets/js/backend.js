@@ -599,4 +599,40 @@ jQuery(document).ready(function ($) {
       }
     }
   });
+
+  /**
+   * delete script
+   */
+
+  /**
+   * Rest link pending user script
+   */
+  $("#delete-manage-users #yes-cancel").on("click", function (e) {
+    e.preventDefault(); // Prevent the default form submission
+    var formData = "username=" + jQuery(this).val();
+    // var formData = $form.serialize();
+
+    var nonce = cuim_ajax.nonce; // Nonce for security
+    // Send the AJAX request
+    $.ajax({
+      url: cuim_ajax.ajax_url,
+      type: "POST",
+      data: {
+        action: "delete_manage_user",
+        form_data: formData, // Pass the form data to the server
+        nonce: nonce,
+      },
+      success: function (response) {
+        if (response.success) {
+          // Success message
+        } else {
+          // Failure message
+        }
+      },
+      error: function (response) {
+        // Error message if AJAX fails
+        alert("An error occurred.");
+      },
+    });
+  });
 });

@@ -85,13 +85,13 @@
                 </div>
                 <div class="form-field required">
                     <label for="comapany-name-field"><span>* </span>Company Name</label>
-                    <input type="text" name="company-name" id="comapany-name-field" required placeholder="Description"
-                        value="<?php echo $value->company_name; ?>">
+                    <input type="text" name="company-name" class="agqa-faq-validation-100" id="comapany-name-field"
+                        required placeholder="Description" value="<?php echo $value->company_name; ?>">
                 </div>
                 <div class="form-field required">
                     <label for="manage-user-email-field"><span>* </span>Email</label>
-                    <input type="text" name="email" id="email-field" required placeholder="<?php echo $value->email; ?>"
-                        value="<?php echo $value->email; ?>">
+                    <input type="email" name="email" class="cuim-manage-user-validation-254" id="email-field" required
+                        placeholder="<?php echo $value->email; ?>" value="<?php echo $value->email; ?>">
                 </div>
                 <?php
                     // Initialize the fields array
@@ -140,7 +140,9 @@
                                 <div class="popup-form-cross-icon"></div>
                                 <div class="form-field">
                                     <label for="first-name">First Name</label>
-                                    <input type="text" name="first-name" id="first-name" placeholder="Description">
+                                    <input type="text" class="cuim-manage-user-validation-50" name="first-name"
+                                        id="first-name" placeholder="Description">
+                                    <div id="error-message"></div>
                                 </div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
                                     <button class="cancel-button" type="button">Cancel</button>
