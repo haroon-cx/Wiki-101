@@ -1,108 +1,7 @@
 <?php
 
-add_shortcode('cuim_frontend_profile', 'cuim_render_frontend_profile');
-function cuim_render_frontend_profile() {
-    $user_id = get_current_user_id();
-    $first = get_user_meta($user_id, 'first_name', true);
-    $last = get_user_meta($user_id, 'last_name', true);
-    $avatar_id = get_user_meta($user_id, 'cuim_profile_avatar', true);
-    $avatar_url = $avatar_id ? wp_get_attachment_url($avatar_id) : get_avatar_url($user_id);
 
-    ob_start(); ?>
-    <div class="cuim-profile-form-wrapper">
-        <form autocomplete="off" method="post" enctype="multipart/form-data" id="cuim-profile-page-form" class="custom-form" novalidate="novalidate"
-                data-inited-validation="1">
-            <div style="text-align: center">
-                <div class="edit-profile-image-ctn">
-                    <h2>Edit Profile</h2>
-                    <label for="upload-file-button" class="cuim-file-upload-label" style="display: block;">
-                        <div class="edit-profile-image">
-                            <img id="cuim-avatar-preview" src="<?php echo esc_url($avatar_url); ?>" alt="Avatar">
-                            <span class='camera-icon'></span>
-                        </div>
-                    </label>
-                    <input type="file" name="cuim_avatar" accept="image/*" id="upload-file-button" style="display: none;">
-                    <div id="cropper-modal" style="display:none;align-items:center;justify-content:center;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;">
-                        <div style="background:#1D1C25; padding:24px;">
-                            <img id="cropper-image" src="" style="max-width:90vw;max-height:70vh;">
-                            <div class="cropper-buttons" style="margin-top:24px;text-align:center;">
-                                <button type="button" id="cancel-btn">Cancel</button>
-                                <button type="button" id="crop-btn">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- <div class="cuim-name-block">
-                    <h2><?php echo esc_html($first . ' ' . $last); ?></h2>
-                </div> -->
-            </div>
-            <div id="cuim-edit-fields" >
-                <div class="form-field required">
-                    <label for="user-name"><span>* </span>User Name</label>
-                    <input type="text" id="user-name" placeholder="Please add User Name" required>
-                </div>
-                <div class="form-field required">
-                    <label for="company-name"><span>* </span>Company Name</label>
-                    <input type="text" id="company-name" placeholder="Description" required>
-                </div> 
-                <div class="form-field required">
-                    <label for="question-type"><span>* </span>User Role</label>
-                    <div class="custom-select-dropdown">
-                        <div class="custom-select-dropdown-title">
-                            <span class="custom-dropdown-default-value">User Role</span>
-                            <span class="custom-dropdown-selected-value"></span>
-                        </div>
-                        <div class="custom-select-dropdown-lists">
-                            <ul>
-                                <li data-value="Admin">Admin</li>
-                                <li data-value="Manager">Manager</li>
-                                <li data-value="Contributor">Contributor</li>
-                                <li data-value="Viewer">Viewer</li>
-                            </ul>
-                        </div>
-                        <input type="hidden" name="user-role" id="issue_type" required=""
-                            value="<?php echo $value->user_role; ?>">
-                    </div>
-                </div>
-                <div class="form-field">
-                    <label for="rest-password">Reset Password</label>
-                    <button class="reset-password-button">Reset password</button>
-                    
-                </div>
-                <!-- <input type="text" name="cuim_first" value="<?php echo esc_attr($first); ?>" required>
-                <input type="text" name="cuim_last" value="<?php echo esc_attr($last); ?>" required> -->
-                <!-- <div style="text-align: right">
-                    <button type="submit">Update Profile</button>
-                </div> -->
-                <div class="form-buttons edit-form-buttons d-flex">
-                    <button class="cancel-button" type="button">Cancel</button>
-                    <input id="save-custom-field" type="submit" value="Save">
-                </div>
-            </div>
-        </form>
-        <div id="cuim-profile-update-message"></div>
-    </div>
-
-    <script>
-        jQuery(document).ready(function($) {
-            var $input = $('#upload-file-button');
-
-            $input.on('change', function() {
-                var input = this;
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#cuim-avatar-preview').attr('src', e.target.result);
-                    };
-                    reader.readAsDataURL(input.files[0]);
-                }
-            });
-        });
-
-    </script>
-    <?php return ob_get_clean();
-}
 // Profile completeness check function
 function cuim_is_profile_complete($user_id) {
     $first = get_user_meta($user_id, 'first_name', true);
@@ -112,25 +11,7 @@ function cuim_is_profile_complete($user_id) {
     return (!empty($first) && !empty($last) && !empty($avatar));
 }
 
-// Modified AJAX handler for profile HTML
-add_action('wp_ajax_cuim_get_profile_html', 'cuim_get_profile_html');
-function cuim_get_profile_html() {
-    if (!is_user_logged_in()) {
-        wp_send_json_error("You must be logged in.");
-    }
 
-    $user_id = get_current_user_id();
-    $profile_complete = cuim_is_profile_complete($user_id);
-
-    ob_start();
-    echo do_shortcode('[cuim_frontend_profile]');
-    $html = ob_get_clean();
-
-    wp_send_json_success([
-        'html' => $html,
-        'profile_complete' => $profile_complete,
-    ]);
-}
 
 add_action('wp_ajax_cuim_save_profile', 'cuim_save_profile');
 function cuim_save_profile() {
@@ -197,12 +78,12 @@ function cui_pm_add_logout_button_footer() {
 
         echo '<div class="header-right">';
 
-        echo '
-        <label class="viewer-toggle-wrapper">
-            <span>Viewer Mode</span>
-            <input type="checkbox" id="cuim-viewer-toggle" ' . ($is_on ? 'checked' : '') . ' />
-            <span class="slider"></span>
-        </label>';
+        // echo '
+        // <label class="viewer-toggle-wrapper">
+        //     <span>Viewer Mode</span>
+        //     <input type="checkbox" id="cuim-viewer-toggle" ' . ($is_on ? 'checked' : '') . ' />
+        //     <span class="slider"></span>
+        // </label>';
 
 
         echo '
@@ -223,7 +104,7 @@ function cui_pm_add_logout_button_footer() {
                     </div>
                 </div>
                 <div class="cuim-profile-button-box">
-                    <a href="#" class="cuim-edit-profile-button" data-load-profile>Edit Profile</a>
+                    <a href="#" class="cuim-edit-profile-button" >Edit Profile</a>
                     <a href="' . esc_url($logout_url) . '" class="cuim-logout-button">Log Out</a>
                 </div>
             </div>
@@ -243,7 +124,138 @@ function cui_pm_add_logout_button_footer() {
         echo '</div>';
         echo '</header>';
     }
+     $user_id = get_current_user_id();
+    $first = get_user_meta($user_id, 'first_name', true);
+    $last = get_user_meta($user_id, 'last_name', true);
+    $avatar_id = get_user_meta($user_id, 'cuim_profile_avatar', true);
+    $avatar_url = $avatar_id ? wp_get_attachment_url($avatar_id) : get_avatar_url($user_id);
     ?>
+
+
+
+     
+    <div class="cuim-profile-form-wrapper">
+        <div class="cuim-profile-form-inner">
+            <form autocomplete="off" method="post" enctype="multipart/form-data" id="cuim-profile-page-form" class="custom-form" novalidate="novalidate"
+                    data-inited-validation="1">
+                <div style="text-align: center">
+                    <div class="edit-profile-image-ctn">
+                        <h2>Edit Profile</h2>
+                        <label for="upload-file-button" class="cuim-file-upload-label" style="display: block;">
+                            <div class="edit-profile-image">
+                                <img id="cuim-avatar-preview" src="<?php echo esc_url($avatar_url); ?>" alt="Avatar">
+                                <span class='camera-icon'></span>
+                            </div>
+                        </label>
+                        <input type="file" name="cuim_avatar" accept="image/*" id="upload-file-button" style="display: none;">
+                        <div id="cropper-modal" style="display:none;align-items:center;justify-content:center;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;">
+                            <div style="background:#1D1C25; padding:24px;">
+                                <img id="cropper-image" src="" style="max-width:90vw;max-height:70vh;">
+                                <div class="cropper-buttons" style="margin-top:24px;text-align:center;">
+                                    <button type="button" id="cancel-btn">Cancel</button>
+                                    <button type="button" id="crop-btn">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="cuim-name-block">
+                        <h2><?php echo esc_html($first . ' ' . $last); ?></h2>
+                    </div> -->
+                </div>
+                <div id="cuim-edit-fields" >
+                    <div class="form-field required">
+                        <label for="user-name"><span>* </span>User Name</label>
+                        <input type="text" id="user-name" placeholder="Please add User Name" required>
+                    </div>
+                    <div class="form-field required">
+                        <label for="company-name"><span>* </span>Company Name</label>
+                        <input type="text" id="company-name" placeholder="Description" required>
+                    </div> 
+                    <div class="form-field required">
+                        <label for="question-type"><span>* </span>User Role</label>
+                        <div class="custom-select-dropdown">
+                            <div class="custom-select-dropdown-title">
+                                <span class="custom-dropdown-default-value">User Role</span>
+                                <span class="custom-dropdown-selected-value"></span>
+                            </div>
+                            <div class="custom-select-dropdown-lists">
+                                <ul>
+                                    <li data-value="Admin">Admin</li>
+                                    <li data-value="Manager">Manager</li>
+                                    <li data-value="Contributor">Contributor</li>
+                                    <li data-value="Viewer">Viewer</li>
+                                </ul>
+                            </div>
+                            <input type="hidden" name="user-role" id="issue_type" required=""
+                                value="">
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label for="rest-password">Reset Password</label>
+                        <button class="reset-password-button">Reset password</button>
+                    </div>
+                    <!-- <input type="text" name="cuim_first" value="<?php echo esc_attr($first); ?>" required>
+                    <input type="text" name="cuim_last" value="<?php echo esc_attr($last); ?>" required> -->
+                    <!-- <div style="text-align: right">
+                        <button type="submit">Update Profile</button>
+                    </div> -->
+                    <div class="form-buttons edit-form-buttons d-flex">
+                        <button class="cancel-button" type="button">Cancel</button>
+                        <input id="save-custom-field" type="submit" value="Save">
+                    </div>
+                </div>
+            </form>
+            <div id="cuim-profile-update-message"></div>
+        </div>
+        <div class="reset-password-popup">
+            <div class="reset-password-popup-inner">
+                <h2>Reset Password</h2>
+            <div class="popup-cross-icon"></div>
+            <div class="reset-password-form">
+                <form action="#">
+                    <div class="form-field required">
+                        <label for="old-password"><span>*</span> Old Password</label>
+                        <button class="toggle-password"></button>
+                        <input type="password" name="old-password" id="old-password" placeholder="Please Enter the Old Password">
+                    </div>
+                    <div class="form-field required">
+                        <label for="new-password"><span>*</span> New Password</label>
+                        <button class="toggle-password"></button>
+                        <input type="password" name="new-password" id="new-password" placeholder="Please Enter The New Password">
+                    </div>
+                    <div class="form-field required">
+                        <label for="confirm-password"><span>*</span> Confirm Password</label>
+                        <button class="toggle-password"></button>
+                        <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm New Password">
+                    </div>
+                    <div id="reset-form-buttons" class="form-buttons reset-form-buttons d-flex">
+                        <button class="cancel-button" type="button">Cancel</button>
+                        <input id="save-custom-field" type="submit" value="Save">
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        jQuery(document).ready(function($) {
+            var $input = $('#upload-file-button');
+
+            $input.on('change', function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#cuim-avatar-preview').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+        });
+
+    </script>
+  
 
     <style>
         .agqa-site-logo {
@@ -308,17 +320,17 @@ function cui_pm_add_logout_button_footer() {
 
 
 
-add_action('wp_ajax_cuim_toggle_viewer_mode', 'cuim_toggle_viewer_mode');
-function cuim_toggle_viewer_mode() {
-    if (!is_user_logged_in()) {
-        wp_send_json_error('Not logged in.');
-    }
+// add_action('wp_ajax_cuim_toggle_viewer_mode', 'cuim_toggle_viewer_mode');
+// function cuim_toggle_viewer_mode() {
+//     if (!is_user_logged_in()) {
+//         wp_send_json_error('Not logged in.');
+//     }
 
-    $user_id = get_current_user_id();
-    $current = get_user_meta($user_id, 'cuim_viewer_mode', true);
-    $new_value = ($current === '1') ? '0' : '1';
-    update_user_meta($user_id, 'cuim_viewer_mode', $new_value);
+//     $user_id = get_current_user_id();
+//     $current = get_user_meta($user_id, 'cuim_viewer_mode', true);
+//     $new_value = ($current === '1') ? '0' : '1';
+//     update_user_meta($user_id, 'cuim_viewer_mode', $new_value);
 
-    wp_send_json_success($new_value);
-}
+//     wp_send_json_success($new_value);
+// }
 

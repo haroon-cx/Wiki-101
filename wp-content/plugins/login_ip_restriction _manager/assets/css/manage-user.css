@@ -115,7 +115,7 @@ input[type="date"],
 }
 
 .manage-user-template .filter-right-area {
-    width: 20%;
+    max-width: 25%;
 }
 
 .filter-right-area .add-button {
@@ -744,31 +744,4 @@ input#filter-search {
 
 .footer_wrap {
     display: none;
-}
-
-.resend-password-disabled {
-    color: rgba(255, 255, 555,.2);
-    pointer-events: none;
-}
-
-.resend-password-disabled:hover {
-    background-color: transparent;
-    border-color: #7644CE;
-}
-
-.login-button {
-    margin-top: 32px;
-}
-
-.login-button a:hover {
-    color: white;
-}
-
-.login-button a {
-    font-size: 20px;
-}
-
-.table-body-disabled .table-body-col {
-    opacity: .3;
-    pointer-events: none;
 }
