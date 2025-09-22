@@ -231,23 +231,25 @@ jQuery(document).ready(function ($) {
     );
   });
 
-  $(document).on("click", "[data-load-profile]", function (e) {
-    e.preventDefault();
-    $(".post_content.entry-content").html("<p>🔄 Loading profile...</p>");
-    $.post(
-        cuim_ajax.ajax_url,
-        { action: "cuim_get_profile_html" },
-        function (response) {
-          if (response.success) {
-            $(".post_content.entry-content").html(response.data.html);
-          } else {
-            $(".post_content.entry-content").html(
-                '<p style="color:red;">❌ ' + response.data + "</p>"
-            );
-          }
-        }
-    );
-  });
+  // $(document).on("click", "[data-load-profile]", function (e) {
+  //   e.preventDefault();
+  //   $('.cuim-profile-dropdown').removeClass('active');  // Remove the active class
+    
+  //   $(".post_content.entry-content").html("<p>🔄 Loading profile...</p>");
+  //   $.post(
+  //       cuim_ajax.ajax_url,
+  //       { action: "cuim_get_profile_html" },
+  //       function (response) {
+  //         if (response.success) {
+  //           $(".post_content.entry-content").html(response.data.html);
+  //         } else {
+  //           $(".post_content.entry-content").html(
+  //               '<p style="color:red;">❌ ' + response.data + "</p>"
+  //           );
+  //         }
+  //       }
+  //   );
+  // });
 
   $(document).on("submit", "#cuim-profile-page-form", function (e) {
     e.preventDefault();
@@ -259,15 +261,15 @@ jQuery(document).ready(function ($) {
       data: formData,
       contentType: false,
       processData: false,
-      success: function (response) {
-        const msg = $("#cuim-profile-update-message");
-        if (response.success) {
-          msg.html('<p style="color:green;">✅ ' + response.data + "</p>");
-          setTimeout(() => location.reload(), 1000);
-        } else {
-          msg.html('<p style="color:red;">❌ ' + response.data + "</p>");
-        }
-      },
+      // success: function (response) {
+      //   const msg = $("#cuim-profile-update-message");
+      //   if (response.success) {
+      //     msg.html('<p style="color:green;">✅ ' + response.data + "</p>");
+      //     setTimeout(() => location.reload(), 1000);
+      //   } else {
+      //     msg.html('<p style="color:red;">❌ ' + response.data + "</p>");
+      //   }
+      // },
     });
   });
 
@@ -448,7 +450,9 @@ jQuery(function($){
       this.value = '';
       return;
     }
-    var isJpg = /^image\/(jpeg|jpg|pjpeg)$/i.test(file.type || '') || /\.(jpe?g)$/i.test(file.name || '');
+
+    // MIME type check for JPG only (ensures it's a JPEG image)
+    var isJpg = file.type === 'image/jpeg' || file.name.toLowerCase().endsWith('.jpg') || file.name.toLowerCase().endsWith('.jpeg');
     if (!isJpg) {
       alert('Only JPG images are allowed');
       this.value = '';
@@ -523,4 +527,32 @@ jQuery(function($){
     r.readAsDataURL(file);
   });
   */
+
+ // 1) Toggle the active class on .cuim-profile-dropdown when .cuim-profile-box is clicked
+  $('.cuim-profile-box').on('click', function(){
+    $('.cuim-profile-dropdown').toggleClass('active');  // Toggle the active class
+  });
+
+  // 2) Open the profile form when .cuim-edit-profile-button is clicked
+  $('.cuim-edit-profile-button').on('click', function(){
+    // Check if .cuim-profile-form-inner is hidden or not
+    if ($('.cuim-profile-form-inner').is(':hidden')) {
+      $('.cuim-profile-form-inner').show();  // Make the profile form visible
+    }
+
+    // Show the profile form wrapper
+    $('.cuim-profile-form-wrapper').addClass('active');  // Show the profile form
+  });
+
+  // 3) Show the reset password popup and hide the profile form inner when .reset-password-button is clicked
+  $('.reset-password-button').on('click', function(){
+    $('.cuim-profile-form-inner').hide(100);  // Hide the inner profile form
+    $('.reset-password-popup').addClass('active');  // Show the reset password popup
+  });
+
+  // 4) Close the profile form when popup close button or cancel button is clicked
+  $('.popup-cross-icon, .edit-form-buttons .cancel-button, .reset-form-buttons .cancel-button').on('click', function(){
+    $('.cuim-profile-form-wrapper').removeClass('active');  
+    $('.reset-password-popup').removeClass('active'); 
+  });
 });

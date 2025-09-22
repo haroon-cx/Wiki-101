@@ -320,6 +320,7 @@
 
   .cuim-profile-dropdown {
       position: absolute;
+      top: 65px;
       right: 0;
       opacity: 0;
       visibility: hidden;
@@ -331,6 +332,11 @@
       border-radius: 16px;
       z-index: 9999;
       cursor: default;
+  }
+
+  .cuim-profile-dropdown.active {
+      opacity: 1;
+      visibility: visible;
   }
 
   .cuim-profile-dropdown .cuim-user-name {
@@ -361,11 +367,6 @@
   .cuim-profile-button-box a:hover {
       color: #ffffff;
       background-color: #624491;
-  }
-
-  .cuim-profile-box:hover .cuim-profile-dropdown {
-      opacity: 1;
-      visibility: visible;
   }
 
   .cuim-profile-box img {
@@ -440,11 +441,31 @@
       margin-left: 20px;
   }
 
+  .reset-password-popup {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all .3s ease-in-out;
+  }
+
+  .reset-password-popup.active {
+      opacity: 1;
+      visibility: visible;
+  }
 
   /* Profile Form Section */
-  .cuim-profile-form-wrapper {
+  .cuim-profile-form-inner {
       padding: 24px;
-      max-width: 500px;
+      width: 500px;
       box-sizing: border-box;
       background: #fff;
       border-radius: 16px;
@@ -456,13 +477,15 @@
       width: 80px;
       height: 80px;
       margin: 0 auto;
+      cursor: pointer;
   }
 
   .cuim-file-upload-label:hover .camera-icon {
       background-color: rgba(0, 0, 0, .5);
   }
 
-  .cuim-profile-form-wrapper h2 {
+  .cuim-profile-form-wrapper h2,
+  .reset-password-popup-inner h2 {
       color: #7644CE !important;
       font-weight: 500;
   }
@@ -481,8 +504,44 @@
       width: 100%;
       height: 100%;
       box-sizing: border-box;
-      object-fit: cover;
+      object-fit: contain;
       border-radius: 50%;
+  }
+
+  .cuim-profile-form-wrapper {
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      pointer-events: none;
+      transition: all .3s ease-in-out;
+      z-index: 999;
+  }
+
+  .cuim-profile-form-wrapper.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: initial;
+  }
+
+  .cuim-profile-form-wrapper::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, .6);
+  }
+
+  .cuim-profile-form-inner {
+      position: relative;
   }
 
   .cuim-profile-form-wrapper .cuim-name-block h2 {
@@ -591,8 +650,12 @@
   }
 
   #cuim-edit-fields button {
-      font-size: 20px !important;
       color: white;
+  }
+
+  #cuim-edit-fields button,
+  #reset-form-buttons button {
+      font-size: 20px !important;
   }
 
   /*theme css*/
@@ -839,7 +902,8 @@
       margin-top: 24px;
   }
 
-  #cuim-edit-fields .form-field {
+  #cuim-edit-fields .form-field,
+  .reset-password-form .form-field {
       width: 100%;
   }
 
@@ -861,15 +925,20 @@
 
   .edit-form-buttons {
       margin-top: 36px;
+  }
+
+  .edit-form-buttons,
+  .reset-form-buttons {
       justify-content: flex-end;
   }
 
+  #reset-form-buttons input#save-custom-field,
   .edit-form-buttons input#save-custom-field {
       margin-bottom: 0;
       width: max-content;
   }
 
-
+  #reset-form-buttons .cancel-button,
   .cancel-button,
   #cuim-edit-fields .cancel-button,
   #cancel-btn {
@@ -886,6 +955,7 @@
       padding: 6px 24px !important;
   }
 
+  #reset-form-buttons .cancel-button:hover,
   .cancel-button:hover,
   #cuim-edit-fields .reset-password-button:hover,
   #cuim-edit-fields .cancel-button:hover,
@@ -923,4 +993,63 @@
   .cropper-view-box,
   .cropper-face {
       border-radius: 50%;
+  }
+
+  .resend-password-disabled {
+      color: rgba(255, 255, 555, .2);
+      pointer-events: none;
+  }
+
+  .resend-password-disabled:hover {
+      background-color: transparent;
+      border-color: #7644CE;
+  }
+
+  .login-button {
+      margin-top: 32px;
+  }
+
+  .login-button a:hover {
+      color: white;
+  }
+
+  .login-button a {
+      font-size: 20px;
+  }
+
+  .table-body-disabled .table-body-col {
+      opacity: .3;
+      pointer-events: none;
+  }
+
+  .reset-password-popup-inner {
+      position: relative;
+      width: 572px;
+      padding: 16px 18px 25px;
+      box-sizing: border-box;
+      background-color: #fff;
+      border-radius: 16px;
+  }
+
+  .reset-password-popup-inner h2 {
+      max-width: 80%;
+  }
+
+  .popup-cross-icon {
+      position: absolute;
+      top: 26px;
+      right: 18px;
+      width: 16px;
+      height: 16px;
+      background-image: url(../image/popup-form-cross-icon.svg);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      cursor: pointer;
+      transition: transform .3s ease-in-out;
+      z-index: 9;
+  }
+
+  .popup-cross-icon:hover {
+      transform: rotate(180deg);
   }
