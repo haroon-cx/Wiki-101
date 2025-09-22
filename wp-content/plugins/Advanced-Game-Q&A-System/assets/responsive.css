@@ -136,6 +136,12 @@
     }
 }
 
+@media (max-width: 1600px) and (min-width: 768px) {
+    .manage-user-template .filter-select-title {
+        min-width: 200px;
+    }
+}
+
 @media (max-width: 1600px) and (min-width: 1024px) {
 
     .manage-user-template .filter-select:not(.date-field) {
@@ -144,10 +150,6 @@
 
     .manage-user-template #manage-user-search {
         min-width: 300px;
-    }
-
-    .manage-user-template .filter-select-title {
-        min-width: 200px;
     }
 
     .manage-user-template .filter-area {
@@ -866,9 +868,12 @@
         /* min-width: calc(100% - 114px); */
     }
     .filter-area {
-        min-width: 80%;
-        width: 80%;
+        min-width: 76%;
+        width: 76%;
     }
+    input#manage-user-search {
+    min-width: 270px;
+}
 }
 
 @media (max-height: 900px) {
