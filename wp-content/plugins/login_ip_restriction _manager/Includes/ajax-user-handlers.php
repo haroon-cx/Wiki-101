@@ -120,7 +120,10 @@ function handle_add_or_update_user()
     }
 
     // All good
-    wp_send_json_success(['message' => 'User added and email sent.']);
+   wp_send_json_success([
+  'message' => 'User Account Created Successfully.<br>A verification email has been sent to your registered email address.Please check your inbox.'
+]);
+
 }
 
 // Map the selected form role to WP role

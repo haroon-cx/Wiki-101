@@ -15,22 +15,23 @@
                 data-inited-validation="1">
                 <div class="form-field required">
                     <label for="account-field"><span>* </span>Account</label>
-                    <input type="text" name="account" id="account-field" required placeholder="Description">
+                    <input type="text" class="cuim-manage-user-validation-20" name="account" id="account-field" required
+                        placeholder="Description">
                     <div id="error-message"></div>
                 </div>
                 <div class="form-field required">
                     <label for="new-password-field"><span>* </span>New Password</label>
                     <button class="toggle-password"></button>
-                    <input type="password" name="new-password" id="new-password-field" required
-                        placeholder="Description">
+                    <input type="password" class="cuim-manage-user-pwd-validation-20" name="new-password"
+                        id="new-password-field" required placeholder="Description">
 
 
                 </div>
                 <div class="form-field required">
                     <label for="confirm-password-field"><span>* </span>Confirm Password</label>
                     <button class="toggle-password"></button>
-                    <input type="password" name="confirm-password" id="confirm-password-field" required
-                        placeholder="Description">
+                    <input type="password" class="cuim-manage-user-pwd-validation-20" name="confirm-password"
+                        id="confirm-password-field" required placeholder="Description">
                 </div>
                 <div class="form-field required">
                     <label for="issue_type"><span>* </span>State</label>
@@ -62,11 +63,13 @@
                 </div>
                 <div class="form-field required">
                     <label for="comapany-name-field"><span>* </span>Company Name</label>
-                    <input type="text" name="company-name" id="comapany-name-field" required placeholder="Description">
+                    <input type="text" name="company-name" class="agqa-faq-validation-100" id="comapany-name-field"
+                        required placeholder="Description">
                 </div>
                 <div class="form-field required">
                     <label for="manage-user-email-field"><span>* </span>Email</label>
-                    <input type="email" name="email" id="email-field" required placeholder="Description">
+                    <input type="email" class="cuim-manage-user-validation-254" name="email" id="email-field" required
+                        placeholder="Description">
                 </div>
                 <div class="form-field">
                     <div class="add-custom-field-ctn">
@@ -78,7 +81,9 @@
                                 <div class="popup-form-cross-icon"></div>
                                 <div class="form-field">
                                     <label for="field-name">Field Name</label>
-                                    <input type="text" name="first-name" id="first-name" placeholder="Description">
+                                    <input type="text" name="first-name" id="first-name"
+                                        class="cuim-manage-user-validation-50" placeholder="Description">
+                                    <div id="error-message"></div>
                                 </div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
                                     <button class="cancel-button" type="button">Cancel</button>

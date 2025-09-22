@@ -467,4 +467,136 @@ jQuery(document).ready(function ($) {
         });
     }, 100); // Delay of 500 milliseconds
   });
+  /**
+   * real time validation account field
+   */
+  $(".cuim-manage-user-validation-20").on("input", function () {
+    const minLength = 4;
+    const maxLength = 20;
+
+    const $input = $(this);
+    const $formField = $input.closest(".form-field");
+    let $errorMessage = $input.siblings("#error-message");
+    const value = $input.val();
+    const len = value.length;
+
+    // Create error container once
+    if ($errorMessage.length === 0) {
+      $errorMessage = $('<div id="error-message" />').insertAfter($input);
+    }
+
+    if (len === 0) {
+      // Empty: clear errors
+      $formField.removeClass("error-field-input");
+      $errorMessage.text("");
+    } else if (len < minLength) {
+      $formField.addClass("error-field-input");
+      $errorMessage.text(`Minimum ${minLength} characters required.`);
+    } else if (len > maxLength) {
+      // Truncate to max and show message
+      $input.val(value.substring(0, maxLength));
+      $formField.addClass("error-field-input");
+      $errorMessage.text(`Maximum ${maxLength} characters allowed.`);
+    } else {
+      // Valid
+      $formField.removeClass("error-field-input");
+      $errorMessage.text("");
+    }
+  });
+  /**
+   * real time validation password field
+   */
+  $(".cuim-manage-user-pwd-validation-20").on("input", function () {
+    const minLength = 8;
+    const maxLength = 20;
+
+    const $input = $(this);
+    const $formField = $input.closest(".form-field");
+    let $errorMessage = $input.siblings("#error-message");
+    const value = $input.val();
+    const len = value.length;
+
+    // Create error container once
+    if ($errorMessage.length === 0) {
+      $errorMessage = $('<div id="error-message" />').insertAfter($input);
+    }
+
+    if (len === 0) {
+      // Empty: clear errors
+      $formField.removeClass("error-field-input");
+      $errorMessage.text("");
+    } else if (len < minLength) {
+      $formField.addClass("error-field-input");
+      $errorMessage.text(`Minimum ${minLength} characters required.`);
+      jQuery("#confirm-submit-popup-button").prop("disabled", true);
+    } else if (len > maxLength) {
+      // Truncate to max and show message
+      $input.val(value.substring(0, maxLength));
+      $formField.addClass("error-field-input");
+      $errorMessage.text(`Maximum ${maxLength} characters allowed.`);
+    } else {
+      // Valid
+      $formField.removeClass("error-field-input");
+      jQuery("#confirm-submit-popup-button").prop("disabled", false);
+      $errorMessage.text("");
+    }
+  });
+  /**
+   * email validation
+   */
+
+  $(".cuim-manage-user-validation-254").on("input", function () {
+    var maxLengthInputFaq = 254;
+
+    var $input = $(this);
+    var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
+    var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
+
+    // Check if input exceeds maxLength
+    if ($input.val().length > maxLengthInputFaq) {
+      $input.val($input.val().substring(0, maxLengthInputFaq)); // Truncate the value to maxLength
+      $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
+      // Append error message if it doesn't already exist
+      if ($errorMessage.length === 0) {
+        $(
+          '<div id="error-message">Max 254 characters allowed.</div>'
+        ).insertAfter($input); // Insert the error message after the input
+      }
+    } else {
+      $formField.removeClass("error-field-input"); // Remove 'error' class if input is valid
+      // Remove the error message if input length is valid
+      if ($errorMessage.length > 0) {
+        $errorMessage.remove();
+      }
+    }
+  });
+  /**
+   * custom field validation
+   */
+
+  $(".cuim-manage-user-validation-50").on("input", function () {
+    var maxLengthInputFaq = 50;
+
+    var $input = $(this);
+    var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
+    var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
+
+    // Check if input exceeds maxLength
+    if ($input.val().length > maxLengthInputFaq) {
+      $input.val($input.val().substring(0, maxLengthInputFaq)); // Truncate the value to maxLength
+      $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
+      // Append error message if it doesn't already exist
+      if ($errorMessage.length === 0) {
+        $(
+          '<div id="error-message">Max 50 characters allowed.</div>'
+        ).insertAfter($input); // Insert the error message after the input
+      }
+    } else {
+      $formField.removeClass("error-field-input"); // Remove 'error' class if input is valid
+      // Remove the error message if input length is valid
+      if ($errorMessage.length > 0) {
+        $errorMessage.remove();
+      }
+    }
+  });
 });

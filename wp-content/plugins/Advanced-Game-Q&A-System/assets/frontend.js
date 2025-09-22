@@ -660,12 +660,12 @@ jQuery(document).ready(function ($) {
   $("#save-custom-field").on("click", function (e) {
     e.preventDefault();
     showPopup(submitConfirmPopup);
-     let hasEditClass = $('#edit-revnue-form').hasClass('custom-form');
+    let hasEditClass = $("#edit-revnue-form").hasClass("custom-form");
 
-     if(hasEditClass){
-      $('.yes-submit').trigger('click');
+    if (hasEditClass) {
+      $(".yes-submit").trigger("click");
       $("#custom-field-popup").hide();
-     }
+    }
   });
 
   /*
@@ -699,12 +699,14 @@ jQuery(document).ready(function ($) {
       // Create new field
       const newField = $(`
             <div class="form-field custom-field-item">
-                <input type="hidden" name="custom-label-${count + 1
-        }" value="${value}">
+                <input type="hidden" name="custom-label-${
+                  count + 1
+                }" value="${value}">
                 <label>${value}</label>
                 <div class="custom-append-field">
-                    <input type="text" name="custom-field-${count + 1
-        }" placeholder="${value}">
+                    <input type="text" name="custom-field-${
+                      count + 1
+                    }" placeholder="${value}">
                     <button type="button" class="edit-field-btn"></button>
                     <button type="button" class="remove-field-btn"></button>
                 </div>
@@ -803,19 +805,19 @@ jQuery(document).ready(function ($) {
     editTarget = $(this).closest(".form-field.custom-field-item");
     firstNameInput.val(editTarget.find("label").text());
     showPopup(addFieldPopup);
-    jQuery('input#save-custom-field').addClass('edit-save-coustom-field');
+    jQuery("input#save-custom-field").addClass("edit-save-coustom-field");
   });
 
   // Remove field → show cancel confirmation popup
   $(document).on("click", ".remove-field-btn", function () {
     removeTarget = $(this).closest(".form-field.custom-field-item");
     showPopup(cancelConfirmPopup);
-     let hasEditClass = $('#edit-revnue-form').hasClass('custom-form');
+    let hasEditClass = $("#edit-revnue-form").hasClass("custom-form");
 
-     if(hasEditClass){
-      $('#yes-cancel').trigger('click');
+    if (hasEditClass) {
+      $("#yes-cancel").trigger("click");
       $("#custom-field-popup").hide();
-     }
+    }
   });
 
   // Click outside to close
@@ -1329,47 +1331,46 @@ jQuery(document).ready(function ($) {
   //     $historyHead.toggleClass("active");
   //   });
   // });
-$(".api-card-approval-history").each(function () {
-  const $thisHistory = $(this);
-  const $historyHead = $thisHistory.find(".approval-history-head");
-  const $historyList = $thisHistory.find(".dropdown-lists");
+  $(".api-card-approval-history").each(function () {
+    const $thisHistory = $(this);
+    const $historyHead = $thisHistory.find(".approval-history-head");
+    const $historyList = $thisHistory.find(".dropdown-lists");
 
-  $historyHead.on("click", function (e) {
-    e.stopPropagation();
+    $historyHead.on("click", function (e) {
+      e.stopPropagation();
 
-    // Close all others & remove their active state
-    $(".api-card-approval-history .dropdown-lists")
-      .not($historyList)
-      .slideUp(300);
-    $(".approval-history-head").not($historyHead).removeClass("active");
+      // Close all others & remove their active state
+      $(".api-card-approval-history .dropdown-lists")
+        .not($historyList)
+        .slideUp(300);
+      $(".approval-history-head").not($historyHead).removeClass("active");
 
-    // Toggle current one
-    $historyList.slideToggle(300);
-    $historyHead.toggleClass("active");
+      // Toggle current one
+      $historyList.slideToggle(300);
+      $historyHead.toggleClass("active");
 
-    // Adjust dropdown position dynamically
-    var windowHeight = $(window).height();
-    var windowTop = $(window).scrollTop();
-    var dropdownHeight = $historyList.outerHeight();
-    var dropdownTop = $historyList.offset().top;
-    var dropdownBottomDistance = windowHeight - (dropdownTop - windowTop + dropdownHeight);
+      // Adjust dropdown position dynamically
+      var windowHeight = $(window).height();
+      var windowTop = $(window).scrollTop();
+      var dropdownHeight = $historyList.outerHeight();
+      var dropdownTop = $historyList.offset().top;
+      var dropdownBottomDistance =
+        windowHeight - (dropdownTop - windowTop + dropdownHeight);
 
-    // If dropdown would overflow from the bottom, position upwards
-    if (dropdownTop + dropdownHeight > windowHeight) {
-      $historyList.css({ top: '', bottom: '25px' });
-    }
-    // If enough space at the bottom, show it downward
-    else if (dropdownTop - windowTop + dropdownHeight + 40 <= windowHeight) {
-      $historyList.css({ top: '45px', bottom: '' });
-    }
-    // Default positioning for middle cases
-    else {
-      $historyList.css({ top: '45px', bottom: '' });
-    }
+      // If dropdown would overflow from the bottom, position upwards
+      if (dropdownTop + dropdownHeight > windowHeight) {
+        $historyList.css({ top: "", bottom: "25px" });
+      }
+      // If enough space at the bottom, show it downward
+      else if (dropdownTop - windowTop + dropdownHeight + 40 <= windowHeight) {
+        $historyList.css({ top: "45px", bottom: "" });
+      }
+      // Default positioning for middle cases
+      else {
+        $historyList.css({ top: "45px", bottom: "" });
+      }
+    });
   });
-});
-
-  
 
   // Close all when clicking outside
   $(document).on("click", function (e) {
@@ -1975,8 +1976,8 @@ $(".api-card-approval-history").each(function () {
         if ($errorMessage.length === 0) {
           $(
             '<div id="error-message">Max ' +
-            maxLength +
-            " characters allowed.</div>"
+              maxLength +
+              " characters allowed.</div>"
           ).insertAfter($input); // Insert the error message after the input
         }
       }
@@ -2071,15 +2072,15 @@ $(".api-card-approval-history").each(function () {
   });
 
   $('input[type="text"]').on("input", function () {
-    // var maxLength = 200;
+    var maxLengths = 200;
 
     var $input = $(this);
     var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
     var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
 
     // Check if input exceeds maxLength
-    if ($input.val().length > maxLength) {
-      $input.val($input.val().substring(0, maxLength)); // Truncate the value to maxLength
+    if ($input.val().length > maxLengths) {
+      $input.val($input.val().substring(0, maxLengths)); // Truncate the value to maxLength
       $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
       // Append error message if it doesn't already exist
       if ($errorMessage.length === 0) {
@@ -2121,9 +2122,9 @@ $(".api-card-approval-history").each(function () {
       }
     }
   });
-  jQuery('#provider-name,.custom-select-dropdown-title').click(function () {
-    jQuery('.agqa-popup-form-button').removeClass('active');
-    jQuery('.agqa-popup-form-select').slideUp();
+  jQuery("#provider-name,.custom-select-dropdown-title").click(function () {
+    jQuery(".agqa-popup-form-button").removeClass("active");
+    jQuery(".agqa-popup-form-select").slideUp();
   });
 
   // $(window).on('resize scroll', function () {
