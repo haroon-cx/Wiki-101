@@ -1141,7 +1141,8 @@ label {
 button,
 .reorder-button,
 a.add-category-button,
-.add-button {
+.add-button,
+.button {
   background-color: #7644CE;
   cursor: pointer;
   border-radius: 16px;
@@ -1157,8 +1158,13 @@ a.back-button:hover,
 .faq-accordion-button.active,
 .browse-link-pdf:hover,
 .add-button:hover,
-.cancelBtn.btn-default:hover {
+.cancelBtn.btn-default:hover,
+.button:hover {
   background-color: rgb(98, 68, 145);
+}
+
+.button {
+  color: white;
 }
 
 a.back-button:hover,
@@ -3559,6 +3565,7 @@ form .form-buttons button {
   margin-inline: auto;
   display: inline-block;
   z-index: 999;
+  max-width: 490px;
 }
 
 .submitted-unsuccessfully {
@@ -3578,6 +3585,11 @@ form .form-buttons button {
   background-position: top 10px left 18px;
   background-size: 20px;
   padding: 8px 16px 8px 48px;
+}
+
+.created-successfully {
+  padding: 8px 28px 8px 48px;
+  box-sizing: border-box;
 }
 
 .copied-success,

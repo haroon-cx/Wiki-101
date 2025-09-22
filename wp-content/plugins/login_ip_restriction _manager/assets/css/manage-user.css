@@ -755,3 +755,15 @@ input#filter-search {
     background-color: transparent;
     border-color: #7644CE;
 }
+
+.login-button {
+    margin-top: 32px;
+}
+
+.login-button a:hover {
+    color: white;
+}
+
+.login-button a {
+    font-size: 20px;
+}
