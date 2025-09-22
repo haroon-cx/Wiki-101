@@ -82,8 +82,8 @@
                 </div>
                 <div class="form-field required">
                     <label for="email-field"><span>* </span>Email</label>
-                    <input type="email" name="email" class="cuim-manage-user-validation-254" id="email-field" required
-                        placeholder="Email" value="<?php echo $value->email; ?>">
+                    <input type="email" name="email" class="cuim-manage-user-validation-254 manage-user-email-field"
+                        id="email-field" required placeholder="Email" value="<?php echo $value->email; ?>">
                     <div class="reset-link">
                         <a href="#" onclick="event.preventDefault();" id="reset-link-pending-user" role="button">Reset
                             Link</a>
