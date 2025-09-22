@@ -190,8 +190,13 @@ jQuery(document).ready(function ($) {
         if (response.success) {
           // If successful, show a success message
           const $successMsg = $(
-            '<div class="submitted-successfully">Email have been send successfully.</div>'
+            '<div class="submitted-successfully">' +
+              "Reset Password Successful<br>" +
+              "Reset link sent. Please check your account email.<br>" +
+              "You can request another one in 60 seconds." +
+              "</div>"
           );
+
           $form.append($successMsg);
           // Hide after 3 seconds
           setTimeout(function () {
@@ -255,7 +260,7 @@ jQuery(document).ready(function ($) {
         // alert(response);
         if (response.success) {
           const $successMsg = $(
-            '<div class="submitted-successfully">Password sent successfully</div>'
+            '<div class="submitted-successfully created-successfully">User Account Created Successfully<br>A verification email has been sent to your registered email address. Please check your inbox. </div>'
           );
           $("body").append($successMsg);
           setTimeout(
