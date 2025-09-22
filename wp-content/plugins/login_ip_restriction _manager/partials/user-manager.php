@@ -215,7 +215,7 @@ if (strtolower($state) === 'pending') {
                                             <div class="popup-form-cross-icon"></div>
                                             <div class="popup-head">
                                                 <h2>Login History</h2>
-                                                <span class="userName">johnsonjoshua</span>
+                                                <span class="userName"><?php echo $user_data->account; ?></span>
                                             </div>
                                             <div class="user-history-records">
                                                 <div class="user-history-records-inner">
