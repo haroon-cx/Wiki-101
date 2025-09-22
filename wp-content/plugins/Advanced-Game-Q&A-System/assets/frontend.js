@@ -1223,26 +1223,26 @@ jQuery(document).ready(function ($) {
     e.stopPropagation();
   });
 
-  // Add functionality for confirming deletion
-  jQuery("#custom-faq-field-popup #yes-cancel").on("click", function () {
-    // Close the popup immediately after clicking "Yes"
-    jQuery("#custom-faq-field-popup").removeClass("active");
+  // // Add functionality for confirming deletion
+  // jQuery("#custom-faq-field-popup #yes-cancel").on("click", function () {
+  //   // Close the popup immediately after clicking "Yes"
+  //   jQuery("#custom-faq-field-popup").removeClass("active");
 
-    // Show the success message after a brief delay (0.5s)
-    setTimeout(function () {
-      // Append success message to the body or a specific container
-      jQuery(".faq-main-content,.custom-table").append(
-        '<div class="success-message">Successfully Deleted</div>'
-      );
+  //   // Show the success message after a brief delay (0.5s)
+  //   setTimeout(function () {
+  //     // Append success message to the body or a specific container
+  //     jQuery(".faq-main-content,.custom-table").append(
+  //       '<div class="success-message">Successfully Deleted</div>'
+  //     );
 
-      // Hide the success message after 3 seconds
-      setTimeout(function () {
-        jQuery(".success-message").fadeOut(function () {
-          jQuery(this).remove(); // Remove the message from the DOM after it fades out
-        });
-      }, 1500); // 3 seconds after showing the message
-    }, 200); // Show the message 0.5 seconds after clicking "Yes"
-  });
+  //     // Hide the success message after 3 seconds
+  //     setTimeout(function () {
+  //       jQuery(".success-message").fadeOut(function () {
+  //         jQuery(this).remove(); // Remove the message from the DOM after it fades out
+  //       });
+  //     }, 1500); // 3 seconds after showing the message
+  //   }, 200); // Show the message 0.5 seconds after clicking "Yes"
+  // });
 
   /* Reorder popup */
 

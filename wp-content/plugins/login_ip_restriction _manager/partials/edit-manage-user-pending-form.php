@@ -77,16 +77,18 @@
                 </div>
                 <div class="form-field required">
                     <label for="comapany-name-field"><span>* </span>Company Name</label>
-                    <input type="text" name="company-name" id="comapany-name-field" required placeholder="Description"
-                        value="<?php echo $value->company_name; ?>">
+                    <input type="text" name="company-name" class="agqa-faq-validation-100" id="comapany-name-field"
+                        required placeholder="Description" value="<?php echo $value->company_name; ?>">
                 </div>
                 <div class="form-field required">
-                    <label for="manage-user-email-field"><span>* </span>Email</label>
-                    <input type="text" name="email" id="manage-user-email-field" required placeholder="Email>"
-                        value="<?php echo $value->email; ?>">
+                    <label for="email-field"><span>* </span>Email</label>
+                    <input type="email" name="email" class="cuim-manage-user-validation-254" id="email-field" required
+                        placeholder="Email" value="<?php echo $value->email; ?>">
                     <div class="reset-link">
                         <a href="#" onclick="event.preventDefault();" id="reset-link-pending-user" role="button">Reset
-                            Link</a>
+                            <a href="#" onclick="event.preventDefault();" id="reset-link-pending-user"
+                                role="button">Reset
+                                Link</a>
 
                     </div>
                 </div>
@@ -138,7 +140,8 @@
                                 <div class="popup-form-cross-icon"></div>
                                 <div class="form-field">
                                     <label for="field-name">Field Name</label>
-                                    <input type="text" name="field-name" id="field-name" placeholder="Description">
+                                    <input type="text" name="first-name" id="first-name"
+                                        class="cuim-manage-user-validation-50" placeholder="Description">
                                 </div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
                                     <button class="cancel-button" type="button">Cancel</button>
