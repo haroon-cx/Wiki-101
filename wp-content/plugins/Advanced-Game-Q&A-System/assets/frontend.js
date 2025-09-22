@@ -1197,7 +1197,11 @@ jQuery(document).ready(function ($) {
 
   // Open the popup when any delete button is clicked
   jQuery(".delete-button,.delete-user-button").on("click", function () {
-    jQuery("#custom-faq-field-popup").addClass("active");
+    // Target the closest container or next sibling element where the popup is located
+    jQuery(this)
+      .closest(".delete-user-ctn")
+      .find("#custom-faq-field-popup")
+      .addClass("active");
   });
 
   // Close popup on cross icon

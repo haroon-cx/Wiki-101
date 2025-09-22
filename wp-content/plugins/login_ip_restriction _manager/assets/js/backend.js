@@ -506,6 +506,41 @@ jQuery(document).ready(function ($) {
   /**
    * real time validation password field
    */
+  // $(".cuim-manage-user-pwd-validation-20").on("input", function () {
+  //   const minLength = 8;
+  //   const maxLength = 20;
+
+  //   const $input = $(this);
+  //   const $formField = $input.closest(".form-field");
+  //   let $errorMessage = $input.siblings("#error-message");
+  //   const value = $input.val();
+  //   const len = value.length;
+
+  //   // Create error container once
+  //   if ($errorMessage.length === 0) {
+  //     $errorMessage = $('<div id="error-message" />').insertAfter($input);
+  //   }
+
+  //   if (len === 0) {
+  //     // Empty: clear errors
+  //     $formField.removeClass("error-field-input");
+  //     $errorMessage.text("");
+  //   } else if (len < minLength) {
+  //     $formField.addClass("error-field-input");
+  //     $errorMessage.text(`Minimum ${minLength} characters required.`);
+  //     jQuery("#confirm-submit-popup-button").prop("disabled", true);
+  //   } else if (len > maxLength) {
+  //     // Truncate to max and show message
+  //     $input.val(value.substring(0, maxLength));
+  //     $formField.addClass("error-field-input");
+  //     $errorMessage.text(`Maximum ${maxLength} characters allowed.`);
+  //   } else {
+  //     // Valid
+  //     $formField.removeClass("error-field-input");
+  //     jQuery("#confirm-submit-popup-button").prop("disabled", false);
+  //     $errorMessage.text("");
+  //   }
+  // });
   $(".cuim-manage-user-pwd-validation-20").on("input", function () {
     const minLength = 8;
     const maxLength = 20;
@@ -521,6 +556,10 @@ jQuery(document).ready(function ($) {
       $errorMessage = $('<div id="error-message" />').insertAfter($input);
     }
 
+    // Regular expression for at least one number and one letter (lowercase or uppercase)
+    const hasNumber = /[0-9]/.test(value);
+    const hasLetter = /[a-zA-Z]/.test(value);
+
     if (len === 0) {
       // Empty: clear errors
       $formField.removeClass("error-field-input");
@@ -534,6 +573,13 @@ jQuery(document).ready(function ($) {
       $input.val(value.substring(0, maxLength));
       $formField.addClass("error-field-input");
       $errorMessage.text(`Maximum ${maxLength} characters allowed.`);
+    } else if (!hasNumber || !hasLetter) {
+      // Check if input contains at least one number and one letter
+      $formField.addClass("error-field-input");
+      $errorMessage.text(
+        "Password must contain at least one number and one letter."
+      );
+      jQuery("#confirm-submit-popup-button").prop("disabled", true);
     } else {
       // Valid
       $formField.removeClass("error-field-input");
@@ -541,6 +587,7 @@ jQuery(document).ready(function ($) {
       $errorMessage.text("");
     }
   });
+
   /**
    * email validation
    */
@@ -623,10 +670,22 @@ jQuery(document).ready(function ($) {
         nonce: nonce,
       },
       success: function (response) {
-        if (response.success) {
-          // Success message
+        // If deletion is successful, hide the popup and remove the FAQ from the DOM
+
+        if (response.includes("Success")) {
+          $("div#custom-faq-field-popup").removeClass("active");
+          const $successMsg = $(
+            `<div class="submitted-successfully">Successfully Deleted.</div>`
+          );
+          jQuery(".custom-table-body").append($successMsg);
+          // Hide after 3 seconds
+          setTimeout(function () {
+            $successMsg.fadeOut(400, function () {
+              $(this).remove();
+            });
+          }, 3000);
         } else {
-          // Failure message
+          alert(response);
         }
       },
       error: function (response) {
@@ -634,5 +693,35 @@ jQuery(document).ready(function ($) {
         alert("An error occurred.");
       },
     });
+  });
+  // jQuery(".toggle-password").on("click", function (e) {
+  //   jQuery(this).toggleClass("show-pass");
+  //   jQuery(".new-password");
+  // });
+
+  // Toggle for New Password
+  jQuery("#toggle-new-password").on("click", function () {
+    var $newPasswordField = jQuery("#new-password-field");
+    var currentType = $newPasswordField.attr("type");
+    jQuery(this).toggleClass("show-pass");
+    // Toggle password visibility
+    if (currentType === "password") {
+      $newPasswordField.attr("type", "text"); // Show password
+    } else {
+      $newPasswordField.attr("type", "password"); // Hide password
+    }
+  });
+
+  // Toggle for Confirm Password
+  jQuery("#toggle-confirm-password").on("click", function () {
+    var $confirmPasswordField = jQuery("#confirm-password-field");
+    var currentType = $confirmPasswordField.attr("type");
+    jQuery(this).toggleClass("show-pass");
+    // Toggle password visibility
+    if (currentType === "password") {
+      $confirmPasswordField.attr("type", "text"); // Show password
+    } else {
+      $confirmPasswordField.attr("type", "password"); // Hide password
+    }
   });
 });

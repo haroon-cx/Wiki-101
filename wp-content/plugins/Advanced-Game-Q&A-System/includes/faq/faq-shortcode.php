@@ -107,7 +107,7 @@ function custom_faq_shortcode()
                         </ul>
                     </div>
                 </div>
-                <button type="submit" class="filter-select-button" id="agqa-game-filter"><span>Search</span></button>
+                <button type="submit" class="filter-select-button" id="agqa-faq-filter"><span>Search</span></button>
             </form>
         </div>
         <div class="filter-right-area">

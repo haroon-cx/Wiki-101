@@ -19,19 +19,35 @@
                         placeholder="Description">
                     <div id="error-message"></div>
                 </div>
-                <div class="form-field required">
+                <!-- <div class="form-field required">
                     <label for="new-password-field"><span>* </span>New Password</label>
-                    <button class="toggle-password"></button>
+                    <div class="toggle-password"></div>
+
                     <input type="password" class="cuim-manage-user-pwd-validation-20" name="new-password"
                         id="new-password-field" required placeholder="Description">
 
 
-                </div>
+                </div> -->
+
+
                 <div class="form-field required">
+                    <label for="new-password-field"><span>* </span>New Password</label>
+                    <div class="toggle-password" id="toggle-new-password"></div> <!-- Toggle for new password -->
+                    <input type="password" class="cuim-manage-user-pwd-validation-20" name="new-password"
+                        id="new-password-field" required placeholder="New Password">
+                </div>
+                <!-- <div class="form-field required">
                     <label for="confirm-password-field"><span>* </span>Confirm Password</label>
                     <button class="toggle-password"></button>
                     <input type="password" class="cuim-manage-user-pwd-validation-20" name="confirm-password"
                         id="confirm-password-field" required placeholder="Description">
+                </div> -->
+                <div class="form-field required">
+                    <label for="confirm-password-field"><span>* </span>Confirm Password</label>
+                    <div class="toggle-password" id="toggle-confirm-password"></div>
+                    <!-- Toggle for confirm password -->
+                    <input type="password" class="cuim-manage-user-pwd-validation-20" name="confirm-password"
+                        id="confirm-password-field" required placeholder="Confirm Password">
                 </div>
                 <div class="form-field required">
                     <label for="issue_type"><span>* </span>State</label>

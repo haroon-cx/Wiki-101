@@ -189,7 +189,8 @@ if (strtolower($state) === 'pending') {
                         <?php
                             foreach ($add_manage_users_data as $key => $user_data) {
                                 ?>
-                        <div class="custom-table-row <?php echo $user_data->delete_status; ?>">
+                        <div class="custom-table-row <?php echo $user_data->delete_status; ?>"
+                            username-data="<?php echo $user_data->account; ?>">
                             <div class="table-body-col table-body-col-text"><?php echo $user_data->account; ?></div>
                             <div class="table-body-col table-row-status <?php echo strtolower($user_data->state); ?>">
                                 <span><?php echo $user_data->state; ?></span>

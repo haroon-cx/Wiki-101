@@ -19,6 +19,7 @@ function handle_add_or_update_user()
     $user_role_input  = strtolower(sanitize_text_field($data['user-role']));
     $company_name     = sanitize_text_field($data['company-name']);
     $email            = sanitize_email($data['email']);
+    $delete_status            = sanitize_text_field($data['delete_status']);
 
     $custom_label_1 = isset($data['custom-label-1']) ? sanitize_text_field($data['custom-label-1']) : '';
     $custom_label_2 = isset($data['custom-label-2']) ? sanitize_text_field($data['custom-label-2']) : '';
@@ -78,7 +79,8 @@ function handle_add_or_update_user()
         'custom_field_2' => $custom_field_2,
         'custom_field_3' => $custom_field_3,
         'custom_field_4' => $custom_field_4,
-        'created_at'   => current_time('Y-m-d')
+        'created_at'   => current_time('Y-m-d'),
+        'delete_status' => $delete_status,
     ];
     $result = $wpdb->insert("{$wpdb->prefix}agqa_wiki_add_users", $insert_data);
     if ($result === false) {
@@ -510,12 +512,10 @@ function handle_delete_manage_user()
         ['%s']  // Format for account
     );
 
-    // Check if the update was successful
-    if ($updated === false) {
-        wp_send_json_error(['message' => 'Error occurred while updating delete status.']);
-    } elseif ($updated === 0) {
-        wp_send_json_error(['message' => 'No changes made, the user might already be marked as deleted.']);
-    } else {
-        wp_send_json_success(['message' => 'User marked as deleted successfully.']);
-    }
+     // Respond with success message
+    $response['status']  = 'Success';
+    $response['message'] = 'Successfully Deleted.';
+    echo json_encode($response);
+
+     wp_die(); // End the AJAX request
 }
