@@ -429,7 +429,7 @@ jQuery(document).ready(function ($) {
               );
             } else {
               $fieldWrapper.append(
-                `<div class="error-message">${labelText} is required</div>`
+                `<div class="error-message">Please enter the ${labelText}</div>`
               );
             }
           }
