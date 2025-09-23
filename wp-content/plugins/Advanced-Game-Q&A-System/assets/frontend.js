@@ -782,6 +782,7 @@ jQuery(document).ready(function ($) {
   // YES cancel → remove target field
   $("#yes-cancel").on("click", function (e) {
     e.preventDefault();
+    $("div#custom-field-popup-inner div#error-message").empty();
     if (removeTarget) {
       removeTarget.remove();
       checkFieldLimit();

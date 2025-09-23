@@ -134,11 +134,11 @@ function map_user_role($role)
 {
     switch ($role) {
         case 'admin':
-            return 'administrator';
+            return 'subscriber';
         case 'manager':
-            return 'editor';
+            return 'subscriber';
         case 'contributor':
-            return 'contributor';
+            return 'subscriber';
         case 'viewer':
             return 'subscriber';
         default:
@@ -159,11 +159,11 @@ function map_user_roles($role)
     // Map the custom user role to WordPress role
     switch (strtolower($role)) {
         case 'admin':
-            return 'administrator';
+            return 'subscriber';
         case 'manager':
-            return 'editor';
+            return 'subscriber';
         case 'contributor':
-            return 'contributor';
+            return 'subscriber';
         case 'viewer':
             return 'subscriber';
         default:

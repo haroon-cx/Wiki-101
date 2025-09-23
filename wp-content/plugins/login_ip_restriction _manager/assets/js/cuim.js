@@ -452,7 +452,10 @@ jQuery(function ($) {
     }
 
     // MIME type check for JPG only (ensures it's a JPEG image)
-    var isJpg = file.type === 'image/jpeg' || file.name.toLowerCase().endsWith('.jpg') || file.name.toLowerCase().endsWith('.jpeg');
+    var isJpg =
+      file.type === "image/jpeg" ||
+      file.name.toLowerCase().endsWith(".jpg") ||
+      file.name.toLowerCase().endsWith(".jpeg");
     if (!isJpg) {
       alert("Only JPG images are allowed");
       this.value = "";
@@ -544,31 +547,33 @@ jQuery(function ($) {
   });
   */
 
- // 1) Toggle the active class on .cuim-profile-dropdown when .cuim-profile-box is clicked
-  $('.cuim-profile-box').on('click', function(){
-    $('.cuim-profile-dropdown').toggleClass('active');  // Toggle the active class
+  // 1) Toggle the active class on .cuim-profile-dropdown when .cuim-profile-box is clicked
+  $(".cuim-profile-box").on("click", function () {
+    $(".cuim-profile-dropdown").toggleClass("active"); // Toggle the active class
   });
 
   // 2) Open the profile form when .cuim-edit-profile-button is clicked
-  $('.cuim-edit-profile-button').on('click', function(){
+  $(".cuim-edit-profile-button").on("click", function () {
     // Check if .cuim-profile-form-inner is hidden or not
-    if ($('.cuim-profile-form-inner').is(':hidden')) {
-      $('.cuim-profile-form-inner').show();  // Make the profile form visible
+    if ($(".cuim-profile-form-inner").is(":hidden")) {
+      $(".cuim-profile-form-inner").show(); // Make the profile form visible
     }
 
     // Show the profile form wrapper
-    $('.cuim-profile-form-wrapper').addClass('active');  // Show the profile form
+    $(".cuim-profile-form-wrapper").addClass("active"); // Show the profile form
   });
 
   // 3) Show the reset password popup and hide the profile form inner when .reset-password-button is clicked
-  $('.reset-password-button').on('click', function(){
-    $('.cuim-profile-form-inner').hide(100);  // Hide the inner profile form
-    $('.reset-password-popup').addClass('active');  // Show the reset password popup
+  $(".reset-password-button").on("click", function () {
+    $(".cuim-profile-form-inner").hide(100); // Hide the inner profile form
+    $(".reset-password-popup").addClass("active"); // Show the reset password popup
   });
 
   // 4) Close the profile form when popup close button or cancel button is clicked
-  $('.popup-cross-icon, .edit-form-buttons .cancel-button, .reset-form-buttons .cancel-button').on('click', function(){
-    $('.cuim-profile-form-wrapper').removeClass('active');  
-    $('.reset-password-popup').removeClass('active'); 
+  $(
+    ".popup-cross-icon, .edit-form-buttons .cancel-button, .reset-form-buttons .cancel-button"
+  ).on("click", function () {
+    $(".cuim-profile-form-wrapper").removeClass("active");
+    $(".reset-password-popup").removeClass("active");
   });
 });

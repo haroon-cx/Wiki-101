@@ -78,12 +78,6 @@ function cui_pm_add_logout_button_footer() {
 
         echo '<div class="header-right">';
 
-        // echo '
-        // <label class="viewer-toggle-wrapper">
-        //     <span>Viewer Mode</span>
-        //     <input type="checkbox" id="cuim-viewer-toggle" ' . ($is_on ? 'checked' : '') . ' />
-        //     <span class="slider"></span>
-        // </label>';
 
 
         echo '
@@ -133,101 +127,100 @@ function cui_pm_add_logout_button_footer() {
 
 
 
-     
-    <div class="cuim-profile-form-wrapper">
-        <div class="cuim-profile-form-inner">
-            <form autocomplete="off" method="post" enctype="multipart/form-data" id="cuim-profile-page-form" class="custom-form" novalidate="novalidate"
-                    data-inited-validation="1">
-                <div style="text-align: center">
-                    <div class="edit-profile-image-ctn">
-                        <h2>Edit Profile</h2>
-                        <label for="upload-file-button" class="cuim-file-upload-label" style="display: block;">
-                            <div class="edit-profile-image">
-                                <img id="cuim-avatar-preview" src="<?php echo esc_url($avatar_url); ?>" alt="Avatar">
-                                <span class='camera-icon'></span>
-                            </div>
-                        </label>
-                        <input type="file" name="cuim_avatar" accept="image/*" id="upload-file-button" style="display: none;">
-                        <div id="cropper-modal" style="display:none;align-items:center;justify-content:center;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;">
-                            <div style="background:#1D1C25; padding:24px;">
-                                <img id="cropper-image" src="" style="max-width:90vw;max-height:70vh;">
-                                <div class="cropper-buttons" style="margin-top:24px;text-align:center;">
-                                    <button type="button" id="cancel-btn">Cancel</button>
-                                    <button type="button" id="crop-btn">Save</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- <div class="cuim-name-block">
-                        <h2><?php echo esc_html($first . ' ' . $last); ?></h2>
-                    </div> -->
-                </div>
-                <div id="cuim-edit-fields" >
-                    <div class="form-field required">
-                        <label for="user-name"><span>* </span>User Name</label>
-                        <input type="text" id="user-name" placeholder="Please add User Name" required>
-                    </div>
-                    <div class="form-field required">
-                        <label for="company-name"><span>* </span>Company Name</label>
-                        <input type="text" id="company-name" placeholder="Description" required>
-                    </div> 
-                    <div class="form-field required">
-                        <label for="question-type"><span>* </span>User Role</label>
-                        <div class="custom-select-dropdown">
-                            <div class="custom-select-dropdown-title">
-                                <span class="custom-dropdown-default-value">User Role</span>
-                                <span class="custom-dropdown-selected-value"></span>
+<div class="cuim-profile-form-wrapper">
+    <div class="cuim-profile-form-inner">
+        <form autocomplete="off" method="post" enctype="multipart/form-data" id="cuim-profile-page-form"
+            class="custom-form" novalidate="novalidate" data-inited-validation="1">
+            <div style="text-align: center">
+                <div class="edit-profile-image-ctn">
+                    <h2>Edit Profile</h2>
+                    <label for="upload-file-button" class="cuim-file-upload-label" style="display: block;">
+                        <div class="edit-profile-image">
+                            <img id="cuim-avatar-preview" src="<?php echo esc_url($avatar_url); ?>" alt="Avatar">
+                            <span class='camera-icon'></span>
+                        </div>
+                    </label>
+                    <input type="file" name="cuim_avatar" accept="image/*" id="upload-file-button"
+                        style="display: none;">
+                    <div id="cropper-modal"
+                        style="display:none;align-items:center;justify-content:center;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;">
+                        <div style="background:#1D1C25; padding:24px;">
+                            <img id="cropper-image" src="" style="max-width:90vw;max-height:70vh;">
+                            <div class="cropper-buttons" style="margin-top:24px;text-align:center;">
+                                <button type="button" id="cancel-btn">Cancel</button>
+                                <button type="button" id="crop-btn">Save</button>
                             </div>
-                            <div class="custom-select-dropdown-lists">
-                                <ul>
-                                    <li data-value="Admin">Admin</li>
-                                    <li data-value="Manager">Manager</li>
-                                    <li data-value="Contributor">Contributor</li>
-                                    <li data-value="Viewer">Viewer</li>
-                                </ul>
-                            </div>
-                            <input type="hidden" name="user-role" id="issue_type" required=""
-                                value="">
                         </div>
                     </div>
-                    <div class="form-field">
-                        <label for="rest-password">Reset Password</label>
-                        <button class="reset-password-button">Reset password</button>
-                    </div>
-                    <!-- <input type="text" name="cuim_first" value="<?php echo esc_attr($first); ?>" required>
-                    <input type="text" name="cuim_last" value="<?php echo esc_attr($last); ?>" required> -->
-                    <!-- <div style="text-align: right">
-                        <button type="submit">Update Profile</button>
-                    </div> -->
-                    <div class="form-buttons edit-form-buttons d-flex">
-                        <button class="cancel-button" type="button">Cancel</button>
-                        <input id="save-custom-field" type="submit" value="Save">
+                </div>
+
+            </div>
+            <div id="cuim-edit-fields">
+                <div class="form-field required">
+                    <label for="user-name"><span>* </span>User Name</label>
+                    <input type="text" id="user-name" value="<?php echo $first . ' ' . $last; ?>"
+                        placeholder="Please add User Name" required>
+
+                </div>
+                <div class="form-field required">
+                    <label for="company-name"><span>* </span>Company Name</label>
+                    <input type="text" id="company-name" placeholder="Description" required>
+                </div>
+                <div class="form-field required">
+                    <label for="question-type"><span>* </span>User Role</label>
+                    <div class="custom-select-dropdown">
+                        <div class="custom-select-dropdown-title">
+                            <span class="custom-dropdown-default-value">User Role</span>
+                            <span class="custom-dropdown-selected-value"></span>
+                        </div>
+                        <div class="custom-select-dropdown-lists">
+                            <ul>
+                                <li data-value="Admin">Admin</li>
+                                <li data-value="Manager">Manager</li>
+                                <li data-value="Contributor">Contributor</li>
+                                <li data-value="Viewer">Viewer</li>
+                            </ul>
+                        </div>
+                        <input type="hidden" name="user-role" id="issue_type" required="" value="">
                     </div>
                 </div>
-            </form>
-            <div id="cuim-profile-update-message"></div>
-        </div>
-        <div class="reset-password-popup">
-            <div class="reset-password-popup-inner">
-                <h2>Reset Password</h2>
+                <div class="form-field">
+                    <label for="rest-password">Reset Password</label>
+                    <button class="reset-password-button">Reset password</button>
+                </div>
+
+                <div class="form-buttons edit-form-buttons d-flex">
+                    <button class="cancel-button" type="button">Cancel</button>
+                    <input id="save-custom-field" type="submit" value="Save">
+                </div>
+            </div>
+        </form>
+        <div id="cuim-profile-update-message"></div>
+    </div>
+    <div class="reset-password-popup">
+        <div class="reset-password-popup-inner">
+            <h2>Reset Password</h2>
             <div class="popup-cross-icon"></div>
             <div class="reset-password-form">
                 <form action="#">
                     <div class="form-field required">
                         <label for="old-password"><span>*</span> Old Password</label>
                         <button class="toggle-password"></button>
-                        <input type="password" name="old-password" id="old-password" placeholder="Please Enter the Old Password">
+                        <input type="password" name="old-password" id="old-password"
+                            placeholder="Please Enter the Old Password">
                     </div>
                     <div class="form-field required">
                         <label for="new-password"><span>*</span> New Password</label>
                         <button class="toggle-password"></button>
-                        <input type="password" name="new-password" id="new-password" placeholder="Please Enter The New Password">
+                        <input type="password" name="new-password" id="new-password"
+                            placeholder="Please Enter The New Password">
                     </div>
                     <div class="form-field required">
                         <label for="confirm-password"><span>*</span> Confirm Password</label>
                         <button class="toggle-password"></button>
-                        <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm New Password">
+                        <input type="password" name="confirm-password" id="confirm-password"
+                            placeholder="Confirm New Password">
                     </div>
                     <div id="reset-form-buttons" class="form-buttons reset-form-buttons d-flex">
                         <button class="cancel-button" type="button">Cancel</button>
@@ -235,102 +228,90 @@ function cui_pm_add_logout_button_footer() {
                     </div>
                 </form>
             </div>
-            </div>
         </div>
     </div>
-    <script>
-        jQuery(document).ready(function($) {
-            var $input = $('#upload-file-button');
+</div>
+<script>
+jQuery(document).ready(function($) {
+    var $input = $('#upload-file-button');
 
-            $input.on('change', function() {
-                var input = this;
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#cuim-avatar-preview').attr('src', e.target.result);
-                    };
-                    reader.readAsDataURL(input.files[0]);
-                }
-            });
-        });
+    $input.on('change', function() {
+        var input = this;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#cuim-avatar-preview').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+});
+</script>
 
-    </script>
-  
 
-    <style>
-        .agqa-site-logo {
-            display: inline-block;
-            width: clamp(18.75rem, 12.5vw + 7.5rem, 22.5rem);
-            height: clamp(3.438rem, 3.542vw + 0.25rem, 4.5rem);
-        }
-        .agqa-site-logo img{
-            width:100%;
-            height:100%;
-            object-fit: cover;
-        }
-        label.viewer-toggle-wrapper.checkbox_label,div#agqa-search-box{
-            position: initial;
-            border-radius: 16px;
-            height: 60px;
-
-        }
-        html {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.67), rgba(0, 0, 0, 0.67)),
-            url('<?php echo URIP_URL; ?>/assets/image/101-body-image.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        body {
-            background: transparent !important;
-        }
-        .top_panel {
-            display: none;
-        }
-        .header {
-            background-color: #1D1C25;
-            position: relative;
-        }
-
-        .header-wrapper{
-            max-width: 1860px;
-            width: calc(100% - 60px);
-            margin-inline: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 19px 0;
-        }
-
-        .header-right{
-            display: flex;
-            align-items: center;
-            gap: 16px 23px;
-        }
-
-        label.viewer-toggle-wrapper.checkbox_label{
-            margin-bottom: 0;
-        }
-    </style>
-
-    <?php
+<style>
+.agqa-site-logo {
+    display: inline-block;
+    width: clamp(18.75rem, 12.5vw + 7.5rem, 22.5rem);
+    height: clamp(3.438rem, 3.542vw + 0.25rem, 4.5rem);
 }
 
+.agqa-site-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
+label.viewer-toggle-wrapper.checkbox_label,
+div#agqa-search-box {
+    position: initial;
+    border-radius: 16px;
+    height: 60px;
 
+}
 
-// add_action('wp_ajax_cuim_toggle_viewer_mode', 'cuim_toggle_viewer_mode');
-// function cuim_toggle_viewer_mode() {
-//     if (!is_user_logged_in()) {
-//         wp_send_json_error('Not logged in.');
-//     }
+html {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.67), rgba(0, 0, 0, 0.67)),
+        url('<?php echo URIP_URL; ?>/assets/image/101-body-image.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
 
-//     $user_id = get_current_user_id();
-//     $current = get_user_meta($user_id, 'cuim_viewer_mode', true);
-//     $new_value = ($current === '1') ? '0' : '1';
-//     update_user_meta($user_id, 'cuim_viewer_mode', $new_value);
+body {
+    background: transparent !important;
+}
 
-//     wp_send_json_success($new_value);
-// }
+.top_panel {
+    display: none;
+}
 
+.header {
+    background-color: #1D1C25;
+    position: relative;
+}
+
+.header-wrapper {
+    max-width: 1860px;
+    width: calc(100% - 60px);
+    margin-inline: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 19px 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px 23px;
+}
+
+label.viewer-toggle-wrapper.checkbox_label {
+    margin-bottom: 0;
+}
+</style>
+
+<?php
+}
