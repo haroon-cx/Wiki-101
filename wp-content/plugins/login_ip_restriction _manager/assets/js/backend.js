@@ -497,7 +497,7 @@ jQuery(document).ready(function ($) {
     }
 
     // Check for special characters (anything that's not a letter, number, or space)
-    const specialChars = /[^a-zA-Z0-9 ]/;
+    var specialChars = /[^a-zA-Z0-9 ]/;
     if (specialChars.test(value)) {
       $formField.addClass("error-field-input");
       $errorMessage.text("Special characters are not allowed.");
@@ -584,11 +584,6 @@ jQuery(document).ready(function ($) {
     var $input = $(this);
     var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
     var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
-    setTimeout(function () {
-      $successMsg.fadeOut(400, function () {
-        $(this).remove();
-      });
-    }, 3000);
 
     // Check if input exceeds maxLength
     if ($input.val().length > maxLengthInputUser) {
@@ -685,8 +680,21 @@ jQuery(document).ready(function ($) {
     var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
     var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
 
-    // Check if input exceeds maxLength
-    if ($input.val().length > maxLengthInputUserCustom) {
+    // Regex to match any special characters (anything other than letters, numbers, or spaces)
+    var invalidChars = /[^a-zA-Z0-9\s]/; // Allows letters (a-zA-Z), numbers (0-9), and spaces
+    jQuery("#save-custom-field").prop("disabled", false);
+    // Check if the input contains any special characters
+    if (invalidChars.test($input.val())) {
+      $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
+      // Append error message if it doesn't already exist
+      if ($errorMessage.length === 0) {
+        jQuery("#save-custom-field").prop("disabled", true);
+        $(
+          '<div id="error-message">Special characters are not allowed.</div>'
+        ).insertAfter($input); // Insert the error message after the input
+      }
+    } else if ($input.val().length > maxLengthInputUserCustom) {
+      // If input exceeds maxLength, truncate the value
       $input.val($input.val().substring(0, maxLengthInputUserCustom)); // Truncate the value to maxLength
       $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
       // Append error message if it doesn't already exist

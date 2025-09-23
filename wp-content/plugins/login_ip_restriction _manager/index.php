@@ -73,7 +73,7 @@ add_shortcode('verification_email_user', function () {
     include URIP_PATH . 'partials/verification-email.php';
     return ob_get_clean();
 });
-include URIP_PATH . 'partials/profile.php';
+// include URIP_PATH . 'partials/profile.php';
 
 /**
  * Return the real client IP, accounting for Cloudflare and proxies.
@@ -191,34 +191,34 @@ function cui_pm_login_css_for_non_admins()
     // Only apply to non-administrators
     if (! current_user_can('administrator')) {
         ?>
-        <style type="text/css">
-            /* Your custom styling for the login logo container */
-            .loginlogo {
-                background-color: #1F2632 !important;
-            }
+<style type="text/css">
+/* Your custom styling for the login logo container */
+.loginlogo {
+    background-color: #1F2632 !important;
+}
 
-            /* Your custom styling for the logo image */
-            .loginlogo img {
-                width: 9%;
-                height: 50%;
-            }
+/* Your custom styling for the logo image */
+.loginlogo img {
+    width: 9%;
+    height: 50%;
+}
 
-            body.login.js.login-action-login {
-                background: #071021 !important;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;
-            }
+body.login.js.login-action-login {
+    background: #071021 !important;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
 
-            div#login #nav {
-                display: none !important;
-            }
+div#login #nav {
+    display: none !important;
+}
 
-            div#login form .submit .button {
-                background: #7644CE !important;
-            }
-        </style>
-        <?php
+div#login form .submit .button {
+    background: #7644CE !important;
+}
+</style>
+<?php
     }
 }
 

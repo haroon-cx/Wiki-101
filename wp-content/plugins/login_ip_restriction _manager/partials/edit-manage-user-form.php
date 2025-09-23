@@ -139,7 +139,7 @@
                                 <h2>Add Custom Field</h2>
                                 <div class="popup-form-cross-icon"></div>
                                 <div class="form-field">
-                                    <label for="first-name">Field Name</label>
+                                    <label for="first-name">First Name</label>
                                     <input type="text" class="cuim-manage-user-validation-50" name="first-name"
                                         id="first-name" placeholder="Description">
                                     <div id="error-message"></div>

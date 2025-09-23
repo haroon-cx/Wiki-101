@@ -159,9 +159,8 @@ function cui_pm_add_logout_button_footer() {
             <div id="cuim-edit-fields">
                 <div class="form-field required">
                     <label for="user-name"><span>* </span>User Name</label>
-                    <input type="text" id="user-name" value="<?php echo $first . ' ' . $last; ?>"
-                        placeholder="Please add User Name" required>
-
+                    <input type="text" id="user-name" value="<?php echo  $first; ?>" placeholder="Please add User Name"
+                        required>
                 </div>
                 <div class="form-field required">
                     <label for="company-name"><span>* </span>Company Name</label>
