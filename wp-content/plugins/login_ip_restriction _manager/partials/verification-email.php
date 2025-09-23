@@ -97,8 +97,8 @@ if ($username) {
             <img src="<?php echo URIP_URL ?>assets/image/successfull-message-icon.svg" alt="Success Icon">
         </div>
         <div class="successfull-message-text">
-            <h2>Password reset successful. Please log in with your new password. Redirecting in 3 seconds. If not, click
-                below.</h2>
+            <h2>Your account has been activated successfully.
+            </h2>
         </div>
         <input type="hidden" class="username" value="<?php echo $username ?>">
     </div>
