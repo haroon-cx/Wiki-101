@@ -259,15 +259,6 @@ jQuery(document).ready(function ($) {
       data: formData,
       contentType: false,
       processData: false,
-      // success: function (response) {
-      //   const msg = $("#cuim-profile-update-message");
-      //   if (response.success) {
-      //     msg.html('<p style="color:green;">✅ ' + response.data + "</p>");
-      //     setTimeout(() => location.reload(), 1000);
-      //   } else {
-      //     msg.html('<p style="color:red;">❌ ' + response.data + "</p>");
-      //   }
-      // },
     });
   });
 
@@ -276,26 +267,6 @@ jQuery(document).ready(function ($) {
     $("#cuim-edit-fields").slideToggle();
   });
 
-  // $.post(
-  //   cuim_ajax.ajax_url,
-  //   { action: "cuim_get_profile_html" },
-  //   function (response) {
-  //     if (response.success) {
-  //       var isComplete =
-  //         response.data.profile_complete === true ||
-  //         response.data.profile_complete === "1" ||
-  //         response.data.profile_complete === 1;
-  //       if (!isComplete) {
-  //         $("#cuim-edit-modal").fadeIn();
-  //         $(".post_content.entry-content").html(response.data.html);
-  //         alert("Please complete your profile before proceeding.");
-  //       } else {
-  //       }
-  //     } else {
-  //       $(".post_content.entry-content").html("<p>Error loading profile.</p>");
-  //     }
-  //   }
-  // );
   $(".custom-table-row").each(function () {
     const $row = $(this);
     const $loginHistoryIconRow = $row.find(".login-history-icon");

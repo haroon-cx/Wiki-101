@@ -91,8 +91,9 @@ if (strtolower($state) === 'pending') {
             <div class="filter-area">
                 <form action="#" autocomplete="off" data-inited-validation="1">
                     <div class="filter-search-field">
-                        <input type="search" class="cuim-manage-user-search-validation-254" maxlength="254" name="manage-user-search"
-                            id="manage-user-search" placeholder="please enter account name or email">
+                        <input type="search" class="cuim-manage-user-search-validation-254" maxlength="254"
+                            name="manage-user-search" id="manage-user-search"
+                            placeholder="please enter account name or email">
                     </div>
                     <div class="filter-select">
                         <input type="hidden" name="filter-select-states" id="filter-select-states"
@@ -357,18 +358,18 @@ if (strtolower($state) === 'pending') {
                         <?php } ?>
 
                     </div>
-                    <div class="section-found">
-                        <div class="no-found-ctn">
-                            <div class="search-no-found">
-                                <div class="search-no-found-icon">
-                                    <img src="<?php echo URIP_URL ?>assets/image/search-forund-icon.svg"
-                                        alt="Search Icon">
-                                </div>
-                                <div class="search-no-found-text">
-                                    <h2>Nothing matched your search</h2>
-                                </div>
-                            </div>
-                        </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="section-found">
+            <div class="no-found-ctn">
+                <div class="search-no-found">
+                    <div class="search-no-found-icon">
+                        <img src="<?php echo URIP_URL ?>assets/image/search-forund-icon.svg" alt="Search Icon">
+                    </div>
+                    <div class="search-no-found-text">
+                        <h2>Nothing matched your search</h2>
                     </div>
                 </div>
             </div>

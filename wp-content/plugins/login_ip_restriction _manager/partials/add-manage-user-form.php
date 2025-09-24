@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
                                     <button class="cancel-button" type="button">Cancel</button>
-                                    <input id="save-custom-field" type="submit" value="Save">
+                                    <button id="save-custom-field">Save</button>
                                 </div>
                             </div>
 

@@ -118,7 +118,6 @@ function cui_pm_add_logout_button_footer() {
         echo '</div>';
         echo '</header>';
     }
-
     ?>
 
 <?php
@@ -130,11 +129,10 @@ function cui_pm_add_logout_button_footer() {
     $avatar_url = $avatar_id ? wp_get_attachment_url($avatar_id) : get_avatar_url($user_id);
     ?>
 
-
 <div class="cuim-profile-form-wrapper">
     <div class="cuim-profile-form-inner">
-        <form autocomplete="off" method="post" enctype="multipart/form-data" id="cuim-profile-page-form"
-            class="custom-form" novalidate="novalidate" data-inited-validation="1">
+        <form autocomplete="off" id="cuim-profile-page-form" class="custom-form" novalidate="novalidate"
+            data-inited-validation="1">
             <div style="text-align: center">
                 <div class="edit-profile-image-ctn">
                     <h2>Edit Profile</h2>
@@ -195,7 +193,7 @@ function cui_pm_add_logout_button_footer() {
 
                 <div class="form-buttons edit-form-buttons d-flex">
                     <button class="cancel-button" type="button">Cancel</button>
-                    <input id="save-custom-field" type="submit" value="Save">
+                    <button id="save-custom-field-profile">Save</button>
                 </div>
             </div>
         </form>
@@ -227,16 +225,14 @@ function cui_pm_add_logout_button_footer() {
                     </div>
                     <div id="reset-form-buttons" class="form-buttons reset-form-buttons d-flex">
                         <button class="cancel-button" type="button">Cancel</button>
-                        <input id="save-custom-field" type="submit" value="Save">
+                        <button id="save-custom-field-profile" type="button">Save</button>
+                        <>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-
-
 <style>
 .agqa-site-logo {
     display: inline-block;
@@ -300,6 +296,7 @@ label.viewer-toggle-wrapper.checkbox_label {
     margin-bottom: 0;
 }
 </style>
+<?php 
 
-<?php
 }
+// ?>

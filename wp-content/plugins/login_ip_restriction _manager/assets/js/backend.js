@@ -327,6 +327,8 @@ jQuery(document).ready(function ($) {
       !dateRange
     ) {
       $(".section-found").hide(); // Hide the 'nothing found' message
+      $(".custom-table-ctn").show(); // Hide the 'nothing found' message
+
       $(".custom-table-row").show(); // Show the FAQ item
       $("#pagination-demo").show(); // Show the FAQ item
 
@@ -376,6 +378,8 @@ jQuery(document).ready(function ($) {
 
     // Initially hide pagination and "Nothing Found" message
     $(".section-found").hide(); // Hide "Nothing Found" message
+    $(".custom-table-ctn").show(); // Hide "Nothing Found" message
+
     $("div#pagination-demo").hide(); // Hide pagination
 
     $(".custom-table-row").each(function () {
@@ -425,10 +429,12 @@ jQuery(document).ready(function ($) {
     // If no results are found, show the 'nothing found' message
     if (!resultsFound) {
       $(".section-found").show(); // Show the 'no results' message
+      $(".custom-table-ctn").hide(); // Show the 'no results' message
       $("div#pagination-demo").hide(); // Hide pagination
     } else {
       $("div#pagination-demo").show(); // Show pagination
       $(".section-found").hide(); // Hide the 'nothing found' message
+      $(".custom-table-ctn").show(); // Show the 'no results' message
     }
 
     setTimeout(function () {
@@ -497,7 +503,9 @@ jQuery(document).ready(function ($) {
 
     // Create error container once
     if ($errorMessage.length === 0) {
-      $errorMessage = $('<div id="error-message" class="cuim-validation-error" />').insertAfter($input);
+      $errorMessage = $(
+        '<div id="error-message" class="cuim-validation-error" />'
+      ).insertAfter($input);
     }
 
     // Check for special characters (anything that's not a letter, number, or space)
@@ -546,7 +554,9 @@ jQuery(document).ready(function ($) {
 
     // Create error container once
     if ($errorMessage.length === 0) {
-      $errorMessage = $('<div id="error-message" class="cuim-validation-error" />').insertAfter($input);
+      $errorMessage = $(
+        '<div id="error-message" class="cuim-validation-error" />'
+      ).insertAfter($input);
     }
 
     // Regular expression for at least one number and one letter (lowercase or uppercase)
@@ -583,28 +593,31 @@ jQuery(document).ready(function ($) {
    * email validation
    */
 
-  $('input[type="search"].cuim-manage-user-search-validation-254').on('input', function () {
-    const maxLengthInputSearchs = 254;
+  $('input[type="search"].cuim-manage-user-search-validation-254').on(
+    "input",
+    function () {
+      const maxLengthInputSearchs = 254;
 
-    // alert('dd');
+      // alert('dd');
 
-    var $input = $("input#manage-user-search");
-    $input.removeAttr("maxlength"); // Remove any HTML maxlength attribute
-    var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
-    var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
+      var $input = $("input#manage-user-search");
+      $input.removeAttr("maxlength"); // Remove any HTML maxlength attribute
+      var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
+      var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
 
-    // Check if input exceeds maxLength
-    if ($input.val().length > maxLengthInputSearchs) {
-      $input.val($input.val().substring(0, maxLengthInputSearchs)); // Truncate the value to maxLength
-      $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
-      // Append error message if it doesn't already exist
-      if ($errorMessage.length === 0) {
-        $(
-          '<div id="error-message" class="cuim-validation-error">Max 254 characters allowed.</div>'
-        ).insertAfter($input); // Insert the error message after the input
+      // Check if input exceeds maxLength
+      if ($input.val().length > maxLengthInputSearchs) {
+        $input.val($input.val().substring(0, maxLengthInputSearchs)); // Truncate the value to maxLength
+        $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
+        // Append error message if it doesn't already exist
+        if ($errorMessage.length === 0) {
+          $(
+            '<div id="error-message" class="cuim-validation-error">Max 254 characters allowed.</div>'
+          ).insertAfter($input); // Insert the error message after the input
+        }
       }
     }
-  });
+  );
 
   $(".cuim-manage-user-validation-254").on("input", function () {
     var maxLengthInputSerch = 254;
@@ -636,7 +649,9 @@ jQuery(document).ready(function ($) {
   });
 
   // Prevent spaces from being typed into the input field
-  $(".cuim-manage-user-validation-254").on("keypress", function (e) {
+  $(
+    ".cuim-manage-user-validation-254, .cuim-manage-user-search-validation-254"
+  ).on("keypress", function (e) {
     var keyCode = e.keyCode || e.which;
 
     // Check if the key pressed is a space (keyCode 32)
@@ -651,9 +666,9 @@ jQuery(document).ready(function ($) {
         setTimeout(function () {
           toggleSubmitButton();
         }, 300);
-        $('<div id="error-message" class="cuim-validation-error">Spaces are not allowed.</div>').insertAfter(
-          $input
-        ); // Insert the error message
+        $(
+          '<div id="error-message" class="cuim-validation-error">Spaces are not allowed.</div>'
+        ).insertAfter($input); // Insert the error message
         $formField.addClass("error-field-input"); // Add error class to highlight the input field
       }
     }
@@ -668,11 +683,26 @@ jQuery(document).ready(function ($) {
     var $input = $(this);
     var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
     var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
+
+    // Check if input contains special characters (anything that's not a letter, number, or space)
+    var specialChars = /[^a-zA-Z0-9 ]/;
     setTimeout(function () {
       toggleSubmitButton();
     }, 300);
-    // Check if input exceeds maxLength
-    if ($input.val().length > maxLengthInputUserCustom) {
+    jQuery("#save-custom-field").prop("disabled", false);
+
+    // Check for special characters
+    if (specialChars.test($input.val())) {
+      $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
+      // Append error message if it doesn't already exist
+      if ($errorMessage.length === 0) {
+        jQuery("#save-custom-field").prop("disabled", true);
+        $(
+          '<div id="error-message" class="cuim-validation-error">Symbols are not allowed.</div>'
+        ).insertAfter($input); // Insert the error message after the input
+      }
+    } else if ($input.val().length > maxLengthInputUserCustom) {
+      // If input exceeds max length, truncate it and show error
       $input.val($input.val().substring(0, maxLengthInputUserCustom)); // Truncate the value to maxLength
       $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
       // Append error message if it doesn't already exist
@@ -682,6 +712,7 @@ jQuery(document).ready(function ($) {
         ).insertAfter($input); // Insert the error message after the input
       }
     } else {
+      // Valid input
       $formField.removeClass("error-field-input"); // Remove 'error' class if input is valid
       // Remove the error message if input length is valid
       if ($errorMessage.length > 0) {
@@ -727,6 +758,12 @@ jQuery(document).ready(function ($) {
               $(this).remove();
             });
           }, 3000);
+
+          // Add the 'table-body-disabled' class to the table row with the matching username-data
+          var username = formData.split("=")[1]; // Get the username from formData
+          $(".custom-table-row[username-data='" + username + "']").addClass(
+            "table-body-disabled"
+          );
         } else {
           alert(response);
         }
@@ -770,13 +807,13 @@ jQuery(document).ready(function ($) {
 
   // Disable or enable submit button based on error messages
   function toggleSubmitButton() {
-    let errorExists = false;  // Variable to track if there are any errors
+    let errorExists = false; // Variable to track if there are any errors
 
     // Loop through each #error-message element
     $(".cuim-validation-error").each(function () {
       if ($(this).text().trim() !== "") {
-        errorExists = true;  // If an error message is found, set errorExists to true
-        return false;  // Exit the loop once an error is found
+        errorExists = true; // If an error message is found, set errorExists to true
+        return false; // Exit the loop once an error is found
       }
     });
 

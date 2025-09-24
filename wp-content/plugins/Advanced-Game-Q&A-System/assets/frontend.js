@@ -122,7 +122,7 @@ jQuery(document).ready(function ($) {
     $multiDropdown.hide();
     // Reset other fields in the form
     const $form = $(".agqa-popup-form-inner form");
-    $form[0].reset();
+    // $form[0].reset();
     // Clear file preview and hidden file input
     $(".file-preview").hide().empty();
     $('input[type="file"]').val("");
@@ -429,7 +429,7 @@ jQuery(document).ready(function ($) {
               );
             } else {
               $fieldWrapper.append(
-                `<div class="error-message">Please enter the ${labelText}.</div>`
+                `<div class="error-message">${labelText} is required</div>`
               );
             }
           }
@@ -793,11 +793,13 @@ jQuery(document).ready(function ($) {
   // NO cancel → back to Add Field popup
   $(".no-cancel").on("click", function () {
     showPopup(addFieldPopup);
+    jQuery("div#custom-faq-field-popup").removeClass("active");
   });
 
   // Cross icon click → close popup
   $(".popup-form-cross-icon").on("click", function () {
     hidePopup();
+    jQuery("div#custom-faq-field-popup").removeClass("active");
   });
 
   // Edit field
@@ -1953,9 +1955,7 @@ jQuery(document).ready(function ($) {
     var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
 
     // Check for a specific condition for the "manage-user-search" field
-    if (
-      $input.attr("id") === "manage-user-search"
-    ) {
+    if ($input.attr("id") === "manage-user-search") {
       maxLength = 254; // If it's the "manage-user-search" field, the max length should be 254
     }
 
