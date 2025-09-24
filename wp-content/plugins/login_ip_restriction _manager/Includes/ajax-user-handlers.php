@@ -112,7 +112,7 @@ function handle_add_or_update_user()
             . 'Verify Link'
             . '</a>'
             . '</p>'
-            . esc_url($reset_url)
+            . '<p style="color: white">(If the button doesn’t work, copy and paste the following URL into your browser: '  . esc_url($reset_url) . ')</p>'
             . '<p style="color: white">This link will expire in 7 days for security reasons. If you did not create this account, please ignore this email.</p>'
             . '<h2 style="font-size: 24px; color: #fff"><strong>Best regards,</strong></h2>'
             . '<p style="color: white">The <strong>Wiki101</strong> Team</p>'
@@ -377,7 +377,7 @@ function handle_resend_pending_email()
             . 'Verify Link'
             . '</a>'
             . '</p>'
-            . esc_url($reset_url)
+            . '<p style="color: white">(If the button doesn’t work, copy and paste the following URL into your browser: '  . esc_url($reset_url) . ')</p>'
             . '<p style="color: white">This link will expire in 7 days for security reasons. If you did not create this account, please ignore this email.</p>'
             . '<h2 style="font-size: 24px; color: #fff"><strong>Best regards,</strong></h2>'
             . '<p style="color: white">The <strong>Wiki101</strong> Team</p>'

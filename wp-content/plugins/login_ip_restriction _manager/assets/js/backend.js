@@ -202,9 +202,9 @@ jQuery(document).ready(function ($) {
           // If successful, show a success message
           const $successMsg = $(
             '<div class="submitted-successfully">' +
-              "Reset Password Successful<br>" +
-              "Reset link sent. Please check your account email.<br>" +
-              "You can request another one in 60 seconds." +
+              "Resend Verification Email Successful<br>" +
+              "Verification email has been resent to your<br>" +
+              "Registered email address. Please check your inbox." +
               "</div>"
           );
 
@@ -271,7 +271,7 @@ jQuery(document).ready(function ($) {
         // alert(response);
         if (response.success) {
           const $successMsg = $(
-            '<div class="submitted-successfully created-successfully">User Account Created Successfully<br>A verification email has been sent to your registered email address. Please check your inbox. </div>'
+            '<div class="submitted-successfully created-successfully">Reset Password Successful<br>Reset link sent. Please check your account email. You can request another one in 60 seconds. </div>'
           );
           $("body").append($successMsg);
           setTimeout(
@@ -686,9 +686,7 @@ jQuery(document).ready(function ($) {
 
     // Check if input contains special characters (anything that's not a letter, number, or space)
     var specialChars = /[^a-zA-Z0-9 ]/;
-    setTimeout(function () {
-      toggleSubmitButton();
-    }, 300);
+  
     jQuery("#save-custom-field").prop("disabled", false);
 
     // Check for special characters
