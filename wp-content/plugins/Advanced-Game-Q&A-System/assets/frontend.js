@@ -429,7 +429,7 @@ jQuery(document).ready(function ($) {
               );
             } else {
               $fieldWrapper.append(
-                `<div class="error-message">${labelText} is required</div>`
+                `<div class="error-message">Please enter the ${labelText}.</div>`
               );
             }
           }
@@ -1954,8 +1954,7 @@ jQuery(document).ready(function ($) {
 
     // Check for a specific condition for the "manage-user-search" field
     if (
-      $input.attr("id") === "manage-user-search" &&
-      $input.val().length > 254
+      $input.attr("id") === "manage-user-search"
     ) {
       maxLength = 254; // If it's the "manage-user-search" field, the max length should be 254
     }
@@ -2077,15 +2076,15 @@ jQuery(document).ready(function ($) {
   });
 
   $('input[type="text"]').on("input", function () {
-    var maxLengths = 200;
+    var maxLengthsinput = 200;
 
     var $input = $(this);
     var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
     var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
 
     // Check if input exceeds maxLength
-    if ($input.val().length > maxLengths) {
-      $input.val($input.val().substring(0, maxLengths)); // Truncate the value to maxLength
+    if ($input.val().length > maxLengthsinput) {
+      $input.val($input.val().substring(0, maxLengthsinput)); // Truncate the value to maxLength
       $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
       // Append error message if it doesn't already exist
       if ($errorMessage.length === 0) {

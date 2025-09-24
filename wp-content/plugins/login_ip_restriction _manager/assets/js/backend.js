@@ -491,16 +491,20 @@ jQuery(document).ready(function ($) {
     const value = $input.val();
     const len = value.length;
 
+    setTimeout(function () {
+      toggleSubmitButton();
+    }, 300);
+
     // Create error container once
     if ($errorMessage.length === 0) {
-      $errorMessage = $('<div id="error-message" />').insertAfter($input);
+      $errorMessage = $('<div id="error-message" class="cuim-validation-error" />').insertAfter($input);
     }
 
     // Check for special characters (anything that's not a letter, number, or space)
-    var specialChars = /[^a-zA-Z0-9 ]/;
+    const specialChars = /[^a-zA-Z0-9 ]/;
     if (specialChars.test(value)) {
       $formField.addClass("error-field-input");
-      $errorMessage.text("Special characters are not allowed.");
+      $errorMessage.text("only A–Z, a–z, and 0–9 are allowed.");
       return; // Stop further processing if special characters are found
     }
 
@@ -536,10 +540,13 @@ jQuery(document).ready(function ($) {
     let $errorMessage = $input.siblings("#error-message");
     const value = $input.val();
     const len = value.length;
+    setTimeout(function () {
+      toggleSubmitButton();
+    }, 300);
 
     // Create error container once
     if ($errorMessage.length === 0) {
-      $errorMessage = $('<div id="error-message" />').insertAfter($input);
+      $errorMessage = $('<div id="error-message" class="cuim-validation-error" />').insertAfter($input);
     }
 
     // Regular expression for at least one number and one letter (lowercase or uppercase)
@@ -553,7 +560,6 @@ jQuery(document).ready(function ($) {
     } else if (len < minLength) {
       $formField.addClass("error-field-input");
       $errorMessage.text(`Minimum ${minLength} characters required.`);
-      jQuery("#confirm-submit-popup-button").prop("disabled", true);
     } else if (len > maxLength) {
       // Truncate to max and show message
       $input.val(value.substring(0, maxLength));
@@ -565,11 +571,10 @@ jQuery(document).ready(function ($) {
       $errorMessage.text(
         "Password must contain at least one number and one letter."
       );
-      jQuery("#confirm-submit-popup-button").prop("disabled", true);
     } else {
       // Valid
       $formField.removeClass("error-field-input");
-      jQuery("#confirm-submit-popup-button").prop("disabled", false);
+
       $errorMessage.text("");
     }
   });
@@ -578,66 +583,47 @@ jQuery(document).ready(function ($) {
    * email validation
    */
 
-  $(".cuim-manage-user-search-validation-254").on("input", function () {
-    var maxLengthInputUser = 254;
+  $('input[type="search"].cuim-manage-user-search-validation-254').on('input', function () {
+    const maxLengthInputSearchs = 254;
 
-    var $input = $(this);
+    // alert('dd');
+
+    var $input = $("input#manage-user-search");
+    $input.removeAttr("maxlength"); // Remove any HTML maxlength attribute
     var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
     var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
 
     // Check if input exceeds maxLength
-    if ($input.val().length > maxLengthInputUser) {
-      $input.val($input.val().substring(0, maxLengthInputUser)); // Truncate the value to maxLength
+    if ($input.val().length > maxLengthInputSearchs) {
+      $input.val($input.val().substring(0, maxLengthInputSearchs)); // Truncate the value to maxLength
       $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
       // Append error message if it doesn't already exist
       if ($errorMessage.length === 0) {
         $(
-          '<div id="error-message">Max 254 characters allowed.</div>'
+          '<div id="error-message" class="cuim-validation-error">Max 254 characters allowed.</div>'
         ).insertAfter($input); // Insert the error message after the input
       }
     }
   });
-  // $(".cuim-manage-user-validation-254").on("input", function () {
-  //   var maxLengthInputUser = 254;
-
-  //   var $input = $(this);
-  //   var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
-  //   var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
-
-  //   // Check if input exceeds maxLength
-  //   if ($input.val().length > maxLengthInputUser) {
-  //     $input.val($input.val().substring(0, maxLengthInputUser)); // Truncate the value to maxLength
-  //     $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
-  //     // Append error message if it doesn't already exist
-  //     if ($errorMessage.length === 0) {
-  //       $(
-  //         '<div id="error-message">Max 254 characters allowed.</div>'
-  //       ).insertAfter($input); // Insert the error message after the input
-  //     }
-  //   } else {
-  //     $formField.removeClass("error-field-input"); // Remove 'error' class if input is valid
-  //     // Remove the error message if input length is valid
-  //     if ($errorMessage.length > 0) {
-  //       $errorMessage.remove();
-  //     }
-  //   }
-  // });
 
   $(".cuim-manage-user-validation-254").on("input", function () {
-    var maxLengthInputUser = 254;
+    var maxLengthInputSerch = 254;
 
     var $input = $(this);
     var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
     var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
 
+    setTimeout(function () {
+      toggleSubmitButton();
+    }, 300);
     // Check if the input exceeds the maxLength
-    if ($input.val().length > maxLengthInputUser) {
-      $input.val($input.val().substring(0, maxLengthInputUser)); // Truncate the value to maxLength
+    if ($input.val().length > maxLengthInputSerch) {
+      $input.val($input.val().substring(0, maxLengthInputSerch)); // Truncate the value to maxLength
       $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
       // Append error message if it doesn't already exist
       if ($errorMessage.length === 0) {
         $(
-          '<div id="error-message">Max 254 characters allowed.</div>'
+          '<div id="error-message" class="cuim-validation-error">Max 254 characters allowed.</div>'
         ).insertAfter($input); // Insert the error message after the input
       }
     } else {
@@ -662,7 +648,10 @@ jQuery(document).ready(function ($) {
 
       // If the error message doesn't already exist, append it
       if ($errorMessage.length === 0) {
-        $('<div id="error-message">Spaces are not allowed.</div>').insertAfter(
+        setTimeout(function () {
+          toggleSubmitButton();
+        }, 300);
+        $('<div id="error-message" class="cuim-validation-error">Spaces are not allowed.</div>').insertAfter(
           $input
         ); // Insert the error message
         $formField.addClass("error-field-input"); // Add error class to highlight the input field
@@ -679,28 +668,17 @@ jQuery(document).ready(function ($) {
     var $input = $(this);
     var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
     var $formField = $input.closest(".form-field"); // Find the parent .form-field of the current input
-
-    // Regex to match any special characters (anything other than letters, numbers, or spaces)
-    var invalidChars = /[^a-zA-Z0-9\s]/; // Allows letters (a-zA-Z), numbers (0-9), and spaces
-    jQuery("#save-custom-field").prop("disabled", false);
-    // Check if the input contains any special characters
-    if (invalidChars.test($input.val())) {
-      $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
-      // Append error message if it doesn't already exist
-      if ($errorMessage.length === 0) {
-        jQuery("#save-custom-field").prop("disabled", true);
-        $(
-          '<div id="error-message">Special characters are not allowed.</div>'
-        ).insertAfter($input); // Insert the error message after the input
-      }
-    } else if ($input.val().length > maxLengthInputUserCustom) {
-      // If input exceeds maxLength, truncate the value
+    setTimeout(function () {
+      toggleSubmitButton();
+    }, 300);
+    // Check if input exceeds maxLength
+    if ($input.val().length > maxLengthInputUserCustom) {
       $input.val($input.val().substring(0, maxLengthInputUserCustom)); // Truncate the value to maxLength
       $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
       // Append error message if it doesn't already exist
       if ($errorMessage.length === 0) {
         $(
-          '<div id="error-message">Max 50 characters allowed.</div>'
+          '<div id="error-message" class="cuim-validation-error">Max 50 characters allowed.</div>'
         ).insertAfter($input); // Insert the error message after the input
       }
     } else {
@@ -789,4 +767,25 @@ jQuery(document).ready(function ($) {
       $confirmPasswordField.attr("type", "password"); // Hide password
     }
   });
+
+  // Disable or enable submit button based on error messages
+  function toggleSubmitButton() {
+    let errorExists = false;  // Variable to track if there are any errors
+
+    // Loop through each #error-message element
+    $(".cuim-validation-error").each(function () {
+      if ($(this).text().trim() !== "") {
+        errorExists = true;  // If an error message is found, set errorExists to true
+        return false;  // Exit the loop once an error is found
+      }
+    });
+
+    // If any error message exists, disable the submit button
+    if (errorExists) {
+      jQuery("#confirm-submit-popup-button").prop("disabled", true);
+    } else {
+      // Enable submit button if no errors
+      jQuery("#confirm-submit-popup-button").prop("disabled", false);
+    }
+  }
 });

@@ -3,13 +3,13 @@
 
 
 // Profile completeness check function
-function cuim_is_profile_complete($user_id) {
-    $first = get_user_meta($user_id, 'first_name', true);
-    $last = get_user_meta($user_id, 'last_name', true);
-    $avatar = get_user_meta($user_id, 'cuim_profile_avatar', true);
-
-    return (!empty($first) && !empty($last) && !empty($avatar));
-}
+//function cuim_is_profile_complete($user_id) {
+//    $first = get_user_meta($user_id, 'first_name', true);
+//    $last = get_user_meta($user_id, 'last_name', true);
+//    $avatar = get_user_meta($user_id, 'cuim_profile_avatar', true);
+//
+//    return (!empty($first) && !empty($last) && !empty($avatar));
+//}
 
 
 
@@ -118,14 +118,17 @@ function cui_pm_add_logout_button_footer() {
         echo '</div>';
         echo '</header>';
     }
-     $user_id = get_current_user_id();
+
+    ?>
+
+<?php
+
+    $user_id = get_current_user_id();
     $first = get_user_meta($user_id, 'first_name', true);
     $last = get_user_meta($user_id, 'last_name', true);
     $avatar_id = get_user_meta($user_id, 'cuim_profile_avatar', true);
     $avatar_url = $avatar_id ? wp_get_attachment_url($avatar_id) : get_avatar_url($user_id);
     ?>
-
-
 
 
 <div class="cuim-profile-form-wrapper">
@@ -159,8 +162,9 @@ function cui_pm_add_logout_button_footer() {
             <div id="cuim-edit-fields">
                 <div class="form-field required">
                     <label for="user-name"><span>* </span>User Name</label>
-                    <input type="text" id="user-name" value="<?php echo  $first; ?>" placeholder="Please add User Name"
-                        required>
+                    <input type="text" id="user-name" value="<?php echo $first . ' ' . $last; ?>"
+                        placeholder="Please add User Name" required>
+
                 </div>
                 <div class="form-field required">
                     <label for="company-name"><span>* </span>Company Name</label>
@@ -230,22 +234,7 @@ function cui_pm_add_logout_button_footer() {
         </div>
     </div>
 </div>
-<script>
-jQuery(document).ready(function($) {
-    var $input = $('#upload-file-button');
 
-    $input.on('change', function() {
-        var input = this;
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#cuim-avatar-preview').attr('src', e.target.result);
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    });
-});
-</script>
 
 
 <style>

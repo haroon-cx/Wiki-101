@@ -17,7 +17,7 @@
                     <label for="account-field"><span>* </span>Account</label>
                     <input type="text" class="cuim-manage-user-validation-20" name="account" id="account-field" required
                         placeholder="Description">
-                    <div id="error-message"></div>
+                    <div id="error-message" class="cuim-validation-error"></div>
                 </div>
                 <!-- <div class="form-field required">
                     <label for="new-password-field"><span>* </span>New Password</label>
@@ -35,6 +35,7 @@
                     <div class="toggle-password" id="toggle-new-password"></div> <!-- Toggle for new password -->
                     <input type="password" class="cuim-manage-user-pwd-validation-20" name="new-password"
                         id="new-password-field" required placeholder="New Password">
+                    <div id="error-message" class="cuim-validation-error"></div>
                 </div>
                 <!-- <div class="form-field required">
                     <label for="confirm-password-field"><span>* </span>Confirm Password</label>
@@ -48,6 +49,7 @@
                     <!-- Toggle for confirm password -->
                     <input type="password" class="cuim-manage-user-pwd-validation-20" name="confirm-password"
                         id="confirm-password-field" required placeholder="Confirm Password">
+                    <div id="error-message" class="cuim-validation-error"></div>
                 </div>
                 <div class="form-field required">
                     <label for="issue_type"><span>* </span>State</label>
@@ -81,6 +83,7 @@
                     <label for="comapany-name-field"><span>* </span>Company Name</label>
                     <input type="text" name="company-name" class="agqa-faq-validation-100" id="comapany-name-field"
                         required placeholder="Description">
+                    <div id="error-message" class="cuim-validation-error"></div>
                 </div>
                 <div class="form-field required">
                     <label for="manage-user-email-field"><span>* </span>Email</label>
@@ -99,7 +102,7 @@
                                     <label for="field-name">Field Name</label>
                                     <input type="text" name="first-name" id="first-name"
                                         class="cuim-manage-user-validation-50" placeholder="Description">
-                                    <div id="error-message"></div>
+                                    <div id="error-message" class="cuim-validation-error"></div>
                                 </div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
                                     <button class="cancel-button" type="button">Cancel</button>
