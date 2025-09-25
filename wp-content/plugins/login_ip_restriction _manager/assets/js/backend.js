@@ -829,7 +829,6 @@ jQuery(document).ready(function ($) {
     e.preventDefault();
     var $form = jQuery(this);
     var formData = $form.serialize();
-    alert(formData);
     var isValid = true; // Flag to check if the form is valid
 
     // Check if required fields are filled
@@ -860,29 +859,18 @@ jQuery(document).ready(function ($) {
         // Check if the response contains success
         if (response.success) {
           // If successful, show a success message
-          jQuery("div#confirm-submit-popup").removeClass("active");
+          jQuery(".reset-password-popup").removeClass("active");
+
           const $successMsg = $(
             `<div class="submitted-successfully">${response.data.message}</div>`
           );
-          $form.append($successMsg);
+          jQuery(".cuim-profile-form-wrapper").append($successMsg);
           // Hide after 3 seconds
           setTimeout(function () {
-            $successMsg.fadeOut(400, function () {
-              $(this).remove();
-            });
-            // Find the *actual* back button
-            const $btn = $(".form-header-row .back-button");
-            const btn = $btn.get(0);
-            if (!btn) {
-              console.warn("Back button not found in DOM at success time.");
-              return;
-            }
+            $successMsg.remove();
+            jQuery(".cuim-profile-form-wrapper").removeClass("active");
 
-            $btn.trigger("click");
-            btn.click();
-            btn.dispatchEvent(
-              new MouseEvent("click", { bubbles: true, cancelable: true })
-            );
+            window.location.href = `/verification/?login-again=1`;
           }, 3000);
         } else {
           jQuery("div#confirm-submit-popup").removeClass("active");
@@ -898,6 +886,7 @@ jQuery(document).ready(function ($) {
           }, 3000);
         }
       },
+
       error: function (response) {
         // Error message if AJAX fails
         alert("An error occurred.");
@@ -924,5 +913,174 @@ jQuery(document).ready(function ($) {
         `The confirmation password must match the new password.`
       );
     }
+  });
+
+  /**
+   * user_profile_update
+   */
+  // jQuery("#cuim-update-user-profile").on("submit", function (e) {
+
+  //   e.preventDefault();
+  //   var $form = jQuery(this);
+  //   var blobUrl = jQuery("#cuim-avatar-preview").attr("src");
+
+  //   function blobUrlToFile(blobUrl, filename) {
+  //     return fetch(blobUrl)
+  //       .then((res) => res.blob())
+  //       .then((blob) => new File([blob], filename, { type: blob.type }));
+  //   }
+
+  //   var file = blobUrlToFile(blobUrl, "user_profile_image.png");
+  //   var formData = $form.serialize(); // Get the form data
+  //   formData += "&image=" + file; // Append the image data
+  //   alert(formData);
+  //   // return;
+  //   var isValid = true; // Flag to check if the form is valid
+
+  //   // Check if required fields are filled
+  //   $form.find("[required]").each(function () {
+  //     if ($(this).val().trim() === "") {
+  //       isValid = false; // Mark as invalid if the required field is empty
+  //     }
+  //   });
+
+  //   // If the form is not valid, show error and return early
+  //   if (!isValid) {
+  //     return; // Stop further processing if the form is invalid
+  //   }
+
+  //   var nonce = cuim_ajax.nonce; // Nonce for security
+
+  //   // Assuming the cropped image is a Blob URL
+
+  //   // Send the AJAX request
+  //   $.ajax({
+  //     url: cuim_ajax.ajax_url,
+  //     type: "POST",
+  //     data: {
+  //       action: "user_profile_update",
+  //       form_data: formData, // Pass the form data to the server
+  //       nonce: nonce,
+  //     },
+  //     success: function (response) {
+  //       // alert(response);
+  //       alert(response);
+  //       // Check if the response contains success
+  //       if (response.success) {
+  //         // If successful, show a success message
+  //         jQuery(".reset-password-popup").removeClass("active");
+
+  //         const $successMsg = $(
+  //           `<div class="submitted-successfully">${response.data.message}</div>`
+  //         );
+  //         jQuery(".cuim-profile-form-wrapper").append($successMsg);
+  //         // Hide after 3 seconds
+  //         setTimeout(function () {
+  //           $successMsg.remove();
+  //           jQuery(".cuim-profile-form-wrapper").removeClass("active");
+
+  //           window.location.href = `/verification/?login-again=1`;
+  //         }, 3000);
+  //       } else {
+  //         jQuery("div#confirm-submit-popup").removeClass("active");
+  //         const $successMsg = $(
+  //           `<div class="submitted-unsuccessfully">${response.data.message}</div>`
+  //         );
+  //         $form.append($successMsg);
+  //         // Hide after 3 seconds
+  //         setTimeout(function () {
+  //           $successMsg.fadeOut(400, function () {
+  //             $(this).remove();
+  //           });
+  //         }, 3000);
+  //       }
+  //     },
+
+  //     error: function (response) {
+  //       // Error message if AJAX fails
+  //       alert("An error occurred.");
+  //     },
+  //   });
+  // });
+  jQuery("#cuim-update-user-profile").on("submit", function (e) {
+    e.preventDefault();
+    var $form = jQuery(this);
+    var blobUrl = jQuery("#cuim-avatar-preview").attr("src");
+
+    function blobUrlToFile(blobUrl, filename) {
+      return fetch(blobUrl)
+        .then((res) => res.blob())
+        .then((blob) => new File([blob], filename, { type: blob.type }));
+    }
+
+    var file = blobUrlToFile(blobUrl, "user_profile_image.png");
+
+    var formData = new FormData($form[0]); // Convert form into FormData
+    formData.append("image", file); // Append the image file
+
+    var nonce = cuim_ajax.nonce; // Nonce for security
+    formData.append("nonce", nonce); // Append the nonce
+
+    var isValid = true; // Flag to check if the form is valid
+
+    // Check if required fields are filled
+    $form.find("[required]").each(function () {
+      if ($(this).val().trim() === "") {
+        isValid = false; // Mark as invalid if the required field is empty
+      }
+    });
+
+    // If the form is not valid, show error and return early
+    if (!isValid) {
+      return; // Stop further processing if the form is invalid
+    }
+
+  $.ajax({
+    url: cuim_ajax.ajax_url, // WordPress AJAX URL
+    type: "POST",
+    data: {
+        action: "user_profile_update", // The action you are calling in the PHP backend
+        form_data: formData, // The form data being sent, including the image
+        nonce: cuim_ajax.nonce // Nonce for security
+    },
+    processData: false, // Don't process the data
+    contentType: false, // Don't set content type for multipart form
+    success: function (response) {
+        alert(response.message); // Show success or failure message
+
+        // Handle success response
+        if (response.success) {
+            jQuery(".reset-password-popup").removeClass("active");
+
+            const $successMsg = $(
+                `<div class="submitted-successfully">${response.data.message}</div>`
+            );
+            jQuery(".cuim-profile-form-wrapper").append($successMsg);
+
+            // Hide after 3 seconds
+            setTimeout(function () {
+                $successMsg.remove();
+                jQuery(".cuim-profile-form-wrapper").removeClass("active");
+                window.location.href = `/verification/?login-again=1`;
+            }, 3000);
+        } else {
+            const $errorMsg = $(
+                `<div class="submitted-unsuccessfully">${response.data.message}</div>`
+            );
+            $form.append($errorMsg);
+
+            // Hide error message after 3 seconds
+            setTimeout(function () {
+                $errorMsg.fadeOut(400, function () {
+                    $(this).remove();
+                });
+            }, 3000);
+        }
+    },
+    error: function () {
+        alert("An error occurred.");
+    }
+});
+
   });
 });

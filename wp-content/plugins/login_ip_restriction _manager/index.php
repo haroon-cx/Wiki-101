@@ -171,6 +171,13 @@ function force_redirect_if_not_logged_in()
 {
 
     // Check if the user is visiting the verification page with username and key parameters
+    if (is_page('verification') && isset($_GET['login-again'])) {
+        // If the user is not logged in, they should stay on the verification page
+        if (!is_user_logged_in()) {
+            return; // Do not redirect, stay on the verification page
+        }
+    }
+    // Check if the user is visiting the verification page with username and key parameters
     if (is_page('verification') && isset($_GET['username']) && isset($_GET['key'])) {
         // If the user is not logged in, they should stay on the verification page
         if (!is_user_logged_in()) {

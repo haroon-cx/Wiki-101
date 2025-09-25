@@ -357,7 +357,9 @@ jQuery(document).ready(function ($) {
   });
 
   $(".toggle-password").on("click", function () {
-    var passwordField = $(this).siblings('input[type="password"]'); // Get the password input inside the same .password-field container
+    var passwordField = $(this).siblings(
+      'input[type="password"], input[type="text"]'
+    ); // Get the password input inside the same .password-field container
 
     // Toggle password visibility
     var fieldType =
@@ -366,6 +368,8 @@ jQuery(document).ready(function ($) {
 
     // Toggle the button class and icon
     $(this).toggleClass("show-pass");
+
+    // Optionally change the icon or text on the button based on visibility
   });
 
   setTimeout(function () {

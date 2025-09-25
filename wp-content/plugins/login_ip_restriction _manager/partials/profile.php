@@ -181,17 +181,13 @@ $user_active_class = 'active';
 
 $user_style_css = 'style="display:none;"';
 $user_exist = true; 
-    } else {
-        echo 'The password does not match.';
-    }
-} else {
-    echo 'User not found.';
+    } 
 }
      ?>
 
 <div class="cuim-profile-form-wrapper <?php echo $user_active_class; ?>">
     <div class="cuim-profile-form-inner" <?php echo $user_style_css; ?>>
-        <form autocomplete="off" id="cuim-profile-page-form" class="custom-form" novalidate="novalidate"
+        <form autocomplete="off" id="cuim-update-user-profile" class="custom-form" novalidate="novalidate"
             data-inited-validation="1">
             <?php
                 foreach ($user_login_data as $key => $login_value) {
@@ -222,41 +218,33 @@ $user_exist = true;
             <div id="cuim-edit-fields">
                 <div class="form-field required">
                     <label for="user-name"><span>* </span>User Name</label>
-                    <input type="text" id="user-name" value="<?php echo $first . ' ' . $last; ?>"
-                        placeholder="Please add User Name" required>
+                    <input type="text" id="user-name" name="user-name" placeholder="Please add User Name" required>
 
                 </div>
                 <div class="form-field required">
                     <label for="company-name"><span>* </span>Company Name</label>
                     <input type="text" id="company-name" placeholder="Description"
-                        value="<?php echo $login_value->company_name; ?>" required>
+                        value="<?php echo ucwords($login_value->company_name); ?>">
                 </div>
                 <div class=" form-field required">
                     <label for="question-type"><span>* </span>User Role</label>
                     <div class="custom-select-dropdown">
                         <div class="custom-select-dropdown-title" style="pointer-events: none;">
-                            <span class="custom-dropdown-default-value"><?php echo $login_value->user_role; ?></span>
+                            <span
+                                class="custom-dropdown-default-value"><?php echo ucwords($login_value->user_role); ?></span>
                             <san class="custom-dropdown-selected-value"></san>
                         </div>
-                        <!-- <div class="custom-select-dropdown-lists">
-                            <ul>
-                                <li data-value="Admin">Admin</li>
-                                <li data-value="Manager">Manager</li>
-                                <li data-value="Contributor">Contributor</li>
-                                <li data-value="Viewer">Viewer</li>
-                            </ul>
-                        </div> -->
-                        <input type="hidden" name="user-role" id="issue_type" required="" value="">
+                        <input type="hidden" name="user-role" id="issue_type" value="">
                     </div>
                 </div>
                 <div class="form-field">
                     <label for="rest-password">Reset Password</label>
-                    <button class="reset-password-button">Reset password</button>
+                    <button class="reset-password-button" type="button">Reset password</button>
                 </div>
 
                 <div class="form-buttons edit-form-buttons d-flex">
                     <button class="cancel-button" type="button">Cancel</button>
-                    <button id="save-custom-field-profile">Save</button>
+                    <button id="save-update-user-profile" type="submit">Save</button>
                 </div>
             </div>
             <?php } ?>
@@ -270,27 +258,28 @@ $user_exist = true;
             <div class="popup-cross-icon"></div>
             <?php } ?>
             <div class="reset-password-form">
-                <form action="#" id="cuim-profile-reset-password">
+                <form id="cuim-profile-reset-password" autocomplete="off" novalidate="novalidate"
+                    data-inited-validation="1">
                     <div class="form-field required">
                         <label for="old-password"><span>*</span> Old Password</label>
-                        <button class="toggle-password"></button>
+                        <div class="toggle-password"></div>
                         <input type="password" class="cuim-manage-user-pwd-validation-20" name="old-password"
-                            id="old-password" placeholder="Please Enter the Old Password">
+                            id="old-password" placeholder="Please Enter the Old Password" required>
                         <div id="error-message"></div>
                     </div>
                     <div class="form-field required">
                         <label for="new-password"><span>*</span> New Password</label>
                         <button class="toggle-password"></button>
                         <input type="password" class="cuim-manage-user-pwd-validation-20 " name="new-password"
-                            id="new-password" placeholder="Please Enter The New Password">
+                            id="new-password" placeholder="Please Enter The New Password" required>
                         <div id="error-message"></div>
                     </div>
                     <div class="form-field required">
                         <label for="confirm-password"><span>*</span> Confirm
                             Password</label>
-                        <button class="toggle-password"></button>
+                        <div class="toggle-password"></div>
                         <input type="password" class="cuim-manage-user-pwd-validation-20 cuim-profile-check-pwd"
-                            name="confirm-password" id="confirm-password" placeholder="Confirm New Password">
+                            name="confirm-password" id="confirm-password" placeholder="Confirm New Password" required>
                         <div id="error-message"></div>
                     </div>
                     <div id="reset-form-buttons" class="form-buttons reset-form-buttons d-flex">

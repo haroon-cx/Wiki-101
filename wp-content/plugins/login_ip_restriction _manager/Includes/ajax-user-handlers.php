@@ -546,30 +546,24 @@ function handle_cuim_user_change_password()
     $user_id = get_current_user_id();
 
     // Get the form data
-    $old_password = isset($data['old_password']) ? sanitize_text_field($data['old_password']) : '';
-    $new_password = isset($data['new_password']) ? sanitize_text_field($data['new_password']) : '';
-    $confirm_password = isset($data['confirm_password']) ? sanitize_text_field($data['confirm_password']) : '';
-    $old_password = wp_hash_password($old_password);
-echo $old_password;
-wp_die();
+    $old_password = isset($data['old-password']) ? sanitize_text_field($data['old-password']) : '';
+    $new_password = isset($data['new-password']) ? sanitize_text_field($data['new-password']) : '';
+    $confirm_password = isset($data['confirm-password']) ? sanitize_text_field($data['confirm-password']) : '';
     // Get the user object to verify old password
     $user = get_user_by('ID', $user_id);
     if (!$user) {
         wp_send_json_error(['message' => 'User not found']);
     }
 
-    // ✅ Check if the old password is correct
     if (!wp_check_password($old_password, $user->user_pass, $user_id)) {
         wp_send_json_error(['message' => 'The old password is incorrect.']);
     }
 
-    // ✅ Check if the old password and new password are the same
     if ($old_password === $new_password) {
         wp_send_json_error(['message' => 'You cannot reuse your previous password.']);
     }
 
 
-    // ✅ Update password in WordPress
     wp_set_password($new_password, $user_id);
 
     // ✅ Update password in custom table (if applicable)
@@ -597,5 +591,120 @@ wp_die();
 
     // Return success message
     wp_send_json_success(['message' => 'Password reset successful.']);
+    echo json_encode($response);
 }
-add_action('wp_ajax_handle_profile_password', 'handle_profile_password');
+
+/** 
+ * user_profile_update
+*/
+
+// add_action('wp_ajax_user_profile_update', 'handle_user_profile_update');
+// add_action('wp_ajax_nopriv_user_profile_update', 'handle_user_profile_update');
+
+// function handle_user_profile_update() {
+//     // Verify the nonce for security
+//     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+//         wp_send_json_error(['message' => 'Permission Denied']);
+//     }
+//     $user_id = get_current_user_id();
+//      parse_str($_POST['form_data'], $data);
+//      // Get the form data
+//     $file = isset($data['image']) ? sanitize_text_field($data['image']) : '';
+//     $user_name = isset($data['user-name']) ? sanitize_text_field($data['user-name']) : '';
+    
+//     // Handle the uploaded file
+//     $upload_dir = wp_upload_dir(); // Get the upload directory
+    
+//     // Set up file name and path
+//     $file_name = sanitize_file_name($file['name']);
+//     $file_path = $upload_dir['path'] . '/' . $file_name;
+// echo $file_name;
+// wp_die();
+//     // Move the uploaded file to the WordPress uploads folder
+//     if (move_uploaded_file($file['tmp_name'], $file_path)) {
+//       // File has been uploaded to WordPress uploads directory
+
+//       // Add the file to the media library
+//       $attachment = array(
+//         'guid' => $upload_dir['url'] . '/' . $file_name,
+//         'post_mime_type' => $file['type'],
+//         'post_title' => sanitize_file_name($file_name),
+//         'post_content' => '',
+//         'post_status' => 'inherit',
+//       );
+
+//       // Insert the attachment to the WordPress media library
+//       $attachment_id = wp_insert_attachment($attachment, $file_path);
+
+//       // Generate metadata for the attachment
+//       $attachment_metadata = wp_generate_attachment_metadata($attachment_id, $file_path);
+//       wp_update_attachment_metadata($attachment_id, $attachment_metadata);
+
+//       // Get the URL of the uploaded image
+//       $image_url = wp_get_attachment_url($attachment_id);
+
+//       // Save the image URL in the user's meta
+//       update_user_meta($user_id, 'profile_image', $image_url);
+
+//        wp_send_json_success(['message' => 'Password reset successful.']);
+//     } else {
+//       return false; // Failed to upload the file
+//     }
+
+//   return false; // No file uploaded
+// }
+
+// Register the AJAX action for logged-in users
+add_action('wp_ajax_user_profile_update', 'handle_user_profile_update');
+
+// Register the AJAX action for non-logged-in users (optional)
+add_action('wp_ajax_nopriv_user_profile_update', 'handle_user_profile_update');
+
+// Function to handle the user profile update
+function handle_user_profile_update() {
+    // Verify the nonce for security
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        wp_send_json_error(['message' => 'Permission Denied']);
+    }
+
+    $user_id = get_current_user_id();
+    
+    // Handle the uploaded file from $_FILES
+    if (isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
+        $file = $_FILES['image'];
+        $upload_dir = wp_upload_dir(); // Get the upload directory
+        $file_name = sanitize_file_name($file['name']);
+        $file_path = $upload_dir['path'] . '/' . $file_name;
+
+        // Move the uploaded file to WordPress uploads folder
+        if (move_uploaded_file($file['tmp_name'], $file_path)) {
+            // Add the file to the media library
+            $attachment = array(
+                'guid' => $upload_dir['url'] . '/' . $file_name,
+                'post_mime_type' => $file['type'],
+                'post_title' => sanitize_file_name($file_name),
+                'post_content' => '',
+                'post_status' => 'inherit',
+            );
+
+            // Insert the attachment into the media library
+            $attachment_id = wp_insert_attachment($attachment, $file_path);
+
+            // Generate metadata for the attachment
+            $attachment_metadata = wp_generate_attachment_metadata($attachment_id, $file_path);
+            wp_update_attachment_metadata($attachment_id, $attachment_metadata);
+
+            // Get the URL of the uploaded image
+            $image_url = wp_get_attachment_url($attachment_id);
+
+            // Save the image URL in the user's meta
+            update_user_meta($user_id, 'profile_image', $image_url);
+
+            wp_send_json_success(['message' => 'Profile updated successfully.', 'data' => ['message' => 'Profile updated successfully.']]);
+        } else {
+            wp_send_json_error(['message' => 'Failed to upload the image.']);
+        }
+    } else {
+        wp_send_json_error(['message' => 'No image uploaded']);
+    }
+}

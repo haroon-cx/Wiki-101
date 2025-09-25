@@ -1,6 +1,7 @@
 <?php
 $username = isset($_GET['username']) ? sanitize_text_field($_GET['username']) : '';
 $code = isset($_GET['code']) ? sanitize_text_field($_GET['code']) : '2025-01-01';
+$login_again = isset($_GET['login-again']) ? sanitize_text_field($_GET['login-again']) : '0';
 $date_diff = 10;
 $user_info = false;
 global $wpdb;
@@ -38,6 +39,7 @@ if ($username) {
         ", $username));
     // Check if the user exists
 }
+
 ?>
 
 <style>
@@ -52,7 +54,20 @@ if ($username) {
     width: 100% !important;
     max-width: 100%;
 }
+
+body.body_style_wide:not(.expand_content) .page_content_wrap .content_wrap>.content,
+body.body_style_wide:not(.expand_content) .content_wrap>.content {
+    width: 100% !important;
+}
 </style>
+
+
+<?php 
+if($login_again == '1') {
+include 'login-again.php'; 
+}
+return;
+?>
 
 
 <?php if ($date_diff > 7) { ?>
@@ -136,17 +151,3 @@ jQuery(document).ready(function($) {
 });
 </script>
 <?php } ?>
-
-<!--<div class="email-ctn" style="background-color: #1D1C25;  padding: 20px; width: 70%; margin:0 auto; border-radius: 16px; color: white; font-size: 16px; font-family: 'Poppins', sans-serif;">-->
-<!--    <p style="color: white">Hello [User Name]</p>-->
-<!--    <h2 style="font-size: 20px; color: #00a000;'">Thank you for registering with [Platform Name]</h2>-->
-<!--    <p style="color: white">To complete your account setup, please verify your email address by clicking the button below:</p>-->
-<!--    <p style="color: white">-->
-<!--        <a href="#" style="background-color: #7644CE; font-size: 20px; padding: 16px 24px; border-radius: 16px; color: white; margin: 5px 0; display: inline-block; text-decoration: none;">-->
-<!--            Verify Link-->
-<!--        </a>-->
-<!--    </p>-->
-<!--    <p style="color: white">This link will expire in 7 days for security reasons. If you did not create this account, please ignore this email.</p>-->
-<!--    <h2 style="font-size: 24px; color: #fff"><strong>Best regards,</strong></h2>-->
-<!--    <p style="color: white">The <strong>[Platform Name]</strong> Team</p>-->
-<!--</div>-->
