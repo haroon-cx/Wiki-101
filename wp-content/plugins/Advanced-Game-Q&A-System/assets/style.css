@@ -3519,6 +3519,7 @@ form .form-buttons button {
 }
 
 .error-field,
+.error-field-input,
 .error-field.agqa-popup-form-button {
   border-color: #FF4D4F !important;
 }

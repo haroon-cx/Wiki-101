@@ -521,3 +521,81 @@ function handle_delete_manage_user()
 
      wp_die(); // End the AJAX request
 }
+/**
+ * Profile Handler Section
+ */
+
+
+/**
+ * Profile Password Save in DB 
+ */
+add_action('wp_ajax_cuim_user_change_password', 'handle_cuim_user_change_password');
+add_action('wp_ajax_nopriv_cuim_user_change_password', 'handle_cuim_user_change_password');
+function handle_cuim_user_change_password()
+{
+    global $wpdb;
+
+    // Verify the nonce for security
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        wp_send_json_error(['message' => 'Permission Denied']);
+    }
+
+    parse_str($_POST['form_data'], $data);
+
+    // Get the current user ID
+    $user_id = get_current_user_id();
+
+    // Get the form data
+    $old_password = isset($data['old_password']) ? sanitize_text_field($data['old_password']) : '';
+    $new_password = isset($data['new_password']) ? sanitize_text_field($data['new_password']) : '';
+    $confirm_password = isset($data['confirm_password']) ? sanitize_text_field($data['confirm_password']) : '';
+    $old_password = wp_hash_password($old_password);
+echo $old_password;
+wp_die();
+    // Get the user object to verify old password
+    $user = get_user_by('ID', $user_id);
+    if (!$user) {
+        wp_send_json_error(['message' => 'User not found']);
+    }
+
+    // ✅ Check if the old password is correct
+    if (!wp_check_password($old_password, $user->user_pass, $user_id)) {
+        wp_send_json_error(['message' => 'The old password is incorrect.']);
+    }
+
+    // ✅ Check if the old password and new password are the same
+    if ($old_password === $new_password) {
+        wp_send_json_error(['message' => 'You cannot reuse your previous password.']);
+    }
+
+
+    // ✅ Update password in WordPress
+    wp_set_password($new_password, $user_id);
+
+    // ✅ Update password in custom table (if applicable)
+    $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
+    
+    // Prepare the data to update the custom table
+    $update_data = [
+        'new_password' => wp_hash_password($new_password),
+        'confirm_password' => wp_hash_password($confirm_password), // You might want to avoid storing this
+    ];
+
+    // Update the user's password in the custom table
+    $result = $wpdb->update(
+        $table_name,
+        $update_data,
+        ['user_id' => $user_id],
+        array_fill(0, count($update_data), '%s'),
+        ['%d']
+    );
+
+    // Check for success
+    if ($result === false) {
+        wp_send_json_error(['message' => 'There was an error updating the custom table.']);
+    }
+
+    // Return success message
+    wp_send_json_success(['message' => 'Password reset successful.']);
+}
+add_action('wp_ajax_handle_profile_password', 'handle_profile_password');

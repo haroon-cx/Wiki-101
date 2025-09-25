@@ -44,7 +44,7 @@
                             </div>
                         </div>
                     </div>
-                    <input type="hidden" name="reset-password" id="reset-password" value="stuvwxyz0123456789!@#$%">
+                    <input type="hidden" name="reset-password" id="reset-password" value="swxyz0123456789!@">
                 </div>
                 <div class="form-field required">
                     <label for="issue_type"><span>* </span>State</label>

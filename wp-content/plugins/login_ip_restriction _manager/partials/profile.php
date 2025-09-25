@@ -122,17 +122,80 @@ function cui_pm_add_logout_button_footer() {
 
 <?php
 
-    $user_id = get_current_user_id();
-    $first = get_user_meta($user_id, 'first_name', true);
-    $last = get_user_meta($user_id, 'last_name', true);
-    $avatar_id = get_user_meta($user_id, 'cuim_profile_avatar', true);
-    $avatar_url = $avatar_id ? wp_get_attachment_url($avatar_id) : get_avatar_url($user_id);
-    ?>
+$user_id = get_current_user_id();
+$old_password = 'swxyz0123456789!@';  // Old password you want to match
+$hashed_old_password = wp_hash_password($old_password);  // Hash the old password for comparison
 
-<div class="cuim-profile-form-wrapper">
-    <div class="cuim-profile-form-inner">
+// Get the current user’s data (including password)
+$user = get_user_by('id', $user_id);
+$user_active_class = ''; 
+$user_style_css = '';
+$user_exist = false; 
+
+// Fetch first and last name, and avatar URL
+$first = get_user_meta($user_id, 'first_name', true);
+$last = get_user_meta($user_id, 'last_name', true);
+$avatar_id = get_user_meta($user_id, 'cuim_profile_avatar', true);
+$avatar_url = $avatar_id ? wp_get_attachment_url($avatar_id) : get_avatar_url($user_id);
+// Global WPDB object
+global $wpdb;
+
+// Table name with prefix
+$table_agqa_manage_user = $wpdb->prefix . 'agqa_wiki_add_users';
+
+// Fetch user data from the custom table based on user_id
+$user_login_data = $wpdb->get_results(
+    $wpdb->prepare(
+        "
+        SELECT
+                id,
+                user_id,
+                account,
+                new_password,
+                confirm_password,
+                state,
+                user_role,
+                company_name,
+                email,
+                custom_label_1,
+                custom_label_2,
+                custom_label_3,
+                custom_label_4,
+                custom_field_1,
+                custom_field_2,
+                custom_field_3,
+                custom_field_4
+         FROM $table_agqa_manage_user
+        WHERE user_id = %d
+        ORDER BY user_id DESC
+        ",
+        $user_id // Make sure the user_id is passed as an integer
+    )
+    
+);
+if ($user) {
+    // Check if the user's current password matches the old password
+    if (wp_check_password($old_password, $user->user_pass, $user_id)) {
+        // If password matches, update the password
+$user_active_class = 'active'; 
+
+$user_style_css = 'style="display:none;"';
+$user_exist = true; 
+    } else {
+        echo 'The password does not match.';
+    }
+} else {
+    echo 'User not found.';
+}
+     ?>
+
+<div class="cuim-profile-form-wrapper <?php echo $user_active_class; ?>">
+    <div class="cuim-profile-form-inner" <?php echo $user_style_css; ?>>
         <form autocomplete="off" id="cuim-profile-page-form" class="custom-form" novalidate="novalidate"
             data-inited-validation="1">
+            <?php
+                foreach ($user_login_data as $key => $login_value) {
+                ?>
             <div style="text-align: center">
                 <div class="edit-profile-image-ctn">
                     <h2>Edit Profile</h2>
@@ -155,7 +218,6 @@ function cui_pm_add_logout_button_footer() {
                         </div>
                     </div>
                 </div>
-
             </div>
             <div id="cuim-edit-fields">
                 <div class="form-field required">
@@ -166,23 +228,24 @@ function cui_pm_add_logout_button_footer() {
                 </div>
                 <div class="form-field required">
                     <label for="company-name"><span>* </span>Company Name</label>
-                    <input type="text" id="company-name" placeholder="Description" required>
+                    <input type="text" id="company-name" placeholder="Description"
+                        value="<?php echo $login_value->company_name; ?>" required>
                 </div>
-                <div class="form-field required">
+                <div class=" form-field required">
                     <label for="question-type"><span>* </span>User Role</label>
                     <div class="custom-select-dropdown">
-                        <div class="custom-select-dropdown-title">
-                            <span class="custom-dropdown-default-value">User Role</span>
-                            <span class="custom-dropdown-selected-value"></span>
+                        <div class="custom-select-dropdown-title" style="pointer-events: none;">
+                            <span class="custom-dropdown-default-value"><?php echo $login_value->user_role; ?></span>
+                            <san class="custom-dropdown-selected-value"></san>
                         </div>
-                        <div class="custom-select-dropdown-lists">
+                        <!-- <div class="custom-select-dropdown-lists">
                             <ul>
                                 <li data-value="Admin">Admin</li>
                                 <li data-value="Manager">Manager</li>
                                 <li data-value="Contributor">Contributor</li>
                                 <li data-value="Viewer">Viewer</li>
                             </ul>
-                        </div>
+                        </div> -->
                         <input type="hidden" name="user-role" id="issue_type" required="" value="">
                     </div>
                 </div>
@@ -196,37 +259,45 @@ function cui_pm_add_logout_button_footer() {
                     <button id="save-custom-field-profile">Save</button>
                 </div>
             </div>
+            <?php } ?>
         </form>
         <div id="cuim-profile-update-message"></div>
     </div>
-    <div class="reset-password-popup">
+    <div class="reset-password-popup <?php echo $user_active_class; ?>">
         <div class="reset-password-popup-inner">
             <h2>Reset Password</h2>
+            <?php if(!$user_exist){ ?>
             <div class="popup-cross-icon"></div>
+            <?php } ?>
             <div class="reset-password-form">
-                <form action="#">
+                <form action="#" id="cuim-profile-reset-password">
                     <div class="form-field required">
                         <label for="old-password"><span>*</span> Old Password</label>
                         <button class="toggle-password"></button>
-                        <input type="password" name="old-password" id="old-password"
-                            placeholder="Please Enter the Old Password">
+                        <input type="password" class="cuim-manage-user-pwd-validation-20" name="old-password"
+                            id="old-password" placeholder="Please Enter the Old Password">
+                        <div id="error-message"></div>
                     </div>
                     <div class="form-field required">
                         <label for="new-password"><span>*</span> New Password</label>
                         <button class="toggle-password"></button>
-                        <input type="password" name="new-password" id="new-password"
-                            placeholder="Please Enter The New Password">
+                        <input type="password" class="cuim-manage-user-pwd-validation-20 " name="new-password"
+                            id="new-password" placeholder="Please Enter The New Password">
+                        <div id="error-message"></div>
                     </div>
                     <div class="form-field required">
-                        <label for="confirm-password"><span>*</span> Confirm Password</label>
+                        <label for="confirm-password"><span>*</span> Confirm
+                            Password</label>
                         <button class="toggle-password"></button>
-                        <input type="password" name="confirm-password" id="confirm-password"
-                            placeholder="Confirm New Password">
+                        <input type="password" class="cuim-manage-user-pwd-validation-20 cuim-profile-check-pwd"
+                            name="confirm-password" id="confirm-password" placeholder="Confirm New Password">
+                        <div id="error-message"></div>
                     </div>
                     <div id="reset-form-buttons" class="form-buttons reset-form-buttons d-flex">
+                        <?php if(!$user_exist){ ?>
                         <button class="cancel-button" type="button">Cancel</button>
-                        <button id="save-custom-field-profile" type="button">Save</button>
-                        <>
+                        <?php } ?>
+                        <button id="save-profile-btn" type="submit">Save</button>
                     </div>
                 </form>
             </div>

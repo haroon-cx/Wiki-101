@@ -32,9 +32,6 @@ if ($add_manage_id == 0 && $edit_manage_id == 0) {
             ORDER BY id DESC
             ");
 }
-
-// $edit_user_data = null;
-
 if ($edit_manage_id !== 0) {
     $edit_user_data = $wpdb->get_results(
         $wpdb->prepare(
