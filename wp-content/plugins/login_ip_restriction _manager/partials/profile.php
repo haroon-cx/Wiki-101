@@ -1,48 +1,6 @@
 <?php
-
-
-
-// Profile completeness check function
-//function cuim_is_profile_complete($user_id) {
-//    $first = get_user_meta($user_id, 'first_name', true);
-//    $last = get_user_meta($user_id, 'last_name', true);
-//    $avatar = get_user_meta($user_id, 'cuim_profile_avatar', true);
-//
-//    return (!empty($first) && !empty($last) && !empty($avatar));
-//}
-
-
-
-add_action('wp_ajax_cuim_save_profile', 'cuim_save_profile');
-function cuim_save_profile() {
-    if (!is_user_logged_in()) wp_send_json_error("Not logged in.");
-
-    $user_id = get_current_user_id();
-    if (empty($_POST['cuim_first']) || empty($_POST['cuim_last'])) {
-        wp_send_json_error("First and Last name are required.");
-    }
-
-    update_user_meta($user_id, 'first_name', sanitize_text_field($_POST['cuim_first']));
-    update_user_meta($user_id, 'last_name', sanitize_text_field($_POST['cuim_last']));
-
-    if (!empty($_FILES['cuim_avatar']['name'])) {
-        require_once(ABSPATH . 'wp-admin/includes/file.php');
-        require_once(ABSPATH . 'wp-admin/includes/media.php');
-        require_once(ABSPATH . 'wp-admin/includes/image.php');
-        $attachment_id = media_handle_upload('cuim_avatar', 0);
-        if (is_wp_error($attachment_id)) {
-            wp_send_json_error("Image upload failed: " . $attachment_id->get_error_message());
-        }
-        update_user_meta($user_id, 'cuim_profile_avatar', $attachment_id);
-    }
-
-    wp_send_json_success("Profile updated successfully.");
-}
-
-
 add_action('wp_body_open', 'cui_pm_add_logout_button_footer');
 function cui_pm_add_logout_button_footer() {
-
     if (is_user_logged_in() && (
             current_user_can('administrator') ||
             current_user_can('editor') ||
@@ -50,8 +8,6 @@ function cui_pm_add_logout_button_footer() {
         )) {
         echo '<header class="header">';
         echo '<div class="header-wrapper">';
-
-
         // Get saved viewer mode flag for current user
         $user_id = get_current_user_id();
         $viewer_mode = get_user_meta($user_id, 'cuim_viewer_mode', true);
@@ -67,19 +23,11 @@ function cui_pm_add_logout_button_footer() {
                     </a>';
             }
         }
-
-        $user_id = get_current_user_id();
-        $first = get_user_meta($user_id, 'first_name', true);
-        $last = get_user_meta($user_id, 'last_name', true);
         $user = wp_get_current_user();
-        $avatar_id = get_user_meta($user_id, 'cuim_profile_avatar', true);
-        $avatar_url = $avatar_id ? wp_get_attachment_url($avatar_id) : get_avatar_url($user_id);
         $logout_url = wp_logout_url(home_url());
-
+        $profile_image = get_user_meta($user_id, 'profile_image', true); 
+        
         echo '<div class="header-right">';
-
-
-
         echo '
         <div id="agqa-search-box">
             <input type="text" id="agqa-search-input" placeholder="search...">
@@ -87,13 +35,13 @@ function cui_pm_add_logout_button_footer() {
         </div>
         
          <div class="cuim-profile-box">
-            <img src="' . esc_url($avatar_url) . '" alt="Avatar" />
+            <img src="' . esc_url($profile_image) . '" alt="Avatar" />
             <div class="cuim-profile-dropdown-ctn">
             <div class="cuim-profile-dropdown">
                 <div class="cuim-profile-dropdown-head">
-                    <img src="' . esc_url($avatar_url) . '" alt="Avatar" />
+                    <img src="' . esc_url($profile_image) . '" alt="Avatar" />
                     <div>
-                        <h2 class="cuim-user-name">' . esc_html($first . ' ' . $last) . '</h2>
+                        <h2 class="cuim-user-name">' . esc_html($user->first_name) . '</h2>
                         <span class="cuim-profile-name">' . esc_html($user->user_email) . '</span>
                     </div>
                 </div>
@@ -110,19 +58,14 @@ function cui_pm_add_logout_button_footer() {
         <span></span>
         </div>
         ';
-
-
-
         echo '</div>';
-
         echo '</div>';
         echo '</header>';
     }
     ?>
-
 <?php
 
-$user_id = get_current_user_id();
+// $user_id = get_current_user_id();
 $old_password = 'swxyz0123456789!@';  // Old password you want to match
 $hashed_old_password = wp_hash_password($old_password);  // Hash the old password for comparison
 
@@ -132,14 +75,8 @@ $user_active_class = '';
 $user_style_css = '';
 $user_exist = false; 
 
-// Fetch first and last name, and avatar URL
-$first = get_user_meta($user_id, 'first_name', true);
-$last = get_user_meta($user_id, 'last_name', true);
-$avatar_id = get_user_meta($user_id, 'cuim_profile_avatar', true);
-$avatar_url = $avatar_id ? wp_get_attachment_url($avatar_id) : get_avatar_url($user_id);
 // Global WPDB object
 global $wpdb;
-
 // Table name with prefix
 $table_agqa_manage_user = $wpdb->prefix . 'agqa_wiki_add_users';
 
@@ -171,7 +108,6 @@ $user_login_data = $wpdb->get_results(
         ",
         $user_id // Make sure the user_id is passed as an integer
     )
-    
 );
 if ($user) {
     // Check if the user's current password matches the old password
@@ -183,7 +119,7 @@ $user_style_css = 'style="display:none;"';
 $user_exist = true; 
     } 
 }
-     ?>
+?>
 
 <div class="cuim-profile-form-wrapper <?php echo $user_active_class; ?>">
     <div class="cuim-profile-form-inner" <?php echo $user_style_css; ?>>
@@ -197,7 +133,7 @@ $user_exist = true;
                     <h2>Edit Profile</h2>
                     <label for="upload-file-button" class="cuim-file-upload-label" style="display: block;">
                         <div class="edit-profile-image">
-                            <img id="cuim-avatar-preview" src="<?php echo esc_url($avatar_url); ?>" alt="Avatar">
+                            <img id="cuim-avatar-preview" src="<?php echo esc_url($profile_image); ?>" alt="image">
                             <span class='camera-icon'></span>
                         </div>
                     </label>
@@ -218,7 +154,8 @@ $user_exist = true;
             <div id="cuim-edit-fields">
                 <div class="form-field required">
                     <label for="user-name"><span>* </span>User Name</label>
-                    <input type="text" id="user-name" name="user-name" placeholder="Please add User Name" required>
+                    <input type="text" id="user-name" class="profile-username-validation-100" name="user-name"
+                        value="<?php echo $user->first_name;?>" placeholder="Please add User Name" required>
 
                 </div>
                 <div class="form-field required">
@@ -359,4 +296,4 @@ label.viewer-toggle-wrapper.checkbox_label {
 <?php 
 
 }
-// ?>
+ ?>

@@ -99,8 +99,6 @@ jQuery(document).ready(function ($) {
         nonce: nonce,
       },
       success: function (response) {
-        console.log(response); // Log the response to check its structure
-
         // Check if the response contains success
         if (response.success) {
           // If successful, show a success message
@@ -267,7 +265,6 @@ jQuery(document).ready(function ($) {
         nonce: nonce,
       },
       success: function (response) {
-        console.log(response);
         // alert(response);
         if (response.success) {
           const $successMsg = $(
@@ -918,169 +915,154 @@ jQuery(document).ready(function ($) {
   /**
    * user_profile_update
    */
-  // jQuery("#cuim-update-user-profile").on("submit", function (e) {
-
-  //   e.preventDefault();
-  //   var $form = jQuery(this);
-  //   var blobUrl = jQuery("#cuim-avatar-preview").attr("src");
-
-  //   function blobUrlToFile(blobUrl, filename) {
-  //     return fetch(blobUrl)
-  //       .then((res) => res.blob())
-  //       .then((blob) => new File([blob], filename, { type: blob.type }));
-  //   }
-
-  //   var file = blobUrlToFile(blobUrl, "user_profile_image.png");
-  //   var formData = $form.serialize(); // Get the form data
-  //   formData += "&image=" + file; // Append the image data
-  //   alert(formData);
-  //   // return;
-  //   var isValid = true; // Flag to check if the form is valid
-
-  //   // Check if required fields are filled
-  //   $form.find("[required]").each(function () {
-  //     if ($(this).val().trim() === "") {
-  //       isValid = false; // Mark as invalid if the required field is empty
-  //     }
-  //   });
-
-  //   // If the form is not valid, show error and return early
-  //   if (!isValid) {
-  //     return; // Stop further processing if the form is invalid
-  //   }
-
-  //   var nonce = cuim_ajax.nonce; // Nonce for security
-
-  //   // Assuming the cropped image is a Blob URL
-
-  //   // Send the AJAX request
-  //   $.ajax({
-  //     url: cuim_ajax.ajax_url,
-  //     type: "POST",
-  //     data: {
-  //       action: "user_profile_update",
-  //       form_data: formData, // Pass the form data to the server
-  //       nonce: nonce,
-  //     },
-  //     success: function (response) {
-  //       // alert(response);
-  //       alert(response);
-  //       // Check if the response contains success
-  //       if (response.success) {
-  //         // If successful, show a success message
-  //         jQuery(".reset-password-popup").removeClass("active");
-
-  //         const $successMsg = $(
-  //           `<div class="submitted-successfully">${response.data.message}</div>`
-  //         );
-  //         jQuery(".cuim-profile-form-wrapper").append($successMsg);
-  //         // Hide after 3 seconds
-  //         setTimeout(function () {
-  //           $successMsg.remove();
-  //           jQuery(".cuim-profile-form-wrapper").removeClass("active");
-
-  //           window.location.href = `/verification/?login-again=1`;
-  //         }, 3000);
-  //       } else {
-  //         jQuery("div#confirm-submit-popup").removeClass("active");
-  //         const $successMsg = $(
-  //           `<div class="submitted-unsuccessfully">${response.data.message}</div>`
-  //         );
-  //         $form.append($successMsg);
-  //         // Hide after 3 seconds
-  //         setTimeout(function () {
-  //           $successMsg.fadeOut(400, function () {
-  //             $(this).remove();
-  //           });
-  //         }, 3000);
-  //       }
-  //     },
-
-  //     error: function (response) {
-  //       // Error message if AJAX fails
-  //       alert("An error occurred.");
-  //     },
-  //   });
-  // });
   jQuery("#cuim-update-user-profile").on("submit", function (e) {
     e.preventDefault();
     var $form = jQuery(this);
     var blobUrl = jQuery("#cuim-avatar-preview").attr("src");
 
-    function blobUrlToFile(blobUrl, filename) {
+    // Convert blob: URL to data URL (base64)
+    function blobUrlToDataURL(blobUrl) {
       return fetch(blobUrl)
         .then((res) => res.blob())
-        .then((blob) => new File([blob], filename, { type: blob.type }));
+        .then(
+          (blob) =>
+            new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result); // => data:image/png;base64,...
+              reader.onerror = reject;
+              reader.readAsDataURL(blob);
+            })
+        );
     }
 
-    var file = blobUrlToFile(blobUrl, "user_profile_image.png");
-
-    var formData = new FormData($form[0]); // Convert form into FormData
-    formData.append("image", file); // Append the image file
-
-    var nonce = cuim_ajax.nonce; // Nonce for security
-    formData.append("nonce", nonce); // Append the nonce
-
-    var isValid = true; // Flag to check if the form is valid
-
-    // Check if required fields are filled
+    var isValid = true;
     $form.find("[required]").each(function () {
-      if ($(this).val().trim() === "") {
-        isValid = false; // Mark as invalid if the required field is empty
+      if (jQuery(this).val().trim() === "") {
+        isValid = false;
       }
     });
+    if (!isValid) return;
 
-    // If the form is not valid, show error and return early
-    if (!isValid) {
-      return; // Stop further processing if the form is invalid
-    }
+    // If it's already a data URL, use as-is; if blob:, convert to data URL first
+    const useAjax = (dataUrl) => {
+      var formData = $form.serialize();
+      formData += "&image=" + encodeURIComponent(dataUrl); // <-- send as string
+      var nonce = cuim_ajax.nonce; // Nonce for security
 
-  $.ajax({
-    url: cuim_ajax.ajax_url, // WordPress AJAX URL
-    type: "POST",
-    data: {
-        action: "user_profile_update", // The action you are calling in the PHP backend
-        form_data: formData, // The form data being sent, including the image
-        nonce: cuim_ajax.nonce // Nonce for security
-    },
-    processData: false, // Don't process the data
-    contentType: false, // Don't set content type for multipart form
-    success: function (response) {
-        alert(response.message); // Show success or failure message
-
-        // Handle success response
-        if (response.success) {
+      $.ajax({
+        url: cuim_ajax.ajax_url,
+        type: "POST",
+        data: {
+          action: "user_profile_update",
+          form_data: formData, // Pass the form data to the server
+          nonce: nonce,
+        },
+        success: function (response) {
+          // Check if the response contains success
+          if (response.success) {
+            // If successful, show a success message
             jQuery(".reset-password-popup").removeClass("active");
 
             const $successMsg = $(
-                `<div class="submitted-successfully">${response.data.message}</div>`
+              `<div class="submitted-successfully">${response.data.message}</div>`
             );
             jQuery(".cuim-profile-form-wrapper").append($successMsg);
-
             // Hide after 3 seconds
             setTimeout(function () {
-                $successMsg.remove();
-                jQuery(".cuim-profile-form-wrapper").removeClass("active");
-                window.location.href = `/verification/?login-again=1`;
+              $successMsg.remove();
+              jQuery(".cuim-profile-form-wrapper").removeClass("active");
             }, 3000);
-        } else {
-            const $errorMsg = $(
-                `<div class="submitted-unsuccessfully">${response.data.message}</div>`
+          } else {
+            jQuery("div#confirm-submit-popup").removeClass("active");
+            const $successMsg = $(
+              `<div class="submitted-unsuccessfully">${response.data.message}</div>`
             );
-            $form.append($errorMsg);
-
-            // Hide error message after 3 seconds
+            $form.append($successMsg);
+            // Hide after 3 seconds
             setTimeout(function () {
-                $errorMsg.fadeOut(400, function () {
-                    $(this).remove();
-                });
+              $successMsg.fadeOut(400, function () {
+                $(this).remove();
+              });
             }, 3000);
-        }
-    },
-    error: function () {
-        alert("An error occurred.");
-    }
-});
+          }
+        },
 
+        error: function (response) {
+          // Error message if AJAX fails
+          alert("An error occurred.");
+        },
+      });
+    };
+    if (typeof blobUrl === "string" && blobUrl.indexOf("data:image/") === 0) {
+      // Already a data URL
+      useAjax(blobUrl);
+    } else if (typeof blobUrl === "string" && blobUrl.indexOf("blob:") === 0) {
+      // Convert blob: -> data:
+      blobUrlToDataURL(blobUrl)
+        .then(useAjax)
+        .catch(() => {
+          alert("Failed to read the image blob.");
+        });
+    } else {
+      // Fallback (maybe a normal https URL)
+      useAjax(blobUrl);
+    }
+  });
+
+  /**
+   *profile-username-validation-100
+   */
+  $(".profile-username-validation-100").on("input", function () {
+    const minLength = 0;
+    const maxLength = 100;
+
+    const $input = $(this);
+    let $errorMessage = $input.siblings("#error-message");
+    const value = $input.val();
+    const len = value.length;
+    jQuery("#save-update-user-profile").prop("disabled", false);
+    // Create error container once
+    if ($errorMessage.length === 0) {
+      $errorMessage = $(
+        '<div id="error-message" class="cuim-validation-error" />'
+      ).insertAfter($input);
+    }
+
+    // Check for special characters (anything that's not a letter, number, or space)
+    const specialChars = /[^a-zA-Z0-9 ]/;
+    const hasNumbers = /\d/; // Regex to check for numbers
+
+    if (specialChars.test(value)) {
+      $input.addClass("error-field-input");
+      $errorMessage.text("User name cannot contain special characters.");
+      jQuery("#save-update-user-profile").prop("disabled", true);
+      return; // Stop further processing if special characters are found
+    }
+
+    // Check if the username contains numbers (digits)
+    if (hasNumbers.test(value)) {
+      $input.addClass("error-field-input");
+      $errorMessage.text("User name can only contain English letters.");
+      jQuery("#save-update-user-profile").prop("disabled", true);
+      return; // Stop further processing if numeric characters are found
+    }
+
+    if (len === 0) {
+      // Empty: clear errors
+      $input.removeClass("error-field-input");
+      $errorMessage.text("");
+    } else if (len < minLength) {
+      $input.addClass("error-field-input");
+      $errorMessage.text(`Minimum ${minLength} characters required.`);
+    } else if (len > maxLength) {
+      // Truncate to max and show message
+      $input.val(value.substring(0, maxLength));
+      $input.addClass("error-field-input");
+      $errorMessage.text(`Maximum ${maxLength} characters allowed.`);
+    } else {
+      // Valid
+      $input.removeClass("error-field-input");
+      $errorMessage.text("");
+    }
   });
 });

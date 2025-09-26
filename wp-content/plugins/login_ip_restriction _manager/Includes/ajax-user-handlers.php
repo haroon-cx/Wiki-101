@@ -598,69 +598,9 @@ function handle_cuim_user_change_password()
  * user_profile_update
 */
 
-// add_action('wp_ajax_user_profile_update', 'handle_user_profile_update');
-// add_action('wp_ajax_nopriv_user_profile_update', 'handle_user_profile_update');
-
-// function handle_user_profile_update() {
-//     // Verify the nonce for security
-//     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
-//         wp_send_json_error(['message' => 'Permission Denied']);
-//     }
-//     $user_id = get_current_user_id();
-//      parse_str($_POST['form_data'], $data);
-//      // Get the form data
-//     $file = isset($data['image']) ? sanitize_text_field($data['image']) : '';
-//     $user_name = isset($data['user-name']) ? sanitize_text_field($data['user-name']) : '';
-    
-//     // Handle the uploaded file
-//     $upload_dir = wp_upload_dir(); // Get the upload directory
-    
-//     // Set up file name and path
-//     $file_name = sanitize_file_name($file['name']);
-//     $file_path = $upload_dir['path'] . '/' . $file_name;
-// echo $file_name;
-// wp_die();
-//     // Move the uploaded file to the WordPress uploads folder
-//     if (move_uploaded_file($file['tmp_name'], $file_path)) {
-//       // File has been uploaded to WordPress uploads directory
-
-//       // Add the file to the media library
-//       $attachment = array(
-//         'guid' => $upload_dir['url'] . '/' . $file_name,
-//         'post_mime_type' => $file['type'],
-//         'post_title' => sanitize_file_name($file_name),
-//         'post_content' => '',
-//         'post_status' => 'inherit',
-//       );
-
-//       // Insert the attachment to the WordPress media library
-//       $attachment_id = wp_insert_attachment($attachment, $file_path);
-
-//       // Generate metadata for the attachment
-//       $attachment_metadata = wp_generate_attachment_metadata($attachment_id, $file_path);
-//       wp_update_attachment_metadata($attachment_id, $attachment_metadata);
-
-//       // Get the URL of the uploaded image
-//       $image_url = wp_get_attachment_url($attachment_id);
-
-//       // Save the image URL in the user's meta
-//       update_user_meta($user_id, 'profile_image', $image_url);
-
-//        wp_send_json_success(['message' => 'Password reset successful.']);
-//     } else {
-//       return false; // Failed to upload the file
-//     }
-
-//   return false; // No file uploaded
-// }
-
-// Register the AJAX action for logged-in users
 add_action('wp_ajax_user_profile_update', 'handle_user_profile_update');
-
-// Register the AJAX action for non-logged-in users (optional)
 add_action('wp_ajax_nopriv_user_profile_update', 'handle_user_profile_update');
 
-// Function to handle the user profile update
 function handle_user_profile_update() {
     // Verify the nonce for security
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
@@ -668,43 +608,188 @@ function handle_user_profile_update() {
     }
 
     $user_id = get_current_user_id();
-    
-    // Handle the uploaded file from $_FILES
-    if (isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
-        $file = $_FILES['image'];
-        $upload_dir = wp_upload_dir(); // Get the upload directory
-        $file_name = sanitize_file_name($file['name']);
-        $file_path = $upload_dir['path'] . '/' . $file_name;
 
-        // Move the uploaded file to WordPress uploads folder
-        if (move_uploaded_file($file['tmp_name'], $file_path)) {
-            // Add the file to the media library
-            $attachment = array(
-                'guid' => $upload_dir['url'] . '/' . $file_name,
-                'post_mime_type' => $file['type'],
-                'post_title' => sanitize_file_name($file_name),
-                'post_content' => '',
-                'post_status' => 'inherit',
-            );
+    // Parse serialized form data from the "form_data" field
+    $data = [];
+    if (isset($_POST['form_data'])) {
+        parse_str($_POST['form_data'], $data);
+    }
 
-            // Insert the attachment into the media library
-            $attachment_id = wp_insert_attachment($attachment, $file_path);
+    $image_input = isset($data['image']) ? trim($data['image']) : '';
+    $user_name   = isset($data['user-name']) ? sanitize_text_field($data['user-name']) : '';
 
-            // Generate metadata for the attachment
-            $attachment_metadata = wp_generate_attachment_metadata($attachment_id, $file_path);
-            wp_update_attachment_metadata($attachment_id, $attachment_metadata);
+    if (empty($image_input)) {
+        wp_send_json_error(['message' => 'No image provided.']);
+    }
 
-            // Get the URL of the uploaded image
-            $image_url = wp_get_attachment_url($attachment_id);
+    // Prepare uploads directory
+    $upload_dir = wp_upload_dir();
+    if (!empty($upload_dir['error'])) {
+        wp_send_json_error(['message' => 'Upload directory is not writable.']);
+    }
 
-            // Save the image URL in the user's meta
-            update_user_meta($user_id, 'profile_image', $image_url);
+    $file_bytes   = '';
+    $mime_type    = '';
+    $file_ext     = 'jpg'; // default fallback
+    $file_basename = 'user_profile_image';
 
-            wp_send_json_success(['message' => 'Profile updated successfully.', 'data' => ['message' => 'Profile updated successfully.']]);
-        } else {
-            wp_send_json_error(['message' => 'Failed to upload the image.']);
+    // 1) Handle Data URL: data:image/<ext>;base64,XXXX
+    if (preg_match('#^data:image/([a-zA-Z0-9]+);base64,#', $image_input, $m)) {
+        $file_ext = strtolower($m[1]);
+        $mime_type = 'image/' . $file_ext;
+        $base64    = substr($image_input, strpos($image_input, ',') + 1);
+        $file_bytes = base64_decode($base64);
+        if ($file_bytes === false) {
+            wp_send_json_error(['message' => 'Invalid base64 image data.']);
         }
-    } else {
-        wp_send_json_error(['message' => 'No image uploaded']);
+    }
+    // 2) Handle HTTP/HTTPS URL: fetch and save
+    elseif (filter_var($image_input, FILTER_VALIDATE_URL) && preg_match('#^https?://#i', $image_input)) {
+        $response = wp_remote_get($image_input, ['timeout' => 20]);
+        if (is_wp_error($response)) {
+            wp_send_json_error(['message' => 'Failed to fetch image from URL.']);
+        }
+        $code = wp_remote_retrieve_response_code($response);
+        if ($code < 200 || $code >= 300) {
+            wp_send_json_error(['message' => 'Image URL returned an invalid response.']);
+        }
+        $file_bytes = wp_remote_retrieve_body($response);
+        if (!$file_bytes) {
+            wp_send_json_error(['message' => 'Failed to read image body.']);
+        }
+        $mime_type = wp_remote_retrieve_header($response, 'content-type');
+        if (!$mime_type || strpos($mime_type, 'image/') !== 0) {
+            $mime_type = 'image/png';
+        }
+
+        // Try to derive extension from MIME
+        $ext_from_mime = explode('/', $mime_type);
+        if (!empty($ext_from_mime[1])) {
+            $file_ext = strtolower($ext_from_mime[1]);
+            // normalize common types
+            if ($file_ext === 'jpeg') $file_ext = 'jpg';
+        }
+    }
+    // 3) Unsupported (e.g., blob: URLs)
+    else {
+        wp_send_json_error(['message' => 'Unsupported image format. Use a data URL or HTTP/HTTPS URL.']);
+    }
+
+    // Build a unique filename
+    $file_name = sanitize_file_name($file_basename . '-' . time() . '.' . $file_ext);
+    $file_path = trailingslashit($upload_dir['path']) . $file_name;
+
+    // Write file to uploads
+    $put_ok = file_put_contents($file_path, $file_bytes);
+    if ($put_ok === false) {
+        wp_send_json_error(['message' => 'Failed to write image file.']);
+    }
+
+    // Ensure correct file permissions
+    $stat  = @stat(dirname($file_path));
+    $perms = $stat ? $stat['mode'] & 0000666 : 0666;
+    @chmod($file_path, $perms);
+
+    // Prepare attachment data
+    if (empty($mime_type)) {
+        $mime_type = wp_check_filetype($file_name)['type'] ?: 'image/png';
+    }
+
+    $attachment = [
+        'guid'           => trailingslashit($upload_dir['url']) . $file_name,
+        'post_mime_type' => $mime_type,
+        'post_title'     => sanitize_text_field(pathinfo($file_name, PATHINFO_FILENAME)),
+        'post_content'   => '',
+        'post_status'    => 'inherit',
+    ];
+
+    // Add to media library
+    $attachment_id = wp_insert_attachment($attachment, $file_path);
+    if (is_wp_error($attachment_id) || !$attachment_id) {
+        // Clean up file on failure
+        @unlink($file_path);
+        wp_send_json_error(['message' => 'Failed to create media attachment.']);
+    }
+
+    // Generate metadata
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+    $attachment_metadata = wp_generate_attachment_metadata($attachment_id, $file_path);
+    wp_update_attachment_metadata($attachment_id, $attachment_metadata);
+
+    // Get final URL & save to user meta
+    $image_url = wp_get_attachment_url($attachment_id);
+    update_user_meta($user_id, 'profile_image', esc_url_raw($image_url));
+
+    // (Optional) Save user name if needed
+   if (!empty($user_name)) {
+    $result = wp_update_user([
+        'ID'         => $user_id,
+        'first_name' => $user_name, // saves to user meta 'first_name'
+    ]);
+
+    if (is_wp_error($result)) {
+        wp_send_json_error(['message' => 'Failed to update first name.']);
     }
 }
+
+    wp_send_json_success([
+        'message' => 'Profile updated successfully.',
+        'data'    => ['message' => 'Profile updated successfully.', 'image_url' => $image_url],
+    ]);
+}
+
+
+// Register the AJAX action for logged-in users
+// add_action('wp_ajax_user_profile_update', 'handle_user_profile_update');
+// add_action('wp_ajax_nopriv_user_profile_update', 'handle_user_profile_update');
+
+// // Function to handle the user profile update
+// function handle_user_profile_update() {
+//     // Verify the nonce for security
+//     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+//         wp_send_json_error(['message' => 'Permission Denied']);
+//     }
+// //    echo 'kuch bhi';
+// //     wp_die();
+
+//     $user_id = get_current_user_id();
+    
+//     // Handle the uploaded file from $_FILES
+//     if (isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
+//         $file = $_FILES['image'];
+//         $upload_dir = wp_upload_dir(); // Get the upload directory
+//         $file_name = sanitize_file_name($file['name']);
+//         $file_path = $upload_dir['path'] . '/' . $file_name;
+
+//         // Move the uploaded file to WordPress uploads folder
+//         if (move_uploaded_file($file['tmp_name'], $file_path)) {
+//             // Add the file to the media library
+//             $attachment = array(
+//                 'guid' => $upload_dir['url'] . '/' . $file_name,
+//                 'post_mime_type' => $file['type'],
+//                 'post_title' => sanitize_file_name($file_name),
+//                 'post_content' => '',
+//                 'post_status' => 'inherit',
+//             );
+
+//             // Insert the attachment into the media library
+//             $attachment_id = wp_insert_attachment($attachment, $file_path);
+
+//             // Generate metadata for the attachment
+//             $attachment_metadata = wp_generate_attachment_metadata($attachment_id, $file_path);
+//             wp_update_attachment_metadata($attachment_id, $attachment_metadata);
+
+//             // Get the URL of the uploaded image
+//             $image_url = wp_get_attachment_url($attachment_id);
+
+//             // Save the image URL in the user's meta
+//             update_user_meta($user_id, 'profile_image', $image_url);
+
+//             wp_send_json_success(['message' => 'Profile updated successfully.', 'data' => ['message' => 'Profile updated successfully.']]);
+//         } else {
+//             wp_send_json_error(['message' => 'Failed to upload the image.']);
+//         }
+//     } else {
+//         wp_send_json_error(['message' => 'No image uploaded']);
+//     }
+// }
