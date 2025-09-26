@@ -1,4 +1,33 @@
 <?php
+
+
+// add_action('wp_ajax_cuim_save_profile', 'cuim_save_profile');
+// function cuim_save_profile() {
+//     if (!is_user_logged_in()) wp_send_json_error("Not logged in.");
+
+//     $user_id = get_current_user_id();
+//     if (empty($_POST['cuim_first']) || empty($_POST['cuim_last'])) {
+//         wp_send_json_error("First and Last name are required.");
+//     }
+
+//     update_user_meta($user_id, 'first_name', sanitize_text_field($_POST['cuim_first']));
+//     update_user_meta($user_id, 'last_name', sanitize_text_field($_POST['cuim_last']));
+
+//     if (!empty($_FILES['cuim_avatar']['name'])) {
+//         require_once(ABSPATH . 'wp-admin/includes/file.php');
+//         require_once(ABSPATH . 'wp-admin/includes/media.php');
+//         require_once(ABSPATH . 'wp-admin/includes/image.php');
+//         $attachment_id = media_handle_upload('cuim_avatar', 0);
+//         if (is_wp_error($attachment_id)) {
+//             wp_send_json_error("Image upload failed: " . $attachment_id->get_error_message());
+//         }
+//         update_user_meta($user_id, 'cuim_profile_avatar', $attachment_id);
+//     }
+
+//     wp_send_json_success("Profile updated successfully.");
+// }
+
+
 add_action('wp_body_open', 'cui_pm_add_logout_button_footer');
 function cui_pm_add_logout_button_footer() {
     if (is_user_logged_in() && (
@@ -27,7 +56,7 @@ function cui_pm_add_logout_button_footer() {
         $logout_url = wp_logout_url(home_url());
         $profile_image = get_user_meta($user_id, 'profile_image', true); 
         if(empty($profile_image)){
-            $profile_image = URIP_URL . '/assets/image/profile-user-image.webp';
+            $profile_image = URIP_URL . '/assets/image/profile-user-image.jpg';
         }
         
         echo '<div class="header-right">';
@@ -73,7 +102,12 @@ $old_password = 'swxyz0123456789!@';  // Old password you want to match
 $hashed_old_password = wp_hash_password($old_password);  // Hash the old password for comparison
 
 // Get the current user’s data (including password)
-$user = get_user_by('id', $user_id);
+if (is_user_logged_in()) {
+    $user = get_user_by('id', $user_id);
+} else {
+    // Handle the case when the user is not logged in, if needed
+    $user = null; // Or any other fallback logic
+}
 $user_active_class = ''; 
 $user_style_css = '';
 $user_exist = false; 
@@ -82,6 +116,7 @@ $user_exist = false;
 global $wpdb;
 // Table name with prefix
 $table_agqa_manage_user = $wpdb->prefix . 'agqa_wiki_add_users';
+if (is_user_logged_in()) {
 
 // Fetch user data from the custom table based on user_id
 $user_login_data = $wpdb->get_results(
@@ -112,6 +147,7 @@ $user_login_data = $wpdb->get_results(
         $user_id // Make sure the user_id is passed as an integer
     )
 );
+}
 if ($user) {
     // Check if the user's current password matches the old password
     if (wp_check_password($old_password, $user->user_pass, $user_id)) {
@@ -164,7 +200,7 @@ $user_exist = true;
                 <div class="form-field required">
                     <label for="company-name"><span>* </span>Company Name</label>
                     <input type="text" id="company-name" placeholder="Description"
-                        value="<?php echo ucwords($login_value->company_name); ?>">
+                        value="<?php echo ucwords($login_value->company_name); ?>" disabled>
                 </div>
                 <div class=" form-field required">
                     <label for="question-type"><span>* </span>User Role</label>

@@ -65,8 +65,9 @@ body.body_style_wide:not(.expand_content) .content_wrap>.content {
 <?php 
 if($login_again == '1') {
 include 'login-again.php'; 
+ return;
 }
-return;
+
 ?>
 
 
@@ -101,7 +102,8 @@ return;
         </div>
     </div>
 </div>
-<?php return;
+<?php 
+return; 
 } ?>
 
 <?php if ($user_info && $date_diff < 7) { ?>
