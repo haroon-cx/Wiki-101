@@ -89,7 +89,7 @@ function hide_mobile_menu_for_non_admin()
         ! current_user_can('contributor')
     )) {
 ?>
-        <style>
+<!-- <style>
             ul#menu-main-menu .menu-item {
                 display: none;
             }
@@ -112,37 +112,37 @@ function hide_mobile_menu_for_non_admin()
                 background: var(--cuim-color-accent);
                 border-radius: 8px;
             }
-        </style>
-    <?php
+        </style> -->
+<?php
     }
     $user_id = get_current_user_id();
     if (get_user_meta($user_id, 'cuim_viewer_mode', true)) { ?>
 
-        <style>
-            ul#menu-main-menu .menu-item {
-                display: none;
-            }
+<style>
+ul#menu-main-menu .menu-item {
+    display: none;
+}
 
-            ul#menu-main-menu .menu-item:nth-child(2) {
-                display: block;
-                font-size: 0;
-            }
+ul#menu-main-menu .menu-item:nth-child(2) {
+    display: block;
+    font-size: 0;
+}
 
-            ul#menu-main-menu .menu-item:nth-child(2) a {
-                font-size: 0 !important;
-            }
+ul#menu-main-menu .menu-item:nth-child(2) a {
+    font-size: 0 !important;
+}
 
-            ul#menu-main-menu .menu-item:nth-child(2) a:before {
-                content: "Games";
-                font-size: 20px !important;
-                color: #fff;
-            }
+ul#menu-main-menu .menu-item:nth-child(2) a:before {
+    content: "Games";
+    font-size: 20px !important;
+    color: #fff;
+}
 
-            .sidebar>.sidebar_inner>.widget ul#menu-main-menu li {
-                background: var(--cuim-color-accent);
-                border-radius: 8px;
-            }
-        </style>
+.sidebar>.sidebar_inner>.widget ul#menu-main-menu li {
+    background: var(--cuim-color-accent);
+    border-radius: 8px;
+}
+</style>
 <?php
     }
 }

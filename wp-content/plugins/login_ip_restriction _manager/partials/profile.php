@@ -30,11 +30,11 @@
 
 add_action('wp_body_open', 'cui_pm_add_logout_button_footer');
 function cui_pm_add_logout_button_footer() {
-    if (is_user_logged_in() && (
-            current_user_can('administrator') ||
-            current_user_can('editor') ||
-            current_user_can('contributor')
-        )) {
+    // if (is_user_logged_in() && (
+    //         current_user_can('administrator') ||
+    //         current_user_can('editor') ||
+    //         current_user_can('contributor')
+    //     )) {
         echo '<header class="header">';
         echo '<div class="header-wrapper">';
         // Get saved viewer mode flag for current user
@@ -93,7 +93,7 @@ function cui_pm_add_logout_button_footer() {
         echo '</div>';
         echo '</div>';
         echo '</header>';
-    }
+    // }
     ?>
 <?php
 
