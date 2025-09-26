@@ -484,7 +484,6 @@ jQuery(function ($) {
         // Update preview (front-end) — you can also send blob/base64 to server if needed
         var url = URL.createObjectURL(blob);
         $preview.attr("src", url);
-        jQuery(".cuim-profile-box img").attr("src", url);
 
         // Cleanup
         try {

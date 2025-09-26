@@ -961,7 +961,12 @@ jQuery(document).ready(function ($) {
           // Check if the response contains success
           if (response.success) {
             // If successful, show a success message
+
             jQuery(".reset-password-popup").removeClass("active");
+            jQuery(".cuim-profile-box img").attr(
+              "src",
+              response.data.image_url
+            );
 
             const $successMsg = $(
               `<div class="submitted-successfully">${response.data.message}</div>`
