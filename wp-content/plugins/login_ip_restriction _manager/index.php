@@ -106,45 +106,45 @@ function ipum_get_client_ip()
     return sanitize_text_field($_SERVER['REMOTE_ADDR'] ?? '');
 }
 
-add_filter('authenticate', 'cui_pm_admin_bypass_ip_whitelist', 30, 3);
-function cui_pm_admin_bypass_ip_whitelist($user, $username, $password)
-{
-    if (is_wp_error($user) || ! $user instanceof WP_User) {
-        return $user;
-    }
+// add_filter('authenticate', 'cui_pm_admin_bypass_ip_whitelist', 30, 3);
+// function cui_pm_admin_bypass_ip_whitelist($user, $username, $password)
+// {
+//     if (is_wp_error($user) || ! $user instanceof WP_User) {
+//         return $user;
+//     }
 
-    // 1) Admins bypass IP checks
-    if (user_can($user, 'administrator')) {
-        return $user;
-    }
+//     // 1) Admins bypass IP checks
+//     if (user_can($user, 'administrator')) {
+//         return $user;
+//     }
 
-    // 2) Skip REST/AJAX/cron
-    if (
-        (defined('REST_REQUEST') && REST_REQUEST) ||
-        (defined('DOING_AJAX') && DOING_AJAX) ||
-        (defined('DOING_CRON') && DOING_CRON)
-    ) {
-        return $user;
-    }
+//     // 2) Skip REST/AJAX/cron
+//     if (
+//         (defined('REST_REQUEST') && REST_REQUEST) ||
+//         (defined('DOING_AJAX') && DOING_AJAX) ||
+//         (defined('DOING_CRON') && DOING_CRON)
+//     ) {
+//         return $user;
+//     }
 
-    // 3) Get whitelist and real client IP
-    $allowed_ip = get_user_meta($user->ID, 'allowed_ip', true);
-    $current_ip = ipum_get_client_ip();
+//     // 3) Get whitelist and real client IP
+//     $allowed_ip = get_user_meta($user->ID, 'allowed_ip', true);
+//     $current_ip = ipum_get_client_ip();
 
-    // 4) Deny if no whitelist or mismatch
-    if (empty($allowed_ip) || $allowed_ip !== $current_ip) {
-        return new WP_Error(
-            'ip_blocked',
-            sprintf(
-            /* translators: IP */
-                __('Access denied. Your IP (%s) is not whitelisted.', 'custom-user-ip-manager'),
-                esc_html($current_ip)
-            )
-        );
-    }
+//     // 4) Deny if no whitelist or mismatch
+//     if (empty($allowed_ip) || $allowed_ip !== $current_ip) {
+//         return new WP_Error(
+//             'ip_blocked',
+//             sprintf(
+//             /* translators: IP */
+//                 __('Access denied. Your IP (%s) is not whitelisted.', 'custom-user-ip-manager'),
+//                 esc_html($current_ip)
+//             )
+//         );
+//     }
 
-    return $user;
-}
+//     return $user;
+// }
 
 
 //add_filter('show_admin_bar', function () {

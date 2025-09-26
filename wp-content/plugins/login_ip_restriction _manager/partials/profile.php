@@ -26,6 +26,9 @@ function cui_pm_add_logout_button_footer() {
         $user = wp_get_current_user();
         $logout_url = wp_logout_url(home_url());
         $profile_image = get_user_meta($user_id, 'profile_image', true); 
+        if(empty($profile_image)){
+            $profile_image = URIP_URL . '/assets/image/profile-user-image.webp';
+        }
         
         echo '<div class="header-right">';
         echo '
