@@ -276,7 +276,7 @@ function agqa_create_tables()
         issue_detail_reply TEXT NOT NULL,
         upload_attachments TEXT, 
         answer TEXT,
-        reporter BIGINT(20) NOT NULL,
+        reporter VARCHAR(255) NOT NULL,
         reply_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) $charset");

@@ -752,80 +752,7 @@ jQuery(document).ready(function ($) {
   /**
    * faqs report script
    */
-  /**
-   * Edit FAQ Form
-   */
 
-  // $("#faq_report_form").submit(function (e) {
-  //   e.preventDefault();
-  //   const $form = $(this);
-  //   var formDataBmodel = $form.serialize();
-  //   // console.log(formDataBmodel);
-  //   var formDataObject = {};
-  //   // console.log($('input[type="file"]')[0].files[0] );
-  //   var formDataImage = new FormData();
-  //   let isValid = true;
-  //   // Split the serialized string by '&' and loop through each pair
-  //   formDataBmodel.split("&").forEach(function (pair) {
-  //     var [key, value] = pair.split("=");
-  //     formDataObject[key] = decodeURIComponent(value);
-  //   });
-  //   var formDataImage = new FormData();
-  //   formDataImage.append("action", "ddmu_handle_upload");
-  //   formDataImage.append("nonce", agqa_ajax.nonce);
-  //   formDataImage.append("file", $('input[type="file"]')[0].files[0]);
-  //   // console.log(formDataImage);
-  //   // alert(response);
-  //   const $successMsg = $(
-  //     `<div class="submit-warning">Please Waiting...</div>`
-  //   );
-  //   $form.append($successMsg);
-
-  //   // Hide after 3 seconds
-  //   setTimeout(function () {
-  //     $successMsg.fadeOut(400, function () {
-  //       $(this).remove();
-  //     });
-  //   }, 3000);
-  //   $.ajax({
-  //     url: agqa_ajax.ajax_url,
-  //     type: "POST",
-  //     data: formDataImage,
-  //     processData: false,
-  //     contentType: false,
-  //     success: function (response) {
-  //       // console.log(response);
-  //       var parsedResponse = JSON.parse(response);
-  //       if (parsedResponse.status === "success") {
-  //         // Get the image URL from the upload response
-  //         var imageUrls = parsedResponse.url;
-  //         // console.log(formDataObject["business-model"]);
-  //         if (formDataObject["business-model"] == "sale") {
-  //           // agqaAddSales(imageUrls);
-  //         } else {
-  //           // console.log(imageUrls);
-  //           // agqaAddRevnue(imageUrls);
-  //         }
-  //       } else {
-  //         $("#ddmu-response").html("<p>" + parsedResponse.message + "</p>");
-  //         if (formDataObject["business-model"] == "sale") {
-  //           imageUrls = "";
-  //           // agqaAddSales(imageUrls);
-  //         } else {
-  //           imageUrls = "";
-  //           // agqaAddRevnue(imageUrls);
-  //         }
-  //       }
-  //     },
-  //     error: function (xhr) {
-  //       $("#ddmu-response").html(
-  //         "<p>Something went wrong. Please try again.</p>"
-  //       );
-  //     },
-  //   });
-  // });
-
-  // --- helpers ---
   function dataURLtoFile(dataUrl, filename = "image.jpg") {
     // data:[<mime>][;base64],<data>
     const arr = dataUrl.split(",");
@@ -882,7 +809,7 @@ jQuery(document).ready(function ($) {
 
     const $form = $(this);
     const fd = new FormData($form[0]); // grabs your other form fields
-    fd.append("action", "ddmu_handle_upload"); // adjust if your PHP action name differs
+    fd.append("action", "report_image_system_upload"); // adjust if your PHP action name differs
     fd.append("nonce", agqa_ajax.nonce); // must match your localized nonce
 
     // collect files from preview images
@@ -917,12 +844,12 @@ jQuery(document).ready(function ($) {
       contentType: false,
       dataType: "json",
       success: function (res) {
-        console.log(res);
-        if (res?.status === "success") {
-          console.log("Uploaded:", res.url);
-          // clear if you want:
-          // $('.report-file-preview').empty().hide();
-          // $form[0].reset();
+        // console.log(res);
+        if (res.success) {
+          // alert("test");
+          // console.log("Uploaded:", res.data.url);
+          var agqaImages = res.data.url;
+          reportSystemFaqs(agqaImages);
         } else {
           $("#ddmu-response").html(
             "<p>" + (res?.message || "Upload failed") + "</p>"
@@ -935,94 +862,108 @@ jQuery(document).ready(function ($) {
         );
       },
     });
+
+    //function for faq_report_system
+
+    function reportSystemFaqs(agqaImages) {
+      var dataArr = $form
+        .serializeArray()
+        // "files" (ya jis name se base64 aa raha hai) ko hata do
+        .filter(function (f) {
+          return f.name !== "report-upload-files" && f.name !== "image";
+        });
+
+      var formData = jQuery.param(dataArr);
+
+      // Agar "files" param chahiye lekin empty, to explicitly add:
+      formData += "&report-upload-files=";
+
+      // Agar imageUrl bhi bhejni hai:
+      formData += "&imageUrl=" + encodeURIComponent(agqaImages || "");
+      // console.log(formData);
+      // alert(formData);
+      // return;
+      // Create an object to store form data values
+      let isValid = true;
+      // Check if all required fields are filled
+      $form.find("[required]").each(function () {
+        const field = $(this);
+        // Trim spaces and check if the field is only spaces or empty
+        const trimmedValue = field.val().trim();
+
+        if (!trimmedValue) {
+          isValid = false;
+          return false;
+        }
+        if (!field.val()) {
+          // If the field is empty
+          isValid = false;
+          return false;
+        }
+      });
+
+      if (!isValid) {
+        return;
+      }
+      // AJAX
+      var nonce = agqa_ajax.nonce;
+      $.ajax({
+        type: "POST",
+        url: agqa_ajax.ajax_url,
+        data: {
+          action: "faq_report_system",
+          form_data: formData,
+          nonce: nonce,
+        },
+        success: function (response) {
+          console.log(response);
+          if (response.includes("Success")) {
+            // alert("Successfully Submitted");
+            const $successMsg = $(
+              '<div class="submitted-successfully">Report Successfully Submitted</div>'
+            );
+            $form.append($successMsg);
+
+            // Hide after 3 seconds
+            setTimeout(function () {
+              $successMsg.fadeOut(400, function () {
+                $(this).remove();
+              });
+            }, 3000);
+            // Find the *actual* back button
+            const $btn = $(".form-header-row .back-button");
+            const btn = $btn.get(0);
+            if (!btn) {
+              console.warn("Back button not found in DOM at success time.");
+              return;
+            }
+            $btn.trigger("click");
+
+            btn.click();
+
+            btn.dispatchEvent(
+              new MouseEvent("click", { bubbles: true, cancelable: true })
+            );
+          } else {
+            // alert(response);
+            const $successMsg = $(
+              `<div class="report submitted-unsuccessfully">${response}</div>`
+            );
+            $form.append($successMsg);
+
+            // Hide after 3 seconds
+            setTimeout(function () {
+              $successMsg.fadeOut(400, function () {
+                $(this).remove();
+              });
+            }, 3000);
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("AJAX Error:", error); // Log the error for debugging
+          alert("An error occurred! Please try again later.");
+        },
+      });
+    }
   });
-
-  // jQuery("#faq_report_form").submit("submit", function () {
-  //   var $form = jQuery(this);
-  //   var formData = $form.serialize();
-  //   alert(formData);
-  //   return;
-  //   // Create an object to store form data values
-  //   var formDataObject = {};
-  //   let isValid = true;
-  //   // Check if all required fields are filled
-  //   $form.find("[required]").each(function () {
-  //     const field = $(this);
-  //     // Trim spaces and check if the field is only spaces or empty
-  //     const trimmedValue = field.val().trim();
-
-  //     if (!trimmedValue) {
-  //       isValid = false;
-  //       return false;
-  //     }
-  //     if (!field.val()) {
-  //       // If the field is empty
-  //       isValid = false;
-  //       return false;
-  //     }
-  //   });
-
-  //   if (!isValid) {
-  //     return;
-  //   }
-  //   // AJAX
-  //   var nonce = agqa_ajax.nonce;
-  //   $.ajax({
-  //     type: "POST",
-  //     url: agqa_ajax.ajax_url,
-  //     data: {
-  //       action: "faq_report_system",
-  //       form_data: formData,
-  //       nonce: nonce,
-  //     },
-  //     success: function (response) {
-  //       // console.log(response);
-  //       if (response.includes("Success")) {
-  //         // alert("Successfully Submitted");
-  //         const $successMsg = $(
-  //           '<div class="submitted-successfully">Report Successfully Submitted</div>'
-  //         );
-  //         $form.append($successMsg);
-
-  //         // Hide after 3 seconds
-  //         setTimeout(function () {
-  //           $successMsg.fadeOut(400, function () {
-  //             $(this).remove();
-  //           });
-  //         }, 3000);
-  //         // Find the *actual* back button
-  //         const $btn = $(".form-header-row .back-button");
-  //         const btn = $btn.get(0);
-  //         if (!btn) {
-  //           console.warn("Back button not found in DOM at success time.");
-  //           return;
-  //         }
-  //         $btn.trigger("click");
-
-  //         btn.click();
-
-  //         btn.dispatchEvent(
-  //           new MouseEvent("click", { bubbles: true, cancelable: true })
-  //         );
-  //       } else {
-  //         // alert(response);
-  //         const $successMsg = $(
-  //           `<div class="report submitted-unsuccessfully">${response}</div>`
-  //         );
-  //         $form.append($successMsg);
-
-  //         // Hide after 3 seconds
-  //         setTimeout(function () {
-  //           $successMsg.fadeOut(400, function () {
-  //             $(this).remove();
-  //           });
-  //         }, 3000);
-  //       }
-  //     },
-  //     error: function (xhr, status, error) {
-  //       console.error("AJAX Error:", error); // Log the error for debugging
-  //       alert("An error occurred! Please try again later.");
-  //     },
-  //   });
-  // });
 });

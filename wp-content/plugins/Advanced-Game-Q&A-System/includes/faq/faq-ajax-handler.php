@@ -382,36 +382,50 @@ add_action('wp_ajax_nopriv_faq_report_system', 'handle_faq_report_system');
 /**
  * Faqs report system
  */
-function faq_report_system()
+function handle_faq_report_system()
 {
-    global $wpdb;
-
+    
     // Verify nonce
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
         die('Permission Denied');
     }
+  
     parse_str($_POST['form_data'], $data); // Parse serialized form data
-
-
+    
+    global $wpdb;
+    
     $user_id = get_current_user_id();    // Get data from AJAX request
+    $user = get_userdata($user_id); // false if not found
+
     $faq_report_type = sanitize_text_field($data['faq-report-type"']);
     $faq_report_answer= sanitize_text_field($data['faq-report-answer']);
-    
+    $faq_image_url= sanitize_text_field($data['imageUrl']);
+    $reporter= $user ? $user->display_name : '';
+    $reply_time= sanitize_text_field($data['reply_time']);
+     echo $reporter;
+    wp_die();
     // Insert the FAQ into the database
-    $wpdb->insert(
-        "{$wpdb->prefix}faq_report_system",
-        array(
-            'user_id' => $user_id,
-            'report_type' => $report_type,
-            'status' => 'Pending Response',
-            'answer' => $answer,
-        ),
-        array(
-            '%s', // question
-            '%s', // answer
-            '%s', // verified_answer
-        )
-    );
+   $wpdb->insert(
+    "{$wpdb->prefix}faq_report_system",
+    [
+        'user_id'            => $user_id,
+        'report_type'        => $faq_report_type,   
+        'status'             => 'Pending Response',
+        'issue_detail'      => $faq_report_answer, 
+        'upload_attachments' => $faq_image_url,
+        'reporter' => $reporter,
+        'reply_time' => '--',
+    ],
+    [
+        '%d', // user_id
+        '%s', // report_type
+        '%s', // status
+        '%s', // issue_detail	
+        '%s', // upload_attachments
+        '%s', // reporter
+        '%s', // reply time
+    ]
+);
 
     // If everything went well, return success
     $response['status']  = 'Success';
@@ -419,3 +433,83 @@ function faq_report_system()
     echo json_encode($response);
     wp_die();
 }
+/**
+ * report_image_system_upload
+ */
+function report_image_system_upload() {
+    // Make sure you localized this same handle when creating the nonce in JS
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+        wp_send_json_error(['message' => 'Nonce verification failed.'], 403);
+    }
+
+    // Accept either 'file' or 'attachments'
+    if (empty($_FILES['file']) && empty($_FILES['attachments'])) {
+        wp_send_json_error(['message' => 'No file uploaded.'], 400);
+    }
+
+    // Normalize into an array of file items
+    $files_post = !empty($_FILES['file']) ? $_FILES['file'] : $_FILES['attachments'];
+    $items = [];
+
+    if (is_array($files_post['name'])) {
+        $count = count($files_post['name']);
+        for ($i = 0; $i < $count; $i++) {
+            $items[] = [
+                'name'     => $files_post['name'][$i],
+                'type'     => $files_post['type'][$i],
+                'tmp_name' => $files_post['tmp_name'][$i],
+                'error'    => $files_post['error'][$i],
+                'size'     => $files_post['size'][$i],
+            ];
+        }
+    } else {
+        $items[] = $files_post;
+    }
+
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+
+    $urls = [];
+    // Optional: restrict mimes
+    $overrides = [
+        'test_form' => false,
+        'mimes'     => [
+            'jpg' => 'image/jpeg',
+            'jpeg'=> 'image/jpeg',
+            'png' => 'image/png',
+            'gif' => 'image/gif',
+            'webp'=> 'image/webp',
+        ],
+    ];
+
+    // (Optional) put uploads under /uploads/agqa-reports
+    $uploads = wp_upload_dir();
+    add_filter('upload_dir', function($dirs) use ($uploads) {
+        $dirs['path']   = $uploads['basedir'] . '/agqa-reports';
+        $dirs['url']    = $uploads['baseurl'] . '/agqa-reports';
+        $dirs['subdir'] = '/agqa-reports';
+        return $dirs;
+    });
+
+    foreach ($items as $f) {
+        if (!empty($f['error'])) {
+            remove_all_filters('upload_dir');
+            wp_send_json_error(['message' => 'Upload error code: ' . $f['error']], 400);
+        }
+        $res = wp_handle_upload($f, $overrides);
+        if (isset($res['error'])) {
+            remove_all_filters('upload_dir');
+            wp_send_json_error(['message' => 'Upload failed: ' . $res['error']], 500);
+        }
+        $urls[] = esc_url_raw($res['url']);
+    }
+
+    remove_all_filters('upload_dir');
+
+    wp_send_json_success([
+        'message' => 'Files uploaded.',
+        'url'     => count($urls) === 1 ? $urls[0] : $urls,
+    ]);
+}
+
+add_action('wp_ajax_report_image_system_upload', 'report_image_system_upload');
+add_action('wp_ajax_nopriv_report_image_system_upload', 'report_image_system_upload');
