@@ -32,7 +32,7 @@ jQuery(document).ready(function ($) {
   });
 
   // Prevent the default behavior when clicking on .api-edit-button, .api-price-api-cost or other non-toggleable areas
-  jQuery('.api-edit-button, .api-price-api-cost').click(function (e) {
+  jQuery(".api-edit-button, .api-price-api-cost").click(function (e) {
     e.stopPropagation(); // Prevent event bubbling to the .api-card-header
     return true; // Allow other actions (e.g., form submission, navigation) on these elements
   });
@@ -767,10 +767,12 @@ jQuery(document).ready(function ($) {
         const box = $("#agqa-search-results").empty();
         if (res.success && res.data.length > 0) {
           res.data.forEach((row) => {
-            box.append(`<div class="agqa-search-result" data-question-id="${row.question_id
-              }">
-                    <strong>${row.type.toUpperCase()}</strong> in <em>${row.post_title
-              }</em>:<br>
+            box.append(`<div class="agqa-search-result" data-question-id="${
+              row.question_id
+            }">
+                    <strong>${row.type.toUpperCase()}</strong> in <em>${
+              row.post_title
+            }</em>:<br>
                     ${row.content}
                 </div>`);
           });
@@ -1239,7 +1241,7 @@ jQuery(document).ready(function ($) {
     var formDataImage = new FormData();
     formDataImage.append("action", "ddmu_handle_upload");
     formDataImage.append("nonce", agqa_ajax.nonce);
-    formDataImage.append("file", $('input[type="file"]')[0].files[0]);
+    formDataImage.append("file", $("#upload-logo-drag")[0].files[0]);
 
     $.ajax({
       url: agqa_ajax.ajax_url,
@@ -1443,7 +1445,7 @@ jQuery(document).ready(function ($) {
     var formDataImage = new FormData();
     formDataImage.append("action", "ddmu_handle_upload");
     formDataImage.append("nonce", agqa_ajax.nonce);
-    formDataImage.append("file", $('input[type="file"]')[0].files[0]);
+    formDataImage.append("file", $("input#pdf-upload-input")[0].files[0]);
     // console.log(formDataImage);
     // alert(response);
     const $successMsg = $(
@@ -1702,7 +1704,7 @@ jQuery(document).ready(function ($) {
     var formDataImage = new FormData();
     formDataImage.append("action", "ddmu_handle_upload");
     formDataImage.append("nonce", agqa_ajax.nonce);
-    formDataImage.append("file", $('input[type="file"]')[0].files[0]);
+    formDataImage.append("file", $("input#pdf-upload-input")[0].files[0]);
     // console.log(formDataImage);
     // alert(response);
     const $successMsg = $(

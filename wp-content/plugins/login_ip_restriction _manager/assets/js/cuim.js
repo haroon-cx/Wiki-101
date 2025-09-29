@@ -356,7 +356,8 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  $(".toggle-password").on("click", function () {
+  $(".toggle-password").on("click", function (e) {
+    e.preventDefault();
     var passwordField = $(this).siblings(
       'input[type="password"], input[type="text"]'
     ); // Get the password input inside the same .password-field container

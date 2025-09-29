@@ -200,7 +200,7 @@ $user_exist = true;
                 <div class="form-field required">
                     <label for="company-name"><span>* </span>Company Name</label>
                     <input type="text" id="company-name" placeholder="Description"
-                        value="<?php echo ucwords($login_value->company_name); ?>" disabled>
+                        value="<?php echo ucwords($login_value->company_name); ?>" style="pointer-events: none;">
                 </div>
                 <div class=" form-field required">
                     <label for="question-type"><span>* </span>User Role</label>
