@@ -32,7 +32,7 @@
 
                 <div class="form-field required">
                     <label for="new-password-field"><span>* </span>New Password</label>
-                    <div class="toggle-password" id="toggle-new-password"></div> <!-- Toggle for new password -->
+                    <div class="toggle-password"></div> <!-- Toggle for new password -->
                     <input type="password" class="cuim-manage-user-pwd-validation-20" name="new-password"
                         id="new-password-field" required placeholder="New Password">
                     <div id="error-message" class="cuim-validation-error"></div>

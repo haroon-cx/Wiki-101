@@ -581,6 +581,24 @@ jQuery(document).ready(function ($) {
       $input.removeClass("error-field-input");
 
       $errorMessage.text("");
+      var newPassword = $("#new-password").val().trim();
+      var confirmPassword = $("#confirm-password").val().trim();
+      // let $errorMessage = $input.siblings("#error-message");0
+      jQuery("button#save-profile-btn").prop("disabled", true);
+
+      // Check if both passwords match
+      if (newPassword === confirmPassword) {
+        $input.removeClass("error-field");
+        jQuery("button#save-profile-btn").prop("disabled", false);
+        jQuery(".cuim-confrim-pasword-error").text(``);
+        // Hide error message if passwords match
+      } else if (newPassword !== "" && confirmPassword !== "") {
+        $input.addClass("error-field");
+        jQuery("button#save-profile-btn").prop("disabled", true);
+        jQuery(".cuim-confrim-pasword-error").text(
+          `The confirmation password must match the new password.`
+        );
+      }
     }
   });
 
@@ -770,19 +788,34 @@ jQuery(document).ready(function ($) {
   //   jQuery(this).toggleClass("show-pass");
   //   jQuery(".new-password");
   // });
+  $(".toggle-password").on("click", function (e) {
+    e.preventDefault();
+    var passwordField = $(this).siblings(
+      'input[type="password"], input[type="text"]'
+    ); // Get the password input inside the same .password-field container
 
-  // Toggle for New Password
-  jQuery("#toggle-new-password").on("click", function () {
-    var $newPasswordField = jQuery("#new-password-field");
-    var currentType = $newPasswordField.attr("type");
-    jQuery(this).toggleClass("show-pass");
     // Toggle password visibility
-    if (currentType === "password") {
-      $newPasswordField.attr("type", "text"); // Show password
-    } else {
-      $newPasswordField.attr("type", "password"); // Hide password
-    }
+    var fieldType =
+      passwordField.attr("type") === "password" ? "text" : "password";
+    passwordField.attr("type", fieldType); // Toggle the password visibility
+
+    // Toggle the button class and icon
+    $(this).toggleClass("show-pass");
+
+    // Optionally change the icon or text on the button based on visibility
   });
+  // Toggle for New Password
+  // jQuery("#toggle-new-password").on("click", function () {
+  //   var $newPasswordField = jQuery("#new-password-field");
+  //   var currentType = $newPasswordField.attr("type");
+  //   jQuery(this).toggleClass("show-pass");
+  //   // Toggle password visibility
+  //   if (currentType === "password") {
+  //     $newPasswordField.attr("type", "text"); // Show password
+  //   } else {
+  //     $newPasswordField.attr("type", "password"); // Hide password
+  //   }
+  // });
 
   // Toggle for Confirm Password
   jQuery("#toggle-confirm-password").on("click", function () {
@@ -895,21 +928,21 @@ jQuery(document).ready(function ($) {
    */
   $(".cuim-profile-check-pwd").on("input", function () {
     const $input = $(this);
-    var newPassword = $("#new-password").val();
-    var confirmPassword = $("#confirm-password").val();
-    let $errorMessage = $input.siblings("#error-message");
+    // var newPassword = $("#new-password").val();
+    // var confirmPassword = $("#confirm-password").val();
+    // let $errorMessage = $input.siblings("#error-message");
 
-    // Check if both passwords match
-    if (newPassword === confirmPassword) {
-      $input.removeClass("error-field");
-      $errorMessage.text(``);
-      // Hide error message if passwords match
-    } else {
-      $input.addClass("error-field");
-      $errorMessage.text(
-        `The confirmation password must match the new password.`
-      );
-    }
+    // // Check if both passwords match
+    // if (newPassword === confirmPassword && !newPassword) {
+    //   $input.removeClass("error-field");
+    //   $errorMessage.text(``);
+    //   // Hide error message if passwords match
+    // } else {
+    //   $input.addClass("error-field");
+    //   $errorMessage.text(
+    //     `The confirmation password must match the new password.`
+    //   );
+    // }
   });
 
   /**

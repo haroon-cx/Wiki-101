@@ -246,8 +246,8 @@ $user_exist = true;
                     <div class="form-field required">
                         <label for="new-password"><span>*</span> New Password</label>
                         <button class="toggle-password"></button>
-                        <input type="password" class="cuim-manage-user-pwd-validation-20 " name="new-password"
-                            id="new-password" placeholder="Please Enter The New Password" required>
+                        <input type="password" class="cuim-manage-user-pwd-validation-20 cuim-profile-check-pwd"
+                            name="new-password" id="new-password" placeholder="Please Enter The New Password" required>
                         <div id="error-message"></div>
                     </div>
                     <div class="form-field required">
@@ -256,7 +256,7 @@ $user_exist = true;
                         <div class="toggle-password"></div>
                         <input type="password" class="cuim-manage-user-pwd-validation-20 cuim-profile-check-pwd"
                             name="confirm-password" id="confirm-password" placeholder="Confirm New Password" required>
-                        <div id="error-message"></div>
+                        <div id="error-message" class="cuim-confrim-pasword-error"></div>
                     </div>
                     <div id="reset-form-buttons" class="form-buttons reset-form-buttons d-flex">
                         <?php if(!$user_exist){ ?>
