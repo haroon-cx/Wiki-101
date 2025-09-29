@@ -6,12 +6,14 @@
     min-width: 360px;
 }
 
+.report-system-template .filter-selected-text,
 .faq-template .filter-selected-text {
     background-color: transparent;
     padding: 0;
     pointer-events: none;
 }
 
+.report-system-template .agqa-cross-icon,
 .faq-template .agqa-cross-icon {
     display: none;
 }

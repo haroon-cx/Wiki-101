@@ -370,7 +370,7 @@
                     <input type="submit" value="Submit" class="agqa-edit-submit-btn" id="confirm-submit-popup-button">
                     <!-- <input type="submit" value="Submit" class="agqa-edit-submit-btn"> -->
                 </div>
-            </form>
+            </form> 
         </div>
     </div>
 </div>

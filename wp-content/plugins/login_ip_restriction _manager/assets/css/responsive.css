@@ -11,9 +11,12 @@
         margin-bottom: 10px;
     }
     
+    .manage-user-table .custom-table {
+        white-space: nowrap;
+    }
+    
     .custom-table {
         width: 160%;
-        white-space: nowrap;
     }
 }
 

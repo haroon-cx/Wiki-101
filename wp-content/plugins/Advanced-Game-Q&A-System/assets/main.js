@@ -346,6 +346,17 @@ jQuery(document).ready(function ($) {
     $(".agqa-popup-form").removeClass("active");
   });
 
+  // Close popup on cross icon
+  $(".report-form-cancel-icon").on("click", function (e) {
+    e.stopPropagation();
+    $(".respond-popup").removeClass("active");
+  });
+
+  $(".report-cancel-icon").on("click", function (e) {
+    e.stopPropagation();
+    $(".report-cancel-popup-confirmation,.confirm-submit-popup").removeClass("active");
+  });
+
   // Close when clicking outside popup inner
   // $(document).on("click", function (e) {
   //   if (!$(e.target).closest(".agqa-popup-form-inner").length) {

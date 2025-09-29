@@ -277,8 +277,8 @@ tr {
     min-width: 13.525%;
 }
 
-.table-head-col:nth-child(2),
-.table-body-col:nth-child(2) {
+.manage-user-table .table-head-col:nth-child(2),
+.manage-user-table .table-body-col:nth-child(2) {
     text-align: center;
 }
 
