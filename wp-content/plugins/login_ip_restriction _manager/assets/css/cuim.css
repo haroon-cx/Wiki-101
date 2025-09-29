@@ -382,6 +382,8 @@
       display: inline-block;
       vertical-align: middle;
       color: #747474;
+      white-space: normal;
+      overflow-wrap: anywhere;
   }
 
   .cuim-logout-button,

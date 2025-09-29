@@ -44,7 +44,7 @@ function report_system_shortcode() {
                         <input type="hidden" name="filter-report-states" class="agqa-filter-select-hidden">
                         <button class="filter-select-title agqa-report-select-filter-button">
                             <span class="filter-default-text">Select States</span>
-                            <span class="filter-selected-text"></span>
+                            <span class="filter-selected-text report-filter-selected-text"></span>
                         </button>
                         <div class="filter-select-list agqa-report-cat-filter">
                             <ul>
@@ -88,13 +88,14 @@ function report_system_shortcode() {
                                     <div class="table-body-col">2025/11/12</div>
                                     <div class="table-body-col">--</div>
                                     <div class="table-body-col report-action">
-                                        <button class="respond-button"></button>
+                                        <button class="respond-button pending-response-button"></button>
                                          <div class="respond-popup">
                                             <div class="respond-popup-inner">
                                                 <div class="popup-form-cross-icon report-form-cancel-icon"></div>
                                                 <form id="respond-form" autocomplete="off" data-inited-validation="1" novalidate="novalidate">
                                                     <div class="respond-form-title"><h2>Respond</h2></div>
-                                                    <div class="form-field required">
+                                                    <div class="form-input-fields">
+                                                        <div class="form-field required">
                                                         <label for="respond-report-type"><span>* </span>Report Type</label>
                                                         <div class="custom-select-dropdown">
                                                             <div class="custom-select-dropdown-title">
@@ -120,7 +121,7 @@ function report_system_shortcode() {
                                                         </div>
                                                     </div>
                                                     <div class="form-field required">
-                                                        <label for="respond-report-type"><span>* </span>Report Type</label>
+                                                        <label for="respond-status-type"><span>* </span>Answer</label>
                                                         <div class="custom-select-dropdown">
                                                             <div class="custom-select-dropdown-title">
                                                                 <span class="custom-dropdown-default-value">Select States</span>
@@ -132,7 +133,7 @@ function report_system_shortcode() {
                                                                 <li>No response needed</li>
                                                             </ul>
                                                         </div>
-                                                        <input type="hidden" name="respond-report-type" id="respond-report-type" required>
+                                                        <input type="hidden" name="respond-status-type" id="respond-status-type" required>
                                                         </div>
                                                     </div>
                                                     <div class="form-field">
@@ -140,7 +141,9 @@ function report_system_shortcode() {
                                                         <textarea name="respond-disabled-textarea" id="respond-disabled-textarea" placeholder="Typing...." disabled></textarea>
                                                     </div>
                                                     <div class="uploaded-images">
-                                                        <div class="uploaded-image">
+                                                        <span class="upload-image-label">Upload attachments</span>
+                                                        <div class="uploaded-images-inner">
+                                                            <div class="uploaded-image">
                                                             <img src="<?php echo AGQA_URL ?>assets/images/enlarger-image.png" alt="Report Image" class="stretchable">
                                                             <div class="stretch-image-icon"></div>
                                                         </div>
@@ -160,6 +163,7 @@ function report_system_shortcode() {
                                                             <img src="<?php echo AGQA_URL ?>assets/images/report-uploaded-image.png" alt="Report Image" class="stretchable">
                                                             <div class="stretch-image-icon"></div>
                                                         </div>
+                                                        </div>      
                                                     </div>
                                                     <!-- Hidden overlay for stretched image -->
                                                     <div id="stretch-overlay" class="stretch-overlay">
@@ -168,8 +172,8 @@ function report_system_shortcode() {
                                                             <img id="stretched-img" src="" alt="Stretched Image">
                                                         </div>
                                                     </div>
-                                                    <div class="form-field required">
-                                                        <label for="respond-report-type"><span>* </span>Report Type</label>
+                                                    <div class="form-field">
+                                                        <label for="respond-answer">Answer</label>
                                                         <div class="custom-select-dropdown">
                                                             <div class="custom-select-dropdown-title">
                                                                 <span class="custom-dropdown-default-value">Import Answer From FAQ</span>
@@ -184,11 +188,12 @@ function report_system_shortcode() {
                                                                 <li>Approved FAQ titles</li>
                                                             </ul>
                                                         </div>
-                                                        <input type="hidden" name="respond-report-type" id="respond-report-type" required>
+                                                        <input type="hidden" name="respond-answer" id="respond-answer">
                                                         </div>
                                                     </div>
                                                     <div class="form-field">
                                                         <textarea name="respond-detail-textarea" id="respond-detail-textarea" placeholder="Typing...."></textarea>
+                                                    </div>
                                                     </div>
                                                     <div class="form-buttons d-flex agqa-respond-buttons">
                                                         <div id="cancel-form-confirmation" class="cancel-form-confirmation   report-cancel-popup-confirmation">
@@ -258,14 +263,15 @@ function report_system_shortcode() {
                                     <div class="table-body-col">2025/11/12</div>
                                     <div class="table-body-col">--</div>
                                     <div class="table-body-col report-action">
-                                        <button class="respond-button"></button>
+                                        <button class="respond-button responded-button"></button>
                                          <div class="respond-popup">
                                             <div class="respond-popup-inner">
                                                 <div class="popup-form-cross-icon report-form-cancel-icon"></div>
                                                 <form id="respond-form" autocomplete="off" data-inited-validation="1" novalidate="novalidate">
                                                     <div class="respond-form-title"><h2>Respond</h2></div>
-                                                    <div class="form-field required">
-                                                        <label for="respond-report-type"><span>* </span>Report Type</label>
+                                                    <div class="form-input-fields">
+                                                    <div class="form-field disabled-field">
+                                                        <label for="respond-report-type">Report Type</label>
                                                         <div class="custom-select-dropdown">
                                                             <div class="custom-select-dropdown-title">
                                                                 <span class="custom-dropdown-default-value">Select Report Type</span>
@@ -286,11 +292,11 @@ function report_system_shortcode() {
                                                                 <li>Other (please specify)</li>
                                                             </ul>
                                                         </div>
-                                                        <input type="hidden" name="respond-report-type" id="respond-report-type" required>
+                                                        <input type="hidden" name="respond-report-type" id="respond-report-type">
                                                         </div>
                                                     </div>
-                                                    <div class="form-field required">
-                                                        <label for="respond-report-type"><span>* </span>Report Type</label>
+                                                    <div class="form-field disabled-field">
+                                                        <label for="respond-status-type">Status</label>
                                                         <div class="custom-select-dropdown">
                                                             <div class="custom-select-dropdown-title">
                                                                 <span class="custom-dropdown-default-value">Select States</span>
@@ -302,7 +308,7 @@ function report_system_shortcode() {
                                                                 <li>No response needed</li>
                                                             </ul>
                                                         </div>
-                                                        <input type="hidden" name="respond-report-type" id="respond-report-type" required>
+                                                        <input type="hidden" name="respond-status-type" id="respond-status-type">
                                                         </div>
                                                     </div>
                                                     <div class="form-field">
@@ -310,26 +316,13 @@ function report_system_shortcode() {
                                                         <textarea name="respond-disabled-textarea" id="respond-disabled-textarea" placeholder="Typing...." disabled></textarea>
                                                     </div>
                                                     <div class="uploaded-images">
-                                                        <div class="uploaded-image">
+                                                        <span class="upload-image-label">Upload attachments</span>
+                                                        <div class="uploaded-images-inner">
+                                                            <div class="uploaded-image">
                                                             <img src="<?php echo AGQA_URL ?>assets/images/enlarger-image.png" alt="Report Image" class="stretchable">
                                                             <div class="stretch-image-icon"></div>
                                                         </div>
-                                                        <div class="uploaded-image">
-                                                            <img src="<?php echo AGQA_URL ?>assets/images/report-uploaded-image.png" alt="Report Image" class="stretchable">
-                                                            <div class="stretch-image-icon"></div>
-                                                        </div>
-                                                        <div class="uploaded-image">
-                                                            <img src="<?php echo AGQA_URL ?>assets/images/report-uploaded-image.png" alt="Report Image" class="stretchable">
-                                                            <div class="stretch-image-icon"></div>
-                                                        </div>
-                                                        <div class="uploaded-image">
-                                                            <img src="<?php echo AGQA_URL ?>assets/images/report-uploaded-image.png" alt="Report Image" class="stretchable">
-                                                            <div class="stretch-image-icon"></div>
-                                                        </div>
-                                                        <div class="uploaded-image">
-                                                            <img src="<?php echo AGQA_URL ?>assets/images/report-uploaded-image.png" alt="Report Image" class="stretchable">
-                                                            <div class="stretch-image-icon"></div>
-                                                        </div>
+                                                        </div>      
                                                     </div>
                                                     <!-- Hidden overlay for stretched image -->
                                                     <div id="stretch-overlay" class="stretch-overlay">
@@ -338,8 +331,8 @@ function report_system_shortcode() {
                                                             <img id="stretched-img" src="" alt="Stretched Image">
                                                         </div>
                                                     </div>
-                                                    <div class="form-field required">
-                                                        <label for="respond-report-type"><span>* </span>Report Type</label>
+                                                    <div class="form-field disabled-field">
+                                                        <label for="respond-answer">Answer</label>
                                                         <div class="custom-select-dropdown">
                                                             <div class="custom-select-dropdown-title">
                                                                 <span class="custom-dropdown-default-value">Import Answer From FAQ</span>
@@ -354,37 +347,19 @@ function report_system_shortcode() {
                                                                 <li>Approved FAQ titles</li>
                                                             </ul>
                                                         </div>
-                                                        <input type="hidden" name="respond-report-type" id="respond-report-type" required>
+                                                        <input type="hidden" name="respond-answer" id="respond-answer">
                                                         </div>
                                                     </div>
                                                     <div class="form-field">
-                                                        <textarea name="respond-detail-textarea" id="respond-detail-textarea" placeholder="Typing...."></textarea>
+                                                        <textarea name="respond-detail-textarea" id="respond-detail-textarea" placeholder="Typing...." disabled></textarea>
+                                                    </div>
                                                     </div>
                                                     <div class="form-buttons d-flex agqa-respond-buttons">
-                                                        <div id="cancel-form-confirmation" class="cancel-form-confirmation   report-cancel-popup-confirmation">
-                                                            <div class="cancel-form-confirmation-box">
-                                                                <h2>Cancel</h2>
-                                                                    <div class="popup-form-cross-icon"></div>
-                                                                    <div class="form-message">Are you sure you want to cancel?</div>
-                                                                    <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                                        <button class="no-form-cancel" type="button">No</button>
-                                                                        <a href="#" class="back-button">Yes</a>
-                                                                    </div>
-                                                            </div>       
+                                                        <div class="approval-info">
+                                                            <span class="approval-time">2025/07/22 14:35</span>
+                                                            <span class="approavl-account">heather01</span>
                                                         </div>
-                                                        <div id="confirm-submit-popup" class="confirm-submit-popup report-cancel-popup-confirmation">
-                                                            <div class="confirm-submit-popup-box">
-                                                                <h2>Submit</h2>
-                                                                    <div class="popup-form-cross-icon report-cancel-icon"></div>
-                                                                    <div class="form-message">Are you sure you want to submit?</div>
-                                                                    <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                                        <button class="no-confirm-submit" type="button">No</button>
-                                                                        <input type="submit" value="Yes" id="confirm-submit">
-                                                                    </div>
-                                                            </div>       
-                                                        </div>
-                                                        <button class="back-button report-cancel-button" id="cancel-confirmation-button">Cancel</button>
-                                                        <button type="button" id="respond-popup-button">Submit</button>
+                                                        <button class="report-close-button">Close</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -430,14 +405,15 @@ function report_system_shortcode() {
                                     <div class="table-body-col">2025/11/12</div>
                                     <div class="table-body-col">--</div>
                                     <div class="table-body-col report-action">
-                                        <button class="respond-button"></button>
-                                         <div class="respond-popup">
+                                        <button class="respond-button no-response-need-button"></button>
+                                         <div class="respond-popup no-responde-need-popup">
                                             <div class="respond-popup-inner">
                                                 <div class="popup-form-cross-icon report-form-cancel-icon"></div>
-                                                <form id="respond-form" autocomplete="off" data-inited-validation="1" novalidate="novalidate">
+                                                <form id="no-response-need-form" autocomplete="off" data-inited-validation="1" novalidate="novalidate">
                                                     <div class="respond-form-title"><h2>Respond</h2></div>
-                                                    <div class="form-field required">
-                                                        <label for="respond-report-type"><span>* </span>Report Type</label>
+                                                    <div class="form-input-fields">
+                                                    <div class="form-field disabled-field">
+                                                        <label for="respond-report-type">Report Type</label>
                                                         <div class="custom-select-dropdown">
                                                             <div class="custom-select-dropdown-title">
                                                                 <span class="custom-dropdown-default-value">Select Report Type</span>
@@ -458,11 +434,11 @@ function report_system_shortcode() {
                                                                 <li>Other (please specify)</li>
                                                             </ul>
                                                         </div>
-                                                        <input type="hidden" name="respond-report-type" id="respond-report-type" required>
+                                                        <input type="hidden" name="respond-report-type" id="respond-report-type">
                                                         </div>
                                                     </div>
-                                                    <div class="form-field required">
-                                                        <label for="respond-report-type"><span>* </span>Report Type</label>
+                                                    <div class="form-field disabled-field">
+                                                        <label for="respond-status-type">Status</label>
                                                         <div class="custom-select-dropdown">
                                                             <div class="custom-select-dropdown-title">
                                                                 <span class="custom-dropdown-default-value">Select States</span>
@@ -474,7 +450,7 @@ function report_system_shortcode() {
                                                                 <li>No response needed</li>
                                                             </ul>
                                                         </div>
-                                                        <input type="hidden" name="respond-report-type" id="respond-report-type" required>
+                                                        <input type="hidden" name="respond-status-type" id="respond-status-type">
                                                         </div>
                                                     </div>
                                                     <div class="form-field">
@@ -482,36 +458,11 @@ function report_system_shortcode() {
                                                         <textarea name="respond-disabled-textarea" id="respond-disabled-textarea" placeholder="Typing...." disabled></textarea>
                                                     </div>
                                                     <div class="uploaded-images">
-                                                        <div class="uploaded-image">
-                                                            <img src="<?php echo AGQA_URL ?>assets/images/enlarger-image.png" alt="Report Image" class="stretchable">
-                                                            <div class="stretch-image-icon"></div>
-                                                        </div>
-                                                        <div class="uploaded-image">
-                                                            <img src="<?php echo AGQA_URL ?>assets/images/report-uploaded-image.png" alt="Report Image" class="stretchable">
-                                                            <div class="stretch-image-icon"></div>
-                                                        </div>
-                                                        <div class="uploaded-image">
-                                                            <img src="<?php echo AGQA_URL ?>assets/images/report-uploaded-image.png" alt="Report Image" class="stretchable">
-                                                            <div class="stretch-image-icon"></div>
-                                                        </div>
-                                                        <div class="uploaded-image">
-                                                            <img src="<?php echo AGQA_URL ?>assets/images/report-uploaded-image.png" alt="Report Image" class="stretchable">
-                                                            <div class="stretch-image-icon"></div>
-                                                        </div>
-                                                        <div class="uploaded-image">
-                                                            <img src="<?php echo AGQA_URL ?>assets/images/report-uploaded-image.png" alt="Report Image" class="stretchable">
-                                                            <div class="stretch-image-icon"></div>
-                                                        </div>
+                                                        <span class="upload-image-label">Upload attachments</span>
+                                                        <p>No attachments</p>
                                                     </div>
-                                                    <!-- Hidden overlay for stretched image -->
-                                                    <div id="stretch-overlay" class="stretch-overlay">
-                                                        <div class="stretch-container">
-                                                            <div class="zoom-close-icon"></div>
-                                                            <img id="stretched-img" src="" alt="Stretched Image">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-field required">
-                                                        <label for="respond-report-type"><span>* </span>Report Type</label>
+                                                    <div class="form-field disabled-field">
+                                                        <label for="respond-answer">Answer</label>
                                                         <div class="custom-select-dropdown">
                                                             <div class="custom-select-dropdown-title">
                                                                 <span class="custom-dropdown-default-value">Import Answer From FAQ</span>
@@ -526,37 +477,19 @@ function report_system_shortcode() {
                                                                 <li>Approved FAQ titles</li>
                                                             </ul>
                                                         </div>
-                                                        <input type="hidden" name="respond-report-type" id="respond-report-type" required>
+                                                        <input type="hidden" name="respond-answer" id="respond-answer">
                                                         </div>
                                                     </div>
                                                     <div class="form-field">
-                                                        <textarea name="respond-detail-textarea" id="respond-detail-textarea" placeholder="Typing...."></textarea>
+                                                        <textarea name="respond-detail-textarea" id="respond-detail-textarea" placeholder="--" disabled></textarea>
+                                                    </div>
                                                     </div>
                                                     <div class="form-buttons d-flex agqa-respond-buttons">
-                                                        <div id="cancel-form-confirmation" class="cancel-form-confirmation   report-cancel-popup-confirmation">
-                                                            <div class="cancel-form-confirmation-box">
-                                                                <h2>Cancel</h2>
-                                                                    <div class="popup-form-cross-icon"></div>
-                                                                    <div class="form-message">Are you sure you want to cancel?</div>
-                                                                    <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                                        <button class="no-form-cancel" type="button">No</button>
-                                                                        <a href="#" class="back-button">Yes</a>
-                                                                    </div>
-                                                            </div>       
+                                                        <div class="approval-info">
+                                                            <span class="approval-time">2025/07/22 14:35</span>
+                                                            <span class="approavl-account">heather01</span>
                                                         </div>
-                                                        <div id="confirm-submit-popup" class="confirm-submit-popup report-cancel-popup-confirmation">
-                                                            <div class="confirm-submit-popup-box">
-                                                                <h2>Submit</h2>
-                                                                    <div class="popup-form-cross-icon report-cancel-icon"></div>
-                                                                    <div class="form-message">Are you sure you want to submit?</div>
-                                                                    <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                                        <button class="no-confirm-submit" type="button">No</button>
-                                                                        <input type="submit" value="Yes" id="confirm-submit">
-                                                                    </div>
-                                                            </div>       
-                                                        </div>
-                                                        <button class="back-button report-cancel-button" id="cancel-confirmation-button">Cancel</button>
-                                                        <button type="button" id="respond-popup-button">Submit</button>
+                                                        <button class="report-close-button">Close</button>
                                                     </div>
                                                 </form>
                                             </div>

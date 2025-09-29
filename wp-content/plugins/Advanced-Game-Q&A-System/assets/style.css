@@ -39,6 +39,7 @@ p {
 }
 
 
+.form-input-fields::-webkit-scrollbar,
 .user-history-records-inner::-webkit-scrollbar,
 .fr-element.fr-view::-webkit-scrollbar,
 #pdfWrapper::-webkit-scrollbar,
@@ -78,6 +79,7 @@ textarea.wp-editor-area::-webkit-scrollbar,
   background: transparent !important;
 }
 
+.form-input-fields:-webkit-scrollbar-track,
 .filter-select-list:-webkit-scrollbar-track,
 .custom-table-ctn-inner:-webkit-scrollbar-track,
 .fr-element.fr-view::-webkit-scrollbar-track,
@@ -96,6 +98,7 @@ div#agqa-search-results::-webkit-scrollbar-track,
 }
 
 /* Handle */
+.form-input-fields::-webkit-scrollbar-thumb,
 .filter-select-list::-webkit-scrollbar-thumb,
 .custom-table-ctn-inner::-webkit-scrollbar-thumb,
 .fr-element.fr-view::-webkit-scrollbar-thumb,
@@ -2266,7 +2269,7 @@ body .selected-dropdown-item,
 }
 
 .respond-popup-inner {
-  padding: 16px 24px;
+  padding: 16px 14px 16px 24px;
 }
 
 .agqa-popup-form-inner,
@@ -2288,8 +2291,12 @@ body .selected-dropdown-item,
 
 .respond-popup-inner {
   width: 700px;
-      transition: all .3s 
-ease-in-out .4s;
+  transition: all .3s ease-in-out .4s;
+}
+
+.respond-popup-inner p {
+  color: #1D1C25 !important;
+  margin-bottom: 0;
 }
 
 .agqa-popup-form-inner,
@@ -2856,6 +2863,7 @@ textarea.wp-editor-area {
   margin-bottom: 0;
 }
 
+.agqa-respond-buttons .report-close-button,
 .agqa-respond-buttons .back-button,
 .agqa-respond-buttons #respond-popup-button,
 .history-record-buttons button,
@@ -3366,7 +3374,7 @@ form .agqa-popup-form-multi-select,
 #custom-faq-field-popup button,
 form .form-buttons input,
 form .form-buttons button {
-  padding: 8px 24px !important;
+  padding: 9px 24px !important;
 }
 
 .add-custom-field-ctn {
@@ -4808,6 +4816,10 @@ body.page_content_blocks:not(.single-post):not(.single-job_listing):not(.element
   max-width: 284px !important;
 }
 
+.agqa-report-select-filter-button {
+  max-width: 240px !important;
+}
+
 .filter-container .filter-area button.agqa-report-type-filter-button {
   background-image: url(images/report-type-icon.svg);
   background-size: 21px;
@@ -4869,6 +4881,10 @@ body.page_content_blocks:not(.single-post):not(.single-job_listing):not(.element
   margin-top: 24px;
 }
 
+.report-form-table .custom-table-row {
+  display: block;
+}
+
 .report-form-table .table-head-col:nth-child(1),
 .report-row-head .table-body-col:nth-child(1) {
   min-width: 60px;
@@ -4895,23 +4911,26 @@ body.page_content_blocks:not(.single-post):not(.single-job_listing):not(.element
   padding-right: 50px;
 }
 
-.report-row-head .table-body-col:nth-child(3),
 .report-row-head .table-body-col:nth-child(4),
-.report-form-table .table-head-col:nth-child(3),
 .report-form-table .table-head-col:nth-child(4) {
+  min-width: 13.525%;
+}
+
+.report-row-head .table-body-col:nth-child(3),
+.report-form-table .table-head-col:nth-child(3) {
   min-width: 180px;
 }
 
 .report-row-head .table-body-col:nth-child(7),
 .report-form-table .table-head-col:nth-child(7) {
-  min-width: 168px;
+  min-width: 15.028%;
 }
 
 .report-row-head .table-body-col:nth-child(5),
 .report-row-head .table-body-col:nth-child(6),
 .report-form-table .table-head-col:nth-child(5),
 .report-form-table .table-head-col:nth-child(6) {
-  min-width: 200px;
+  min-width: 15.028%;
 }
 
 .report-row-head {
@@ -4943,10 +4962,24 @@ body.page_content_blocks:not(.single-post):not(.single-job_listing):not(.element
   background-color: transparent !important;
   width: 36px;
   height: 36px;
-  background-image: url(images/report-form-icon.svg);
   background-repeat: no-repeat;
   background-size: 20px;
   background-position: center;
+}
+
+.upload-image-label {
+  display: inline-block;
+  color: #747474;
+  margin-bottom: 8px;
+}
+
+.pending-response-button {
+  background-image: url(images/report-form-icon.svg);
+}
+
+.responded-button,
+.no-response-need-button {
+  background-image: url(images/view-popup-icon.svg);
 }
 
 .respond-button:hover {
@@ -5014,9 +5047,12 @@ body.page_content_blocks:not(.single-post):not(.single-job_listing):not(.element
 }
 
 .uploaded-images {
+  margin-bottom: 16px;
+}
+
+.uploaded-images-inner {
   display: flex;
   gap: 16px;
-  margin-bottom: 16px;
 }
 
 .uploaded-image {
@@ -5116,4 +5152,32 @@ body.page_content_blocks:not(.single-post):not(.single-job_listing):not(.element
   background-size: contain;
   background-position: center;
   cursor: pointer;
+}
+
+.approval-info {
+  display: flex;
+  gap: 8px;
+}
+
+.agqa-respond-buttons {
+  align-items: center;
+}
+
+.approval-info span {
+  color: #1D1C25;
+}
+
+.disabled-field {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.disabled-field .custom-select-dropdown span {
+  color: #1D1C25;
+}
+
+.form-input-fields {
+  max-height: 74vh;
+  overflow-y: auto;
+  padding-right: 10px;
 }

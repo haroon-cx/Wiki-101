@@ -10,6 +10,17 @@
     }
 }
 
+@media (max-width: 1760px) {
+    .report-form-table.custom-table {
+        width: 155%;
+    }
+
+    .report-row-head .table-body-col:nth-child(7),
+    .report-form-table .table-head-col:nth-child(7) {
+        min-width: 13%;
+    }
+}
+
 @media (max-width: 1680px) and (min-width: 1439px) {
     .faq-template .filter-area {
         min-width: 60%;
@@ -94,6 +105,19 @@
 
 @media (max-width: 1439px) and (min-width: 748px) {
 
+    .report-system-template .filter-select {
+        width: auto;
+    }
+
+    .report-system-template .filter-area input[type="search"] {
+        min-width: auto;
+        max-width: max-content;
+    }
+
+    .report-system-template .filter-area {
+        min-width: 100%;
+    }
+
     .filter-area input[type="search"] {
         min-width: auto;
     }
@@ -160,6 +184,10 @@
 
 @media (max-width: 1439px) and (min-width: 1024px) {
 
+    .report-row-head .table-body-col:nth-child(7),
+    .report-form-table .table-head-col:nth-child(7) {
+        min-width: 11%;
+    }
 
     .filter-container {
         flex-wrap: nowrap;
@@ -254,6 +282,10 @@
 }
 
 @media (max-width: 1199px) and (min-width: 748px) {
+
+    .report-form-table.custom-table {
+        width: 200%;
+    }
 
     .date-field {
         border-radius: 10px !important;
@@ -395,7 +427,6 @@
 
 @media (max-width: 1199px) and (min-width: 1024px) {
 
-
     .filter-select {
         width: calc(100% - 108px);
     }
@@ -486,7 +517,8 @@
     }
 
     .filter-area input[type="search"],
-    div.filter-container button.filter-select-title,.date-field {
+    div.filter-container button.filter-select-title,
+    .date-field {
         height: 54px;
     }
 
@@ -599,6 +631,12 @@
 }
 
 @media (max-width: 1023px) {
+
+    .custom-table .custom-table-head,
+    thead {
+        font-size: 18px;
+    }
+
     .viewer-toggle-wrapper span {
         display: none;
     }
@@ -867,17 +905,23 @@
     .filter-select {
         /* min-width: calc(100% - 114px); */
     }
+
     .filter-area {
         min-width: 76%;
         width: 76%;
     }
+
     input#manage-user-search {
-    min-width: 270px;
-}
+        min-width: 270px;
+    }
 }
 
 @media (max-height: 900px) {
     .reorder-selling-price-tiles {
         max-height: 54vh;
+    }
+
+    .form-input-fields {
+        max-height: 62vh;
     }
 }
