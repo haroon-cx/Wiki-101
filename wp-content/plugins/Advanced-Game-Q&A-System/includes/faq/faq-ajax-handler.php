@@ -239,81 +239,6 @@ function agqa_edit_faq()
 add_action('wp_ajax_agqa_edit_faq', 'agqa_edit_faq');
 add_action('wp_ajax_nopriv_agqa_edit_faq', 'agqa_edit_faq');
 
-
-/**
- * FAQ like & dislike handler
- */
-
-// function handle_like_dislike_action()
-// {
-//     // Check nonce for security
-//     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
-//         wp_send_json_error(['message' => 'Permission denied.']);
-//     }
-
-//     // Parse the form_data from AJAX request
-//     parse_str($_POST['form_data'], $data);
-//     $faq_id = intval($data['faq-id']);
-//     $action_type = sanitize_text_field($data['like']); // '1' = like, '0' = dislike
-//     $user_id = get_current_user_id();
-
-//     if (!$user_id) {
-//         wp_send_json_error(['message' => 'You must be logged in to like/dislike.']);
-//     }
-
-//     global $wpdb;
-//     $table = $wpdb->prefix . 'agqa_faq_likes_dislikes';
-
-//     // Check if a record already exists
-//     $existing_action = $wpdb->get_var($wpdb->prepare("
-//         SELECT action_type 
-//         FROM $table 
-//         WHERE faq_id = %d AND user_id = %d
-//     ", $faq_id, $user_id));
-
-//     if ($existing_action !== null) {
-//         // Record exists, update it (like or dislike)
-//         $wpdb->update(
-//             $table,
-//             ['action_type' => $action_type],
-//             ['faq_id' => $faq_id, 'user_id' => $user_id],
-//             ['%d'],
-//             ['%d', '%d']
-//         );
-//         $message = 'Your preference has been updated.';
-//     } else {
-//         // No record exists, insert new
-//         $wpdb->insert(
-//             $table,
-//             [
-//                 'faq_id' => $faq_id,
-//                 'user_id' => $user_id,
-//                 'action_type' => $action_type
-//             ],
-//             ['%d', '%d', '%d']
-//         );
-//         $message = 'Your preference has been saved.';
-//     }
-
-//     // Optionally, return updated counts
-//     $like_count = $wpdb->get_var($wpdb->prepare(
-//         "SELECT COUNT(*) FROM $table WHERE faq_id = %d AND action_type = 1",
-//         $faq_id
-//     ));
-//     $dislike_count = $wpdb->get_var($wpdb->prepare(
-//         "SELECT COUNT(*) FROM $table WHERE faq_id = %d AND action_type = 0",
-//         $faq_id
-//     ));
-
-//     $response['status']  = 'Success';
-//     $response['message'] = 'Successfully Submitted';
-//     echo json_encode($response);
-
-//     wp_die(); // End the request
-// }
-
-// add_action('wp_ajax_like_dislike_action', 'handle_like_dislike_action');
-// add_action('wp_ajax_nopriv_like_dislike_action', 'handle_like_dislike_action');
 function handle_like_dislike_action()
 {
     // Check nonce for security
@@ -406,46 +331,6 @@ function handle_like_dislike_action()
 add_action('wp_ajax_like_dislike_action', 'handle_like_dislike_action');
 add_action('wp_ajax_nopriv_like_dislike_action', 'handle_like_dislike_action');
 
-
-/**
- * FAQ Delete Table handler
- */
-// function handle_faq_deletion()
-// {
-//     // Verify nonce for security
-//     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
-//         die('Permission Denied');
-//     }
-
-
-//     parse_str($_POST['form_data'], $data);
-
-//     // Check if faq_id is set and valid
-
-//     global $wpdb;
-//     $faq_id = intval($data['faq_id']); // Get the FAQ ID from the request
-
-
-//     // Delete the FAQ from the agqa_faq table
-//     $table_faq = $wpdb->prefix . 'agqa_faq';
-//     // $table_history = $wpdb->prefix . 'agqa_faq_history'; // If you want to also delete from history
-
-//     // Delete FAQ from both tables (history and FAQ)
-//     $wpdb->delete($table_faq, array('id' => $faq_id));
-//     // $wpdb->delete($table_history, array('faq_id' => $faq_id));
-
-//     $response['status']  = 'Success';
-//     $response['message'] = 'Successfully Submitted';
-//     echo json_encode($response);
-
-
-//     wp_die(); // End the AJAX request
-// }
-
-// // Hook to handle the deletion
-// add_action('wp_ajax_delete_faq', 'handle_faq_deletion');
-// add_action('wp_ajax_nopriv_delete_faq', 'handle_delete_faq');
-
 /**
  * FAQ Delete Table handler
  */
@@ -491,5 +376,46 @@ function handle_faq_deletion()
 }
 
 // Hook to handle the deletion
-add_action('wp_ajax_delete_faq', 'handle_faq_deletion');
-add_action('wp_ajax_nopriv_delete_faq', 'handle_faq_deletion');
+add_action('wp_ajax_faq_report_system', 'handle_faq_report_system');
+add_action('wp_ajax_nopriv_faq_report_system', 'handle_faq_report_system');
+
+/**
+ * Faqs report system
+ */
+function faq_report_system()
+{
+    global $wpdb;
+
+    // Verify nonce
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+        die('Permission Denied');
+    }
+    parse_str($_POST['form_data'], $data); // Parse serialized form data
+
+
+    $user_id = get_current_user_id();    // Get data from AJAX request
+    $faq_report_type = sanitize_text_field($data['faq-report-type"']);
+    $faq_report_answer= sanitize_text_field($data['faq-report-answer']);
+    
+    // Insert the FAQ into the database
+    $wpdb->insert(
+        "{$wpdb->prefix}faq_report_system",
+        array(
+            'user_id' => $user_id,
+            'report_type' => $report_type,
+            'status' => 'Pending Response',
+            'answer' => $answer,
+        ),
+        array(
+            '%s', // question
+            '%s', // answer
+            '%s', // verified_answer
+        )
+    );
+
+    // If everything went well, return success
+    $response['status']  = 'Success';
+    $response['message'] = 'Successfully Submitted';
+    echo json_encode($response);
+    wp_die();
+}

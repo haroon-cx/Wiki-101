@@ -1484,6 +1484,7 @@ function ddmu_handle_upload()
         echo json_encode(['status' => 'error', 'message' => 'Nonce verification failed.']);
         wp_die();
     }
+   
 
     if (! empty($_FILES['file'])) {
         $uploaded_file = $_FILES['file'];
@@ -1506,6 +1507,85 @@ add_action('wp_ajax_ddmu_handle_upload', 'ddmu_handle_upload');
 add_action('wp_ajax_nopriv_ddmu_handle_upload', 'ddmu_handle_upload');
 
 // End Sales Handler
+
+// function ddmu_handle_upload() {
+//     // Make sure you localized this same handle when creating the nonce in JS
+//     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+//         wp_send_json_error(['message' => 'Nonce verification failed.'], 403);
+//     }
+
+//     // Accept either 'file' or 'attachments'
+//     if (empty($_FILES['file']) && empty($_FILES['attachments'])) {
+//         wp_send_json_error(['message' => 'No file uploaded.'], 400);
+//     }
+
+//     // Normalize into an array of file items
+//     $files_post = !empty($_FILES['file']) ? $_FILES['file'] : $_FILES['attachments'];
+//     $items = [];
+
+//     if (is_array($files_post['name'])) {
+//         $count = count($files_post['name']);
+//         for ($i = 0; $i < $count; $i++) {
+//             $items[] = [
+//                 'name'     => $files_post['name'][$i],
+//                 'type'     => $files_post['type'][$i],
+//                 'tmp_name' => $files_post['tmp_name'][$i],
+//                 'error'    => $files_post['error'][$i],
+//                 'size'     => $files_post['size'][$i],
+//             ];
+//         }
+//     } else {
+//         $items[] = $files_post;
+//     }
+
+//     require_once ABSPATH . 'wp-admin/includes/file.php';
+
+//     $urls = [];
+//     // Optional: restrict mimes
+//     $overrides = [
+//         'test_form' => false,
+//         'mimes'     => [
+//             'jpg' => 'image/jpeg',
+//             'jpeg'=> 'image/jpeg',
+//             'png' => 'image/png',
+//             'gif' => 'image/gif',
+//             'webp'=> 'image/webp',
+//         ],
+//     ];
+
+//     // (Optional) put uploads under /uploads/agqa-reports
+//     $uploads = wp_upload_dir();
+//     add_filter('upload_dir', function($dirs) use ($uploads) {
+//         $dirs['path']   = $uploads['basedir'] . '/agqa-reports';
+//         $dirs['url']    = $uploads['baseurl'] . '/agqa-reports';
+//         $dirs['subdir'] = '/agqa-reports';
+//         return $dirs;
+//     });
+
+//     foreach ($items as $f) {
+//         if (!empty($f['error'])) {
+//             remove_all_filters('upload_dir');
+//             wp_send_json_error(['message' => 'Upload error code: ' . $f['error']], 400);
+//         }
+//         $res = wp_handle_upload($f, $overrides);
+//         if (isset($res['error'])) {
+//             remove_all_filters('upload_dir');
+//             wp_send_json_error(['message' => 'Upload failed: ' . $res['error']], 500);
+//         }
+//         $urls[] = esc_url_raw($res['url']);
+//     }
+
+//     remove_all_filters('upload_dir');
+
+//     wp_send_json_success([
+//         'message' => 'Files uploaded.',
+//         'url'     => count($urls) === 1 ? $urls[0] : $urls,
+//     ]);
+// }
+
+// add_action('wp_ajax_ddmu_handle_upload', 'ddmu_handle_upload');
+// add_action('wp_ajax_nopriv_ddmu_handle_upload', 'ddmu_handle_upload');
+
 
 /**
  * Revenue Reorder Handle
@@ -1658,5 +1738,93 @@ function save_user_sales_sort_order_handler() {
     wp_die(); 
 }
 
+/**
+ * FAQs report system handler
+ */
+
+// add_action('wp_ajax_agqa_faq_report_handler', 'agqa_faq_report_handler');
+// add_action('wp_ajax_nopriv_agqa_faq_report_handler', 'agqa_faq_report_handler'); // remove if you only want logged-in
+
+// function agqa_faq_report_handler() {
+//     // Expect nonce as POST field 'nonce' (adjust if your key is different)
+  
+//     if (! isset($_POST['nonce']) || ! wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+//         echo json_encode(['status' => 'error', 'message' => 'Nonce verification failed.']);
+//         wp_die();
+//     }
+
+//        parse_str($_POST['form_data'], $data); 
+//     global $wpdb;
+//     $table = $wpdb->prefix . 'faq_report_system';
+
+//     // Sanitize fields
+//     $user_id        = isset($data['user_id']) ? sanitize_text_field($data['user_id']) : '';
+//     $report_type    = isset($data['report_type']) ? sanitize_text_field($data['report_type']) : '';
+//     $status         = isset($data['status']) ? sanitize_text_field($data['status']) : '';
+//     $issue_detail   = isset($data['issue_detail']) ? wp_kses_post($data['issue_detail']) : '';
+//     $answer         = isset($data['answer']) ? wp_kses_post($data['answer']) : '';
+//     $issue_reply    = isset($data['issue_detail_reply']) ? wp_kses_post($data['issue_detail_reply']) : '';
+
+//     // Reporter = current user id (fallback 0)
+//     $reporter = get_current_user_id();
+//     if (!$reporter) { $reporter = 0; }
+
+//     // Handle multiple file uploads (field name: upload_attachments[])
+//     $uploaded_urls = [];
+//     if (!empty($_FILES['upload_attachments']) && is_array($_FILES['upload_attachments']['name'])) {
+//         require_once ABSPATH . 'wp-admin/includes/file.php';
+
+//         $files = $_FILES['upload_attachments'];
+//         foreach ($files['name'] as $index => $name) {
+//             if ($files['error'][$index] !== UPLOAD_ERR_OK) {
+//                 continue; // skip errored file
+//             }
+//             $file_array = [
+//                 'name'     => sanitize_file_name($files['name'][$index]),
+//                 'type'     => $files['type'][$index],
+//                 'tmp_name' => $files['tmp_name'][$index],
+//                 'error'    => $files['error'][$index],
+//                 'size'     => $files['size'][$index],
+//             ];
+
+//             // Allow upload without the standard form check
+//             $overrides = ['test_form' => false, 'mimes' => null, 'unique_filename_callback' => null];
+//             $movefile = wp_handle_upload($file_array, $overrides);
+
+//             if ($movefile && !isset($movefile['error'])) {
+//                 $uploaded_urls[] = esc_url_raw($movefile['url']);
+//             }
+//         }
+//     }
+//     $attachments_json = !empty($uploaded_urls) ? wp_json_encode($uploaded_urls) : null;
+
+//     // Insert row
+//     $data = [
+//         'user_id'              => $user_id,
+//         'report_type'          => $report_type,
+//         'status'               => $status,
+//         'issue_detail'         => $issue_detail,
+//         'issue_detail_reply'   => $issue_reply,
+//         'upload_attachments'   => $attachments_json,
+//         'answer'               => $answer,
+//         'reporter'             => $reporter,
+//         // reply_time, create_time have defaults
+//     ];
+//     $formats = [
+//         '%s','%s','%s','%s','%s','%s','%s','%d'
+//     ];
+
+//     $inserted = $wpdb->insert($table, $data, $formats);
+
+//     if (!$inserted) {
+//         wp_send_json_error(['message' => 'Database insert failed.'], 500);
+//     }
+
+//     wp_send_json_success([
+//         'message' => 'Report submitted successfully.',
+//         'insert_id' => (int) $wpdb->insert_id,
+//         'attachments' => $uploaded_urls,
+//     ]);
+// }
 
 // END

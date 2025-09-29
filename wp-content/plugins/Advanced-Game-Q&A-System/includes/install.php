@@ -265,21 +265,21 @@ function agqa_create_tables()
         time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) $charset;");
     
-    // // Report system table
+    // Report system table
 
-    // $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}faq_report_system (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     user_id VARCHAR(255) NOT NULL,
-    //     report_type VARCHAR(255) NOT NULL,
-    //     status VARCHAR(255) NOT NULL,
-    //     issue_detail TEXT NOT NULL,
-    //     issue_detail_reply TEXT NOT NULL,
-    //     upload_attachments TEXT, 
-    //     answer TEXT,
-    //     reporter BIGINT(20) NOT NULL,
-    //     reply_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    //     create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    // ) $charset");
+    $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}faq_report_system (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        report_type VARCHAR(255) NOT NULL,
+        status VARCHAR(255) NOT NULL,
+        issue_detail TEXT NOT NULL,
+        issue_detail_reply TEXT NOT NULL,
+        upload_attachments TEXT, 
+        answer TEXT,
+        reporter BIGINT(20) NOT NULL,
+        reply_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) $charset");
     
     // Sales Reorder Table
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}reorder_sales (

@@ -748,4 +748,281 @@ jQuery(document).ready(function ($) {
       $("#custom-faq-field-popup").hide();
     });
   });
+
+  /**
+   * faqs report script
+   */
+  /**
+   * Edit FAQ Form
+   */
+
+  // $("#faq_report_form").submit(function (e) {
+  //   e.preventDefault();
+  //   const $form = $(this);
+  //   var formDataBmodel = $form.serialize();
+  //   // console.log(formDataBmodel);
+  //   var formDataObject = {};
+  //   // console.log($('input[type="file"]')[0].files[0] );
+  //   var formDataImage = new FormData();
+  //   let isValid = true;
+  //   // Split the serialized string by '&' and loop through each pair
+  //   formDataBmodel.split("&").forEach(function (pair) {
+  //     var [key, value] = pair.split("=");
+  //     formDataObject[key] = decodeURIComponent(value);
+  //   });
+  //   var formDataImage = new FormData();
+  //   formDataImage.append("action", "ddmu_handle_upload");
+  //   formDataImage.append("nonce", agqa_ajax.nonce);
+  //   formDataImage.append("file", $('input[type="file"]')[0].files[0]);
+  //   // console.log(formDataImage);
+  //   // alert(response);
+  //   const $successMsg = $(
+  //     `<div class="submit-warning">Please Waiting...</div>`
+  //   );
+  //   $form.append($successMsg);
+
+  //   // Hide after 3 seconds
+  //   setTimeout(function () {
+  //     $successMsg.fadeOut(400, function () {
+  //       $(this).remove();
+  //     });
+  //   }, 3000);
+  //   $.ajax({
+  //     url: agqa_ajax.ajax_url,
+  //     type: "POST",
+  //     data: formDataImage,
+  //     processData: false,
+  //     contentType: false,
+  //     success: function (response) {
+  //       // console.log(response);
+  //       var parsedResponse = JSON.parse(response);
+  //       if (parsedResponse.status === "success") {
+  //         // Get the image URL from the upload response
+  //         var imageUrls = parsedResponse.url;
+  //         // console.log(formDataObject["business-model"]);
+  //         if (formDataObject["business-model"] == "sale") {
+  //           // agqaAddSales(imageUrls);
+  //         } else {
+  //           // console.log(imageUrls);
+  //           // agqaAddRevnue(imageUrls);
+  //         }
+  //       } else {
+  //         $("#ddmu-response").html("<p>" + parsedResponse.message + "</p>");
+  //         if (formDataObject["business-model"] == "sale") {
+  //           imageUrls = "";
+  //           // agqaAddSales(imageUrls);
+  //         } else {
+  //           imageUrls = "";
+  //           // agqaAddRevnue(imageUrls);
+  //         }
+  //       }
+  //     },
+  //     error: function (xhr) {
+  //       $("#ddmu-response").html(
+  //         "<p>Something went wrong. Please try again.</p>"
+  //       );
+  //     },
+  //   });
+  // });
+
+  // --- helpers ---
+  function dataURLtoFile(dataUrl, filename = "image.jpg") {
+    // data:[<mime>][;base64],<data>
+    const arr = dataUrl.split(",");
+    const header = arr[0];
+    const mimeMatch = header.match(/data:(.*?);/);
+    const mime = mimeMatch ? mimeMatch[1] : "image/jpeg";
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) u8arr[n] = bstr.charCodeAt(n);
+    return new File([u8arr], filename, { type: mime });
+  }
+
+  async function urlToFile(url, filename = "image.jpg") {
+    // works for blob:, http(s):, and (in most browsers) data: as well
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const mime = blob.type || "application/octet-stream";
+    const ext = (mime.split("/")[1] || "bin").replace("jpeg", "jpg");
+    return new File(
+      [blob],
+      filename.endsWith(ext) ? filename : `${filename}.${ext}`,
+      { type: mime }
+    );
+  }
+
+  async function collectFilesFromPreviews(
+    selector = ".report-preview-item img"
+  ) {
+    const files = [];
+    const $imgs = $(selector);
+
+    for (let i = 0; i < $imgs.length; i++) {
+      const src = $imgs.eq(i).attr("src");
+      if (!src) continue;
+
+      // make a nice filename
+      const baseName = `image_${i + 1}`;
+
+      if (src.startsWith("data:")) {
+        // guaranteed to work for your case
+        files.push(dataURLtoFile(src, `${baseName}.jpg`));
+      } else {
+        // blob: or http(s):
+        files.push(await urlToFile(src, baseName));
+      }
+    }
+    return files;
+  }
+
+  // --- submit handler ---
+  $(document).on("submit", "#faq_report_form", async function (e) {
+    e.preventDefault();
+
+    const $form = $(this);
+    const fd = new FormData($form[0]); // grabs your other form fields
+    fd.append("action", "ddmu_handle_upload"); // adjust if your PHP action name differs
+    fd.append("nonce", agqa_ajax.nonce); // must match your localized nonce
+
+    // collect files from preview images
+    const files = await collectFilesFromPreviews(".report-preview-item img");
+
+    if (!files.length) {
+      alert("Please add at least one image.");
+      return;
+    }
+
+    // IMPORTANT: match the field name to what your PHP expects: 'file[]' or 'attachments[]'
+    for (const f of files) {
+      fd.append("attachments[]", f, f.name); // change to 'file[]' if your handler expects that
+    }
+
+    // optional UI feedback
+    const $msg = $('<div class="submit-warning">Please wait...</div>');
+    $form.append($msg);
+    setTimeout(
+      () =>
+        $msg.fadeOut(300, function () {
+          $(this).remove();
+        }),
+      1500
+    );
+
+    $.ajax({
+      url: agqa_ajax.ajax_url,
+      type: "POST",
+      data: fd,
+      processData: false,
+      contentType: false,
+      dataType: "json",
+      success: function (res) {
+        console.log(res);
+        if (res?.status === "success") {
+          console.log("Uploaded:", res.url);
+          // clear if you want:
+          // $('.report-file-preview').empty().hide();
+          // $form[0].reset();
+        } else {
+          $("#ddmu-response").html(
+            "<p>" + (res?.message || "Upload failed") + "</p>"
+          );
+        }
+      },
+      error: function () {
+        $("#ddmu-response").html(
+          "<p>Something went wrong. Please try again.</p>"
+        );
+      },
+    });
+  });
+
+  // jQuery("#faq_report_form").submit("submit", function () {
+  //   var $form = jQuery(this);
+  //   var formData = $form.serialize();
+  //   alert(formData);
+  //   return;
+  //   // Create an object to store form data values
+  //   var formDataObject = {};
+  //   let isValid = true;
+  //   // Check if all required fields are filled
+  //   $form.find("[required]").each(function () {
+  //     const field = $(this);
+  //     // Trim spaces and check if the field is only spaces or empty
+  //     const trimmedValue = field.val().trim();
+
+  //     if (!trimmedValue) {
+  //       isValid = false;
+  //       return false;
+  //     }
+  //     if (!field.val()) {
+  //       // If the field is empty
+  //       isValid = false;
+  //       return false;
+  //     }
+  //   });
+
+  //   if (!isValid) {
+  //     return;
+  //   }
+  //   // AJAX
+  //   var nonce = agqa_ajax.nonce;
+  //   $.ajax({
+  //     type: "POST",
+  //     url: agqa_ajax.ajax_url,
+  //     data: {
+  //       action: "faq_report_system",
+  //       form_data: formData,
+  //       nonce: nonce,
+  //     },
+  //     success: function (response) {
+  //       // console.log(response);
+  //       if (response.includes("Success")) {
+  //         // alert("Successfully Submitted");
+  //         const $successMsg = $(
+  //           '<div class="submitted-successfully">Report Successfully Submitted</div>'
+  //         );
+  //         $form.append($successMsg);
+
+  //         // Hide after 3 seconds
+  //         setTimeout(function () {
+  //           $successMsg.fadeOut(400, function () {
+  //             $(this).remove();
+  //           });
+  //         }, 3000);
+  //         // Find the *actual* back button
+  //         const $btn = $(".form-header-row .back-button");
+  //         const btn = $btn.get(0);
+  //         if (!btn) {
+  //           console.warn("Back button not found in DOM at success time.");
+  //           return;
+  //         }
+  //         $btn.trigger("click");
+
+  //         btn.click();
+
+  //         btn.dispatchEvent(
+  //           new MouseEvent("click", { bubbles: true, cancelable: true })
+  //         );
+  //       } else {
+  //         // alert(response);
+  //         const $successMsg = $(
+  //           `<div class="report submitted-unsuccessfully">${response}</div>`
+  //         );
+  //         $form.append($successMsg);
+
+  //         // Hide after 3 seconds
+  //         setTimeout(function () {
+  //           $successMsg.fadeOut(400, function () {
+  //             $(this).remove();
+  //           });
+  //         }, 3000);
+  //       }
+  //     },
+  //     error: function (xhr, status, error) {
+  //       console.error("AJAX Error:", error); // Log the error for debugging
+  //       alert("An error occurred! Please try again later.");
+  //     },
+  //   });
+  // });
 });
