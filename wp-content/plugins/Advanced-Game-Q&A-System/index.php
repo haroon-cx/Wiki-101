@@ -60,11 +60,11 @@ add_action('wp_enqueue_scripts', function () {
     // FAQ JS file
     wp_enqueue_script('agqa-faq-js', AGQA_URL . 'assets/faq/faq.js', ['jquery'], null, true);
     wp_enqueue_script('agqa-faq-main-js', AGQA_URL . 'includes/faq/faq-main.js', ['jquery'], null, true);
+    wp_enqueue_script('agqa-report-system-js', AGQA_URL . 'includes/report-system/report-system.js', ['jquery'], null, true);
     wp_enqueue_script('agqa-script', AGQA_URL . 'assets/main.js', ['jquery'], null, true);
 
     // Report System JS File
     wp_enqueue_script('agqa-report-system-frontend', AGQA_URL . 'assets/report-system/report-system-frontend.js', ['jquery'], null, true);
-    wp_enqueue_script('agqa-report-system-js', AGQA_URL . 'includes/report-system/report-system.js', ['jquery'], null, true);
 
     wp_localize_script('agqa-script', 'agqa_ajax', [
         'ajax_url'        => admin_url('admin-ajax.php'),

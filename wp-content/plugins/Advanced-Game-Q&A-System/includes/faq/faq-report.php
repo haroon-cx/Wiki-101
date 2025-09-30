@@ -16,16 +16,20 @@
                     </div>
                     <div class="custom-select-dropdown-lists">
                         <ul>
-                            <li data-value="functional">Functional issue / Operation not working as expected</li>
-                            <li data-value="ui">UI display issue</li>
-                            <li data-value="incorrect-data">Incorrect data display</li>
-                            <li data-value="system-error">System error message</li>
-                            <li data-value="process-interruption">Process interruption / Unable to complete operation
+                            <li data-value="Functional issue / Operation not working as expected">Functional issue /
+                                Operation not working as expected</li>
+                            <li data-value="UI display issue">UI display issue</li>
+                            <li data-value="Incorrect data display">Incorrect data display</li>
+                            <li data-value="System error message">System error message</li>
+                            <li data-value="Process interruption / Unable to complete operation">Process interruption /
+                                Unable to complete operation
                             </li>
-                            <li data-value="performance">Performance issue / System lag</li>
-                            <li data-value="permission">Permission or account-related issue</li>
-                            <li data-value="notification">Notification / Email / Task trigger issue</li>
-                            <li data-value="text-error">Text / Language error</li>
+                            <li data-value="Performance issue / System lag">Performance issue / System lag</li>
+                            <li data-value="Permission or account-related issue">Permission or account-related issue
+                            </li>
+                            <li data-value="Notification / Email / Task trigger issue">Notification / Email / Task
+                                trigger issue</li>
+                            <li data-value="Text / Language error">Text / Language error</li>
                             <li data-value="other">Other</li>
                         </ul>
                     </div>

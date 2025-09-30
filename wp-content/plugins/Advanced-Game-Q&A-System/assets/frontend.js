@@ -2153,36 +2153,36 @@ jQuery(document).ready(function ($) {
   //     $dropdown.css({ top: '45px', bottom: '' });
   //   }
   // }).trigger('resize');
-   // When a user clicks on the stretch icon
-    // When a user clicks on the stretch icon
-    $('.stretch-image-icon').on('click', function() {
-        // Get the image source from the parent uploaded-image's img tag
-        var imgSrc = $(this).siblings('img').attr('src');
-        
-        // Set the src attribute of the stretched image
-        $('#stretched-img').attr('src', imgSrc);
-        
-        // Show the overlay
-        $('#stretch-overlay').fadeIn();
-    });
+  // When a user clicks on the stretch icon
+  // When a user clicks on the stretch icon
+  $(".stretch-image-icon").on("click", function () {
+    // Get the image source from the parent uploaded-image's img tag
+    var imgSrc = $(this).siblings("img").attr("src");
 
-    // When the overlay is clicked, close the stretched image view (if clicked outside the image)
-    $('#stretch-overlay').on('click', function(e) {
-        if (e.target === this) {
-            $('#stretch-overlay').fadeOut();
-        }
-    });
+    // Set the src attribute of the stretched image
+    $(".stretched-img").attr("src", imgSrc);
 
-    // When the close icon is clicked, close the overlay
-    $('.zoom-close-icon').on('click', function() {
-        $('#stretch-overlay').fadeOut();
-    });
-      $("#respond-popup-button").on("click", function (e) {
+    // Show the overlay
+    $(".stretch-overlay").fadeIn();
+  });
+
+  // When the overlay is clicked, close the stretched image view (if clicked outside the image)
+  $(".stretch-overlay").on("click", function (e) {
+    if (e.target === this) {
+      $(".stretch-overlay").fadeOut();
+    }
+  });
+
+  // When the close icon is clicked, close the overlay
+  $(".zoom-close-icon").on("click", function () {
+    $(".stretch-overlay").fadeOut();
+  });
+  $("#respond-popup-button").on("click", function (e) {
     e.stopPropagation();
     $(".confirm-submit-popup").addClass("active");
   });
-      $(".respond-button").on("click", function (e) {
+  $(".respond-button").on("click", function (e) {
     e.stopPropagation();
     $(this).next(".respond-popup").addClass("active");
   });
-  });
+});

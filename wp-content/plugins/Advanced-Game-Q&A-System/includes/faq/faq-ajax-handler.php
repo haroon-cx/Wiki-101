@@ -397,13 +397,13 @@ function handle_faq_report_system()
     $user_id = get_current_user_id();    // Get data from AJAX request
     $user = get_userdata($user_id); // false if not found
 
-    $faq_report_type = sanitize_text_field($data['faq-report-type"']);
+    $faq_report_type = sanitize_text_field($data['faq-report-type']);
     $faq_report_answer= sanitize_text_field($data['faq-report-answer']);
     $faq_image_url= sanitize_text_field($data['imageUrl']);
     $reporter= $user ? $user->display_name : '';
     $reply_time= sanitize_text_field($data['reply_time']);
-     echo $reporter;
-    wp_die();
+    //  echo $reporter;
+    // wp_die();
     // Insert the FAQ into the database
    $wpdb->insert(
     "{$wpdb->prefix}faq_report_system",
@@ -513,3 +513,83 @@ function report_image_system_upload() {
 
 add_action('wp_ajax_report_image_system_upload', 'report_image_system_upload');
 add_action('wp_ajax_nopriv_report_image_system_upload', 'report_image_system_upload');
+
+/**
+ * FAQs fetch answer handler
+ */
+function fetch_faq_answer() {
+    // Verify nonce
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+        wp_send_json_error(['message' => 'Nonce verification failed.'], 403);
+    }
+
+    // Check if FAQ ID is set
+    if (isset($_POST['faq_id'])) {
+        global $wpdb;
+        $faq_id = intval($_POST['faq_id']);
+        
+        // Get the answer for the selected FAQ
+        $faq_answer = $wpdb->get_var($wpdb->prepare("
+            SELECT answer 
+            FROM {$wpdb->prefix}agqa_faq
+            WHERE id = %d
+        ", $faq_id));
+        
+        if ($faq_answer) {
+            // Return the answer as a successful response
+            wp_send_json_success(['answer' => $faq_answer]);
+        } else {
+            // Return error if answer is not found
+            wp_send_json_error(['message' => 'Answer not found.']);
+        }
+    }
+
+    // Always die in the end of the AJAX function to return a response
+    wp_die();
+}
+
+
+// Register AJAX action for logged-in users
+add_action('wp_ajax_fetch_faq_answer', 'fetch_faq_answer');
+add_action('wp_ajax_nopriv_fetch_faq_answer', 'fetch_faq_answer');
+/**
+ * 
+ */
+function agqa_report_reply_system()
+{
+    global $wpdb;
+
+    // Verify nonce
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+        die('Permission Denied');
+    }
+    parse_str($_POST['form_data'], $data); // Parse serialized form data
+
+    // Get data from AJAX request
+    $report_id = sanitize_text_field($data['id']);
+    $question = sanitize_text_field($data['faq-question']);
+    $answer = sanitize_textarea_field($data['faq-answer']);
+    $wpdb->update(
+        "{$wpdb->prefix}agqa_faq_review",
+        array(
+            'report_id' => $id,
+            'status' => $status,
+            'answer' => $answer,
+            'verified_answer' => $verified_answer,
+            'faq_category' => $faq_category
+        ),
+        array(
+            '%s', // question
+            '%s', // answer
+            '%s', // verified_answer
+        )
+    );
+
+    // If everything went well, return success
+    $response['status']  = 'Success';
+    $response['message'] = 'Change the status to “Responded” and submit.';
+    echo json_encode($response);
+    wp_die();
+}
+add_action('wp_ajax_agqa_report_reply_system', 'agqa_report_reply_system');
+add_action('wp_ajax_nopriv_agqa_report_reply_system', 'agqa_report_reply_system');
