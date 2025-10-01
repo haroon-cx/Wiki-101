@@ -563,27 +563,40 @@ function agqa_report_reply_system()
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
         die('Permission Denied');
     }
-    parse_str($_POST['form_data'], $data); // Parse serialized form data
-
+    parse_str($_POST['form_data'], $data);
+    $user_id = get_current_user_id();    // Get data from AJAX request
+    $user = get_userdata($user_id); // false if not found
     // Get data from AJAX request
     $report_id = sanitize_text_field($data['id']);
-    $question = sanitize_text_field($data['faq-question']);
-    $answer = sanitize_textarea_field($data['faq-answer']);
-    $wpdb->update(
-        "{$wpdb->prefix}agqa_faq_review",
-        array(
-            'report_id' => $id,
-            'status' => $status,
-            'answer' => $answer,
-            'verified_answer' => $verified_answer,
-            'faq_category' => $faq_category
-        ),
-        array(
-            '%s', // question
-            '%s', // answer
-            '%s', // verified_answer
-        )
-    );
+    $respond_status = sanitize_text_field($data['respond-status-type']);
+    $respond_textarea = sanitize_text_field($data['respond-detail-textarea']);
+    $reply_user = $user ? $user->display_name : '';
+// echo $reply_user;
+// wp_die();
+    // Assuming these are your updated values
+    $updated_status = $respond_status;  // Example updated status
+    $updated_answer = $respond_textarea; // Example updated answer
+
+    if(!empty($updated_answer)){
+        $updated_status = 'Responded';
+    }else{
+        $updated_status = 'No Response Needed';
+    }
+
+// Update the data in the table based on the report_id
+$wpdb->update(
+    "{$wpdb->prefix}faq_report_system",  // Table name
+    array(
+        'status' => $updated_status,  // Updated status
+        'issue_detail_reply' => $updated_answer,  // Updated answer
+        'answer' => $reply_user,
+        'reply_time' => current_time('mysql'),
+    ),
+    array('id' => $report_id), // Condition to match the row by report_id
+    array('%s', '%s'),  // Format of the updated values
+    array('%d')  // Format of the condition (report_id is an integer)
+);
+
 
     // If everything went well, return success
     $response['status']  = 'Success';

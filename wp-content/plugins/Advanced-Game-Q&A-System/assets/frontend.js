@@ -2177,7 +2177,7 @@ jQuery(document).ready(function ($) {
   $(".zoom-close-icon").on("click", function () {
     $(".stretch-overlay").fadeOut();
   });
-  $("#respond-popup-button").on("click", function (e) {
+  $("#respond-popup-button, .respond-popup-button").on("click", function (e) {
     e.stopPropagation();
     $(".confirm-submit-popup").addClass("active");
   });

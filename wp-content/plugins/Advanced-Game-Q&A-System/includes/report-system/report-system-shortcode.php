@@ -80,21 +80,22 @@ function report_system_shortcode() {
                 <input type="search" name="filter-search" id="report-filter-search" class="agqa-report-validation-100"
                     placeholder="Please Enter">
                 <div class="filter-select">
-                    <input type="hidden" name="filter-report-states" class="agqa-filter-select-hidden">
+                    <input type="hidden" name="filter-report-states"
+                        class="agqa-filter-select-hidden agqa-status-filter">
                     <button class="filter-select-title agqa-report-select-filter-button">
                         <span class="filter-default-text">Select States</span>
                         <span class="filter-selected-text report-filter-selected-text"></span>
                     </button>
                     <div class="filter-select-list agqa-report-cat-filter">
                         <ul>
-                            <li>Pending Response</li>
-                            <li>Responded</li>
-                            <li>No response required</li>
+                            <li data-value="Pending Response">Pending Response</li>
+                            <li data-value="Responded">Responded</li>
+                            <li data-value="No response Needed">No response Needed</li>
                         </ul>
                     </div>
                 </div>
-                <button type="submit" class="filter-select-button"
-                    id="agqa-report-system-filter"><span>Search</span></button>
+                <button type=" submit" class="filter-select-button" id="agqa-report-system-filter">
+                    <span>Search</span></button>
             </form>
         </div>
     </div>
@@ -134,7 +135,9 @@ function report_system_shortcode() {
                                 <div class="table-body-col">
                                     <?php echo date('Y/m/d', strtotime($report_value->create_time)); ?>
                                 </div>
-                                <div class="table-body-col"><?php echo $report_value->reply_time ?></div>
+                                <div class="table-body-col">
+                                    <?php echo date('Y/m/d', strtotime($report_value->reply_time)); ?>
+                                </div>
                                 <?php if($report_value->status === 'Pending Response'){ ?>
                                 <div class="table-body-col report-action">
                                     <button class="respond-button pending-response-button"></button>
@@ -157,15 +160,16 @@ function report_system_shortcode() {
                                                                     class="custom-dropdown-default-value"><?php echo $report_value->report_type; ?></span>
                                                                 <span class="custom-dropdown-selected-value"></span>
                                                             </div>
-                                                            <input type="hidden" name="respond-report-type" required>
+                                                            <!-- <input type="hidden" name="respond-report-type" required> -->
                                                         </div>
                                                     </div>
                                                     <div class="form-field required">
                                                         <label for="respond-status-type"><span>* </span>State</label>
                                                         <div class="custom-select-dropdown">
                                                             <div class="custom-select-dropdown-title">
-                                                                <span class="custom-dropdown-default-value">Select
-                                                                    States</span>
+                                                                <span class="custom-dropdown-default-value">Pending
+                                                                    Response
+                                                                </span>
                                                                 <span class="custom-dropdown-selected-value"></span>
                                                             </div>
                                                             <div class="custom-select-dropdown-lists">
@@ -176,7 +180,8 @@ function report_system_shortcode() {
                                                                         needed</li>
                                                                 </ul>
                                                             </div>
-                                                            <input type="hidden" name="respond-status-type" required>
+                                                            <input type="hidden" name="respond-status-type"
+                                                                value="Pending Response" required>
                                                         </div>
                                                     </div>
                                                     <div class="form-field">
@@ -227,8 +232,8 @@ function report_system_shortcode() {
                                                                     <?php } ?>
                                                                 </ul>
                                                             </div>
-                                                            <input type="hidden" name="respond-answer"
-                                                                class="respond-answer">
+                                                            <!-- <input type="hidden" name="respond-answer"
+                                                                class="respond-answer"> -->
                                                         </div>
                                                     </div>
                                                     <div class="form-field">
@@ -267,8 +272,10 @@ function report_system_shortcode() {
                                                     </div>
                                                     <button class="back-button report-cancel-button"
                                                         id="cancel-confirmation-button">Cancel</button>
-                                                    <button type="submit">Submit</button>
+                                                    <!-- <button type="submit">Submit</button> -->
+                                                    <button type="button" class="respond-popup-button">Submit</button>
                                                 </div>
+                                                <input type="hidden" name="id" value="<?php echo $report_value->id; ?>">
                                             </form>
                                         </div>
                                     </div>
@@ -311,7 +318,7 @@ function report_system_shortcode() {
                                                                     <li>Other (please specify)</li>
                                                                 </ul>
                                                             </div>
-                                                            <input type="hidden" name="respond-report-type">
+                                                            <!-- <input type="hidden" name="respond-report-type"> -->
                                                         </div>
                                                     </div>
                                                     <div class="form-field disabled-field">
@@ -324,8 +331,10 @@ function report_system_shortcode() {
                                                             </div>
                                                             <div class="custom-select-dropdown-lists">
                                                                 <ul>
-                                                                    <li>Pending Response</li>
-                                                                    <li>No response needed</li>
+                                                                    <li data-value="Pending Response">Pending Response
+                                                                    </li>
+                                                                    <li data-value="No response needed">No response
+                                                                        needed</li>
                                                                 </ul>
                                                             </div>
                                                             <input type="hidden" name="respond-status-type">
@@ -337,22 +346,22 @@ function report_system_shortcode() {
                                                             class="respond-disabled-textarea" placeholder="Typing...."
                                                             disabled><?php echo $report_value->issue_detail; ?></textarea>
                                                     </div>
-                                                    <?php
-                                                        $reportUrl = $report_value->upload_attachments; 
-                                                                $reportUrl = explode(",", $reportUrl);
-                                                                foreach ($reportUrl as $url) {
-                                                                ?>
                                                     <div class="uploaded-images">
                                                         <span class="upload-image-label">Upload attachments</span>
                                                         <div class="uploaded-images-inner">
+                                                            <?php
+                                                             $reportUrl = $report_value->upload_attachments; 
+                                                                $reportUrl = explode(",", $reportUrl);
+                                                                foreach ($reportUrl as $url) {
+                                                                ?>
                                                             <div class="uploaded-image">
                                                                 <img src="<?php echo  $url;?>" alt="Report Image"
                                                                     class="stretchable">
                                                                 <div class="stretch-image-icon"></div>
                                                             </div>
+                                                            <?php } ?>
                                                         </div>
                                                     </div>
-                                                    <?php } ?>
                                                     <!-- Hidden overlay for stretched image -->
                                                     <div id="stretch-overlay" class="stretch-overlay">
                                                         <div class="stretch-container">
@@ -378,8 +387,8 @@ function report_system_shortcode() {
                                                                     <?php } ?>
                                                                 </ul>
                                                             </div>
-                                                            <input type="hidden" name="respond-answer"
-                                                                class="respond-answer">
+                                                            <!-- <input type="hidden" name="respond-answer"
+                                                                class="respond-answer"> -->
                                                         </div>
                                                     </div>
                                                     <div class="form-field">
@@ -390,8 +399,12 @@ function report_system_shortcode() {
                                                 </div>
                                                 <div class="form-buttons d-flex agqa-respond-buttons">
                                                     <div class="approval-info">
-                                                        <span class="approval-time">2025/07/22 14:35</span>
-                                                        <span class="approavl-account">heather01</span>
+                                                        <span class="approval-time">
+                                                            <?php echo date('Y/m/d H:i', strtotime($report_value->reply_time)); ?>
+                                                        </span>
+
+                                                        <span
+                                                            class="approavl-account"><?php echo $report_value->answer; ?></span>
                                                     </div>
                                                     <button class="report-close-button">Close</button>
                                                 </div>
