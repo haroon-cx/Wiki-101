@@ -334,7 +334,6 @@ if (strtolower($state) === 'pending') {
                                     <a href="<?php echo esc_url(home_url('/manage-user/?edit=' . $user_data->id . '&state=' . urlencode($user_data->state))); ?>"
                                         class="manage-user-edit-button"></a>
                                 </div>
-
                                 <div class="delete-user-ctn">
                                     <button class="delete-user-button"></button>
                                     <div id="custom-faq-field-popup">

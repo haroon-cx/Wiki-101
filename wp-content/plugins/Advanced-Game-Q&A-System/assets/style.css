@@ -2174,6 +2174,8 @@ body .selected-dropdown-item,
 }
 
 /* Popup form New Category Styl" */
+.edit-manage-ip-form,
+.add-manage-ip-form,
 .respond-popup,
 #custom-faq-field-popup,
 .agqa-popup-form,
@@ -2194,6 +2196,8 @@ body .selected-dropdown-item,
   pointer-events: none;
 }
 
+.edit-manage-ip-form.active::before,
+.add-manage-ip-form.active::before,
 .respond-popup.active::before,
 #custom-faq-field-popup::before,
 .agqa-popup-form::before,
@@ -2214,6 +2218,8 @@ body .selected-dropdown-item,
   transition: all .3s ease-in-out;
 }
 
+.edit-manage-ip-form.active::before,
+.add-manage-ip-form.active::before,
 .respond-popup.active::before,
 .agqa-popup-form.active::before,
 .reorder-popup.active::before,
@@ -2241,6 +2247,8 @@ body .selected-dropdown-item,
   pointer-events: initial;
 }
 
+.edit-manage-ip-form.active .edit-manage-ip-form-inner,
+.add-manage-ip-form.active .add-manage-ip-form-inner,
 .respond-popup.active .respond-popup-inner,
 #custom-faq-field-popup.active #custom-faq-field-popup-inner,
 .agqa-popup-form.active .agqa-popup-form-inner,
@@ -2254,6 +2262,8 @@ body .selected-dropdown-item,
   pointer-events: initial;
 }
 
+.edit-manage-ip-form-inner,
+.add-manage-ip-form-inner,
 .respond-popup-inner,
 #custom-faq-field-popup-inner,
 .agqa-popup-form-inner,
@@ -2272,11 +2282,15 @@ body .selected-dropdown-item,
   padding: 16px 14px 16px 24px;
 }
 
+.edit-manage-ip-form-inner,
+.add-manage-ip-form-inner,
 .agqa-popup-form-inner,
 .reorder-popup-inner {
   padding: 16px 18px;
 }
 
+.edit-manage-ip-form-inner,
+.add-manage-ip-form-inner,
 .respond-popup-inner,
 .agqa-popup-form-inner,
 .reorder-popup-inner,
@@ -2299,6 +2313,8 @@ body .selected-dropdown-item,
   margin-bottom: 0;
 }
 
+.edit-manage-ip-form-inner,
+.add-manage-ip-form-inner,
 .agqa-popup-form-inner,
 .reorder-popup-inner,
 .login-history-popup-inner {
@@ -2335,6 +2351,7 @@ body .selected-dropdown-item,
   transform: rotate(180deg);
 }
 
+.popup-form-title h2,
 .agqa-popup-form-title h2,
 .agqa-popup-form-title h3,
 .agqa-popup-form-title h4,
@@ -2812,6 +2829,7 @@ textarea.wp-editor-area {
   padding: 16px !important;
 }
 
+.form-buttons.manage-ip-form-buttons,
 .agqa-popup-form-buttons,
 .history-record-buttons,
 .form-buttons.agqa-respond-buttons {
@@ -2863,6 +2881,7 @@ textarea.wp-editor-area {
   margin-bottom: 0;
 }
 
+.form-buttons.manage-ip-form-buttons button,
 .agqa-respond-buttons .report-close-button,
 .agqa-respond-buttons .back-button,
 .agqa-respond-buttons #respond-popup-button,
@@ -3134,7 +3153,7 @@ textarea {
   filter: invert(0) brightness(4);
 }
 
-
+.manage-ip-form-buttons button,
 .history-record-buttons .button,
 .agqa-popup-form-field.agqa-popup-form-buttons input,
 .agqa-popup-form-field.agqa-popup-form-buttons .cancel-button,
@@ -3146,6 +3165,7 @@ textarea {
   height: 48px;
 }
 
+.manage-ip-form-buttons .cancel-button,
 .agqa-respond-buttons .report-cancel-button,
 .history-record-buttons .close-button,
 .history-record-buttons .close-button,
@@ -3163,6 +3183,7 @@ textarea {
   margin-bottom: 16px;
 }
 
+.manage-ip-form-buttons .cancel-button,
 .agqa-respond-buttons .back-button,
 .agqa-popup-form-buttons .cancel-button,
 .agqa-popup-form-buttons .no-cancel,
