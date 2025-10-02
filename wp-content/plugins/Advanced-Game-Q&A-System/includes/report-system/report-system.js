@@ -5,44 +5,43 @@ jQuery(document).ready(function ($) {
   $("#agqa-report-system-filter").on("click", function (event) {
     event.preventDefault(); // Prevent form submission
 
-    // var reportType = $("input.agqa-filter-select-hidden").val().toLowerCase();
-    // var reportSearch = $("#report-filter-search").val().toLowerCase();
+    var reportType = $("input.agqa-filter-select-hidden").val().toLowerCase();
+    var reportSearch = $("#report-filter-search").val().toLowerCase();
     var reportFilterStatus = $(".agqa-status-filter").val().toLowerCase();
 
-    alert(reportFilterStatus);
-    // jQuery(".custom-table-row").removeClass("active");
-    // var resultsFound = false; // Flag to track if any result is found
+    // alert(reportType);
+    var resultsFound = false; // Flag to track if any result is found
 
-    // if (!reportType && !reportSearch && !reportFilterStatus) {
-    //   $(".section-found").hide();
-    //   $(".custom-table-ctn").show();
-    //   $(".custom-table-row").show();
-    //   $("#pagination-demo").show();
+    if (!reportType && !reportSearch && !reportFilterStatus) {
+      $(".section-found").hide();
+      $(".custom-table-ctn").show();
+      $(".custom-table-row").show();
+      $("#pagination-demo").show();
 
-    //   setTimeout(function () {
-    //     // Recalculate pagination based on the filtered visible items
-    //     var itemsPerPages = 15;
-    //     var totalItemss = $(".custom-table-row").length; // Count only visible items after filtering
-    //     var totalPages = Math.ceil(totalItemss / itemsPerPages);
-    //     $(".custom-table-row").removeAttr("data-page"); // Remove the data-page attribute
-    //     // Reinitialize pagination
-    //     $(".custom-table-row").each(function (index) {
-    //       var pageNumber = Math.floor(index / itemsPerPages) + 1;
-    //       // var pageNumber = "sajid";
-    //       jQuery(this).attr("data-page", pageNumber);
-    //       jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-    //         .addClass("active")
-    //         .siblings()
-    //         .removeClass("active");
+      setTimeout(function () {
+        // Recalculate pagination based on the filtered visible items
+        var itemsPerPages = 15;
+        var totalItemss = $(".custom-table-row").length; // Count only visible items after filtering
+        var totalPages = Math.ceil(totalItemss / itemsPerPages);
+        $(".custom-table-row").removeAttr("data-page"); // Remove the data-page attribute
+        // Reinitialize pagination
+        $(".custom-table-row").each(function (index) {
+          var pageNumber = Math.floor(index / itemsPerPages) + 1;
+          // var pageNumber = "sajid";
+          jQuery(this).attr("data-page", pageNumber);
+          jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
+            .addClass("active")
+            .siblings()
+            .removeClass("active");
 
-    //       jQuery(".custom-table-row").hide();
-    //       jQuery('.custom-table-row[data-page="' + "1" + '"]').show();
-    //     });
-    //     jQuery(".pagination-ctn ul li.page-item").show();
-    //     jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
-    //   }, 500); // Delay of 500 milliseconds
-    //   return; // Return early if either is empty
-    // }
+          jQuery(".custom-table-row").hide();
+          jQuery('.custom-table-row[data-page="' + "1" + '"]').show();
+        });
+        jQuery(".pagination-ctn ul li.page-item").show();
+        jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+      }, 500); // Delay of 500 milliseconds
+      return; // Return early if either is empty
+    }
 
     // Initially hide pagination and "Nothing Found" message
     $(".section-found").hide();
@@ -55,8 +54,15 @@ jQuery(document).ready(function ($) {
         .text()
         .toLowerCase();
       // alert(reportStatusText);
-      // var rowCategory = $(this).find(".table-row-status").text().toLowerCase();
-      // var rowRole = $(this).find(".table-row-user-role").text().toLowerCase();
+      var reportTypeSearchText = $(this)
+        .find(".agqa-report-type-search-text")
+        .text()
+        .toLowerCase();
+      // alert(reportTypeSearchText);
+      var isReportSearch = $(this)
+        .find(".agqa-report-search-box p")
+        .text()
+        .toLowerCase();
       // var rowCompany = $(this).find(".table-row-company").text().toLowerCase();
       // var rowDateText = $(this).find(".table-body-col-date").text().trim();
 
@@ -64,24 +70,106 @@ jQuery(document).ready(function ($) {
       var isStateMatch =
         reportFilterStatus === "" ||
         reportStatusText.trim() === reportFilterStatus;
-      // var isRoleMatch = selectedRole === "" || rowRole === selectedRole;
-      // var isCompanyMatch =
-      //   selectedCompany === "" || rowCompany === selectedCompany;
-      // var isSearchMatch = reportStatusText.includes(reportFilterStatus);
+      var isReportTypeText =
+        reportType === "all" ||
+        reportType === "" ||
+        reportTypeSearchText.trim() === reportType.trim();
+      var isSearchMatch = isReportSearch.includes(reportSearch);
 
-      // alert(rowDateText);
+      if (isStateMatch && isReportTypeText && isSearchMatch) {
+        $(this).show(); // Show the row if it matches the filters
+        resultsFound = true; // Mark that at least one result is found
+      } else {
+        $(this).hide(); // Hide the row if it does not match the filters
+      }
+    });
 
-      // Ensure that the row date matches the selected date range
-      // var isDateMatch = true; // Default to true (if no date range is selected)
-      // if (startDate && endDate) {
-      //   // Check if the row's date is within the range
-      //   isDateMatch = rowDateText >= startDate && rowDateText <= endDate; // Lexicographical comparison works for "YYYY/MM/DD"
-      // } else if (startDate) {
-      //   isDateMatch = rowDateText >= startDate; // If only start date is selected, check if the row's date is after start date
-      // } else if (endDate) {
-      //   isDateMatch = rowDateText <= endDate; // If only end date is selected, check if the row's date is before end date
-      // }
-      if (isStateMatch) {
+    // If no results are found, show the 'nothing found' message
+    if (!resultsFound) {
+      $(".section-found").show(); // Show the 'no results' message
+      $(".custom-table-ctn").hide(); // Show the 'no results' message
+      $("div#pagination-demo").hide(); // Hide pagination
+    } else {
+      $("div#pagination-demo").show(); // Show pagination
+      $(".section-found").hide(); // Hide the 'nothing found' message
+      $(".custom-table-ctn").show(); // Show the 'no results' message
+    }
+
+    setTimeout(function () {
+      // Recalculate pagination based on the filtered visible items
+      var itemsPerPages = 15;
+      var totalItemss = $(".custom-table-row:visible").length; // Count only visible items after filtering
+      var totalPages = Math.ceil(totalItemss / itemsPerPages);
+
+      $(".custom-table-row").removeAttr("data-page"); // Remove the data-page attribute
+      // Reinitialize pagination
+      $(".custom-table-row:visible").each(function (index) {
+        var pageNumber = Math.floor(index / itemsPerPages) + 1;
+        // var pageNumber = "sajid";
+        jQuery(this).attr("data-page", pageNumber);
+        jQuery(this).addClass("active");
+        jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
+          .addClass("active")
+          .siblings()
+          .removeClass("active");
+        if (pageNumber === 1) {
+          $(this).show(); // Show items that belong to the current page
+        } else {
+          $(this).hide(); // Hide items that do not belong to the current page
+        }
+      });
+      jQuery(".pagination-ctn ul li.page-item").show();
+      jQuery(".pagination-ctn ul li.page-item")
+        .not(".prev, .next")
+        .each(function () {
+          var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+          if (pageNumbers === totalPages && totalPages !== 0) {
+            // Remove all <li> items that come after this one
+            jQuery(this).nextAll().not(".next").hide();
+
+            // Check the <li> just before the Next button
+            var prevLi = jQuery(
+              ".pagination-ctn ul li.page-item.active"
+            ).next();
+
+            // If the next page is hidden or .next button is visible, disable the next button
+            if (prevLi.is(":hidden")) {
+              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+            } else {
+              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+            }
+          }
+        });
+    }, 100); // Delay of 500 milliseconds
+  });
+
+  /**
+   * Pending response filter
+   */
+  $(".filter-pending-responses").on("click", function (event) {
+    event.preventDefault(); // Prevent form submission
+    alert("df");
+    var reportPendingResponse = "pending response";
+
+    // alert(reportType);
+    var resultsFound = false; // Flag to track if any result is found
+    $(".section-found").hide();
+    $(".custom-table-ctn").show();
+    $("div#pagination-demo").hide();
+
+    $(".custom-table-row").each(function () {
+      // alert(reportStatusText);
+      var reportTypeSearchText = $(this)
+        .find(".table-body-col.report-status-response")
+        .text()
+        .toLowerCase();
+
+      // Apply filters based on exact match for state, role, company, and search term
+      var isReportTypeText =
+        reportPendingResponse === "" ||
+        reportTypeSearchText.trim() === reportPendingResponse.trim();
+
+      if (isReportTypeText) {
         $(this).show(); // Show the row if it matches the filters
         resultsFound = true; // Mark that at least one result is found
       } else {

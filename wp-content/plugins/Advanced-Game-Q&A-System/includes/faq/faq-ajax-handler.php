@@ -571,7 +571,7 @@ function agqa_report_reply_system()
     $respond_status = sanitize_text_field($data['respond-status-type']);
     $respond_textarea = sanitize_text_field($data['respond-detail-textarea']);
     $reply_user = $user ? $user->display_name : '';
-// echo $reply_user;
+// echo $report_id;
 // wp_die();
     // Assuming these are your updated values
     $updated_status = $respond_status;  // Example updated status

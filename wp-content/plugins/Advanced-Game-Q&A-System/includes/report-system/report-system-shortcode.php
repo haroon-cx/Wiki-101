@@ -29,6 +29,12 @@ function report_system_shortcode() {
             FROM $table_agqa_report_system
             ORDER BY id DESC
         ");
+            $pending_response_count = $wpdb->get_var("
+                SELECT COUNT(*) 
+                FROM $table_agqa_report_system
+                WHERE status = 'Pending Response'
+            ");
+
 
             $faq_data = $wpdb->get_results("
             SELECT
@@ -63,17 +69,17 @@ function report_system_shortcode() {
                     </button>
                     <div class="filter-select-list agqa-report-cat-filter">
                         <ul>
-                            <li>All</li>
-                            <li>Functional issue / Operation not working as expected</li>
-                            <li>UI display issue</li>
-                            <li>Incorrect data display</li>
-                            <li>System error message</li>
-                            <li>Process interruption / Unable to complete operation</li>
-                            <li>Performance issue / System lag</li>
-                            <li>Permission or account-related issue</li>
-                            <li>Notification / Email / Task trigger issue</li>
-                            <li>Text / Language error</li>
-                            <li>Other (please specify)</li>
+                            <li data-value="all">All</li>
+                            <li data-value="Functional issue / Operation not working as expected">Functional issue / Operation not working as expected</li>
+                            <li data-value="UI display issue">UI display issue</li>
+                            <li data-value="Incorrect data display">Incorrect data display</li>
+                            <li data-value="ystem error message">System error message</li>
+                            <li data-value="Process interruption / Unable to complete operation">Process interruption / Unable to complete operation</li>
+                            <li data-value="Performance issue / System lag">Performance issue / System lag</li>
+                            <li data-value="Permission or account-related issue">Permission or account-related issue </li>
+                            <li data-value="Notification / Email / Task trigger issue">Notification / Email / Task trigger issue</li>
+                            <li data-value="Text / Language error">Text / Language error</li>
+                            <li data-value="ther (please specify)">Other (please specify)</li>
                         </ul>
                     </div>
                 </div>
@@ -100,35 +106,37 @@ function report_system_shortcode() {
         </div>
     </div>
     <div class="filter-pending-responses">
-        <button>Pending Response <span class="pending-response-counting">3</span></button>
+        <button>Pending Response <span class="pending-response-counting"><?php echo esc_html($pending_response_count); ?></span></button>
     </div>
 
     <div class="report-form-table-ctn custom-table-ctn">
         <div class="custom-table-ctn-inner">
             <div class="report-form-table custom-table">
                 <div class="custom-table-head">
-                    <div class="table-head-col">No.</div>
-                    <div class="table-head-col">Report Type</div>
-                    <div class="table-head-col">Status</div>
-                    <div class="table-head-col">Reporter</div>
-                    <div class="table-head-col">Create Time</div>
-                    <div class="table-head-col">Reply Time</div>
-                    <div class="table-head-col">Actions</div>
-                </div>
-                <div class="custom-table-body">
-                    <?php foreach ($report_system_data as $report_value) { ?>
+                        <div class="table-head-col">No.</div>
+                        <div class="table-head-col">Report Type</div>
+                        <div class="table-head-col">Status</div>
+                        <div class="table-head-col">Reporter</div>
+                        <div class="table-head-col">Create Time</div>
+                        <div class="table-head-col">Reply Time</div>
+                        <div class="table-head-col">Actions</div>
+                    </div>
+                    <div class="custom-table-body">
+                    <?php
+                    $count = 1; // Initialize counter
+                    foreach ($report_system_data as $report_value) { ?>
                     <div class="custom-table-row">
                         <div class="table-body report-row">
                             <div class="report-row-head">
-                                <div class="table-body-col">1</div>
-                                <div class="table-body-col"><?php echo $report_value->report_type; ?></div>
+                                <div class="table-body-col"><?php echo $count; ?></div>
+                                <div class="table-body-col agqa-report-type-search-text">
+                                    <?php echo $report_value->report_type; ?>
+                                </div>
                                 <div class="table-body-col report-status-response">
                                     <span
                                         class="<?php echo str_replace(' ', '-', strtolower($report_value->status)); ?><?php if($report_value->status == 'Responded') echo '-status'; ?>">
                                         <?php echo $report_value->status; ?>
                                     </span>
-
-
                                 </div>
                                 <div class=" table-body-col"><?php echo $report_value->reporter ?>
                                 </div>
@@ -185,7 +193,7 @@ function report_system_shortcode() {
                                                         </div>
                                                     </div>
                                                     <div class="form-field">
-                                                        <label for="respond-disabled-textarea">Issue Detail</label>
+                                                        <label for="respond-disabled-textarea ag">Issue Detail</label>
                                                         <textarea name="respond-disabled-textarea"
                                                             class="respond-disabled-textarea"
                                                             disabled><?php echo $report_value->issue_detail; ?></textarea>
@@ -425,11 +433,11 @@ function report_system_shortcode() {
                                 </div>
                                 <div class="report-row-body-bottom">
                                     <div class="report-row-body-detail">
-                                        <div class="report-row-body-text">
+                                        <div class="report-row-body-text agqa-report-search-box">
                                             <p><?php echo $report_value->issue_detail; ?>
                                             </p>
                                         </div>
-                                        <div class="report-row-body-text">
+                                        <div class="report-row-body-text agqa-report-search-box">
                                             <p><?php echo $report_value->issue_detail_reply; ?></p>
                                         </div>
                                     </div>
@@ -437,14 +445,28 @@ function report_system_shortcode() {
                             </div>
                         </div>
                     </div>
-                    <?php } ?>
+                    <?php  $count++;} ?>
+                </div>
+              
+            </div>
+          
+        </div>
+    </div>
+        <div class="section-found">
+            <div class="no-found-ctn">
+                <div class="search-no-found">
+                    <div class="search-no-found-icon">
+                        <img src="<?php echo URIP_URL ?>assets/image/search-forund-icon.svg" alt="Search Icon">
+                    </div>
+                    <div class="search-no-found-text">
+                        <h2>Nothing matched your search</h2>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="pagination-ctn">
-        <div id="pagination-demo"></div>
-    </div>
+        <div class="pagination-ctn">
+            <div id="pagination-demo"></div>
+        </div>
 </div>
 
 <?php

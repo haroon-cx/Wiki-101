@@ -2177,9 +2177,13 @@ jQuery(document).ready(function ($) {
   $(".zoom-close-icon").on("click", function () {
     $(".stretch-overlay").fadeOut();
   });
-  $("#respond-popup-button, .respond-popup-button").on("click", function (e) {
+  $("#respond-popup-button").on("click", function (e) {
     e.stopPropagation();
     $(".confirm-submit-popup").addClass("active");
+  });
+  $(".respond-popup-button").on("click", function (e) {
+    e.stopPropagation();
+    $(this).siblings(".confirm-submit-popup").addClass("active");
   });
   $(".respond-button").on("click", function (e) {
     e.stopPropagation();
