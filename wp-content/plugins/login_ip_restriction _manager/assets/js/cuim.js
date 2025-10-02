@@ -413,8 +413,61 @@ jQuery(function ($) {
   }
 
   // 1) Change handler (delegated) — fires even if HTML is added later
+  // $(document).on("change", "#upload-file-button", function () {
+  //   console.log("File input changed");
+  //   var file = this.files && this.files[0];
+  //   if (!file) {
+  //     console.warn("No file selected");
+  //     return;
+  //   }
+
+  //   // Spec: JPG only, ≤ 2 MB
+  //   if (file.size > 2 * 1024 * 1024) {
+  //     alert("Max size 2 MB");
+  //     this.value = "";
+  //     return;
+  //   }
+
+  //   // MIME type check for JPG only (ensures it's a JPEG image)
+  //   var isJpg =
+  //     file.type === "image/jpeg" ||
+  //     file.name.toLowerCase().endsWith(".jpg") ||
+  //     file.name.toLowerCase().endsWith(".jpeg");
+  //   if (!isJpg) {
+  //     alert("Only JPG images are allowed");
+  //     this.value = "";
+  //     return;
+  //   }
+
+  //   var { $modal, imgEl } = els();
+  //   if (!$modal.length || !imgEl) {
+  //     console.error("Cropper modal/image elements not found in DOM.");
+  //     return;
+  //   }
+
+  //   var reader = new FileReader();
+  //   reader.onerror = function (e) {
+  //     console.error("FileReader error", e);
+  //     alert("Could not read the image.");
+  //   };
+  //   reader.onload = function (e) {
+  //     // Show modal and start Cropper
+  //     imgEl.src = e.target.result;
+  //     $modal.css("display", "flex");
+
+  //     try {
+  //       if (cropper) cropper.destroy();
+  //     } catch (e) {}
+  //     cropper = new Cropper(imgEl, {
+  //       aspectRatio: 1,
+  //       viewMode: 1,
+  //       autoCropArea: 1,
+  //     });
+  //   };
+  //   reader.readAsDataURL(file);
+  // });
   $(document).on("change", "#upload-file-button", function () {
-    console.log("File input changed ✅");
+    console.log("File input changed");
     var file = this.files && this.files[0];
     if (!file) {
       console.warn("No file selected");
@@ -428,7 +481,7 @@ jQuery(function ($) {
       return;
     }
 
-    // MIME type check for JPG only (ensures it's a JPEG image)
+    // MIME type check for JPG only
     var isJpg =
       file.type === "image/jpeg" ||
       file.name.toLowerCase().endsWith(".jpg") ||
@@ -450,20 +503,34 @@ jQuery(function ($) {
       console.error("FileReader error", e);
       alert("Could not read the image.");
     };
-    reader.onload = function (e) {
-      // Show modal and start Cropper
-      imgEl.src = e.target.result;
-      $modal.css("display", "flex");
 
-      try {
-        if (cropper) cropper.destroy();
-      } catch (e) {}
-      cropper = new Cropper(imgEl, {
-        aspectRatio: 1,
-        viewMode: 1,
-        autoCropArea: 1,
-      });
+    reader.onload = function (e) {
+      // Create temporary image to check dimensions
+      var tempImg = new Image();
+      tempImg.onload = function () {
+        if (tempImg.width > 128 || tempImg.height > 128) {
+          alert("Image dimensions cannot exceed 128 × 128 pixels.");
+          $("#upload-file-button").val(""); // Reset file input
+          return;
+        }
+
+        // Show modal and start Cropper
+        imgEl.src = e.target.result;
+        $modal.css("display", "flex");
+
+        try {
+          if (cropper) cropper.destroy();
+        } catch (err) {}
+
+        cropper = new Cropper(imgEl, {
+          aspectRatio: 1,
+          viewMode: 1,
+          autoCropArea: 1,
+        });
+      };
+      tempImg.src = e.target.result;
     };
+
     reader.readAsDataURL(file);
   });
 

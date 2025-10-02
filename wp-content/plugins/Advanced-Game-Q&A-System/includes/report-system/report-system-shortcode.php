@@ -245,7 +245,7 @@ function report_system_shortcode() {
                                                         </div>
                                                     </div>
                                                     <div class="form-field">
-                                                        <textarea name="respond-detail-textarea"
+                                                        <textarea name="respond-detail-textarea" maxlength="1000" 
                                                             class="respond-detail-textarea"
                                                             placeholder="Typing...."></textarea>
                                                     </div>
