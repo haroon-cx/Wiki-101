@@ -1000,6 +1000,12 @@ jQuery(document).ready(function ($) {
               "src",
               response.data.image_url
             );
+            var getchangeName = jQuery(
+              "form#cuim-update-user-profile #user-name"
+            ).val();
+            jQuery(".cuim-profile-dropdown-head .cuim-user-name").text(
+              getchangeName
+            );
 
             const $successMsg = $(
               `<div class="submitted-successfully">${response.data.message}</div>`
@@ -1102,5 +1108,19 @@ jQuery(document).ready(function ($) {
       $input.removeClass("error-field-input");
       $errorMessage.text("");
     }
+  });
+  /**
+   * profile and username
+   */
+  $(".cuim-edit-profile-button").on("click", function () {
+    var getImage = jQuery(".cuim-profile-dropdown-head img").attr("src");
+    var getName = jQuery(".cuim-profile-dropdown-head .cuim-user-name").text();
+    jQuery("img#cuim-avatar-preview").attr("src", getImage);
+    jQuery("form#cuim-update-user-profile #user-name").val(getName);
+
+    jQuery("#cuim-profile-reset-password input")
+      .val("")
+      .removeClass("error-field-input");
+    jQuery("#cuim-profile-reset-password div#error-message").text("");
   });
 });

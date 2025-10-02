@@ -846,6 +846,9 @@ jQuery(document).ready(function ($) {
       success: function (res) {
         // console.log(res);
         if (res.success) {
+          jQuery(".agqa-popup-form.agqa-report-popup-form").removeClass(
+            "active"
+          );
           // alert("test");
           // console.log("Uploaded:", res.data.url);
           var agqaImages = res.data.url;

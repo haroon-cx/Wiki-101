@@ -148,7 +148,6 @@ jQuery(document).ready(function ($) {
    */
   $(".filter-pending-responses").on("click", function (event) {
     event.preventDefault(); // Prevent form submission
-    alert("df");
     var reportPendingResponse = "pending response";
 
     // alert(reportType);
