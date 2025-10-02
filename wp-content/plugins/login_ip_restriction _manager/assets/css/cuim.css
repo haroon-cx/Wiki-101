@@ -1055,3 +1055,69 @@
   .popup-cross-icon:hover {
       transform: rotate(180deg);
   }
+
+  .manage-ip-template .filter-area input[type="search"] {
+    min-width: 360px;
+    max-width: 360px;
+}
+
+  .manage-ip-template .filter-area form {
+    width: 100%;
+    gap: 16px;
+}
+
+#manage-ip-ipv4-search,
+.filter-container button.filter-select-title.select-ip {
+    background-image: url(../image/ip-icon.svg);
+    background-size: 18px;
+}
+
+.manage-ip-table .table-head-col:nth-child(1),
+.manage-ip-table .table-body-col:nth-child(1) {
+    width: 22.538%;
+} 
+
+.manage-ip-table .table-head-col:nth-child(2),
+.manage-ip-table .table-body-col:nth-child(2) {
+    width: 30.051%;
+} 
+
+.manage-ip-table .table-head-col:nth-child(3),
+.manage-ip-table .table-body-col:nth-child(3) {
+    width: 31.755%;
+} 
+
+.manage-ip-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.delete-user-button,
+.manage-ip-edit-button {
+    background-color: transparent !important;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 !important;
+}
+
+.delete-user-button {
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.manage-ip-edit-button {
+    background-image: url(../image/edit-icon.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 20px;
+}
+
+.add-manage-ip-form-inner {
+    max-width: 572px;
+}
