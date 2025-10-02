@@ -1951,11 +1951,14 @@ input[type="submit"] {
   color: #7F56CA;
 }
 
+.delete-popup #yes-cancel,
+.delete-popup .yes-cancel,
 #custom-faq-field-popup #yes-cancel {
   color: #fff;
   background-color: #7644CE;
 }
 
+.delete-popup .yes-cancel:hover,
 #custom-faq-field-popup #yes-cancel:hover {
   background-color: #624491;
 }
@@ -2174,9 +2177,11 @@ body .selected-dropdown-item,
 }
 
 /* Popup form New Category Styl" */
+.delete-popup,
 .edit-manage-ip-form,
 .add-manage-ip-form,
 .respond-popup,
+.delete-popup,
 #custom-faq-field-popup,
 .agqa-popup-form,
 .reorder-popup,
@@ -2196,9 +2201,11 @@ body .selected-dropdown-item,
   pointer-events: none;
 }
 
+.delete-popup.active::before,
 .edit-manage-ip-form.active::before,
 .add-manage-ip-form.active::before,
 .respond-popup.active::before,
+.delete-popup::before,
 #custom-faq-field-popup::before,
 .agqa-popup-form::before,
 .reorder-popup::before,
@@ -2226,6 +2233,7 @@ body .selected-dropdown-item,
 .reset-password-confirmation.active::before,
 .cancel-form-confirmation.active::before,
 .confirm-submit-popup.active::before,
+.delete-popup.active::before,
 #custom-faq-field-popup.active::before,
 .login-history-popup.active::before {
   opacity: 1;
@@ -2233,16 +2241,19 @@ body .selected-dropdown-item,
   pointer-events: initial;
 }
 
+.delete-popup::before,
 #custom-faq-field-popup::before {
   opacity: 0;
   visibility: hidden;
   transition: all .3s ease-in-out;
 }
 
+.delete-popup,
 #custom-faq-field-popup {
   pointer-events: none;
 }
 
+.delete-popup.active,
 #custom-faq-field-popup.active {
   pointer-events: initial;
 }
@@ -2250,6 +2261,7 @@ body .selected-dropdown-item,
 .edit-manage-ip-form.active .edit-manage-ip-form-inner,
 .add-manage-ip-form.active .add-manage-ip-form-inner,
 .respond-popup.active .respond-popup-inner,
+.delete-popup.active .delete-popup-inner,
 #custom-faq-field-popup.active #custom-faq-field-popup-inner,
 .agqa-popup-form.active .agqa-popup-form-inner,
 .reorder-popup.active .reorder-popup-inner,
@@ -2265,6 +2277,7 @@ body .selected-dropdown-item,
 .edit-manage-ip-form-inner,
 .add-manage-ip-form-inner,
 .respond-popup-inner,
+.delete-popup-inner,
 #custom-faq-field-popup-inner,
 .agqa-popup-form-inner,
 .reorder-popup-inner,
@@ -3196,6 +3209,8 @@ textarea {
   background-color: transparent;
 }
 
+.manage-ip-table .no-cancel:focus,
+.manage-ip-table .no-cancel:hover,
 .reorder-popup .cancel-button:hover,
 .reorder-popup .cancel-button:focus,
 .sort-by-dropdown-button:hover,
@@ -3286,6 +3301,9 @@ body.menu_side_hide .content_wrap>.content+.sidebar {
   background-color: transparent;
 }
 
+#manage-ip-account-search:focus,
+#manage-ip-ipv4-search:focus,
+#manage-ip-ipv6-search:focus,
 #filter-search:focus,
 #agqa-search-input:focus,
 #manage-user-search:focus {
@@ -3393,6 +3411,7 @@ form .agqa-popup-form-multi-select,
   width: auto;
 }
 
+.delete-popup button,
 #custom-faq-field-popup button,
 form .form-buttons input,
 form .form-buttons button {
@@ -3451,6 +3470,7 @@ form .form-buttons button {
   z-index: 9;
 }
 
+.delete-popup-inner,
 #custom-faq-field-popup-inner,
 #custom-field-popup-inner,
 .cancel-form-confirmation-box,
@@ -3471,6 +3491,7 @@ form .form-buttons button {
   width: 572px;
 }
 
+.delete-popup-inner,
 #custom-faq-field-popup-inner,
 .submit-confirm,
 .reset-password-confirmation-box,
@@ -3505,6 +3526,7 @@ form .form-buttons button {
   padding: 9px;
 }
 
+.delete-popup h2,
 #custom-faq-field-popup h2,
 #custom-field-popup h1,
 #custom-field-popup h2,
@@ -3704,6 +3726,7 @@ form .form-buttons button {
   color: #747474;
 }
 
+.delete-popup button,
 #custom-faq-field-popup button,
 .popup-content .form-buttons button,
 .popup-content input[type="submit"],

@@ -1064,6 +1064,7 @@
   .manage-ip-template .filter-area form {
     width: 100%;
     gap: 16px;
+    flex-wrap: wrap;
 }
 
 #manage-ip-ipv4-search,
@@ -1120,4 +1121,8 @@
 
 .add-manage-ip-form-inner {
     max-width: 572px;
+}
+
+.form-message {
+    text-transform: capitalize;
 }

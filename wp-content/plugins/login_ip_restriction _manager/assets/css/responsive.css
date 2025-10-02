@@ -1,7 +1,9 @@
 @media (max-width: 1920px) and (min-width: 1760px) {
- .custom-table-ctn .custom-table-head,table thead {
-    font-size: 18px;
-}
+
+    .custom-table-ctn .custom-table-head,
+    table thead {
+        font-size: 18px;
+    }
 }
 
 @media (max-width: 1760px) {
@@ -10,18 +12,76 @@
         overflow-x: auto;
         margin-bottom: 10px;
     }
-    
+
     .manage-user-table .custom-table {
         white-space: nowrap;
     }
-    
+
     .custom-table {
         width: 160%;
     }
+
+    .manage-ip-table {
+        width: 100%;
+    }
 }
 
-@media (max-width: 1300px){
+@media (max-width: 1439px) and (min-width: 748px) {
+    .filter-area {
+        min-width: 74%;
+        width: 74%;
+    }
+}
+
+@media (max-width: 1439px) and (min-width: 1200px) {
+    .manage-ip-template .filter-select {
+        width: auto;
+    }
+
+    .manage-ip-template .filter-area input[type="search"] {
+        min-width: 330px;
+        max-width: 330px;
+    }
+}
+
+@media (max-width: 1300px) {
     .custom-table {
         width: 200%;
+    }
+        .manage-ip-table {
+        width: 130%;
+    }
+}
+
+@media (max-width: 1199px) and (min-width: 1024px) {
+
+    .manage-ip-template .filter-select {
+        width: auto;
+    }
+
+    .manage-ip-template .filter-area {
+        min-width: 70%;
+        width: 70%;
+    }
+
+    .manage-ip-template .filter-area input[type="search"] {
+        min-width: 220px;
+        max-width: 220px;
+    }
+
+    .filter-select-title {
+        min-width: 200px;
+    }
+}
+
+@media (max-width: 1023px) and (min-width: 768px) {
+
+    .manage-ip-template .filter-area input[type="search"] {
+        min-width: 280px;
+        max-width: 280px;
+    }
+
+    .filter-select-title {
+        min-width: 220px;
     }
 }

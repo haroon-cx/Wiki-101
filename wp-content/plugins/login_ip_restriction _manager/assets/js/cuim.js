@@ -553,4 +553,79 @@ jQuery(function ($) {
     $(".cuim-profile-form-wrapper").removeClass("active");
     $(".reset-password-popup").removeClass("active");
   });
+
+    $(
+    ".add-button"
+  ).on("click", function () {
+    $(".add-manage-ip-form").addClass("active");
+  });
+
+  // Close popup on cross icon
+  $(".manage-ip-cross-icon").on("click", function () {
+    $(".add-manage-ip-form").removeClass("active");
+  });
+
+    $(
+    ".manage-ip-edit-button"
+  ).on("click", function () {
+    $(".edit-manage-ip-form").addClass("active");
+  });
+
+  // Close popup on cross icon
+  $(".manage-ip-cross-icon").on("click", function () {
+    $(".edit-manage-ip-form").removeClass("active");
+  });
+
+    $(
+    ".manage-ip-form-buttons .cancel-button"
+  ).on("click", function () {
+    $(".cancel-form-confirmation").addClass("active");
+  });
+
+  // Close popup on cross icon
+  $(".popup-form-cross-icon").on("click", function () {
+    $(".cancel-form-confirmation").removeClass("active");
+  });
+
+    $(
+    ".delete-user-button"
+  ).on("click", function () {
+    $(".delete-popup").addClass("active");
+  });
+
+    $(
+    "#add-ip-btn"
+  ).on("click", function (e) {
+    e.preventDefault();
+    $(".confirm-submit-popup").addClass("active");
+  });
+
+    $(
+    "#edit-ip-btn"
+  ).on("click", function (e) {
+    e.preventDefault();
+    $(".confirm-submit-popup").addClass("active");
+  });
+
+  // Close popup on cross icon
+  $(".popup-form-cross-icon, .delete-manage-ip .no-cancel").on("click", function () {
+    $(".delete-popup").removeClass("active");
+  });
+
+  // Close popup on cross icon
+  $(".no-form-cancel").on("click", function () {
+    $(".cancel-form-confirmation").removeClass("active");
+  });
+
+  // Close popup on cross icon
+  $(".submit-cross-icon,.no-confirm-submit").on("click", function () {
+    $(".confirm-submit-popup").removeClass("active");
+  });
+
+  $(".yes-cancel").on("click", function () {
+    $(".cancel-form-confirmation").removeClass("active");
+    $(".add-manage-ip-form").removeClass("active");
+    $(".edit-manage-ip-form").removeClass("active");
+  });
 });
+
