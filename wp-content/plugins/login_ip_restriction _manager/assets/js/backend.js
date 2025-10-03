@@ -1123,4 +1123,127 @@ jQuery(document).ready(function ($) {
       .removeClass("error-field-input");
     jQuery("#cuim-profile-reset-password div#error-message").text("");
   });
+
+    /**
+   * Check User Account for IP Address
+   */
+
+$("#add-ip-btn").on("click", function (e) {
+    e.preventDefault();
+    
+    // Get form data
+    var getFormData = $('#add-ip-from').serialize();
+    
+    // Check for empty required fields
+    var isValid = true;
+    
+    // // Check if at least one of the IP fields is filled
+    var ipv4 = $('#manage-ip-ipv4-field').val();  // Assuming the ID for the IPv4 field is 'ipv4'
+    var ipv6 = $('#manage-ip-ipv6-field').val();  // Assuming the ID for the IPv6 field is 'ipv6'
+    
+    $('.ip-error').text('');
+
+    if (ipv4 === "" && ipv6 === "") {
+        isValid = false;
+        $('.ip-error').text('Please enter at least one type of IP.');
+    }
+
+    // // Check if account field is filled (optional, as it was not mentioned explicitly)
+    $('.account-error').text('');
+    var account = $('#manage-ip-account-field').val();  // Assuming the ID for the account field is 'account'
+    if (account === "") {
+        isValid = false;
+        $('.account-error').text('Account is required');
+        $('#manage-ip-account-field').addClass('error-field');
+    }
+
+
+    // If validation fails, stop the form submission
+    if (!isValid) {
+        return false;
+    }
+
+      var nonce = cuim_ajax.nonce; // Nonce for security
+
+      $.ajax({
+        url: cuim_ajax.ajax_url,
+        type: "POST",
+        data: {
+          action: "check_user_account",
+          form_data: getFormData, // Pass the form data to the server
+          nonce: nonce,
+        },
+        success: function (response) {
+          // Check if the response contains success
+          if (response.success) {
+              $('#add-ip-btn').siblings(".confirm-submit-popup").addClass("active");
+          } else {
+            // alert(response.data.message);
+            $('.account-error').text(response.data.message);
+            $('#manage-ip-account-field').addClass('error-field');
+            return;
+          }
+        },
+
+        error: function (response) {
+          // Error message if AJAX fails
+          alert("An error occurred.");
+        },
+      });    
+});
+
+    /**
+   * Add IP Data 
+   */
+
+$("#add-ip-from").on("submit", function (e) {
+    e.preventDefault();
+    
+    // Get form data
+    var getFormData = $('#add-ip-from').serialize();
+
+    alert(getFormData);
+      var nonce = cuim_ajax.nonce; // Nonce for security
+
+      $.ajax({
+        url: cuim_ajax.ajax_url,
+        type: "POST",
+        data: {
+          action: "handle_add_user_ip",
+          form_data: getFormData, // Pass the form data to the server
+          nonce: nonce,
+        },
+        success: function (response) {
+          // Check if the response contains success
+          // alert(response.data.message);
+          if (response.success) {
+            jQuery('.add-manage-ip-form').removeClass('active');
+                const $successMsg = $(`
+        <div class="submitted-successfully">${response.data.message}</div>
+    `);
+
+    // Append the success message to the custom table body
+    jQuery(".custom-table-body").append($successMsg);
+
+    // Hide the message after 3 seconds
+    setTimeout(function () {
+        $successMsg.fadeOut(400, function () {
+            $(this).remove();
+        });
+    }, 3000);
+            
+          } else {
+            
+            return;
+          }
+        },
+
+        error: function (response) {
+          // Error message if AJAX fails
+          alert("An error occurred.");
+        },
+      });
+    });
+
+
 });

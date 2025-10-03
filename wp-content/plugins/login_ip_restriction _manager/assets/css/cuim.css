@@ -1126,3 +1126,7 @@
 .form-message {
     text-transform: capitalize;
 }
+
+.account-error {
+    top: -16px;
+}

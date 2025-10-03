@@ -1,10 +1,30 @@
 <?php
 
+global $wpdb;
+$table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
+
+    $get_ip_list = $wpdb->get_results("
+            SELECT
+                id,
+                user_id,
+                account,
+                ipv4,
+                ipv6,
+                delete_status,
+                delete_user_name,
+                delete_user_id,
+                created_at
+            FROM $table_agqa_ip_list
+            ORDER BY id DESC
+            ");
+
+    include 'add-ip-form.php';
+
 ?>
 <div class="manage-ip-template">
     <div class="manage-ip-container">
         <div id="page-content">
-            <!-- Content will be dynamically updated based on pagination -->
+        <!-- Content will be dynamically updated based on pagination -->
         </div>
         <div class="template-title">
             <h1>Manage IP’s Whitelist</h1>
@@ -50,65 +70,6 @@
                     <a href="#" class="add-button">
                         <img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg" alt="Plus Icon">Add New IP
                     </a>
-                        <div class="add-manage-ip-form">
-                            <div class="add-manage-ip-form-inner">
-                                <div class="popup-form-cross-icon manage-ip-cross-icon"></div>
-                                    <div class="popup-form-title">
-                                        <h2>Add New IP</h2>
-                                    </div>
-                                    <form action="#" id="add-ip-from">
-                                        <div class="form-field full-width">
-                                            <label for="manage-ip-account-field">Account</label>
-                                            <input type="text" name="manage-ip-account-field" id="manage-ip-account-field" placeholder="Description">
-                                        </div>
-                                        <div class="form-field full-width">
-                                            <label for="manage-ip-ipv4-field">IPv4</label>
-                                            <input type="text" name="manage-ip-ipv4-field" id="manage-ip-ipv4-field" placeholder="Description">
-                                        </div>
-                                        <div class="form-field full-width">
-                                            <label for="manage-ip-ipv6-field">IPv6</label>
-                                            <input type="text" name="manage-ip-ipv6-field" id="manage-ip-ipv6-field" placeholder="Description">
-                                        </div>
-                                        <div id="add-ip-form-buttons" class="form-buttons manage-ip-form-buttons d-flex">
-                                            <button class="cancel-button" type="button">Cancel</button>
-                                            <div class="cancel-form-confirmation">
-                                                <div class="cancel-form-confirmation-box">
-                                                    <h2>Cancel</h2>
-                                                    <div class="popup-form-cross-icon"></div>
-                                                    <div class="form-message">Are you sure you want to cancel?</div>
-                                                    <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                        <button class="no-form-cancel" type="button">No</button>
-                                                        <a href="http://wiki-101.local/manage-user" class="back-button">Yes</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button id="add-ip-btn" type="submit" class="">Submit</button>
-                                            <div class="confirm-submit-popup">
-                                                <div class="confirm-submit-popup-box">
-                                                    <h2>Submit</h2>
-                                                    <div class="popup-form-cross-icon submit-cross-icon"></div>
-                                                    <div class="form-message">Are you sure you want to submit?</div>
-                                                    <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                        <button class="no-confirm-submit" type="button">No</button>
-                                                        <button type="submit" value="Yes" class="confirm-submit">Yes</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="confirm-submit-popup">
-                                                <div class="confirm-submit-popup-box">
-                                                    <h2>Submit</h2>
-                                                    <div class="popup-form-cross-icon submit-cross-icon"></div>
-                                                    <div class="form-message">You have set the same IP,</br> Are you sure you want to submit?</div>
-                                                    <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                        <button class="no-confirm-submit" type="button">No</button>
-                                                        <button type="submit" value="Yes" class="confirm-submit">Yes</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                            </div>
-                        </div>
                 </div>  
             </div>  
         </div>
@@ -122,15 +83,16 @@
                         <div class="table-head-col">Actions</div>
                     </div>
                     <div class="custom-table-body">
+                        <?php foreach($get_ip_list as $ip_value) {?>
                        <div class="custom-table-row">
                         <div class="table-body-col">
-                            johnsonjoshua
+                            <?php echo $ip_value->account?>
                         </div>
                         <div class="table-body-col">
-                            --
+                            <?php echo $ip_value->ipv4?>
                         </div>
                         <div class="table-body-col">
-                            2001:db8::1
+                            <?php echo $ip_value->ipv6?>
                         </div>
                         <div class="table-body-col manage-ip-actions">
                             <div class="edit-ip-ctn">
@@ -142,9 +104,9 @@
                                             <h2>Edit IP</h2>
                                         </div>
                                         <form action="#" id="edit-ip-from">
-                                            <div class="form-field full-width">
-                                                <label for="manage-ip-account-field">Account</label>
-                                                <input type="text" name="manage-ip-account-field" id="manage-ip-account-field" placeholder="Description">
+                                            <div class="form-field full-width required">
+                                                <label for="account-name"><span>*</span> Account</label>
+                                                <input type="text" name="account-name" id="manage-ip-account-field" placeholder="Description" required>
                                             </div>
                                             <div class="form-field full-width">
                                                 <label for="manage-ip-ipv4-field">IPv4</label>
@@ -211,6 +173,7 @@
                             </div>
                         </div>
                        </div>
+                       <?php }?>
                     </div>
                 </div>
             </div>

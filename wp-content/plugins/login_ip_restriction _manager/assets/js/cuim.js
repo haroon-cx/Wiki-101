@@ -661,13 +661,6 @@ jQuery(function ($) {
   });
 
     $(
-    "#add-ip-btn"
-  ).on("click", function (e) {
-    e.preventDefault();
-    $(".confirm-submit-popup").addClass("active");
-  });
-
-    $(
     "#edit-ip-btn"
   ).on("click", function (e) {
     e.preventDefault();

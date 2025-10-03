@@ -30,4 +30,16 @@ function agqa_create_tables_ip_users()
             custom_field_4 VARCHAR(255),
             created_at DATE NOT NULL DEFAULT (CURRENT_DATE)
         ) $charsets;");
+        
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_wiki_add_ip (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        account VARCHAR(255) NOT NULL,
+        ipv4 VARCHAR(255) NOT NULL,
+        ipv6 VARCHAR(255) NOT NULL,
+        delete_status VARCHAR(255) NOT NULL,
+        delete_user_name VARCHAR(255) NOT NULL,
+        delete_user_id VARCHAR(255) NOT NULL,
+        created_at DATE NOT NULL DEFAULT (CURRENT_DATE)
+    ) $charsets;");
 }
