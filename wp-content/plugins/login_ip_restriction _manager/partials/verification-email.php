@@ -117,13 +117,13 @@ return;
             <h2>Your account has been activated successfully.
             </h2>
         </div>
-        <input type="hidden" class="username" value="<?php echo $username ?>">
+        <input type="hidden" class="agqa-user-name" value="<?php echo $username ?>">
     </div>
 </div>
 
 <script>
 jQuery(document).ready(function($) {
-    var formData = "username=" + jQuery('.username').val();
+    var formData = "username=" + jQuery('.agqa-user-name').val();
     // var formData = $form.serialize();
 
 
@@ -140,12 +140,13 @@ jQuery(document).ready(function($) {
         },
         success: function(response) {
             if (response.success) {
-                // Success message
+
             } else {
                 // Failure message
             }
         },
         error: function(response) {
+            alert('123')
             // Error message if AJAX fails
             alert("An error occurred.");
         },

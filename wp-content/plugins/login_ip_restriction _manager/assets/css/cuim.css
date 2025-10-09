@@ -1,4 +1,4 @@
-  .agqa-site-logo {
+.agqa-site-logo {
       display: inline-block;
       width: clamp(18.75rem, 12.5vw + 7.5rem, 22.5rem);
       height: clamp(3.438rem, 3.542vw + 0.25rem, 4.5rem);
@@ -18,14 +18,14 @@
 
   }
 
-  html {
-      background-image: linear-gradient(rgba(0, 0, 0, 0.67), rgba(0, 0, 0, 0.67)),
-          url('<?php echo URIP_URL; ?>/assets/image/101-body-image.jpg');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-attachment: fixed;
-  }
+  /*html {*/
+  /*    background-image: linear-gradient(rgba(0, 0, 0, 0.67), rgba(0, 0, 0, 0.67)),*/
+  /*        url('<?php echo URIP_URL; ?>/assets/image/101-body-image.jpg');*/
+  /*    background-size: cover;*/
+  /*    background-repeat: no-repeat;*/
+  /*    background-position: center;*/
+  /*    background-attachment: fixed;*/
+  /*}*/
 
   body {
       background: transparent !important;

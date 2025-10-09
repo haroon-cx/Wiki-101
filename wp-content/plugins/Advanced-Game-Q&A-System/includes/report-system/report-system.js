@@ -20,7 +20,7 @@ jQuery(document).ready(function ($) {
 
       setTimeout(function () {
         // Recalculate pagination based on the filtered visible items
-        var itemsPerPages = 15;
+        var itemsPerPages = 10;
         var totalItemss = $(".custom-table-row").length; // Count only visible items after filtering
         var totalPages = Math.ceil(totalItemss / itemsPerPages);
         $(".custom-table-row").removeAttr("data-page"); // Remove the data-page attribute
@@ -69,7 +69,7 @@ jQuery(document).ready(function ($) {
       // Apply filters based on exact match for state, role, company, and search term
       var isStateMatch =
         reportFilterStatus === "" ||
-        reportStatusText.trim() === reportFilterStatus;
+        reportStatusText.trim() === reportFilterStatus.trim();
       var isReportTypeText =
         reportType === "all" ||
         reportType === "" ||
@@ -97,7 +97,7 @@ jQuery(document).ready(function ($) {
 
     setTimeout(function () {
       // Recalculate pagination based on the filtered visible items
-      var itemsPerPages = 15;
+      var itemsPerPages = 10;
       var totalItemss = $(".custom-table-row:visible").length; // Count only visible items after filtering
       var totalPages = Math.ceil(totalItemss / itemsPerPages);
 
@@ -336,4 +336,100 @@ jQuery(document).ready(function ($) {
       },
     });
   });
+
+  /**
+   * Cancel & reset handler for the report popup
+   */
+  jQuery('.agqa-report-cancel-btn').on('click', function (e){
+    e.preventDefault();
+    const $popup = jQuery('.respond-popup');
+
+    // Close the current popup (scoped) and the global confirmation (if present)
+
+      $popup.removeClass('active');
+
+      // Reset custom dropdown display
+      $popup.find('span.custom-dropdown-default-value').show();
+      $popup.find('span.custom-dropdown-selected-value').text('');
+
+      // Clear textarea properly
+      $popup.find('textarea.respond-detail-textarea').val('');
+      // If there's a separate confirmation element, close it too
+      jQuery('.report-cancel-popup-confirmation').removeClass('active');
+
+  });
+
+  jQuery('.report-close-button').on('click', function (e){
+    e.preventDefault();
+    const $popup = jQuery('.respond-popup');
+    // Close the current popup (scoped) and the global confirmation (if present)
+      $popup.removeClass('active');
+
+
+  });
+
+  jQuery('.cancel-confirmation-button').on('click', function (e){
+    e.preventDefault();
+
+      jQuery('.report-cancel-popup-confirmation').addClass('active');
+  });
+
+  // ==========================
+  // 6. Pagination
+  // ==========================
+
+  var itemsPerPage = 10;
+  var totalItems = jQuery(".report-system-template .custom-table-row").length;
+  var totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  jQuery(".report-system-template #pagination-demo").twbsPagination({
+    totalPages: totalPages,
+    visiblePages: 3,
+    onPageClick: function (event, page) {
+      jQuery(".report-system-template .custom-table-row").hide();
+      jQuery('.report-system-template .custom-table-row[data-page="' + page + '"]').show();
+      var totalActiveItems = jQuery(".custom-table-row.active").length;
+      var totalActivePages = Math.ceil(totalActiveItems / itemsPerPage);
+
+      // Loop through each page <li> (exclude Prev/Next)
+      // Loop through each page <li> (exclude Prev/Next)
+      jQuery(".report-system-template .pagination-ctn ul li.page-item").nextAll().not(".next").show();
+      jQuery(".report-system-template .pagination-ctn ul li.page-item")
+          .not(".prev, .next")
+          .each(function () {
+            var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
+
+            if (pageNumberss === totalActivePages && totalActivePages !== 0) {
+              // Remove all <li> items that come after this one
+              jQuery(this).nextAll().not(".next").hide();
+
+              // Check the <li> just before the Next button
+              var prevLi = jQuery(
+                  ".report-system-template .pagination-ctn ul li.page-item.active"
+              ).next();
+
+              // If the next page is hidden or .next button is visible, disable the next button
+              if (prevLi.is(":hidden")) {
+                jQuery(".report-system-template .pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+              } else {
+                jQuery(".report-system-template .pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+              }
+
+              // Break the loop since we found the match
+              // return false;
+            }
+          });
+    },
+  });
+
+  jQuery(".report-system-template .custom-table-row").each(function (index) {
+    var page = Math.floor(index / itemsPerPage) + 1;
+    jQuery(this).attr("data-page", page);
+    if (page === 1) {
+      jQuery(this).show();
+    } else {
+      jQuery(this).hide();
+    }
+  });
+
 });

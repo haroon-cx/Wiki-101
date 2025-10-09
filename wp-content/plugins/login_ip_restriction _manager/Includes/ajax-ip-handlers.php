@@ -142,4 +142,53 @@ function handle_add_user_ip()
 ]);
 
 }
-   
+
+
+add_action('wp_ajax_handle_edit_user_ip_update', 'handle_edit_user_ip_update');
+add_action('wp_ajax_nopriv_handle_edit_user_ip_update', 'handle_edit_user_ip_update');
+
+function handle_edit_user_ip_update()
+{
+    global $wpdb;
+
+    // Check nonce for security
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        wp_send_json_error(['message' => 'Permission Denied']);
+    }
+
+    // Parse form data
+    parse_str($_POST['form_data'], $data);
+    $id       = sanitize_text_field($data['ip-edit-id']);
+    $ip_ipv4  = sanitize_text_field($data['ip-ipv4']);
+    $ip_ipv6  = sanitize_text_field($data['ip-ipv6']);
+
+    // Validate ID (ensure it's numeric and exists)
+    if (!is_numeric($id)) {
+        wp_send_json_error(['message' => 'Invalid ID']);
+    }
+
+    // Prepare data for updating
+    $update_data = [
+        'ipv4' => $ip_ipv4,
+        'ipv6' => $ip_ipv6,
+    ];
+
+    // Update the record in the custom table
+    $result = $wpdb->update(
+        "{$wpdb->prefix}agqa_wiki_add_ip",  // Table name
+        $update_data,                      // Data to update
+        ['id' => $id],                     // Condition: update record with the specified ID
+        ['%s', '%s'],                      // Format for the fields (IPv4 and IPv6 are strings)
+        ['%d']                             // Format for the ID (integer)
+    );
+
+    // Check for success or failure
+    if ($result === false) {
+        // Log error with query and last error
+        error_log('Error updating IP data: ' . $wpdb->last_error);
+        wp_send_json_error(['message' => 'Error updating data.']);
+    }
+
+    // Success response
+    wp_send_json_success(['message' => 'Successfully Updated']);
+}

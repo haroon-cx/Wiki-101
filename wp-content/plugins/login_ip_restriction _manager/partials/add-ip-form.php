@@ -17,13 +17,13 @@
                 <div class="error-message account-error"></div>
                 <div class="form-field full-width">
                     <label for="manage-ip-ipv4-field">IPv4</label>
-                    <input type="text" name="ip-ipv4" id="manage-ip-ipv4-field" placeholder="Description">
-                    <div class="error-message ip-error"></div>
+                    <input type="text" name="ip-ipv4" class="manage-ip-ipv4-field" placeholder="Description">
+                    <div class="error-message ip-error ipv4-error"></div>
                 </div>
                 <div class="form-field full-width">
                     <label for="manage-ip-ipv6-field">IPv6</label>
-                    <input type="text" name="ip-ipv6" id="manage-ip-ipv6-field" placeholder="Description">
-                    <div class="error-message ip-error"></div>
+                    <input type="text" name="ip-ipv6" class="manage-ip-ipv6-field" placeholder="Description">
+                    <div class="error-message ip-error ipv6-error"></div>
                 </div>
                 <div id="add-ip-form-buttons" class="form-buttons manage-ip-form-buttons d-flex">
                     <button class="cancel-button" type="button">Cancel</button>

@@ -298,63 +298,73 @@ jQuery(document).ready(function ($) {
     });
   });
 
-  // ==========================
-  // 6. Pagination
-  // ==========================
+
+
+// ==========================
+// 6. Pagination
+// ==========================
 
   var itemsPerPage = 15;
-  var totalItems = jQuery(".custom-table-row").length;
+  var totalItems = jQuery(".manage-user-template .custom-table-row").length;
   var totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  jQuery("#pagination-demo").twbsPagination({
+// If no rows exist, disable pagination and return
+  if (totalItems === 0) {
+    jQuery(".manage-user-template #pagination-demo").hide(); // Hide pagination if no items
+    return;
+  }
+
+  jQuery(".manage-user-template #pagination-demo").twbsPagination({
     totalPages: totalPages,
     visiblePages: 3,
     onPageClick: function (event, page) {
-      jQuery(".custom-table-row").hide();
-      jQuery('.custom-table-row[data-page="' + page + '"]').show();
+      // Hide all rows first
+      jQuery(".manage-user-template .custom-table-row").hide();
+
+      // Show the rows for the current page
+      jQuery('.manage-user-template .custom-table-row[data-page="' + page + '"]').show();
+
+      // Calculate the active items on the current page
       var totalActiveItems = jQuery(".custom-table-row.active").length;
       var totalActivePages = Math.ceil(totalActiveItems / itemsPerPage);
 
-      // Loop through each page <li> (exclude Prev/Next)
-      // Loop through each page <li> (exclude Prev/Next)
-      jQuery(".pagination-ctn ul li.page-item").nextAll().not(".next").show();
-      jQuery(".pagination-ctn ul li.page-item")
-        .not(".prev, .next")
-        .each(function () {
-          var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
+      // Show/hide pagination links based on the active pages
+      jQuery(".manage-user-template .pagination-ctn ul li.page-item").nextAll().not(".next").show();
 
-          if (pageNumberss === totalActivePages && totalActivePages !== 0) {
-            // Remove all <li> items that come after this one
-            jQuery(this).nextAll().not(".next").hide();
+      jQuery(".manage-user-template .pagination-ctn ul li.page-item").not(".prev, .next").each(function () {
+        var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
 
-            // Check the <li> just before the Next button
-            var prevLi = jQuery(
-              ".pagination-ctn ul li.page-item.active"
-            ).next();
+        if (pageNumberss === totalActivePages && totalActivePages !== 0) {
+          // Hide all <li> items that come after the last active page
+          jQuery(this).nextAll().not(".next").hide();
 
-            // If the next page is hidden or .next button is visible, disable the next button
-            if (prevLi.is(":hidden")) {
-              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
-            } else {
-              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
-            }
+          // Check if the "Next" button should be disabled
+          var prevLi = jQuery(".manage-user-template .pagination-ctn ul li.page-item.active").next();
 
-            // Break the loop since we found the match
-            // return false;
+          // Disable or enable the "Next" button based on the visibility of the next page
+          if (prevLi.is(":hidden")) {
+            jQuery(".manage-user-template .pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+          } else {
+            jQuery(".manage-user-template .pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
           }
-        });
+        }
+      });
     },
   });
 
-  jQuery(".custom-table-row").each(function (index) {
+// Loop through each row and assign a page number based on its index
+  jQuery(".manage-user-template .custom-table-row").each(function (index) {
     var page = Math.floor(index / itemsPerPage) + 1;
-    jQuery(this).attr("data-page", page);
+    jQuery(this).attr("data-page", page); // Assign page data attribute
+
+    // Initially show or hide based on the page
     if (page === 1) {
       jQuery(this).show();
     } else {
       jQuery(this).hide();
     }
   });
+
 
   // $(".toggle-password").on("click", function (e) {
   //   e.preventDefault();
@@ -635,7 +645,7 @@ jQuery(function ($) {
     $(
     ".manage-ip-edit-button"
   ).on("click", function () {
-    $(".edit-manage-ip-form").addClass("active");
+    $(this).siblings(".edit-manage-ip-form").addClass("active");
   });
 
   // Close popup on cross icon
