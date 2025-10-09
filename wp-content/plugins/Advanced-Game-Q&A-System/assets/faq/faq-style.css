@@ -479,6 +479,6 @@ textarea.fr-code:focus {
     bottom: -22px;
 }
 
-/* .faq-accordion-head.expand + .faq-accordion-body {
-    display: flex !important;
-} */
+#faq_report_form .custom-select-dropdown + .error-message {
+    top: 0;
+}

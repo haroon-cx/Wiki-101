@@ -506,6 +506,7 @@ input:disabled::placeholder,
     box-sizing: border-box;
     transition: background-image .2s linear;
     cursor: pointer;
+    border-radius: 50%;
 }
 
 .toggle-password.show-pass {

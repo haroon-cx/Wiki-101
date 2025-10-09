@@ -73,6 +73,13 @@ add_shortcode('verification_email_user', function () {
     include URIP_PATH . 'partials/verification-email.php';
     return ob_get_clean();
 });
+// Shortcode: [verification_email_user]
+add_shortcode('login-user-flow', function () {
+
+    ob_start();
+    include URIP_PATH . 'partials/user-login.php';
+    return ob_get_clean();
+});
 include URIP_PATH . 'partials/profile.php';
 
 /**
