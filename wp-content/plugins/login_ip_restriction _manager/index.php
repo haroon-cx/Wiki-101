@@ -31,12 +31,12 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_script('cuim-script-date', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js', ['jquery'], null, true);
     wp_enqueue_script('cropper-js', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js', ['jquery'], null, true);
     wp_enqueue_script(
-    'cuim-script',
-    plugin_dir_url(__FILE__) . 'assets/js/cuim.js',
-    ['jquery','cropper-js'], 
-    null,
-    true
-);
+        'cuim-script',
+        plugin_dir_url(__FILE__) . 'assets/js/cuim.js',
+        ['jquery', 'cropper-js'],
+        null,
+        true
+    );
 
     wp_enqueue_script('cuim-script-date-picker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', ['jquery', 'cuim-script-date'], null, true);
     wp_enqueue_script('cuim-backend', plugin_dir_url(__FILE__) . 'assets/js/backend.js', ['jquery'], null, true);
@@ -204,34 +204,34 @@ function cui_pm_login_css_for_non_admins()
 {
     // Only apply to non-administrators
     if (! current_user_can('administrator')) {
-        ?>
-<style type="text/css">
-/* Your custom styling for the login logo container */
-.loginlogo {
-    background-color: #1F2632 !important;
-}
+?>
+        <style type="text/css">
+            /* Your custom styling for the login logo container */
+            .loginlogo {
+                background-color: #1F2632 !important;
+            }
 
-/* Your custom styling for the logo image */
-.loginlogo img {
-    width: 9%;
-    height: 50%;
-}
+            /* Your custom styling for the logo image */
+            .loginlogo img {
+                width: 9%;
+                height: 50%;
+            }
 
-body.login.js.login-action-login {
-    background: #071021 !important;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-}
+            body.login.js.login-action-login {
+                background: #071021 !important;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+            }
 
-div#login #nav {
-    display: none !important;
-}
+            div#login #nav {
+                display: none !important;
+            }
 
-div#login form .submit .button {
-    background: #7644CE !important;
-}
-</style>
+            div#login form .submit .button {
+                background: #7644CE !important;
+            }
+        </style>
 <?php
     }
 }

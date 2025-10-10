@@ -1,3 +1,4 @@
+<?php ?>
 <div class="agqa-popup-form agqa-report-popup-form">
     <div class="agqa-popup-form-inner">
         <div class="popup-form-cross-icon"></div>
@@ -38,10 +39,10 @@
             </div>
             <div class="agqa-popup-form-field required">
                 <label for="detail-description"><span>* </span>Detailed Description</label>
-                <textarea name="faq-report-answer" maxlength="1000"  id="detail-description" placeholder="Typing...." required></textarea>
+                <textarea name="faq-report-answer" maxlength="1000" id="detail-description" placeholder="Typing...." required></textarea>
             </div>
-            <div class="agqa-popup-form-field report-upload-field">
-                <label for="report-upload-input">Upload Attachments</label>
+            <div class="agqa-popup-form-field report-upload-field required">
+                <label for="report-upload-input"><span>* </span>Upload Attachments</label>
                 <div class="report-upload-area">
                     <div class="report-browse-link">
                         <img src="<?php echo AGQA_URL ?>assets/images/plus-gray-icon.svg" alt="Plus Icon">

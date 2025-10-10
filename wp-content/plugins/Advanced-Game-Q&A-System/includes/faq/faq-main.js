@@ -41,7 +41,7 @@ jQuery(document).ready(function ($) {
       success: function (response) {
         if (response.includes("Success")) {
           const $successMsg = $(
-              '<div class="submitted-successfully">Successfully Submitted</div>'
+            '<div class="submitted-successfully">Successfully Submitted</div>'
           );
           $form.append($successMsg);
 
@@ -63,12 +63,12 @@ jQuery(document).ready(function ($) {
           btn.click();
 
           btn.dispatchEvent(
-              new MouseEvent("click", { bubbles: true, cancelable: true })
+            new MouseEvent("click", { bubbles: true, cancelable: true })
           );
         } else {
           // alert(response);
           const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response}</div>`
+            `<div class="submitted-unsuccessfully">${response}</div>`
           );
           $form.append($successMsg);
 
@@ -134,7 +134,7 @@ jQuery(document).ready(function ($) {
         if (response.includes("Success")) {
           // alert("Successfully Submitted");
           const $successMsg = $(
-              '<div class="submitted-successfully">Successfully Submitted</div>'
+            '<div class="submitted-successfully">Successfully Submitted</div>'
           );
           $form.append($successMsg);
 
@@ -156,12 +156,12 @@ jQuery(document).ready(function ($) {
           btn.click();
 
           btn.dispatchEvent(
-              new MouseEvent("click", { bubbles: true, cancelable: true })
+            new MouseEvent("click", { bubbles: true, cancelable: true })
           );
         } else {
           // alert(response);
           const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response}</div>`
+            `<div class="submitted-unsuccessfully">${response}</div>`
           );
           $form.append($successMsg);
 
@@ -225,7 +225,7 @@ jQuery(document).ready(function ($) {
         if (response.includes("Success")) {
           // alert("Successfully Submitted");
           const $successMsg = $(
-              '<div class="submitted-successfully">Successfully Submitted</div>'
+            '<div class="submitted-successfully">Successfully Submitted</div>'
           );
           $form.append($successMsg);
 
@@ -247,12 +247,12 @@ jQuery(document).ready(function ($) {
           btn.click();
 
           btn.dispatchEvent(
-              new MouseEvent("click", { bubbles: true, cancelable: true })
+            new MouseEvent("click", { bubbles: true, cancelable: true })
           );
         } else {
           // alert(response);
           const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response}</div>`
+            `<div class="submitted-unsuccessfully">${response}</div>`
           );
           $form.append($successMsg);
 
@@ -280,8 +280,8 @@ jQuery(document).ready(function ($) {
 
     var searchTerm = $("#filter-search").val().toLowerCase(); // Get search term
     var selectedCategory = $("input.agqa-filter-select-hidden")
-        .val()
-        .toLowerCase(); // Get selected category
+      .val()
+      .toLowerCase(); // Get selected category
     var resultsFound = false; // Flag to track if any result is found
 
     // Check if either is empty
@@ -291,31 +291,31 @@ jQuery(document).ready(function ($) {
     // highlighted
     var query = searchTerm;
     jQuery(".faq-main-content")
-        .find(".highlighted")
-        .each(function () {
-          var $highlightedNode = jQuery(this);
-          $highlightedNode.replaceWith($highlightedNode.text());
-        });
+      .find(".highlighted")
+      .each(function () {
+        var $highlightedNode = jQuery(this);
+        $highlightedNode.replaceWith($highlightedNode.text());
+      });
 
     if (query !== "") {
       jQuery(".faq-main-content")
-          .find("*")
-          .each(function () {
-            var $node = jQuery(this);
-            var text = $node.text();
-            if (
-                $node.children().length === 0 &&
-                text.toLowerCase().includes(query)
-            ) {
-              var newText = text.replace(
-                  new RegExp("\\b" + query + "\\b", "gi"),
-                  function (match) {
-                    return '<span class="highlighted">' + match + "</span>";
-                  }
-              );
-              $node.html(newText);
-            }
-          });
+        .find("*")
+        .each(function () {
+          var $node = jQuery(this);
+          var text = $node.text();
+          if (
+            $node.children().length === 0 &&
+            text.toLowerCase().includes(query)
+          ) {
+            var newText = text.replace(
+              new RegExp("\\b" + query + "\\b", "gi"),
+              function (match) {
+                return '<span class="highlighted">' + match + "</span>";
+              }
+            );
+            $node.html(newText);
+          }
+        });
     }
 
     if (!searchTerm && !selectedCategory) {
@@ -337,9 +337,9 @@ jQuery(document).ready(function ($) {
         // var pageNumber = "sajid";
         jQuery(this).attr("data-page", pageNumber);
         jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-            .addClass("active")
-            .siblings()
-            .removeClass("active");
+          .addClass("active")
+          .siblings()
+          .removeClass("active");
         jQuery(".faq-accordion").hide();
         jQuery('.faq-accordion[data-page="' + "1" + '"]').show();
       });
@@ -356,13 +356,13 @@ jQuery(document).ready(function ($) {
     $(".faq-accordion").each(function () {
       var faqText = $(this).text().toLowerCase(); // Get all text inside the FAQ accordion
       var faqCategory = $(this)
-          .find(".faq-accodion-status")
-          .text()
-          .toLowerCase(); // Optionally, get category text
+        .find(".faq-accodion-status")
+        .text()
+        .toLowerCase(); // Optionally, get category text
       if (
-          (selectedCategory === "all" ||
-              faqCategory.includes(selectedCategory)) &&
-          faqText.includes(searchTerm) // Check if the search term is found anywhere in the FAQ content
+        (selectedCategory === "all" ||
+          faqCategory.includes(selectedCategory)) &&
+        faqText.includes(searchTerm) // Check if the search term is found anywhere in the FAQ content
       ) {
         $(this).show(); // Show the FAQ item
         if (!searchTerm) {
@@ -374,9 +374,9 @@ jQuery(document).ready(function ($) {
         }
         resultsFound = true; // Mark that at least one result is found
       } else if (
-          // If no category filter is applied and only search term matches anywhere in the FAQ
-          !selectedCategory &&
-          faqText.includes(searchTerm)
+        // If no category filter is applied and only search term matches anywhere in the FAQ
+        !selectedCategory &&
+        faqText.includes(searchTerm)
       ) {
         $(this).show(); // Show the FAQ item
         if (!searchTerm) {
@@ -417,9 +417,9 @@ jQuery(document).ready(function ($) {
         jQuery(this).attr("data-page", pageNumber);
         jQuery(this).addClass("active");
         jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-            .addClass("active")
-            .siblings()
-            .removeClass("active");
+          .addClass("active")
+          .siblings()
+          .removeClass("active");
         if (pageNumber === 1) {
           $(this).show(); // Show items that belong to the current page
         } else {
@@ -428,26 +428,26 @@ jQuery(document).ready(function ($) {
       });
       jQuery(".pagination-ctn ul li.page-item").show();
       jQuery(".pagination-ctn ul li.page-item")
-          .not(".prev, .next")
-          .each(function () {
-            var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
-            if (pageNumbers === totalPages && totalPages !== 0) {
-              // Remove all <li> items that come after this one
-              jQuery(this).nextAll().not(".next").hide();
+        .not(".prev, .next")
+        .each(function () {
+          var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+          if (pageNumbers === totalPages && totalPages !== 0) {
+            // Remove all <li> items that come after this one
+            jQuery(this).nextAll().not(".next").hide();
 
-              // Check the <li> just before the Next button
-              var prevLi = jQuery(
-                  ".pagination-ctn ul li.page-item.active"
-              ).next();
+            // Check the <li> just before the Next button
+            var prevLi = jQuery(
+              ".pagination-ctn ul li.page-item.active"
+            ).next();
 
-              // If the next page is hidden or .next button is visible, disable the next button
-              if (prevLi.is(":hidden")) {
-                jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
-              } else {
-                jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
-              }
+            // If the next page is hidden or .next button is visible, disable the next button
+            if (prevLi.is(":hidden")) {
+              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+            } else {
+              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
             }
-          });
+          }
+        });
     }, 500);
   });
   // cat filter
@@ -604,12 +604,12 @@ jQuery(document).ready(function ($) {
           btn.click();
 
           btn.dispatchEvent(
-              new MouseEvent("click", { bubbles: true, cancelable: true })
+            new MouseEvent("click", { bubbles: true, cancelable: true })
           );
         } else {
           // alert(response);
           const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response}</div>`
+            `<div class="submitted-unsuccessfully">${response}</div>`
           );
           $form.append($successMsg);
 
@@ -674,12 +674,12 @@ jQuery(document).ready(function ($) {
           btn.click();
 
           btn.dispatchEvent(
-              new MouseEvent("click", { bubbles: true, cancelable: true })
+            new MouseEvent("click", { bubbles: true, cancelable: true })
           );
         } else {
           // alert(response);
           const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response}</div>`
+            `<div class="submitted-unsuccessfully">${response}</div>`
           );
           $form.append($successMsg);
 
@@ -725,7 +725,7 @@ jQuery(document).ready(function ($) {
           $(".faq-accordion[data-id='" + del + "']").remove();
           $("#custom-faq-field-popup").removeClass("active");
           const $successMsg = $(
-              `<div class="submitted-successfully">"Successfully Deleted."</div>`
+            `<div class="submitted-successfully">"Successfully Deleted."</div>`
           );
           jQuery(".faq-accordions").append($successMsg);
           // Hide after 3 seconds
@@ -773,14 +773,14 @@ jQuery(document).ready(function ($) {
     const mime = blob.type || "application/octet-stream";
     const ext = (mime.split("/")[1] || "bin").replace("jpeg", "jpg");
     return new File(
-        [blob],
-        filename.endsWith(ext) ? filename : `${filename}.${ext}`,
-        { type: mime }
+      [blob],
+      filename.endsWith(ext) ? filename : `${filename}.${ext}`,
+      { type: mime }
     );
   }
 
   async function collectFilesFromPreviews(
-      selector = ".report-preview-item img"
+    selector = ".report-preview-item img"
   ) {
     const files = [];
     const $imgs = $(selector);
@@ -826,12 +826,16 @@ jQuery(document).ready(function ($) {
     fd.append("action", "report_image_system_upload"); // adjust if your PHP action name differs
     fd.append("nonce", agqa_ajax.nonce); // must match your localized nonce
 
-
     // collect files from preview images
     const files = await collectFilesFromPreviews(".report-preview-item img");
 
     if (!files.length) {
-      alert("Please add at least one image.");
+      // alert("Please add at least one image.");
+      jQuery(".agqa-popup-form-field.report-upload-field")
+        .append(
+          '<div class="error-message">Please add at least one image.</div>'
+        )
+        .next();
       return;
     }
 
@@ -844,11 +848,11 @@ jQuery(document).ready(function ($) {
     const $msg = $('<div class="submit-warning">Please wait...</div>');
     $form.append($msg);
     setTimeout(
-        () =>
-            $msg.fadeOut(300, function () {
-              $(this).remove();
-            }),
-        1500
+      () =>
+        $msg.fadeOut(300, function () {
+          $(this).remove();
+        }),
+      1000
     );
 
     $.ajax({
@@ -867,13 +871,13 @@ jQuery(document).ready(function ($) {
           reportSystemFaqs(agqaImages);
         } else {
           $("#ddmu-response").html(
-              "<p>" + (res?.message || "Upload failed") + "</p>"
+            "<p>" + (res?.message || "Upload failed") + "</p>"
           );
         }
       },
       error: function () {
         $("#ddmu-response").html(
-            "<p>Something went wrong. Please try again.</p>"
+          "<p>Something went wrong. Please try again.</p>"
         );
       },
     });
@@ -882,11 +886,11 @@ jQuery(document).ready(function ($) {
 
     function reportSystemFaqs(agqaImages) {
       var dataArr = $form
-          .serializeArray()
-          // "files" (ya jis name se base64 aa raha hai) ko hata do
-          .filter(function (f) {
-            return f.name !== "report-upload-files" && f.name !== "image";
-          });
+        .serializeArray()
+        // "files" (ya jis name se base64 aa raha hai) ko hata do
+        .filter(function (f) {
+          return f.name !== "report-upload-files" && f.name !== "image";
+        });
 
       var formData = jQuery.param(dataArr);
 
@@ -934,19 +938,23 @@ jQuery(document).ready(function ($) {
           // console.log(response);
           if (response.includes("Success")) {
             // alert("Successfully Submitted");
-            jQuery('input#issue_type').val("");
-            jQuery('textarea#detail-description').val("");
-            jQuery('input.report-upload-files').val("");
-            jQuery('.report-file-preview .report-preview-item').remove();
-            jQuery('span.custom-dropdown-default-value').show().siblings().hide();
+            jQuery("input#issue_type").val("");
+            jQuery("textarea#detail-description").val("");
+            jQuery("input.report-upload-files").val("");
+            jQuery(".report-file-preview .report-preview-item").remove();
+            jQuery("span.custom-dropdown-default-value")
+              .show()
+              .siblings()
+              .hide();
 
             jQuery(".agqa-popup-form.agqa-report-popup-form").removeClass(
-                "active"
+              "active"
             );
             const $successMsg = $(
-                '<div class="submitted-successfully">Report Successfully Submitted</div>'
+              '<div class="submitted-successfully">Report Successfully Submitted</div>'
             );
-            jQuery('.faq-main-content').append($successMsg);
+            jQuery(".faq-main-content").append($successMsg);
+            jQuery(".api-cards-wrapper").append($successMsg);
 
             // Hide after 3 seconds
             setTimeout(function () {
@@ -954,24 +962,10 @@ jQuery(document).ready(function ($) {
                 $(this).remove();
               });
             }, 3000);
-            // Find the *actual* back button
-            // const $btn = $(".form-header-row .back-button");
-            // const btn = $btn.get(0);
-            // if (!btn) {
-            //   console.warn("Back button not found in DOM at success time.");
-            //   return;
-            // }
-            // $btn.trigger("click");
-            //
-            // btn.click();
-            //
-            // btn.dispatchEvent(
-            //   new MouseEvent("click", { bubbles: true, cancelable: true })
-            // );
           } else {
             // alert(response);
             const $successMsg = $(
-                `<div class="report submitted-unsuccessfully">${response}</div>`
+              `<div class="report submitted-unsuccessfully">${response}</div>`
             );
             $form.append($successMsg);
 
@@ -989,5 +983,14 @@ jQuery(document).ready(function ($) {
         },
       });
     }
+  });
+
+  $(".faq-accordion-button.report-button").on("click", function (e) {
+    e.preventDefault();
+    jQuery("input#issue_type").val("");
+    jQuery("textarea#detail-description").val("");
+    jQuery("input.report-upload-files").val("");
+    jQuery(".report-file-preview .report-preview-item").remove();
+    jQuery("span.custom-dropdown-default-value").show().siblings().hide();
   });
 });
