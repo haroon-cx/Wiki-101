@@ -176,28 +176,42 @@ add_action('template_redirect', 'force_redirect_if_not_logged_in');
 
 function force_redirect_if_not_logged_in()
 {
-
-    // Check if the user is visiting the verification page with username and key parameters
+    // If the user is visiting the verification page with 'login-again' in URL
     if (is_page('verification') && isset($_GET['login-again'])) {
-        // If the user is not logged in, they should stay on the verification page
         if (!is_user_logged_in()) {
             return; // Do not redirect, stay on the verification page
         }
     }
-    // Check if the user is visiting the verification page with username and key parameters
+
+    // If the user is visiting the verification page with 'username' and 'key' parameters in URL
     if (is_page('verification') && isset($_GET['username']) && isset($_GET['key'])) {
-        // If the user is not logged in, they should stay on the verification page
         if (!is_user_logged_in()) {
             return; // Do not redirect, stay on the verification page
         }
+    }
+
+    // If the user is visiting the /user-login/ page, don't redirect (stay there)
+    if (is_page('user-login') && !is_user_logged_in()) {
+        return; // Don't redirect if already on the login page
     }
 
     // If the user is not logged in and not already on the login page
-    if (!is_user_logged_in() && !is_page('wp-login.php')) {
-        wp_redirect(wp_login_url()); // Redirect to login page
+    if (!is_user_logged_in()) {
+        wp_redirect(home_url('/user-login/')); // Redirect to /user-login/
         exit; // Make sure the script stops after the redirect
     }
 }
+
+function custom_logout_redirect()
+{
+    // Redirect to the /user-login/ page after logout
+    wp_redirect(home_url('/user-login/'));
+    exit;  // Stop further execution to ensure the redirect works
+}
+
+// Ensure the logout redirect function is triggered on user logout
+add_action('wp_logout', 'custom_logout_redirect');
+
 
 add_action('login_enqueue_scripts', 'cui_pm_login_css_for_non_admins');
 function cui_pm_login_css_for_non_admins()
