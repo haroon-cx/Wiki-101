@@ -187,7 +187,13 @@ function report_system_shortcode()
                                                 <?php echo date('Y/m/d', strtotime($report_value->create_time)); ?>
                                             </div>
                                             <div class="table-body-col">
-                                                <?php echo date('Y/m/d', strtotime($report_value->reply_time)); ?>
+                                                <?php
+                                                if ($report_value->reply_time == "--") {
+                                                    echo $report_value->reply_time;
+                                                } else {
+                                                    echo date('Y/m/d', strtotime($report_value->reply_time));
+                                                }
+                                                ?>
                                             </div>
                                             <?php if ($report_value->status === 'Pending Response') { ?>
                                                 <div class="table-body-col report-action">
