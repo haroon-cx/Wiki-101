@@ -298,17 +298,15 @@ jQuery(document).ready(function ($) {
     });
   });
 
-
-
-// ==========================
-// 6. Pagination
-// ==========================
+  // ==========================
+  // 6. Pagination
+  // ==========================
 
   var itemsPerPage = 15;
   var totalItems = jQuery(".manage-user-template .custom-table-row").length;
   var totalPages = Math.ceil(totalItems / itemsPerPage);
 
-// If no rows exist, disable pagination and return
+  // If no rows exist, disable pagination and return
   if (totalItems === 0) {
     jQuery(".manage-user-template #pagination-demo").hide(); // Hide pagination if no items
     return;
@@ -322,37 +320,50 @@ jQuery(document).ready(function ($) {
       jQuery(".manage-user-template .custom-table-row").hide();
 
       // Show the rows for the current page
-      jQuery('.manage-user-template .custom-table-row[data-page="' + page + '"]').show();
+      jQuery(
+        '.manage-user-template .custom-table-row[data-page="' + page + '"]'
+      ).show();
 
       // Calculate the active items on the current page
       var totalActiveItems = jQuery(".custom-table-row.active").length;
       var totalActivePages = Math.ceil(totalActiveItems / itemsPerPage);
 
       // Show/hide pagination links based on the active pages
-      jQuery(".manage-user-template .pagination-ctn ul li.page-item").nextAll().not(".next").show();
+      jQuery(".manage-user-template .pagination-ctn ul li.page-item")
+        .nextAll()
+        .not(".next")
+        .show();
 
-      jQuery(".manage-user-template .pagination-ctn ul li.page-item").not(".prev, .next").each(function () {
-        var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
+      jQuery(".manage-user-template .pagination-ctn ul li.page-item")
+        .not(".prev, .next")
+        .each(function () {
+          var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
 
-        if (pageNumberss === totalActivePages && totalActivePages !== 0) {
-          // Hide all <li> items that come after the last active page
-          jQuery(this).nextAll().not(".next").hide();
+          if (pageNumberss === totalActivePages && totalActivePages !== 0) {
+            // Hide all <li> items that come after the last active page
+            jQuery(this).nextAll().not(".next").hide();
 
-          // Check if the "Next" button should be disabled
-          var prevLi = jQuery(".manage-user-template .pagination-ctn ul li.page-item.active").next();
+            // Check if the "Next" button should be disabled
+            var prevLi = jQuery(
+              ".manage-user-template .pagination-ctn ul li.page-item.active"
+            ).next();
 
-          // Disable or enable the "Next" button based on the visibility of the next page
-          if (prevLi.is(":hidden")) {
-            jQuery(".manage-user-template .pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
-          } else {
-            jQuery(".manage-user-template .pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+            // Disable or enable the "Next" button based on the visibility of the next page
+            if (prevLi.is(":hidden")) {
+              jQuery(
+                ".manage-user-template .pagination-ctn ul li.next"
+              ).addClass("disabled"); // Disable Next button
+            } else {
+              jQuery(
+                ".manage-user-template .pagination-ctn ul li.next"
+              ).removeClass("disabled"); // Enable Next button
+            }
           }
-        }
-      });
+        });
     },
   });
 
-// Loop through each row and assign a page number based on its index
+  // Loop through each row and assign a page number based on its index
   jQuery(".manage-user-template .custom-table-row").each(function (index) {
     var page = Math.floor(index / itemsPerPage) + 1;
     jQuery(this).attr("data-page", page); // Assign page data attribute
@@ -364,7 +375,6 @@ jQuery(document).ready(function ($) {
       jQuery(this).hide();
     }
   });
-
 
   // $(".toggle-password").on("click", function (e) {
   //   e.preventDefault();
@@ -631,9 +641,7 @@ jQuery(function ($) {
     $(".reset-password-popup").removeClass("active");
   });
 
-    $(
-    ".add-button"
-  ).on("click", function () {
+  $(".add-button").on("click", function () {
     $(".add-manage-ip-form").addClass("active");
   });
 
@@ -642,9 +650,7 @@ jQuery(function ($) {
     $(".add-manage-ip-form").removeClass("active");
   });
 
-    $(
-    ".manage-ip-edit-button"
-  ).on("click", function () {
+  $(".manage-ip-edit-button").on("click", function () {
     $(this).siblings(".edit-manage-ip-form").addClass("active");
   });
 
@@ -653,10 +659,8 @@ jQuery(function ($) {
     $(".edit-manage-ip-form").removeClass("active");
   });
 
-    $(
-    ".manage-ip-form-buttons .cancel-button"
-  ).on("click", function () {
-    $(".cancel-form-confirmation").addClass("active");
+  $(".manage-ip-form-buttons .cancel-button").on("click", function () {
+    $(this).siblings(".cancel-form-confirmation").addClass("active");
   });
 
   // Close popup on cross icon
@@ -664,23 +668,22 @@ jQuery(function ($) {
     $(".cancel-form-confirmation").removeClass("active");
   });
 
-    $(
-    ".delete-user-button"
-  ).on("click", function () {
+  $(".delete-user-button").on("click", function () {
     $(".delete-popup").addClass("active");
   });
 
-    $(
-    "#edit-ip-btn"
-  ).on("click", function (e) {
+  $("#edit-ip-btn").on("click", function (e) {
     e.preventDefault();
     $(".confirm-submit-popup").addClass("active");
   });
 
   // Close popup on cross icon
-  $(".popup-form-cross-icon, .delete-manage-ip .no-cancel").on("click", function () {
-    $(".delete-popup").removeClass("active");
-  });
+  $(".popup-form-cross-icon, .delete-manage-ip .no-cancel").on(
+    "click",
+    function () {
+      $(".delete-popup").removeClass("active");
+    }
+  );
 
   // Close popup on cross icon
   $(".no-form-cancel").on("click", function () {
@@ -698,4 +701,3 @@ jQuery(function ($) {
     $(".edit-manage-ip-form").removeClass("active");
   });
 });
-

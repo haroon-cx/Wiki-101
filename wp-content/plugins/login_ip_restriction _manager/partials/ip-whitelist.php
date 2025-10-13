@@ -3,7 +3,7 @@
 global $wpdb;
 $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
 
-    $get_ip_list = $wpdb->get_results("
+$get_ip_list = $wpdb->get_results("
             SELECT
                 id,
                 user_id,
@@ -18,13 +18,13 @@ $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
             ORDER BY id DESC
             ");
 
-    include 'add-ip-form.php';
+include 'add-ip-form.php';
 
 ?>
 <div class="manage-ip-template">
     <div class="manage-ip-container">
         <div id="page-content">
-        <!-- Content will be dynamically updated based on pagination -->
+            <!-- Content will be dynamically updated based on pagination -->
         </div>
         <div class="template-title">
             <h1>Manage IP’s Whitelist</h1>
@@ -60,7 +60,7 @@ $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
                         <input type="search" class="cuim-manage-ipv6-search-validation-254" maxlength="254"
                             name="manage-ip-ipv6-search" id="manage-ip-ipv6-search"
                             placeholder="Enter IPv6 (E.G. 2400:3200::1)">
-                    </div> 
+                    </div>
                     <button type="submit" class="filter-select-button"
                         id="cuim-ip-serch-filters"><span>Search</span></button>
                 </form>
@@ -70,8 +70,8 @@ $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
                     <a href="#" class="add-button">
                         <img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg" alt="Plus Icon">Add New IP
                     </a>
-                </div>  
-            </div>  
+                </div>
+            </div>
         </div>
         <div class="custom-table-ctn">
             <div class="custom-table-ctn-inner">
@@ -83,102 +83,102 @@ $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
                         <div class="table-head-col">Actions</div>
                     </div>
                     <div class="custom-table-body">
-                        <?php foreach($get_ip_list as $ip_value) {?>
-                       <div class="custom-table-row">
-                        <div class="table-body-col cuim-ip-user-account">
-                            <?php echo $ip_value->account?>
-                        </div>
-                        <div class="table-body-col cuim-ip-user-ipv4">
-                            <?php echo $ip_value->ipv4?>
-                        </div>
-                        <div class="table-body-col cuim-ip-user-ipv6">
-                            <?php echo $ip_value->ipv6?>
-                        </div>
-                        <div class="table-body-col manage-ip-actions">
-                            <div class="edit-ip-ctn">
-                                <button class="manage-ip-edit-button"></button>
-                            <div class="edit-manage-ip-form">
-                                <div class="edit-manage-ip-form-inner">
-                                    <div class="popup-form-cross-icon manage-ip-cross-icon"></div>
-                                        <div class="popup-form-title">
-                                            <h2>Edit IP</h2>
-                                        </div>
-                                        <form action="#" class="edit-ip-from-list">
-                                            <div class="form-field full-width required">
-                                                <label for="account-name"><span>*</span> Account</label>
-                                                <input type="hidden" name="ip-edit-id" value="<?php echo $ip_value->id; ?>">
-                                                <input type="hidden" class="ip-edit-ip4-check" value="<?php echo $ip_value->ipv4; ?>">
-                                                <input type="hidden" class="ip-edit-ip6-check" value="<?php echo $ip_value->ipv6; ?>">
-                                                <input type="text" name="account-name"  placeholder="Description" value="<?php echo $ip_value->account?>" required style="pointer-events: none;1">
-                                            </div>
-                                            <div class="form-field full-width">
-                                                <label>IPv4</label>
-                                                <input type="text" name="ip-ipv4" class="manage-ip-ipv4-field" placeholder="Description" value="<?php echo $ip_value->ipv4?>">
-                                                <div class="error-message ip-error ipv4-error"></div>
-                                            </div>
-                                            <div class="form-field full-width">
-                                                <label>IPv6</label>
-                                                <input type="text" name="ip-ipv6" class="manage-ip-ipv6-field" placeholder="Description" value="<?php echo $ip_value->ipv6?>">
-                                                <div class="error-message ip-error ipv6-error"></div>
-                                            </div>
-                                            <div class="form-buttons manage-ip-form-buttons d-flex">
-                                                <button class="cancel-button" type="button">Cancel</button>
-                                                <div class="cancel-form-confirmation" style="">
-                                                    <div class="cancel-form-confirmation-box">
-                                                        <h2>Cancel</h2>
-                                                        <div class="popup-form-cross-icon"></div>
-                                                        <div class="form-message">Are you sure you want to cancel?</div>
-                                                        <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                            <button class="no-form-cancel" type="button">No</button>
-                                                            <button class="yes-cancel" type="button">Yes</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button class="edit-ip-btn cuim-edit-button-ip" type="submit">Submit</button>
-                                                <div class="confirm-submit-popup cuim-edit-submit-popup">
-                                                    <div class="confirm-submit-popup-box">
-                                                        <h2>Submit</h2>
-                                                        <div class="popup-form-cross-icon submit-cross-icon"></div>
-                                                        <div class="form-message">Are you sure you want to submit?</div>
-                                                        <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                            <button class="no-confirm-submit" type="button">No</button>
-                                                            <button type="submit" value="Yes" class="confirm-submit cuim-confirm-submit-ip">Yes</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="confirm-submit-popup cuim-edit-submit-popup-again">
-                                                    <div class="confirm-submit-popup-box">
-                                                        <h2>Submit</h2>
-                                                        <div class="popup-form-cross-icon submit-cross-icon"></div>
-                                                        <div class="form-message">You have set the same IP, Are you sure you want to submit?</div>
-                                                        <div class="form-buttons submit-manage-ip agqa-popup-form-buttons d-flex">
-                                                            <button class="no-confirm-submit" type="button">No</button>
-                                                            <button type="button" value="Yes" class="confirm-submit cuim-submit-again-btn">Yes</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
+                        <?php foreach ($get_ip_list as $ip_value) { ?>
+                            <div class="custom-table-row">
+                                <div class="table-body-col cuim-ip-user-account">
+                                    <?php echo $ip_value->account ?>
                                 </div>
-                        </div>
-                            </div>
-                            <div class="delete-ip-ctn">
-                                <button class="delete-user-button"></button>
-                                <div class="delete-popup">
-                                    <div class="delete-popup-inner">
-                                        <h2>Delete</h2>
-                                        <div class="popup-form-cross-icon"></div>
-                                        <div class="form-message">Are you sure you want to Delete?</div>
-                                        <div class="agqa-popup-form-buttons delete-manage-ip d-flex">
-                                            <button class="no-cancel" type="button">No</button>
-                                            <button type="submit" value="yes-cancel" class="yes-cancel">Yes</button>
+                                <div class="table-body-col cuim-ip-user-ipv4">
+                                    <?php echo $ip_value->ipv4 ?>
+                                </div>
+                                <div class="table-body-col cuim-ip-user-ipv6">
+                                    <?php echo $ip_value->ipv6 ?>
+                                </div>
+                                <div class="table-body-col manage-ip-actions">
+                                    <div class="edit-ip-ctn">
+                                        <button class="manage-ip-edit-button"></button>
+                                        <div class="edit-manage-ip-form">
+                                            <div class="edit-manage-ip-form-inner">
+                                                <div class="popup-form-cross-icon manage-ip-cross-icon"></div>
+                                                <div class="popup-form-title">
+                                                    <h2>Edit IP</h2>
+                                                </div>
+                                                <form action="#" class="edit-ip-from-list">
+                                                    <div class="form-field full-width required">
+                                                        <label for="account-name"><span>*</span> Account</label>
+                                                        <input type="hidden" name="ip-edit-id" value="<?php echo $ip_value->id; ?>">
+                                                        <input type="hidden" class="ip-edit-ip4-check" value="<?php echo $ip_value->ipv4; ?>">
+                                                        <input type="hidden" class="ip-edit-ip6-check" value="<?php echo $ip_value->ipv6; ?>">
+                                                        <input type="text" name="account-name" placeholder="Description" value="<?php echo $ip_value->account ?>" required style="pointer-events: none;1">
+                                                    </div>
+                                                    <div class="form-field full-width">
+                                                        <label>IPv4</label>
+                                                        <input type="text" name="ip-ipv4" class="manage-ip-ipv4-field" placeholder="Enter IPv4 (e.g. 10.0.0.5)" value="<?php echo $ip_value->ipv4 ?>">
+                                                        <div class="error-message ip-error ipv4-error"></div>
+                                                    </div>
+                                                    <div class="form-field full-width">
+                                                        <label>IPv6</label>
+                                                        <input type="text" name="ip-ipv6" class="manage-ip-ipv6-field" placeholder="Enter IPv6 (E.G. 2400:3200::1)" value="<?php echo $ip_value->ipv6 ?>">
+                                                        <div class="error-message ip-error ipv6-error"></div>
+                                                    </div>
+                                                    <div class="form-buttons manage-ip-form-buttons d-flex">
+                                                        <button class="cancel-button" type="button">Cancel</button>
+                                                        <div class="cancel-form-confirmation" style="">
+                                                            <div class="cancel-form-confirmation-box">
+                                                                <h2>Cancel</h2>
+                                                                <div class="popup-form-cross-icon"></div>
+                                                                <div class="form-message">Are you sure you want to cancel?</div>
+                                                                <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                                                    <button class="no-form-cancel" type="button">No</button>
+                                                                    <button class="yes-cancel cuim-cancel-button-ip" type="button">Yes</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <button class="edit-ip-btn cuim-edit-button-ip" type="submit">Submit</button>
+                                                        <div class="confirm-submit-popup cuim-edit-submit-popup">
+                                                            <div class="confirm-submit-popup-box">
+                                                                <h2>Submit</h2>
+                                                                <div class="popup-form-cross-icon submit-cross-icon"></div>
+                                                                <div class="form-message">Are you sure you want to submit?</div>
+                                                                <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                                                    <button class="no-confirm-submit" type="button">No</button>
+                                                                    <button type="submit" value="Yes" class="confirm-submit cuim-confirm-submit-ip">Yes</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="confirm-submit-popup cuim-edit-submit-popup-again">
+                                                            <div class="confirm-submit-popup-box">
+                                                                <h2>Submit</h2>
+                                                                <div class="popup-form-cross-icon submit-cross-icon"></div>
+                                                                <div class="form-message">You have set the same IP, Are you sure you want to submit?</div>
+                                                                <div class="form-buttons submit-manage-ip agqa-popup-form-buttons d-flex">
+                                                                    <button class="no-confirm-submit" type="button">No</button>
+                                                                    <button type="button" value="Yes" class="confirm-submit cuim-submit-again-btn">Yes</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="delete-ip-ctn">
+                                        <button class="delete-user-button"></button>
+                                        <div class="delete-popup">
+                                            <div class="delete-popup-inner">
+                                                <h2>Delete</h2>
+                                                <div class="popup-form-cross-icon"></div>
+                                                <div class="form-message">Are you sure you want to Delete?</div>
+                                                <div class="agqa-popup-form-buttons delete-manage-ip d-flex">
+                                                    <button class="no-cancel" type="button">No</button>
+                                                    <button type="submit" value="yes-cancel" class="yes-cancel">Yes</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                       </div>
-                       <?php }?>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -202,7 +202,7 @@ $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
 </div>
 
 <script>
-    jQuery(document).ready(function (){
+    jQuery(document).ready(function() {
         var itemsPerPage = 15;
         var totalItems = jQuery(".manage-ip-template .custom-table-row").length;
         var totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -216,7 +216,7 @@ $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
         jQuery(".manage-ip-template #pagination-demo").twbsPagination({
             totalPages: totalPages,
             visiblePages: 3,
-            onPageClick: function (event, page) {
+            onPageClick: function(event, page) {
                 // Hide all rows first
                 jQuery(".manage-ip-template .custom-table-row").hide();
 
@@ -230,7 +230,7 @@ $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
                 // Show/hide pagination links based on the active pages
                 jQuery(".manage-ip-template .pagination-ctn ul li.page-item").nextAll().not(".next").show();
 
-                jQuery(".manage-ip-template .pagination-ctn ul li.page-item").not(".prev, .next").each(function () {
+                jQuery(".manage-ip-template .pagination-ctn ul li.page-item").not(".prev, .next").each(function() {
                     var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
 
                     if (pageNumberss === totalActivePages && totalActivePages !== 0) {
@@ -252,7 +252,7 @@ $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
         });
 
         // Loop through each row and assign a page number based on its index
-        jQuery(".manage-ip-template .custom-table-row").each(function (index) {
+        jQuery(".manage-ip-template .custom-table-row").each(function(index) {
             var page = Math.floor(index / itemsPerPage) + 1;
             jQuery(this).attr("data-page", page); // Assign page data attribute
 
@@ -264,5 +264,4 @@ $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
             }
         });
     });
-
 </script>

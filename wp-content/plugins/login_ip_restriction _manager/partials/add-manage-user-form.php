@@ -105,7 +105,7 @@
                                     <div id="error-message" class="cuim-validation-error"></div>
                                 </div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                    <button class="cancel-button" type="button">Cancel</button>
+                                    <button class="cancel-button cuim-cancel-button-ip" type="button">Cancel</button>
                                     <button id="save-custom-field">Save</button>
                                 </div>
                             </div>

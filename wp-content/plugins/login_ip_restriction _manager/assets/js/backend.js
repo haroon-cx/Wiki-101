@@ -1124,252 +1124,294 @@ jQuery(document).ready(function ($) {
     jQuery("#cuim-profile-reset-password div#error-message").text("");
   });
 
-    /**
+  /**
    * Check User Account for IP Address
    */
 
-$("#add-ip-btn").on("click", function (e) {
+  $("#add-ip-btn").on("click", function (e) {
     e.preventDefault();
-    
+
     // Get form data
-    var getFormData = $('#add-ip-from').serialize();
-    
+    var getFormData = $("#add-ip-from").serialize();
+
     // Check for empty required fields
     var isValid = true;
-    
+
     // // Check if at least one of the IP fields is filled
-    var ipv4 = $('.manage-ip-ipv4-field').val();  // Assuming the ID for the IPv4 field is 'ipv4'
-    var ipv6 = $('.manage-ip-ipv6-field').val();  // Assuming the ID for the IPv6 field is 'ipv6'
-    
-    $('.ip-error').text('');
+    var ipv4 = $(".manage-ip-ipv4-field").val(); // Assuming the ID for the IPv4 field is 'ipv4'
+    var ipv6 = $(".manage-ip-ipv6-field").val(); // Assuming the ID for the IPv6 field is 'ipv6'
+
+    $(".ip-error").text("");
 
     if (ipv4 === "" && ipv6 === "") {
-        isValid = false;
-        $('.ip-error').text('Please enter at least one type of IP.');
+      isValid = false;
+      $(".ip-error").text("Please enter at least one type of IP.");
     }
 
     // // Check if account field is filled (optional, as it was not mentioned explicitly)
-    $('.account-error').text('');
-    var account = $('.manage-ip-account-field').val();  // Assuming the ID for the account field is 'account'
+    $(".account-error").text("");
+    var account = $(".manage-ip-account-field").val(); // Assuming the ID for the account field is 'account'
     if (account === "") {
-        isValid = false;
-        $('.account-error').text('Account is required');
-        $('.manage-ip-account-field').addClass('error-field');
+      isValid = false;
+      $(".account-error").text("Account is required");
+      $(".manage-ip-account-field").addClass("error-field");
     }
-
 
     // If validation fails, stop the form submission
     if (!isValid) {
-        return false;
+      return false;
     }
 
-      var nonce = cuim_ajax.nonce; // Nonce for security
+    var nonce = cuim_ajax.nonce; // Nonce for security
 
-      $.ajax({
-        url: cuim_ajax.ajax_url,
-        type: "POST",
-        data: {
-          action: "check_user_account",
-          form_data: getFormData, // Pass the form data to the server
-          nonce: nonce,
-        },
-        success: function (response) {
-          // Check if the response contains success
-          if (response.success) {
-              $('#add-ip-btn').siblings(".confirm-submit-popup").addClass("active");
-          } else {
-            // alert(response.data.message);
-            $('.account-error').text(response.data.message);
-            $('#manage-ip-account-field').addClass('error-field');
-            return;
-          }
-        },
-
-        error: function (response) {
-          // Error message if AJAX fails
-          alert("An error occurred.");
-        },
-      });    
-});
-
-
-    function isValidIPv4(ip) {
-        const parts = ip.trim().split(".");
-        if (parts.length !== 4) return false;
-
-        for (let part of parts) {
-            if (!/^\d+$/.test(part)) return false;
-            const num = Number(part);
-            if (num < 0 || num > 255) return false;
-            if (part.length > 1 && part.startsWith("0")) return false;
-        }
-
-        return true;
-    }
-
-    $('.manage-ip-ipv4-field').on('input', function () {
-        const ip = $(this).val();
-        const errorBox = $('.error-message.ipv4-error');
-
-        if (isValidIPv4(ip)) {
-          $('button#add-ip-btn').prop("disabled", false);
-          $('.cuim-edit-button-ip').prop("disabled", false);
-            errorBox.text('');
+    $.ajax({
+      url: cuim_ajax.ajax_url,
+      type: "POST",
+      data: {
+        action: "check_user_account",
+        form_data: getFormData, // Pass the form data to the server
+        nonce: nonce,
+      },
+      success: function (response) {
+        // Check if the response contains success
+        if (response.success) {
+          $("#add-ip-btn").siblings(".confirm-submit-popup").addClass("active");
         } else {
-          $('.cuim-edit-button-ip').prop("disabled", true);
-          $('button#add-ip-btn').prop("disabled", true);
-
-            $(this).next(errorBox).text('Please enter a valid IPv4 address');
+          // alert(response.data.message);
+          $(".account-error").text(response.data.message);
+          $("#manage-ip-account-field").addClass("error-field");
+          return;
         }
+      },
+
+      error: function (response) {
+        // Error message if AJAX fails
+        alert("An error occurred.");
+      },
     });
+  });
 
+  function isValidIPv4(ip) {
+    const parts = ip.trim().split(".");
+    if (parts.length !== 4) return false;
 
-    function isValidIPv6(ip) {
-        // Basic IPv6 pattern (not exhaustive, but covers valid formats)
-        const ipv6Pattern = new RegExp(
-            '^(' +
-            '([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:)|' +               // full form
-            '([0-9A-Fa-f]{1,4}:){1,7}:|' +                                // :: at end
-            '([0-9A-Fa-f]{1,4}:){1,6}:[0-9A-Fa-f]{1,4}|' +                // :: in middle
-            '([0-9A-Fa-f]{1,4}:){1,5}(:[0-9A-Fa-f]{1,4}){1,2}|' +
-            '([0-9A-Fa-f]{1,4}:){1,4}(:[0-9A-Fa-f]{1,4}){1,3}|' +
-            '([0-9A-Fa-f]{1,4}:){1,3}(:[0-9A-Fa-f]{1,4}){1,4}|' +
-            '([0-9A-Fa-f]{1,4}:){1,2}(:[0-9A-Fa-f]{1,4}){1,5}|' +
-            '[0-9A-Fa-f]{1,4}:((:[0-9A-Fa-f]{1,4}){1,6})|' +
-            ':((:[0-9A-Fa-f]{1,4}){1,7}|:)|' +                            // starts with ::
-            'fe80:(:[0-9A-Fa-f]{0,4}){0,4}%[0-9a-zA-Z]{1,}|' +            // link-local
-            '::(ffff(:0{1,4}){0,1}:){0,1}' +
-            '((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])\.){3,3}' +
-            '(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])|' +                   // IPv4-mapped IPv6
-            '([0-9A-Fa-f]{1,4}:){1,4}:' +
-            '((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])\.){3,3}' +
-            '(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])' +
-            ')$'
-        );
-        return ipv6Pattern.test(ip.trim());
+    for (let part of parts) {
+      if (!/^\d+$/.test(part)) return false;
+      const num = Number(part);
+      if (num < 0 || num > 255) return false;
+      if (part.length > 1 && part.startsWith("0")) return false;
     }
 
-    $('.manage-ip-ipv6-field').on('input', function () {
-        const ip = $(this).val();
-        const errorBox = $('.error-message.ipv6-error');
+    return true;
+  }
 
-        if (isValidIPv6(ip)) {
-          $('.cuim-edit-button-ip').prop("disabled", false);
-          $('button#add-ip-btn').prop("disabled", false);
+  // $(".manage-ip-ipv4-field").on("focusout", function () {
+  //   const ip = $(this).val();
+  //   const errorBox = $(".error-message.ipv4-error");
 
-            errorBox.text('');
-        } else {
-          $('.cuim-edit-button-ip').prop("disabled", true);
-          $('button#add-ip-btn').prop("disabled", true);
+  //   if (isValidIPv4(ip)) {
+  //     $("button#add-ip-btn").prop("disabled", false);
+  //     $(".cuim-edit-button-ip").prop("disabled", false);
+  //     errorBox.text("");
+  //   } else {
+  //     $(".cuim-edit-button-ip").prop("disabled", true);
+  //     $("button#add-ip-btn").prop("disabled", true);
 
-          $(this).next(errorBox).text('Please enter a valid IPv6 address');
-        }
-    });
+  //     $(this).next(errorBox).text("Please enter a valid IPv4 address");
+  //   }
+  // });
 
-    /**
-   * Add IP Data 
+  function isValidIPv6(ip) {
+    // Basic IPv6 pattern (not exhaustive, but covers valid formats)
+    const ipv6Pattern = new RegExp(
+      "^(" +
+        "([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:)|" + // full form
+        "([0-9A-Fa-f]{1,4}:){1,7}:|" + // :: at end
+        "([0-9A-Fa-f]{1,4}:){1,6}:[0-9A-Fa-f]{1,4}|" + // :: in middle
+        "([0-9A-Fa-f]{1,4}:){1,5}(:[0-9A-Fa-f]{1,4}){1,2}|" +
+        "([0-9A-Fa-f]{1,4}:){1,4}(:[0-9A-Fa-f]{1,4}){1,3}|" +
+        "([0-9A-Fa-f]{1,4}:){1,3}(:[0-9A-Fa-f]{1,4}){1,4}|" +
+        "([0-9A-Fa-f]{1,4}:){1,2}(:[0-9A-Fa-f]{1,4}){1,5}|" +
+        "[0-9A-Fa-f]{1,4}:((:[0-9A-Fa-f]{1,4}){1,6})|" +
+        ":((:[0-9A-Fa-f]{1,4}){1,7}|:)|" + // starts with ::
+        "fe80:(:[0-9A-Fa-f]{0,4}){0,4}%[0-9a-zA-Z]{1,}|" + // link-local
+        "::(ffff(:0{1,4}){0,1}:){0,1}" +
+        "((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9]).){3,3}" +
+        "(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])|" + // IPv4-mapped IPv6
+        "([0-9A-Fa-f]{1,4}:){1,4}:" +
+        "((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9]).){3,3}" +
+        "(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])" +
+        ")$"
+    );
+    return ipv6Pattern.test(ip.trim());
+  }
+  // Helper: buttons ko enable/disable karna ek jagah se
+  function updateIpButtons() {
+    const ipv4Val = $(".manage-ip-ipv4-field").val()?.trim() || "";
+    const ipv6Val = $(".manage-ip-ipv6-field").val()?.trim() || "";
+
+    const ipv4Ok = ipv4Val === "" || isValidIPv4(ipv4Val);
+    const ipv6Ok = ipv6Val === "" || isValidIPv6(ipv6Val);
+
+    const noErrorsInUI =
+      $(".error-message.ipv4-error").text().trim() === "" &&
+      $(".error-message.ipv6-error").text().trim() === "";
+
+    const enable = ipv4Ok && ipv6Ok && noErrorsInUI;
+
+    $(".cuim-edit-button-ip, button#add-ip-btn").prop("disabled", !enable);
+  }
+
+  // IPv6
+  $(".manage-ip-ipv6-field").on("focusout", function () {
+    const ip = $(this).val();
+    // NOTE: .next() me selector string dein (assumes error span next sibling hai)
+    const errorBox = $(this).next(".error-message.ipv6-error");
+
+    if (isValidIPv6(ip)) {
+      errorBox.text("");
+    } else {
+      errorBox.text("Please enter a valid IPv6 address");
+    }
+
+    updateIpButtons();
+  });
+
+  // IPv4
+  $(".manage-ip-ipv4-field").on("focusout", function () {
+    const ip = $(this).val();
+    const errorBox = $(this).next(".error-message.ipv4-error");
+
+    if (isValidIPv4(ip)) {
+      errorBox.text("");
+    } else {
+      errorBox.text("Please enter a valid IPv4 address");
+    }
+
+    updateIpButtons();
+  });
+
+  // Optional: page load par bhi buttons ko state me lao
+  $(function () {
+    updateIpButtons();
+  });
+
+  // $(".manage-ip-ipv6-field").on("focusout", function () {
+  //   const ip = $(this).val();
+  //   const errorBox = $(".error-message.ipv6-error");
+
+  //   if (isValidIPv6(ip)) {
+  //     $(".cuim-edit-button-ip").prop("disabled", false);
+  //     $("button#add-ip-btn").prop("disabled", false);
+
+  //     errorBox.text("");
+  //   } else {
+  //     $(".cuim-edit-button-ip").prop("disabled", true);
+  //     $("button#add-ip-btn").prop("disabled", true);
+
+  //     $(this).next(errorBox).text("Please enter a valid IPv6 address");
+  //   }
+  // });
+
+  /**
+   * Add IP Data
    */
 
-    $("#add-ip-from").on("submit", function (e) {
+  $("#add-ip-from").on("submit", function (e) {
     e.preventDefault();
-    
+
     // Get form data
-    var getFormData = $('#add-ip-from').serialize();
+    var getFormData = $("#add-ip-from").serialize();
 
-      var nonce = cuim_ajax.nonce; // Nonce for security
+    var nonce = cuim_ajax.nonce; // Nonce for security
 
-      $.ajax({
-        url: cuim_ajax.ajax_url,
-        type: "POST",
-        data: {
-          action: "handle_add_user_ip",
-          form_data: getFormData, // Pass the form data to the server
-          nonce: nonce,
-        },
-        success: function (response) {
-          // Check if the response contains success
-          // alert(response.data.message);
-          if (response.success) {
-            jQuery('.add-manage-ip-form').removeClass('active');
-                const $successMsg = $(`
+    $.ajax({
+      url: cuim_ajax.ajax_url,
+      type: "POST",
+      data: {
+        action: "handle_add_user_ip",
+        form_data: getFormData, // Pass the form data to the server
+        nonce: nonce,
+      },
+      success: function (response) {
+        // Check if the response contains success
+        // alert(response.data.message);
+        if (response.success) {
+          jQuery(".add-manage-ip-form").removeClass("active");
+          const $successMsg = $(`
         <div class="submitted-successfully">${response.data.message}</div>
     `);
 
-    // Append the success message to the custom table body
-    jQuery(".custom-table-body").append($successMsg);
-            window.location.reload();
-    // Hide the message after 3 seconds
+          // Append the success message to the custom table body
+          jQuery(".custom-table-body").append($successMsg);
+          window.location.reload();
+          // Hide the message after 3 seconds
+          setTimeout(function () {
+            $successMsg.fadeOut(400, function () {
+              $(this).remove();
+            });
+          }, 3000);
+        } else {
+          return;
+        }
+      },
+
+      error: function (response) {
+        // Error message if AJAX fails
+        alert("An error occurred.");
+      },
+    });
+  });
+
+  /**
+   * Edit IP Data
+   */
+
+  $(".edit-ip-from-list").on("submit", function (e) {
+    e.preventDefault();
+
+    // Check for empty required fields
+    var isValid = true;
+
+    // // Check if at least one of the IP fields is filled
+    var ipv4 = $(this).find(".manage-ip-ipv4-field").val(); // Assuming the ID for the IPv4 field is 'ipv4'
+    var ipv6 = $(this).find(".manage-ip-ipv6-field").val(); // Assuming the ID for the IPv6 field is 'ipv6'
+    var check_ipv4 = $(this).find(".ip-edit-ip4-check").val(); // Assuming the ID for the IPv4 field is 'ipv4'
+    var check_ipv6 = $(this).find(".ip-edit-ip6-check").val(); // Assuming the ID for the IPv6 field is 'ipv6'
+
+    $(".ip-error").text("");
+
+    if (ipv4 === "" && ipv6 === "") {
+      isValid = false;
+      $(this).find(".ip-error").text("Please enter at least one type of IP.");
+    }
+    // If validation fails, stop the form submission
+    if (!isValid) {
+      return false;
+    }
+    if (ipv4 === check_ipv4 && ipv6 === check_ipv6) {
+      $(this).find(".cuim-edit-submit-popup-again").addClass("active");
+    } else {
+      $(this).find(".cuim-edit-submit-popup").addClass("active");
+    }
+  });
+
+  $(".edit-ip-from-list .cuim-submit-again-btn").on("click", function (e) {
+    e.preventDefault();
+    $(".cuim-edit-submit-popup-again").removeClass("active");
+    $(".edit-manage-ip-form").removeClass("active");
+    const $successMsg = $(
+      `<div class="submitted-successfully">Successfully Updated</div>`
+    );
+    jQuery(".add-manage-ip-form").append($successMsg);
+    // Hide after 3 seconds
     setTimeout(function () {
-        $successMsg.fadeOut(400, function () {
-            $(this).remove();
-        });
+      $successMsg.remove();
     }, 3000);
-            
-          } else {
-            
-            return;
-          }
-        },
-
-        error: function (response) {
-          // Error message if AJAX fails
-          alert("An error occurred.");
-        },
-      });
-    });
-
-
-    /**
-     * Edit IP Data
-     */
-
-    $(".edit-ip-from-list").on("submit", function (e) {
-        e.preventDefault();
-
-      // Check for empty required fields
-      var isValid = true;
-
-      // // Check if at least one of the IP fields is filled
-      var ipv4 = $(this).find('.manage-ip-ipv4-field').val();  // Assuming the ID for the IPv4 field is 'ipv4'
-      var ipv6 = $(this).find('.manage-ip-ipv6-field').val();  // Assuming the ID for the IPv6 field is 'ipv6'
-       var check_ipv4 = $(this).find('.ip-edit-ip4-check').val();  // Assuming the ID for the IPv4 field is 'ipv4'
-      var check_ipv6 = $(this).find('.ip-edit-ip6-check').val();  // Assuming the ID for the IPv6 field is 'ipv6'
-
-      $('.ip-error').text('');
-
-      if (ipv4 === "" && ipv6 === "") {
-        isValid = false;
-        $(this).find('.ip-error').text('Please enter at least one type of IP.');
-      }
-      // If validation fails, stop the form submission
-      if (!isValid) {
-        return false;
-      }
-      if (ipv4 === check_ipv4 && ipv6 === check_ipv6) {
-        $(this).find('.cuim-edit-submit-popup-again').addClass('active');
-      }else{
-        $(this).find('.cuim-edit-submit-popup').addClass('active');
-      }
-
-    });
-
-    $(".edit-ip-from-list .cuim-submit-again-btn").on("click", function (e) {
-        e.preventDefault();
-      $('.cuim-edit-submit-popup-again').removeClass('active');
-      $('.edit-manage-ip-form').removeClass('active');
-      const $successMsg = $(
-          `<div class="submitted-successfully">Successfully Updated</div>`
-      );
-      jQuery(".add-manage-ip-form").append($successMsg);
-      // Hide after 3 seconds
-      setTimeout(function () {
-        $successMsg.remove();
-      }, 3000);
-    });
-
+  });
 
   $(".edit-ip-from-list .cuim-confirm-submit-ip").on("click", function (e) {
-    var getFormData = jQuery(this).closest('.edit-ip-from-list').serialize();
+    var getFormData = jQuery(this).closest(".edit-ip-from-list").serialize();
 
     var nonce = cuim_ajax.nonce; // Nonce for security
 
@@ -1399,9 +1441,9 @@ $("#add-ip-btn").on("click", function (e) {
         // Check if the response contains success
         // alert(response.data.message);
         if (response.success) {
-          $('.cuim-edit-submit-popup').removeClass('active');
-          $('.edit-manage-ip-form').removeClass('active');
-          jQuery('.add-manage-ip-form').removeClass('active');
+          $(".cuim-edit-submit-popup").removeClass("active");
+          $(".edit-manage-ip-form").removeClass("active");
+          jQuery(".add-manage-ip-form").removeClass("active");
           const $successMsg = $(`
         <div class="submitted-successfully">${response.data.message}</div>
     `);
@@ -1430,10 +1472,12 @@ $("#add-ip-btn").on("click", function (e) {
 
   $(".cuim-filter-select-list-li li").on("click", function (event) {
     event.preventDefault(); // Prevent form submission
-    var getDataLi = jQuery(this).data('value');
-    jQuery('.' + getDataLi).show().siblings('.cuim-ipv-selected').hide();
+    var getDataLi = jQuery(this).data("value");
+    jQuery("." + getDataLi)
+      .show()
+      .siblings(".cuim-ipv-selected")
+      .hide();
   });
-
 
   $("#cuim-ip-serch-filters").on("click", function (event) {
     event.preventDefault(); // Prevent form submission
@@ -1464,9 +1508,9 @@ $("#add-ip-btn").on("click", function (e) {
           // var pageNumber = "sajid";
           jQuery(this).attr("data-page", pageNumber);
           jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-              .addClass("active")
-              .siblings()
-              .removeClass("active");
+            .addClass("active")
+            .siblings()
+            .removeClass("active");
 
           jQuery(".custom-table-row").hide();
           jQuery('.custom-table-row[data-page="' + "1" + '"]').show();
@@ -1484,29 +1528,26 @@ $("#add-ip-btn").on("click", function (e) {
 
     $(".custom-table-row").each(function () {
       var IPaccountsearchText = $(this)
-          .find(".cuim-ip-user-account")
-          .text()
-          .toLowerCase();
+        .find(".cuim-ip-user-account")
+        .text()
+        .toLowerCase();
       // alert(IPaccountsearchText);
       var IPSerchipv4Text = $(this)
-          .find(".table-body-col.cuim-ip-user-ipv4")
-          .text()
-          .toLowerCase();
+        .find(".table-body-col.cuim-ip-user-ipv4")
+        .text()
+        .toLowerCase();
       var IPSerchipv6Text = $(this)
-          .find(".table-body-col.cuim-ip-user-ipv6")
-          .text()
-          .toLowerCase();
+        .find(".table-body-col.cuim-ip-user-ipv6")
+        .text()
+        .toLowerCase();
       // Apply filters based on exact match for state, role, company, and search term
       var isIPAccountMatch =
-          IPaccountText === "" ||
-          IPaccountsearchText.trim() === IPaccountText.trim();
+        IPaccountText === "" ||
+        IPaccountsearchText.trim() === IPaccountText.trim();
       var IsIPSerchipv4Match =
-          IPTextipv4 === "" ||
-          IPSerchipv4Text.trim() === IPTextipv4.trim();
+        IPTextipv4 === "" || IPSerchipv4Text.trim() === IPTextipv4.trim();
       var IsIPSerchipv6Match =
-          IPTextipv6 === "" ||
-          IPSerchipv6Text.trim() === IPTextipv6.trim();
-
+        IPTextipv6 === "" || IPSerchipv6Text.trim() === IPTextipv6.trim();
 
       if (isIPAccountMatch && IsIPSerchipv4Match && IsIPSerchipv6Match) {
         $(this).show(); // Show the row if it matches the filters
@@ -1541,9 +1582,9 @@ $("#add-ip-btn").on("click", function (e) {
         jQuery(this).attr("data-page", pageNumber);
         jQuery(this).addClass("active");
         jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-            .addClass("active")
-            .siblings()
-            .removeClass("active");
+          .addClass("active")
+          .siblings()
+          .removeClass("active");
         if (pageNumber === 1) {
           $(this).show(); // Show items that belong to the current page
         } else {
@@ -1552,26 +1593,53 @@ $("#add-ip-btn").on("click", function (e) {
       });
       jQuery(".pagination-ctn ul li.page-item").show();
       jQuery(".pagination-ctn ul li.page-item")
-          .not(".prev, .next")
-          .each(function () {
-            var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
-            if (pageNumbers === totalPages && totalPages !== 0) {
-              // Remove all <li> items that come after this one
-              jQuery(this).nextAll().not(".next").hide();
+        .not(".prev, .next")
+        .each(function () {
+          var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+          if (pageNumbers === totalPages && totalPages !== 0) {
+            // Remove all <li> items that come after this one
+            jQuery(this).nextAll().not(".next").hide();
 
-              // Check the <li> just before the Next button
-              var prevLi = jQuery(
-                  ".pagination-ctn ul li.page-item.active"
-              ).next();
+            // Check the <li> just before the Next button
+            var prevLi = jQuery(
+              ".pagination-ctn ul li.page-item.active"
+            ).next();
 
-              // If the next page is hidden or .next button is visible, disable the next button
-              if (prevLi.is(":hidden")) {
-                jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
-              } else {
-                jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
-              }
+            // If the next page is hidden or .next button is visible, disable the next button
+            if (prevLi.is(":hidden")) {
+              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+            } else {
+              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
             }
-          });
+          }
+        });
     }, 100); // Delay of 500 milliseconds
+  });
+
+  jQuery(".cuim-cancel-button-ip").on("click", function () {
+    var check_ipv4 = $(this)
+      .closest(".edit-ip-from-list")
+      .find(".ip-edit-ip4-check")
+      .val(); // Assuming the ID for the IPv4 field is 'ipv4'
+    var check_ipv6 = $(this)
+      .closest(".edit-ip-from-list")
+      .find(".ip-edit-ip6-check")
+      .val(); // Assuming the ID for the IPv6 field is 'ipv6'
+    alert(check_ipv6);
+    jQuery(this)
+      .closest(".edit-ip-from-list")
+      .find(".manage-ip-ipv4-field")
+      .val(check_ipv4);
+    jQuery(this)
+      .closest(".edit-ip-from-list")
+      .find(".manage-ip-ipv6-field")
+      .val(check_ipv6);
+  });
+
+  jQuery(".cuim-cancel-btn-ip-add").on("click", function (e) {
+    e.preventDefault();
+    jQuery(this).closest("#add-ip-from").find("input").val("");
+    jQuery(".cancel-form-confirmation").removeClass("active");
+    jQuery(".add-manage-ip-form").removeClass("active");
   });
 });
