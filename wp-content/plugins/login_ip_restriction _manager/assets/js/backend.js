@@ -1293,9 +1293,35 @@ jQuery(document).ready(function ($) {
   });
 
   // Optional: page load par bhi buttons ko state me lao
-  $(function () {
-    updateIpButtons();
-  });
+  function updateIpButtons() {
+    const ipv4Valid = isValidIPv4($(".manage-ip-ipv4-field").val());
+    const ipv6Valid = isValidIPv6($(".manage-ip-ipv6-field").val());
+
+    // Clear error messages if both fields are valid
+    if (ipv4Valid || ipv6Valid) {
+      // Enable the button
+      $(".submit-button").prop("disabled", false);
+
+      // Clear error messages
+      $(".error-message.ipv4-error").text("");
+      $(".error-message.ipv6-error").text("");
+    } else {
+      // Disable the button
+      $(".submit-button").prop("disabled", true);
+
+      // Keep error messages active if still invalid
+      if (!ipv4Valid) {
+        $(".manage-ip-ipv4-field")
+          .next(".error-message.ipv4-error")
+          .text("Please enter a valid IPv4 address");
+      }
+      if (!ipv6Valid) {
+        $(".manage-ip-ipv6-field")
+          .next(".error-message.ipv6-error")
+          .text("Please enter a valid IPv6 address");
+      }
+    }
+  }
 
   // $(".manage-ip-ipv6-field").on("focusout", function () {
   //   const ip = $(this).val();
