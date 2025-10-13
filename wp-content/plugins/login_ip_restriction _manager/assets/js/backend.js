@@ -1268,7 +1268,7 @@ jQuery(document).ready(function ($) {
     // NOTE: .next() me selector string dein (assumes error span next sibling hai)
     const errorBox = $(this).next(".error-message.ipv6-error");
 
-    if (isValidIPv6(ip)) {
+    if (isValidIPv6(ip) || ip == "") {
       errorBox.text("");
     } else {
       errorBox.text("Please enter a valid IPv6 address");
@@ -1280,9 +1280,10 @@ jQuery(document).ready(function ($) {
   // IPv4
   $(".manage-ip-ipv4-field").on("focusout", function () {
     const ip = $(this).val();
-    const errorBox = $(this).next(".error-message.ipv4-error");
+    const errorBox = $(".error-message.ipv4-error");
 
-    if (isValidIPv4(ip)) {
+    // alert(isValidIPv4(ip));
+    if (isValidIPv4(ip) || ip == "") {
       errorBox.text("");
     } else {
       errorBox.text("Please enter a valid IPv4 address");
