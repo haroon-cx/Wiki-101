@@ -89,7 +89,6 @@ function agqa_render_interface()
     return ob_get_clean();
 }
 
-
 add_shortcode('agqa_post_page', 'agqa_post_page_shortcode');
 function agqa_post_page_shortcode()
 {

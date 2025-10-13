@@ -22,24 +22,18 @@ include_once URIP_PATH . 'Includes/ajax-ip-handlers.php';
 // Enqueue assets
 add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('date-picker-style', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css');
-    wp_enqueue_style('cuim-style', plugin_dir_url(__FILE__) . 'assets/css/cuim.css');
-    wp_enqueue_style('cuim-responsive-style', plugin_dir_url(__FILE__) . 'assets/css/responsive.css');
-    wp_enqueue_style('cropper-css', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css');
+      wp_enqueue_style('cropper-css', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css');
+    wp_enqueue_style('cuim-style', URIP_URL . 'assets/css/cuim.css');
     // manage-user Style sheet
-
-    wp_enqueue_style('manage-user-style', plugin_dir_url(__FILE__) . 'assets/css/manage-user.css');
+    wp_enqueue_style('manage-user-style', URIP_URL . 'assets/css/manage-user.css');
+    wp_enqueue_style('cuim-responsive-style', plugin_dir_url(__FILE__) . 'assets/css/responsive.css');
     wp_enqueue_script('cuim-script-date', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js', ['jquery'], null, true);
     wp_enqueue_script('cropper-js', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js', ['jquery'], null, true);
-    wp_enqueue_script(
-        'cuim-script',
-        plugin_dir_url(__FILE__) . 'assets/js/cuim.js',
-        ['jquery', 'cropper-js'],
-        null,
-        true
-    );
-
     wp_enqueue_script('cuim-script-date-picker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', ['jquery', 'cuim-script-date'], null, true);
     wp_enqueue_script('cuim-backend', plugin_dir_url(__FILE__) . 'assets/js/backend.js', ['jquery'], null, true);
+    wp_enqueue_script('cuim-script', plugin_dir_url(__FILE__) . 'assets/js/cuim.js',['jquery'], null, true);
+
+
 
     wp_localize_script('cuim-script', 'cuim_ajax', [
         'ajax_url' => admin_url('admin-ajax.php'),
@@ -80,6 +74,14 @@ add_shortcode('login-user-flow', function () {
     include URIP_PATH . 'partials/user-login.php';
     return ob_get_clean();
 });
+
+add_shortcode('wiki-home-page', function () {
+ 
+    ob_start();
+    include URIP_PATH . 'partials/home-page.php';
+    return ob_get_clean();
+});
+
 include URIP_PATH . 'partials/profile.php';
 
 /**
@@ -191,15 +193,15 @@ function force_redirect_if_not_logged_in()
     }
 
     // If the user is visiting the /user-login/ page, don't redirect (stay there)
-    if (is_page('user-login') && !is_user_logged_in()) {
-        return; // Don't redirect if already on the login page
-    }
+    // if (is_page('user-login') && !is_user_logged_in()) {
+    //     return; // Don't redirect if already on the login page
+    // }
 
-    // If the user is not logged in and not already on the login page
-    if (!is_user_logged_in()) {
-        wp_redirect(home_url('/user-login/')); // Redirect to /user-login/
-        exit; // Make sure the script stops after the redirect
-    }
+    // // If the user is not logged in and not already on the login page
+    // if (!is_user_logged_in()) {
+    //     wp_redirect(home_url('/user-login/')); // Redirect to /user-login/
+    //     exit; // Make sure the script stops after the redirect
+    // }
 }
 
 function custom_logout_redirect()
