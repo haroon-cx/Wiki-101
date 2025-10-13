@@ -66,6 +66,7 @@ function report_system_shortcode()
             ORDER BY id DESC
         ");
     }
+    $dataTimezone = "Asia/Karachi";
     $curl = curl_init();
     $ip = ipum_get_client_ip();  // The IP address you want to use
     if ($ip == '::1') {

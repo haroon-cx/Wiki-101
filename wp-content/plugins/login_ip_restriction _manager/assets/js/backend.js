@@ -1150,7 +1150,7 @@ jQuery(document).ready(function ($) {
 
     // // Check if account field is filled (optional, as it was not mentioned explicitly)
     $(".account-error").text("");
-    var account = $(".manage-ip-account-field").val(); // Assuming the ID for the account field is 'account'
+    var account = $("#manage-ip-account-field").val(); // Assuming the ID for the account field is 'account'
     if (account === "") {
       isValid = false;
       $(".account-error").text("Account is required");
@@ -1541,9 +1541,7 @@ jQuery(document).ready(function ($) {
         .text()
         .toLowerCase();
       // Apply filters based on exact match for state, role, company, and search term
-      var isIPAccountMatch =
-        IPaccountText === "" ||
-        IPaccountsearchText.trim() === IPaccountText.trim();
+      var isIPAccountMatch = IPaccountsearchText.includes(IPaccountText); // Check if the search term is found anywhere in the row content
       var IsIPSerchipv4Match =
         IPTextipv4 === "" || IPSerchipv4Text.trim() === IPTextipv4.trim();
       var IsIPSerchipv6Match =
@@ -1625,7 +1623,6 @@ jQuery(document).ready(function ($) {
       .closest(".edit-ip-from-list")
       .find(".ip-edit-ip6-check")
       .val(); // Assuming the ID for the IPv6 field is 'ipv6'
-    alert(check_ipv6);
     jQuery(this)
       .closest(".edit-ip-from-list")
       .find(".manage-ip-ipv4-field")
