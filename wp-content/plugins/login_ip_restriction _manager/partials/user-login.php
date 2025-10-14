@@ -207,13 +207,14 @@ $remembered_password = isset($_COOKIE['remembered_passowrd']) ? $_COOKIE['rememb
                 <div class="user-login-flow-form-inner">
                     <form action="#" id="cuim-user-login-form">
                         <div class="user-login-flow-form-field user-login-flow-account">
-                            <input type="text" name="user-login-flow-account" id="user-login-flow-account" placeholder="Please enter your account" value="<?php echo $remembered_username ?>">
+                            <input type="text" class="cuim-user-login-flow-validation-254" name="user-login-flow-account" id="user-login-flow-account" placeholder="Please enter your account" value="<?php echo $remembered_username ?>">
+                            <div class="error-message"></div>
                         </div>
                         <div class="user-login-flow-form-field user-login-flow-password">
                             <div class="toggle-password"></div>
                             <input type="password" name="user-login-flow-password" id="user-login-flow-password" placeholder="Please enter your password" value="<?php echo $remembered_password; ?>">
+                            <div class="error-message cuim-user-login-error"></div>
                         </div>
-                        <div class="error-message cuim-user-login-error"></div>
 
                         <div class="user-login-flow-form-field user-login-flow-form-bottom">
                             <div class="user-login-flow-remamber-me">
@@ -264,4 +265,5 @@ $remembered_password = isset($_COOKIE['remembered_passowrd']) ? $_COOKIE['rememb
             jQuery('.forget-password-box').fadeIn(300);
         });
     });
+
 </script>
