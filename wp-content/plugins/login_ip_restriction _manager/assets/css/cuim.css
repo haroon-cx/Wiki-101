@@ -1221,6 +1221,135 @@ div#cuim-edit-fields input {
     margin-top: 17px;
 }
 
+.notification-ctn {
+    position: relative;
+}
+
+.notification-button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, .2);
+    cursor: pointer;
+}
+
+.notification-button-counting {
+    position: absolute;
+    top: -3px;
+    right: -5px;
+    min-width: 24px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 12px;
+    box-sizing: border-box;
+    background-color: #FF4D4F;
+    color: white;
+}
+
+.notification-popup {
+    position: absolute;
+    top: 64px;
+    right: -75px;
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s ease-in-out;
+    background-color: white;
+    border-radius: 8px;
+    padding: 16px 0 13px;
+    width: 417px;
+}
+
+.notification-popup.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.notification-tags {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 4.5px;
+}
+
+.notification-tag-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #F4F4F4;
+    border-radius: 8px;
+    padding: 8px 24px;
+    min-width: 200px;
+    box-sizing: border-box;
+}
+
+.notification-list-title,
+.notification-tag-card span {
+    color: #1D1C25;
+}
+
+.notification-dot {
+    top: -2px;
+    right: -3px;
+}
+
+.notification-dot,
+.notification-list-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.notification-dot.active,
+.notification-list-dot {
+    background-color: #E92727;
+}
+
+.notification-list-dot {
+    top: 26px;
+    left: 24px;
+}
+
+.notification-count {
+    color: #747474;
+    font-weight: 600;
+}
+
+.notification-count.active {
+    color: #45AFFF;
+    text-decoration: underline;
+}
+
+.notification-list-heading {
+    padding: 8px 16px;
+}
+
+.notification-list-heading,
+.notification-list-date {
+    color: #8C8C8C;
+}
+
+.notification-list {
+    position: relative;
+    padding: 8px 50px;
+    border-top: 1px solid #D9D9D9;
+}
+
+.notification-list-date {
+    font-size: 12px;
+    margin-top: 4px;
+}
+
 @media (max-width: 1659px) and (min-width: 1345px) {
 
     .home-page-card-link,

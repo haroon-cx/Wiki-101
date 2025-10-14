@@ -700,4 +700,9 @@ jQuery(function ($) {
     $(".add-manage-ip-form").removeClass("active");
     $(".edit-manage-ip-form").removeClass("active");
   });
+
+  $('.notification-button').on('click', function() {
+    $('.notification-popup').toggleClass('active');
+  });
+
 });

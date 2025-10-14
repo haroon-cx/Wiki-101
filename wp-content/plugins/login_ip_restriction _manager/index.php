@@ -26,15 +26,12 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('cuim-style', URIP_URL . 'assets/css/cuim.css');
     // manage-user Style sheet
     wp_enqueue_style('manage-user-style', URIP_URL . 'assets/css/manage-user.css');
-    wp_enqueue_style('cuim-responsive-style', plugin_dir_url(__FILE__) . 'assets/css/responsive.css');
+    wp_enqueue_style('cuim-responsive-style', URIP_URL . 'assets/css/responsive.css');
     wp_enqueue_script('cuim-script-date', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js', ['jquery'], null, true);
     wp_enqueue_script('cropper-js', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js', ['jquery'], null, true);
     wp_enqueue_script('cuim-script-date-picker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', ['jquery', 'cuim-script-date'], null, true);
-    wp_enqueue_script('cuim-backend', plugin_dir_url(__FILE__) . 'assets/js/backend.js', ['jquery'], null, true);
-    wp_enqueue_script('cuim-script', plugin_dir_url(__FILE__) . 'assets/js/cuim.js', ['jquery'], null, true);
-
-
-
+    wp_enqueue_script('cuim-backend', URIP_URL . 'assets/js/backend.js', ['jquery'], null, true);
+    wp_enqueue_script('cuim-script', URIP_URL . 'assets/js/cuim.js', ['jquery'], null, true);
     wp_localize_script('cuim-script', 'cuim_ajax', [
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce'    => wp_create_nonce('cuim_nonce'),

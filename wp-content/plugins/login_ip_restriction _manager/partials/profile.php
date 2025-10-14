@@ -10,8 +10,11 @@ function cui_pm_add_logout_button_footer()
     //         current_user_can('editor') ||
     //         current_user_can('contributor')
     //     )) {
-    echo '<header class="header">';
-    echo '<div class="header-wrapper">';
+
+    ?>
+  <header class="header">
+    <div class="header-wrapper">
+    <?php
     // Get saved viewer mode flag for current user
     $user_id = get_current_user_id();
     $viewer_mode = get_user_meta($user_id, 'cuim_viewer_mode', true);
@@ -33,28 +36,31 @@ function cui_pm_add_logout_button_footer()
     if (empty($profile_image)) {
         $profile_image = URIP_URL . '/assets/image/profile-user-image.jpg';
     }
-
-    echo '<div class="header-right">';
-    echo '
-        <div id="agqa-search-box">
+    ?>
+    <div class="header-right">
+  
+        <!-- <div id="agqa-search-box">
             <input type="text" id="agqa-search-input" placeholder="search...">
             <div id="agqa-search-results"></div>
-        </div>
+        </div> -->
+        <?php 
+        include URIP_PATH . 'partials/notification.php';
+        ?>
         
          <div class="cuim-profile-box">
-            <img src="' . esc_url($profile_image) . '" alt="Avatar" />
+            <img src="<?php echo $profile_image; ?>" alt="Avatar" />
             <div class="cuim-profile-dropdown-ctn">
             <div class="cuim-profile-dropdown">
                 <div class="cuim-profile-dropdown-head">
-                    <img src="' . esc_url($profile_image) . '" alt="Avatar" />
+                    <img src="<?php echo $profile_image; ?>" alt="Avatar" />
                     <div>
-                        <h2 class="cuim-user-name">' . esc_html($user->first_name) . '</h2>
-                        <span class="cuim-profile-name">' . esc_html($user->user_email) . '</span>
+                        <h2 class="cuim-user-name"><?php echo $user->first_name; ?> </h2>
+                        <span class="cuim-profile-name"><?php echo $user->user_email; ?> </span>
                     </div>
                 </div>
                 <div class="cuim-profile-button-box">
                     <a href="#" class="cuim-edit-profile-button" >Edit Profile</a>
-                    <a href="' . esc_url($logout_url) . '" class="cuim-logout-button">Log Out</a>
+                    <a href=" <?php echo $logout_url; ?>" class="cuim-logout-button">Log Out</a>
                 </div>
             </div>
             </div>
@@ -64,10 +70,11 @@ function cui_pm_add_logout_button_footer()
         <span></span>
         <span></span>
         </div>
-        ';
-    echo '</div>';
-    echo '</div>';
-    echo '</header>';
+        
+    </div>
+    </div>
+    </header>
+    <?php
     // }
 ?>
     <?php
@@ -308,6 +315,5 @@ function cui_pm_add_logout_button_footer()
         }
     </style>
 <?php
-
 }
 ?>
