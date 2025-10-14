@@ -757,7 +757,7 @@ function cuim_login_check()
 
     parse_str($_POST['form_data'], $data);
     // Get the form data
-    $account = isset($data['user-login-flow-account']) ? sanitize_text_field($data['user-login-flow-account']) : '';
+    $account = isset($data['user-login-flow-account']) ? trim(sanitize_text_field($data['user-login-flow-account'])) : '';
     $password = isset($data['user-login-flow-password']) ? sanitize_text_field($data['user-login-flow-password']) : '';
     $remamber_me  = isset($data['remamber-me']) ? sanitize_text_field($data['remamber-me']) : '';
 
@@ -771,11 +771,17 @@ function cuim_login_check()
         wp_send_json_error(['code' => 'The Password field is required.']);
     }
 
+
     // Query WordPress users by username or email
-    $user = get_user_by('login', $account); // Try to get by username
+    $user = get_user_by('login', $account);
     if (!$user) {
         $user = get_user_by('email', $account); // If not found, try email
+
     }
+
+
+    $user = $user->user_login;
+
 
     if (!$user) {
         wp_send_json_error(['code' => 'The account does not exist.']);
@@ -785,7 +791,7 @@ function cuim_login_check()
     global $wpdb;
     $table = $wpdb->prefix . 'agqa_wiki_add_users'; // Custom table
     $user_data = $wpdb->get_row(
-        $wpdb->prepare("SELECT * FROM {$table} WHERE account = %s LIMIT 1", $account),
+        $wpdb->prepare("SELECT * FROM {$table} WHERE account = %s LIMIT 1", $user),
         ARRAY_A
     );
 
@@ -800,10 +806,9 @@ function cuim_login_check()
 
 
 
-
     // Successfully logged in, sign in the user
     $signon = wp_signon([
-        'user_login'    => $account,
+        'user_login'    => $user,
         'user_password' => $password,
         'remember'      => ($remamber_me === '1'),  // Only set remember if checkbox is checked
     ], is_ssl());

@@ -1757,6 +1757,7 @@ jQuery(document).ready(function ($) {
         nonce: nonce,
       },
       success: function (response) {
+        // alert(response);
         // Check if the response contains success
         if (response.success) {
           // If successful, show a success message
@@ -1811,7 +1812,7 @@ jQuery(document).ready(function ($) {
         nonce: nonce,
       },
       success: function (response) {
-        alert(response);
+        // alert(response);
         // Check if the response contains success
         if (response.success) {
           // If successful, show a success message
