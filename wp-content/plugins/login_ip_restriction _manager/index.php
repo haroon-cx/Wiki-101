@@ -189,25 +189,31 @@ function force_redirect_if_not_logged_in()
         }
     }
     // If the user is not logged in and not already on the login page
-    if (!is_user_logged_in() && !is_page('wp-login.php')) {
-        wp_redirect(wp_login_url()); // Redirect to login page
-        exit; // Make sure the script stops after the redirect
-    }
-
-    // If the user is visiting the /user-login/ page, don't redirect (stay there)
-    // if (is_page('user-login') && !is_user_logged_in()) {
-    //     return; // Don't redirect if already on the login page
-    // }
-
-    // // If the user is not logged in and not already on the login page
-    // if (!is_user_logged_in()) {
-    //     wp_redirect(home_url('/user-login/')); // Redirect to /user-login/
+    // if (!is_user_logged_in() && !is_page('wp-login.php')) {
+    //     wp_redirect(wp_login_url()); // Redirect to login page
     //     exit; // Make sure the script stops after the redirect
     // }
+
+    // If the user is visiting the /user-login/ page, don't redirect (stay there)
+    if (is_page('user-login') && !is_user_logged_in()) {
+        return; // Don't redirect if already on the login page
+    }
+
+    if (is_page('user-login') && is_user_logged_in()) {
+        wp_redirect(home_url('')); // Redirect to /user-login/
+        return; // Don't redirect if already on the login page
+    }
+
+    // If the user is not logged in and not already on the login page
+    if (!is_user_logged_in()) {
+        wp_redirect(home_url('/user-login/')); // Redirect to /user-login/
+        exit; // Make sure the script stops after the redirect
+    }
 }
 
 function custom_logout_redirect()
 {
+
     // Redirect to the /user-login/ page after logout
     wp_redirect(home_url('/user-login/'));
     exit;  // Stop further execution to ensure the redirect works

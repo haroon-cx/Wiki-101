@@ -123,10 +123,9 @@ function handle_add_or_update_user()
     }
 
     // All good
-   wp_send_json_success([
-  'message' => 'User Account Created Successfully.<br>A verification email has been sent to your registered email address.Please check your inbox.'
-]);
-
+    wp_send_json_success([
+        'message' => 'User Account Created Successfully.<br>A verification email has been sent to your registered email address.Please check your inbox.'
+    ]);
 }
 
 // Map the selected form role to WP role
@@ -171,7 +170,8 @@ function map_user_roles($role)
     }
 }
 
-function handle_edit_user_manage() {
+function handle_edit_user_manage()
+{
     global $wpdb;
 
     // Check nonce for security
@@ -281,15 +281,16 @@ function handle_edit_user_manage() {
 
 /**
  * Verification email handler
-*/
+ */
 add_action('wp_ajax_verification_user_email', 'handle_verification_user_email');
 add_action('wp_ajax_nopriv_verification_user_email', 'handle_verification_user_email');
 
-function handle_verification_user_email() {
+function handle_verification_user_email()
+{
     global $wpdb;
 
     // Security: nonce check
-    if ( ! isset($_POST['nonce']) || ! wp_verify_nonce($_POST['nonce'], 'cuim_nonce') ) {
+    if (! isset($_POST['nonce']) || ! wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
         wp_send_json_error(['message' => 'Permission Denied']);
     }
 
@@ -312,12 +313,12 @@ function handle_verification_user_email() {
         )
     );
 
-    if ( ! $current ) {
+    if (! $current) {
         wp_send_json_error(['message' => 'User not found in custom table.']);
     }
 
     // Only allow update when current state is 'pending'
-    if ( strtolower($current->state) !== 'pending' ) {
+    if (strtolower($current->state) !== 'pending') {
         // You can tailor this message based on actual state
         wp_send_json_error(['message' => 'User status is not pending; no changes made.']);
     }
@@ -366,26 +367,26 @@ function handle_resend_pending_email()
     $user   = get_user_by('id', $user_id);
     $key    = get_password_reset_key($user);
 
-        $reset_url = network_site_url('verification') . '?username=' . urlencode($account) . '&key=' . rawurlencode($key) . '&code=' . rawurlencode(current_time('Y-m-d'));
-        $subject = sprintf(__('Email verification %s'), get_bloginfo('name'));
-        $message = '<div class="email-ctn" style="background-color: #1D1C25; padding: 20px; width: 70%; margin:0 auto; border-radius: 16px; color: white; font-size: 16px; font-family: \'Poppins\', sans-serif;">'
-            . '<p style="color: white">Hello ' . esc_html($account) . ',</p>'
-            . '<h2 style="font-size: 20px; color: #00a000;">Thank you for registering with Wiki101</h2>'
-            . '<p style="color: white">To complete your account setup, please verify your email address by clicking the button below:</p>'
-            . '<p style="color: white">'
-            . '<a href="' . esc_url($reset_url) . '" style="background-color: #7644CE; font-size: 20px; padding: 16px 24px; border-radius: 16px; color: white; margin: 5px 0; display: inline-block; text-decoration: none;">'
-            . 'Verify Link'
-            . '</a>'
-            . '</p>'
-            . '<p style="color: white">(If the button doesn’t work, copy and paste the following URL into your browser: '  . esc_url($reset_url) . ')</p>'
-            . '<p style="color: white">This link will expire in 7 days for security reasons. If you did not create this account, please ignore this email.</p>'
-            . '<h2 style="font-size: 24px; color: #fff"><strong>Best regards,</strong></h2>'
-            . '<p style="color: white">The <strong>Wiki101</strong> Team</p>'
-            . '</div>';
+    $reset_url = network_site_url('verification') . '?username=' . urlencode($account) . '&key=' . rawurlencode($key) . '&code=' . rawurlencode(current_time('Y-m-d'));
+    $subject = sprintf(__('Email verification %s'), get_bloginfo('name'));
+    $message = '<div class="email-ctn" style="background-color: #1D1C25; padding: 20px; width: 70%; margin:0 auto; border-radius: 16px; color: white; font-size: 16px; font-family: \'Poppins\', sans-serif;">'
+        . '<p style="color: white">Hello ' . esc_html($account) . ',</p>'
+        . '<h2 style="font-size: 20px; color: #00a000;">Thank you for registering with Wiki101</h2>'
+        . '<p style="color: white">To complete your account setup, please verify your email address by clicking the button below:</p>'
+        . '<p style="color: white">'
+        . '<a href="' . esc_url($reset_url) . '" style="background-color: #7644CE; font-size: 20px; padding: 16px 24px; border-radius: 16px; color: white; margin: 5px 0; display: inline-block; text-decoration: none;">'
+        . 'Verify Link'
+        . '</a>'
+        . '</p>'
+        . '<p style="color: white">(If the button doesn’t work, copy and paste the following URL into your browser: '  . esc_url($reset_url) . ')</p>'
+        . '<p style="color: white">This link will expire in 7 days for security reasons. If you did not create this account, please ignore this email.</p>'
+        . '<h2 style="font-size: 24px; color: #fff"><strong>Best regards,</strong></h2>'
+        . '<p style="color: white">The <strong>Wiki101</strong> Team</p>'
+        . '</div>';
 
-        $headers = ['Content-Type: text/html; charset=UTF-8'];
-        wp_mail($email, $subject, $message, $headers);
-    
+    $headers = ['Content-Type: text/html; charset=UTF-8'];
+    wp_mail($email, $subject, $message, $headers);
+
 
     // Optional: Send a success response after updating
     wp_send_json_success(['message' => 'Email have been send successfully.']);
@@ -394,7 +395,8 @@ function handle_resend_pending_email()
  * Generate new password handler
  */
 add_action('wp_ajax_reset_password_handler', 'handle_reset_password');
-function handle_reset_password() {
+function handle_reset_password()
+{
     // Security check
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
         wp_send_json_error(['message' => 'Permission Denied']);
@@ -422,10 +424,10 @@ function handle_reset_password() {
 
     // ✅ Update password in custom table
     global $wpdb;
-        $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
+    $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
 
-   $update_data = [
-       
+    $update_data = [
+
         'new_password'   => wp_hash_password($password),
         'confirm_password' => wp_hash_password($password),
     ];
@@ -514,12 +516,12 @@ function handle_delete_manage_user()
         ['%s']  // Format for account
     );
 
-     // Respond with success message
+    // Respond with success message
     $response['status']  = 'Success';
     $response['message'] = 'Successfully Deleted.';
     echo json_encode($response);
 
-     wp_die(); // End the AJAX request
+    wp_die(); // End the AJAX request
 }
 /**
  * Profile Handler Section
@@ -568,7 +570,7 @@ function handle_cuim_user_change_password()
 
     // ✅ Update password in custom table (if applicable)
     $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
-    
+
     // Prepare the data to update the custom table
     $update_data = [
         'new_password' => wp_hash_password($new_password),
@@ -596,12 +598,13 @@ function handle_cuim_user_change_password()
 
 /** 
  * user_profile_update
-*/
+ */
 
 add_action('wp_ajax_user_profile_update', 'handle_user_profile_update');
 add_action('wp_ajax_nopriv_user_profile_update', 'handle_user_profile_update');
 
-function handle_user_profile_update() {
+function handle_user_profile_update()
+{
     // Verify the nonce for security
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
         wp_send_json_error(['message' => 'Permission Denied']);
@@ -617,6 +620,7 @@ function handle_user_profile_update() {
 
     $image_input = isset($data['image']) ? trim($data['image']) : '';
     $user_name   = isset($data['user-name']) ? sanitize_text_field($data['user-name']) : '';
+
 
     if (empty($image_input)) {
         wp_send_json_error(['message' => 'No image provided.']);
@@ -721,19 +725,155 @@ function handle_user_profile_update() {
     update_user_meta($user_id, 'profile_image', esc_url_raw($image_url));
 
     // (Optional) Save user name if needed
-   if (!empty($user_name)) {
-    $result = wp_update_user([
-        'ID'         => $user_id,
-        'first_name' => $user_name, // saves to user meta 'first_name'
-    ]);
+    if (!empty($user_name)) {
+        $result = wp_update_user([
+            'ID'         => $user_id,
+            'first_name' => $user_name, // saves to user meta 'first_name'
+        ]);
 
-    if (is_wp_error($result)) {
-        wp_send_json_error(['message' => 'Failed to update first name.']);
+        if (is_wp_error($result)) {
+            wp_send_json_error(['message' => 'Failed to update first name.']);
+        }
     }
-}
 
     wp_send_json_success([
         'message' => 'Profile updated successfully.',
         'image_url' => $image_url,
     ]);
+}
+/**
+ * user login handler section start
+ */
+// Handle the AJAX login check
+add_action('wp_ajax_nopriv_cuim_login_check', 'cuim_login_check');
+add_action('wp_ajax_cuim_login_check', 'cuim_login_check');
+
+function cuim_login_check()
+{
+    // Verify nonce
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        wp_send_json_error(['message' => 'Permission Denied']);
+    }
+
+    parse_str($_POST['form_data'], $data);
+    // Get the form data
+    $account = isset($data['user-login-flow-account']) ? sanitize_text_field($data['user-login-flow-account']) : '';
+    $password = isset($data['user-login-flow-password']) ? sanitize_text_field($data['user-login-flow-password']) : '';
+    $remamber_me  = isset($data['remamber-me']) ? sanitize_text_field($data['remamber-me']) : '';
+
+
+
+    // Validate required fields
+    if ($account === '') {
+        wp_send_json_error(['code' => 'The account field is required.']);
+    }
+    if ($password === '') {
+        wp_send_json_error(['code' => 'The Password field is required.']);
+    }
+
+    // Query WordPress users by username or email
+    $user = get_user_by('login', $account); // Try to get by username
+    if (!$user) {
+        $user = get_user_by('email', $account); // If not found, try email
+    }
+
+    if (!$user) {
+        wp_send_json_error(['code' => 'The account does not exist.']);
+    }
+
+    // Query the custom table for the user state
+    global $wpdb;
+    $table = $wpdb->prefix . 'agqa_wiki_add_users'; // Custom table
+    $user_data = $wpdb->get_row(
+        $wpdb->prepare("SELECT * FROM {$table} WHERE account = %s LIMIT 1", $account),
+        ARRAY_A
+    );
+
+    if (!$user_data) {
+        wp_send_json_error(['code' => 'The account does not exist.']);
+    }
+
+
+    if ($user_data['state'] !== "active") {
+        wp_send_json_error(['code' =>  "The account has been set as " . $user_data['state'] . '.']);
+    }
+
+
+
+
+    // Successfully logged in, sign in the user
+    $signon = wp_signon([
+        'user_login'    => $account,
+        'user_password' => $password,
+        'remember'      => ($remamber_me === '1'),  // Only set remember if checkbox is checked
+    ], is_ssl());
+
+    if (is_wp_error($signon)) {
+        wp_send_json_error(['code' => 'Please check your username and password.']);
+    }
+    // If "Remember Me" is checked, save cookies for username and email
+    // If "Remember Me" is checked, save cookies for username and email
+    $cookie_expiration = time() + 60 * 60 * 24 * 14;  // 14 days expiration
+    if ($remamber_me === '1') {
+        // Set cookies without expiration time or set a very long expiration time (e.g., 10 years)
+        setcookie('remembered_username', $account, $cookie_expiration, '/'); // 14 days expiration
+        setcookie('remembered_email', $user->user_email, $cookie_expiration, '/'); // 14 days expiration
+        setcookie('remembered_passowrd', $password, $cookie_expiration, '/'); // 14 days expiration
+    } else {
+    }
+    // Send success response with redirect URL
+    wp_send_json_success(['redirect' => apply_filters('agqa_login_redirect', home_url('/'))]);
+}
+
+
+/**
+ * sending email handnler for forget user
+ */
+add_action('wp_ajax_nopriv_handle_forget_user_password', 'handle_forget_user_password');
+add_action('wp_ajax_handle_forget_user_password', 'handle_forget_user_password');
+
+function handle_forget_user_password()
+{
+    // Security check
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        wp_send_json_error(['message' => 'Permission Denied']);
+    }
+
+    // Parse the form data
+    parse_str($_POST['form_data'], $data);
+
+    // Extract and sanitize inputs
+    $password = 'swxyz0123456789!@';
+    $email    = sanitize_email($data['user-login-flow-email']);
+
+    // Check if the user exists by email
+    $user = get_user_by('email', $email); // If not found, try email
+
+    if (!$user) {
+        wp_send_json_error(['message' => 'The account does not exist.']);
+    }
+
+    // Update password in WordPress
+    $password_update_result = wp_set_password($password, $user->ID);
+
+    // Ensure that the password was updated and perform the necessary logout
+    if (is_wp_error($password_update_result)) {
+        wp_send_json_error(['message' => 'Failed to reset password']);
+    }
+
+    // ✅ Send email with new password
+    $subject = 'Your password has been reset';
+    $message = '<div class="email-ctn" style="background-color: #1D1C25; padding: 20px; width: 70%; margin:0 auto; border-radius: 16px; color: white; font-size: 16px; font-family: \'Poppins\', sans-serif;">'
+        . '<h2 style="color: #00a000;">Hello ' . esc_html($user->first_name) . ',</h2>'
+        . '<p>Your new password has been generated successfully.</p>'
+        . '<p style="color: white"><strong>New Password:</strong> ' . esc_html($password) . '</p>'
+        . '<p style="color: white">Please use this password to login and change it after logging in for security reasons.</p>'
+        . '<p style="color: white">Best regards,<br><strong>Wiki101 Team</strong></p>'
+        . '</div>';
+    $headers = ['Content-Type: text/html; charset=UTF-8'];
+
+    wp_mail($email, $subject, $message, $headers);
+
+    // Return success response
+    wp_send_json_success(['redirect' => apply_filters('agqa_login_redirect', home_url('/'))]);
 }

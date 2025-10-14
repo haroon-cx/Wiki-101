@@ -1,9 +1,20 @@
 <?php
+// Get remembered username and email cookies
+// Get remembered username and email cookies
+$remembered_username = isset($_COOKIE['remembered_username']) ? $_COOKIE['remembered_username'] : '';
+$remembered_email = isset($_COOKIE['remembered_email']) ? $_COOKIE['remembered_email'] : '';
+
+// Check if username is set, otherwise use the email
+if (empty($remembered_username) && !empty($remembered_email)) {
+    $remembered_username = $remembered_email; // Use email as username if username is not set
+}
+$remembered_password = isset($_COOKIE['remembered_passowrd']) ? $_COOKIE['remembered_passowrd'] : '';
+
+// Print all cookies to check if the cookies are set properly
 
 ?>
 
 <style>
-
     /* (Start) This Below style specific for this Page */
 
     header.header {
@@ -25,7 +36,7 @@
     body.body_style_wide:not(.expand_content) .page_content_wrap .content_wrap>.content,
     body.body_style_wide:not(.expand_content) .content_wrap>.content {
         width: 100% !important;
-    } 
+    }
 
     .page_content_wrap {
         padding: 0 !important;
@@ -51,7 +62,7 @@
         margin-bottom: 36px;
     }
 
-    .user-login-flow-logo img{
+    .user-login-flow-logo img {
         max-width: 373px;
     }
 
@@ -79,17 +90,17 @@
         top: 17px;
         border-radius: 50%;
     }
-    
+
     #user-login-flow-account {
         background-image: url('<?php echo URIP_URL; ?>assets/image/user-login-icon.svg');
         background-size: 20px;
     }
-    
+
     #user-login-flow-password {
         background-image: url('<?php echo URIP_URL; ?>assets/image/passoword-lock-icon.svg');
         background-size: 16px;
     }
-    
+
     #user-login-flow-email {
         background-image: url('<?php echo URIP_URL; ?>assets/image/user-login-email.svg');
         background-size: 20px;
@@ -114,7 +125,9 @@
         cursor: pointer;
     }
 
-    input[type="radio"]+label:before, input[type="checkbox"]+label:before, input[type="checkbox"]+.description:before {
+    input[type="radio"]+label:before,
+    input[type="checkbox"]+label:before,
+    input[type="checkbox"]+.description:before {
         border-color: #8C8C8C !important;
         width: 16px;
         height: 16px;
@@ -122,14 +135,16 @@
         background-color: #fff;
     }
 
-    input[type="radio"]+label, input[type="checkbox"]+label, input[type="checkbox"]+.description {
-        padding-left: 24px !important; 
+    input[type="radio"]+label,
+    input[type="checkbox"]+label,
+    input[type="checkbox"]+.description {
+        padding-left: 24px !important;
         font-size: 16px !important;
         color: white !important;
         cursor: pointer;
     }
 
-    .user-login-flow-login-button  {
+    .user-login-flow-login-button {
         text-align: center;
     }
 
@@ -156,18 +171,19 @@
         z-index: -1;
         background: linear-gradient(270deg, #624491, #EE36FF, #624491);
         background-size: 600% 600%;
-        animation: gradientBorderAnimation 8s 
-        ease infinite;
+        animation: gradientBorderAnimation 8s ease infinite;
         border-radius: 16px;
     }
 
     @keyframes gradientBorderAnimation {
         0% {
-        background-position: 0% 50%;
+            background-position: 0% 50%;
         }
+
         50% {
             background-position: 100% 50%;
         }
+
         100% {
             background-position: 0% 50%;
         }
@@ -176,7 +192,6 @@
     .forget-password-box {
         display: none;
     }
-
 </style>
 
 <div class="user-login-flow-container">
@@ -190,17 +205,19 @@
                     <h2>Log In</h2>
                 </div>
                 <div class="user-login-flow-form-inner">
-                    <form action="#">
+                    <form action="#" id="cuim-user-login-form">
                         <div class="user-login-flow-form-field user-login-flow-account">
-                            <input type="text" name="user-login-flow-account" id="user-login-flow-account" placeholder="Please enter your account">
+                            <input type="text" name="user-login-flow-account" id="user-login-flow-account" placeholder="Please enter your account" value="<?php echo $remembered_username ?>">
                         </div>
                         <div class="user-login-flow-form-field user-login-flow-password">
-                            <div class="toggle-password"></div>    
-                            <input type="password" name="user-login-flow-password" id="user-login-flow-password" placeholder="Please enter your password">
+                            <div class="toggle-password"></div>
+                            <input type="password" name="user-login-flow-password" id="user-login-flow-password" placeholder="Please enter your password" value="<?php echo $remembered_password; ?>">
                         </div>
+                        <div class="error-message cuim-user-login-error"></div>
+
                         <div class="user-login-flow-form-field user-login-flow-form-bottom">
                             <div class="user-login-flow-remamber-me">
-                                <input type="checkbox" id="remamber-me" name="remamber-me" value="Bike">
+                                <input type="checkbox" id="remamber-me" name="remamber-me" value="1">
                                 <label for="remamber-me">Remamber Me</label><br>
                             </div>
                             <div class="user-login-flow-forget-password">
@@ -223,7 +240,7 @@
                     <h2>Forgot Password</h2>
                 </div>
                 <div class="user-login-flow-form-inner">
-                    <form action="#">
+                    <form action="#" id="cuim-user-forget-form">
                         <div class="user-login-flow-form-field user-login-flow-email">
                             <input type="email" name="user-login-flow-email" id="user-login-flow-email" placeholder="Please enter your email">
                         </div>
@@ -238,13 +255,13 @@
 </div>
 
 <script>
-    jQuery('.user-login-flow-forget-password').on('click', function (e) {
-    e.preventDefault();
+    jQuery('.user-login-flow-forget-password').on('click', function(e) {
+        e.preventDefault();
 
-    // Hide login box with smooth transition
-    jQuery('.login-box').fadeOut(300, function () {
-        // After it's hidden, show forget password box
-        jQuery('.forget-password-box').fadeIn(300);
+        // Hide login box with smooth transition
+        jQuery('.login-box').fadeOut(300, function() {
+            // After it's hidden, show forget password box
+            jQuery('.forget-password-box').fadeIn(300);
+        });
     });
-});
 </script>
