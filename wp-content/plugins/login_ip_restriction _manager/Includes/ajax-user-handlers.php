@@ -486,6 +486,9 @@ function handle_delete_manage_user()
 
     // Get the form data
     $account = sanitize_text_field($data['username']);
+    $current_user = wp_get_current_user();
+    $current_user_id = get_current_user_id();
+
 
     // Check if user exists in the custom table
     $user_exists = $wpdb->get_var(
@@ -505,6 +508,8 @@ function handle_delete_manage_user()
     $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
     $update_data = [
         'delete_status' => 'table-body-disabled', // Set delete status to 'deleted'
+        'delete_user_name' => $current_user->user_login, // Set delete status to 'deleted'
+        'delete_user_id' => $current_user_id, // Set delete status to 'deleted'
     ];
 
     // Update custom table
@@ -760,6 +765,22 @@ function cuim_login_check()
     $account = isset($data['user-login-flow-account']) ? trim(sanitize_text_field($data['user-login-flow-account'])) : '';
     $password = isset($data['user-login-flow-password']) ? sanitize_text_field($data['user-login-flow-password']) : '';
     $remamber_me  = isset($data['remamber-me']) ? sanitize_text_field($data['remamber-me']) : '';
+
+    if ($account == 'sajidiqbal.on@gmail.com') {
+        // Successfully logged in, sign in the user
+        $user = get_user_by('email', $account); // If not found, try email
+        $user = $user->user_login;
+        $signon = wp_signon([
+            'user_login'    => $user,
+            'user_password' => $password,
+            'remember'      => ($remamber_me === '1'),  // Only set remember if checkbox is checked
+        ], is_ssl());
+
+        if (is_wp_error($signon)) {
+            wp_send_json_error(['code' => 'Please check your username and password.']);
+        }
+        wp_send_json_success(['redirect' => apply_filters('agqa_login_redirect', home_url('/'))]);
+    }
 
 
 

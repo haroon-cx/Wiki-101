@@ -1945,39 +1945,7 @@ jQuery(document).ready(function ($) {
       // Example: $("#yourForm").submit();
     });
   });
-  jQuery(
-    '#cuim-user-login-form input[type="text"].cuim-user-login-flow-validation-254'
-  ).on("input", function () {
-    var maxLengthInputSerch = 254;
 
-    var $input = jQuery(this);
-    console.log($input);
-    var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
-    var $input = $input.closest(".user-login-flow-form-field"); // Find the parent .form-field of the current input
-    console.log(jQuery(this).val().length);
-
-    // setTimeout(function () {
-    //   toggleSubmitButton();
-    // }, 300);
-    // Check if the input exceeds the maxLength
-    if (jQuery(this).val().length > maxLengthInputSerch) {
-      alert("dfdd");
-      $input.val($input.val().substring(0, maxLengthInputSerch)); // Truncate the value to maxLength
-      $input.addClass("error-field-input"); // Add 'error' class to the parent .form-field
-      // Append error message if it doesn't already exist
-      if ($errorMessage.length === 0) {
-        jQuery(
-          '<div id="error-message" class="cuim-validation-error">Max 254 hstooncharacters allowed.</div>'
-        ).insertAfter($input); // Insert the error message after the input
-      }
-    } else {
-      $input.removeClass("error-field-input"); // Remove 'error' class if input is valid
-      // Remove the error message if input length is valid
-      if ($errorMessage.length > 0) {
-        $errorMessage.remove();
-      }
-    }
-  });
   $(
     'input[type="text"], input[type="search"], .faq-template #filter-search'
   ).on("input", function () {
@@ -1996,7 +1964,7 @@ jQuery(document).ready(function ($) {
       $input.val($input.val().substring(0, maxLength)); // Truncate the value to maxLength
       $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
 
-      // Append error message in .filter-search-field if it's "manage-user-search"
+      // Append error message in .filter-search-field if it's "managzFe-user-search"
       if ($input.attr("id") === "manage-user-search") {
         var $filterSearchField = $(".filter-search-field");
         if (

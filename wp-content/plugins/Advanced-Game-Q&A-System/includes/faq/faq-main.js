@@ -829,15 +829,15 @@ jQuery(document).ready(function ($) {
     // collect files from preview images
     const files = await collectFilesFromPreviews(".report-preview-item img");
 
-    if (!files.length) {
-      // alert("Please add at least one image.");
-      jQuery(".agqa-popup-form-field.report-upload-field")
-        .append(
-          '<div class="error-message">Please add at least one image.</div>'
-        )
-        .next();
-      return;
-    }
+    // if (!files.length) {
+    //   // alert("Please add at least one image.");
+    //   jQuery(".agqa-popup-form-field.report-upload-field")
+    //     .append(
+    //       '<div class="error-message">Please add at least one image.</div>'
+    //     )
+    //     .next();
+    //   return;
+    // }
 
     // IMPORTANT: match the field name to what your PHP expects: 'file[]' or 'attachments[]'
     for (const f of files) {

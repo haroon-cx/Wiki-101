@@ -292,3 +292,10 @@ function cuim_set_default_viewer_mode($user_id)
 {
     update_user_meta($user_id, 'cuim_viewer_mode', 0);
 }
+function hide_admin_bar_for_subscribers()
+{
+    if (current_user_can('subscriber')) {
+        add_filter('show_admin_bar', '__return_false');
+    }
+}
+add_action('wp', 'hide_admin_bar_for_subscribers');

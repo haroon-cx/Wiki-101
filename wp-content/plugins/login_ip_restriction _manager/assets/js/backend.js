@@ -1746,7 +1746,7 @@ jQuery(document).ready(function ($) {
     var formData = $form.serialize();
 
     var nonce = cuim_ajax.nonce; // Nonce for security
-
+    jQuery(".cuim-user-login-error").html("");
     // Send the AJAX request
     $.ajax({
       url: cuim_ajax.ajax_url,
@@ -1845,5 +1845,26 @@ jQuery(document).ready(function ($) {
         alert("An error occurred.");
       },
     });
+  });
+  jQuery(".cuim-user-login-flow-validation-254").on("input", function () {
+    var maxLength = 254; // Maximum length for email
+    var $input = $(this);
+    var $errorMessage = $input
+      .closest(".user-login-flow-form-field")
+      .next(".error-message");
+
+    // Check if the input length exceeds the max length
+    if ($input.val().length > maxLength) {
+      // Truncate the value and display an error message
+      $input.val($input.val().substring(0, maxLength));
+      $errorMessage
+        .text(
+          "Maximum length for email address is 254 characters. Please shorten your input."
+        )
+        .show();
+    } else {
+      // Hide the error message if length is within the limit
+      $errorMessage.text("").hide();
+    }
   });
 });

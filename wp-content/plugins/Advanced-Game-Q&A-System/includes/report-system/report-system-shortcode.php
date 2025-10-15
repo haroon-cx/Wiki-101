@@ -300,16 +300,20 @@ function report_system_shortcode()
                                                                             <?php
                                                                             $reportUrl = $report_value->upload_attachments;
                                                                             $reportUrl = explode(",", $reportUrl);
-                                                                            foreach ($reportUrl as $url) {
+                                                                            if (empty($reportUrl) || count($reportUrl) == 0 || (count($reportUrl) == 1 && $reportUrl[0] == '')) {
+                                                                                echo '<div class="agqa-no-attachments"> No attachments</div>';
+                                                                            } else {
+                                                                                foreach ($reportUrl as $url) {
                                                                             ?>
 
-                                                                                <div class="uploaded-image">
-                                                                                    <img src="<?php echo $url; ?>"
-                                                                                        alt=" Report Image"
-                                                                                        class="stretchable">
-                                                                                    <div class="stretch-image-icon"></div>
-                                                                                </div>
-                                                                            <?php } ?>
+                                                                                    <div class="uploaded-image">
+                                                                                        <img src="<?php echo $url; ?>"
+                                                                                            alt=" Report Image"
+                                                                                            class="stretchable">
+                                                                                        <div class="stretch-image-icon"></div>
+                                                                                    </div>
+                                                                            <?php }
+                                                                            } ?>
                                                                         </div>
                                                                     </div>
                                                                     <!-- Hidden overlay for stretched image -->
@@ -489,15 +493,19 @@ function report_system_shortcode()
                                                                             <?php
                                                                             $reportUrl = $report_value->upload_attachments;
                                                                             $reportUrl = explode(",", $reportUrl);
-                                                                            foreach ($reportUrl as $url) {
+                                                                            if (empty($reportUrl) || count($reportUrl) == 0 || (count($reportUrl) == 1 && $reportUrl[0] == '')) {
+                                                                                echo '<div class="agqa-no-attachments"> No attachments</div>';
+                                                                            } else {
+                                                                                foreach ($reportUrl as $url) {
                                                                             ?>
-                                                                                <div class="uploaded-image">
-                                                                                    <img src="<?php echo $url; ?>"
-                                                                                        alt="Report Image"
-                                                                                        class="stretchable">
-                                                                                    <div class="stretch-image-icon"></div>
-                                                                                </div>
-                                                                            <?php } ?>
+                                                                                    <div class="uploaded-image">
+                                                                                        <img src="<?php echo $url; ?>"
+                                                                                            alt="Report Image"
+                                                                                            class="stretchable">
+                                                                                        <div class="stretch-image-icon"></div>
+                                                                                    </div>
+                                                                            <?php }
+                                                                            } ?>
                                                                         </div>
                                                                     </div>
                                                                     <!-- Hidden overlay for stretched image -->

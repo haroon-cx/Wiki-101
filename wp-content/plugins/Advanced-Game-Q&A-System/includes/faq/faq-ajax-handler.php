@@ -384,48 +384,48 @@ add_action('wp_ajax_nopriv_faq_report_system', 'handle_faq_report_system');
  */
 function handle_faq_report_system()
 {
-    
+
     // Verify nonce
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
         die('Permission Denied');
     }
-  
+
     parse_str($_POST['form_data'], $data); // Parse serialized form data
-    
+
     global $wpdb;
-    
+
     $user_id = get_current_user_id();    // Get data from AJAX request
     $user = get_userdata($user_id); // false if not found
 
     $faq_report_type = sanitize_text_field($data['faq-report-type']);
-    $faq_report_answer= sanitize_text_field($data['faq-report-answer']);
-    $faq_image_url= sanitize_text_field($data['imageUrl']);
-    $reporter= $user ? $user->display_name : '';
-    $reply_time= sanitize_text_field($data['reply_time']);
+    $faq_report_answer = sanitize_text_field($data['faq-report-answer']);
+    $faq_image_url = sanitize_text_field($data['imageUrl']);
+    $reporter = $user ? $user->display_name : '';
+    $reply_time = sanitize_text_field($data['reply_time']);
     //  echo $reporter;
     // wp_die();
     // Insert the FAQ into the database
-   $wpdb->insert(
-    "{$wpdb->prefix}faq_report_system",
-    [
-        'user_id'            => $user_id,
-        'report_type'        => $faq_report_type,   
-        'status'             => 'Pending Response',
-        'issue_detail'      => $faq_report_answer, 
-        'upload_attachments' => $faq_image_url,
-        'reporter' => $reporter,
-        'reply_time' => '--',
-    ],
-    [
-        '%d', // user_id
-        '%s', // report_type
-        '%s', // status
-        '%s', // issue_detail	
-        '%s', // upload_attachments
-        '%s', // reporter
-        '%s', // reply time
-    ]
-);
+    $wpdb->insert(
+        "{$wpdb->prefix}faq_report_system",
+        [
+            'user_id'            => $user_id,
+            'report_type'        => $faq_report_type,
+            'status'             => 'Pending Response',
+            'issue_detail'      => $faq_report_answer,
+            'upload_attachments' => $faq_image_url,
+            'reporter' => $reporter,
+            'reply_time' => '--',
+        ],
+        [
+            '%d', // user_id
+            '%s', // report_type
+            '%s', // status
+            '%s', // issue_detail	
+            '%s', // upload_attachments
+            '%s', // reporter
+            '%s', // reply time
+        ]
+    );
 
     // If everything went well, return success
     $response['status']  = 'Success';
@@ -436,7 +436,8 @@ function handle_faq_report_system()
 /**
  * report_image_system_upload
  */
-function report_image_system_upload() {
+function report_image_system_upload()
+{
     // Make sure you localized this same handle when creating the nonce in JS
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
         wp_send_json_error(['message' => 'Nonce verification failed.'], 403);
@@ -444,7 +445,9 @@ function report_image_system_upload() {
 
     // Accept either 'file' or 'attachments'
     if (empty($_FILES['file']) && empty($_FILES['attachments'])) {
-        wp_send_json_error(['message' => 'No file uploaded.'], 400);
+        wp_send_json_success([
+            'message' => 'Files uploaded.',
+        ]);
     }
 
     // Normalize into an array of file items
@@ -474,16 +477,16 @@ function report_image_system_upload() {
         'test_form' => false,
         'mimes'     => [
             'jpg' => 'image/jpeg',
-            'jpeg'=> 'image/jpeg',
+            'jpeg' => 'image/jpeg',
             'png' => 'image/png',
             'gif' => 'image/gif',
-            'webp'=> 'image/webp',
+            'webp' => 'image/webp',
         ],
     ];
 
     // (Optional) put uploads under /uploads/agqa-reports
     $uploads = wp_upload_dir();
-    add_filter('upload_dir', function($dirs) use ($uploads) {
+    add_filter('upload_dir', function ($dirs) use ($uploads) {
         $dirs['path']   = $uploads['basedir'] . '/agqa-reports';
         $dirs['url']    = $uploads['baseurl'] . '/agqa-reports';
         $dirs['subdir'] = '/agqa-reports';
@@ -517,7 +520,8 @@ add_action('wp_ajax_nopriv_report_image_system_upload', 'report_image_system_upl
 /**
  * FAQs fetch answer handler
  */
-function fetch_faq_answer() {
+function fetch_faq_answer()
+{
     // Verify nonce
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
         wp_send_json_error(['message' => 'Nonce verification failed.'], 403);
@@ -527,14 +531,14 @@ function fetch_faq_answer() {
     if (isset($_POST['faq_id'])) {
         global $wpdb;
         $faq_id = intval($_POST['faq_id']);
-        
+
         // Get the answer for the selected FAQ
         $faq_answer = $wpdb->get_var($wpdb->prepare("
             SELECT answer 
             FROM {$wpdb->prefix}agqa_faq
             WHERE id = %d
         ", $faq_id));
-        
+
         if ($faq_answer) {
             // Return the answer as a successful response
             wp_send_json_success(['answer' => $faq_answer]);
@@ -571,31 +575,31 @@ function agqa_report_reply_system()
     $respond_status = sanitize_text_field($data['respond-status-type']);
     $respond_textarea = sanitize_text_field($data['respond-detail-textarea']);
     $reply_user = $user ? $user->display_name : '';
-// echo $report_id;
-// wp_die();
+    // echo $report_id;
+    // wp_die();
     // Assuming these are your updated values
     $updated_status = $respond_status;  // Example updated status
     $updated_answer = $respond_textarea; // Example updated answer
 
-    if(!empty($updated_answer)){
+    if (!empty($updated_answer)) {
         $updated_status = 'Responded';
-    }else{
-        $updated_status = 'No Response Needed';
+    } else {
+        $updated_status = $respond_status;
     }
 
-// Update the data in the table based on the report_id
-$wpdb->update(
-    "{$wpdb->prefix}faq_report_system",  // Table name
-    array(
-        'status' => $updated_status,  // Updated status
-        'issue_detail_reply' => $updated_answer,  // Updated answer
-        'answer' => $reply_user,
-        'reply_time' => current_time('mysql'),
-    ),
-    array('id' => $report_id), // Condition to match the row by report_id
-    array('%s', '%s'),  // Format of the updated values
-    array('%d')  // Format of the condition (report_id is an integer)
-);
+    // Update the data in the table based on the report_id
+    $wpdb->update(
+        "{$wpdb->prefix}faq_report_system",  // Table name
+        array(
+            'status' => $updated_status,  // Updated status
+            'issue_detail_reply' => $updated_answer,  // Updated answer
+            'answer' => $reply_user,
+            'reply_time' => current_time('mysql'),
+        ),
+        array('id' => $report_id), // Condition to match the row by report_id
+        array('%s', '%s'),  // Format of the updated values
+        array('%d')  // Format of the condition (report_id is an integer)
+    );
 
 
     // If everything went well, return success

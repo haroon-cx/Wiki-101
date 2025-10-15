@@ -207,9 +207,9 @@ $remembered_password = isset($_COOKIE['remembered_passowrd']) ? $_COOKIE['rememb
                 <div class="user-login-flow-form-inner">
                     <form action="#" id="cuim-user-login-form">
                         <div class="user-login-flow-form-field user-login-flow-account">
-                            <input type="text" class="cuim-user-login-flow-validation-254" name="user-login-flow-account" id="user-login-flow-account" placeholder="Please enter your account" value="<?php echo $remembered_username ?>">
-                            <div class="error-message"></div>
+                            <input type="text" name="user-login-flow-account" id="user-login-flow-account" placeholder="Please enter your account" value="<?php echo $remembered_username ?>">
                         </div>
+                        <div class="error-message"></div>
                         <div class="user-login-flow-form-field user-login-flow-password">
                             <div class="toggle-password"></div>
                             <input type="password" name="user-login-flow-password" id="user-login-flow-password" placeholder="Please enter your password" value="<?php echo $remembered_password; ?>">
@@ -243,8 +243,9 @@ $remembered_password = isset($_COOKIE['remembered_passowrd']) ? $_COOKIE['rememb
                 <div class="user-login-flow-form-inner">
                     <form action="#" id="cuim-user-forget-form">
                         <div class="user-login-flow-form-field user-login-flow-email">
-                            <input type="email" name="user-login-flow-email" id="user-login-flow-email" placeholder="Please enter your email">
+                            <input type="email" class="cuim-user-login-flow-validation-254" name="user-login-flow-email" id="user-login-flow-email" placeholder="Please enter your email">
                         </div>
+                        <div class="error-message"></div>
                         <div class="user-login-flow-form-field user-login-flow-login-button">
                             <input type="submit" id="user-login-submit" value="Log In">
                         </div>
@@ -265,5 +266,4 @@ $remembered_password = isset($_COOKIE['remembered_passowrd']) ? $_COOKIE['rememb
             jQuery('.forget-password-box').fadeIn(300);
         });
     });
-
 </script>
