@@ -1019,6 +1019,7 @@ div#cuim-edit-fields input {
     font-size: 20px;
 }
 
+.faq-accordion .table-body-disabled,
 .table-body-disabled .table-body-col {
     opacity: .3;
     pointer-events: none;
@@ -1401,7 +1402,9 @@ div#cuim-edit-fields input {
 .approval-table .table-body-col {
     text-transform: capitalize;
 }
-
+    .agqa-no-attachments {
+       color: #1D1C25;
+} 
 @media (max-width: 1659px) and (min-width: 1345px) {
 
     .home-page-card-link,
@@ -1451,4 +1454,5 @@ div#cuim-edit-fields input {
     .home-page-card-link a {
         padding-bottom: 60px;
     }
+
 }

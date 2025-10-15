@@ -239,6 +239,73 @@ function agqa_edit_faq()
 add_action('wp_ajax_agqa_edit_faq', 'agqa_edit_faq');
 add_action('wp_ajax_nopriv_agqa_edit_faq', 'agqa_edit_faq');
 
+
+/**
+ * delete_faq
+ */
+
+function delete_faq()
+{
+    global $wpdb;
+    // Verify nonce
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+        die('Permission Denied');
+    }
+    parse_str($_POST['form_data'], $data);
+
+    // Get the form data
+    $faqID = sanitize_text_field($data['faq_id']);
+    $current_user = wp_get_current_user();
+    $current_user_id = get_current_user_id();
+
+
+    // Check if user exists in the custom table
+    $user_exists = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_faq WHERE id = %s",  // Use %s for strings
+            $faqID
+        )
+    );
+
+    // Check if user doesn't exist
+    if ($user_exists == 0) {
+        wp_send_json_error(['message' => 'User not found in custom table.']);
+        return;
+    }
+
+    // 1️⃣ Update custom table: set delete_status to 'deleted'
+    $table_name = $wpdb->prefix . 'agqa_faq';
+    $update_data = [
+        'delete_status' => 'table-body-disabled', // Set delete status to 'deleted'
+        'delete_user_name' => $current_user->user_login, // Set delete status to 'deleted'
+        'delete_user_id' => $current_user_id, // Set delete status to 'deleted'
+        'delete_user_date' => current_time('mysql'), // Set delete status to 'deleted'
+    ];
+
+    // Update custom table
+    $updated = $wpdb->update(
+        $table_name,
+        $update_data,
+        ['id' => $faqID], // Where condition
+        ['%s'], // Format for delete_status
+        ['%s']  // Format for account
+    );
+
+    // Respond with success message
+    $response['status']  = 'Success';
+    $response['message'] = 'Successfully Deleted.';
+    echo json_encode($response);
+
+    wp_die(); // End the AJAX request
+}
+add_action('wp_ajax_delete_faq', 'delete_faq');
+add_action('wp_ajax_nopriv_delete_faq', 'delete_faq');
+
+/**
+ * like dislike handler
+ */
+
+
 function handle_like_dislike_action()
 {
     // Check nonce for security

@@ -821,7 +821,7 @@ function cuim_login_check()
     }
 
 
-    if ($user_data['state'] !== "active") {
+    if (strtolower($user_data['state']) !== "active") {
         wp_send_json_error(['code' =>  "The account has been set as " . $user_data['state'] . '.']);
     }
 

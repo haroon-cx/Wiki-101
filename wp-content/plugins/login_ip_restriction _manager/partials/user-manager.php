@@ -18,6 +18,8 @@ if ($add_manage_id == 0 && $edit_manage_id == 0) {
                 user_role,
                 company_name,
                 email,
+                delete_status,
+                delete_user_name,
                 custom_label_1,
                 custom_label_2,
                 custom_label_3,
@@ -26,9 +28,7 @@ if ($add_manage_id == 0 && $edit_manage_id == 0) {
                 custom_field_2,
                 custom_field_3,
                 custom_field_4,
-                created_at,
-                delete_status,
-                delete_user_name 
+                created_at
            FROM $table_agqa_manage_user
         ORDER BY 
             CASE 

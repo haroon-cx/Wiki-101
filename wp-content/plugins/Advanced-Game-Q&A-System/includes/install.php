@@ -234,6 +234,10 @@ function agqa_create_tables()
         verified_answer TEXT,
         faq_category VARCHAR(255) NOT NULL,
         user_id BIGINT(20) NOT NULL,
+        delete_status VARCHAR(255) NOT NULL,
+        delete_user_name VARCHAR(255) NOT NULL,
+        delete_user_id VARCHAR(255) NOT NULL,
+        delete_user_date VARCHAR(255) NOT NULL,
         time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) $charset;");
 
@@ -264,7 +268,7 @@ function agqa_create_tables()
         status VARCHAR(20) DEFAULT 'pending',
         time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) $charset;");
-    
+
     // Report system table
 
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}faq_report_system (
@@ -280,7 +284,7 @@ function agqa_create_tables()
         reply_time VARCHAR(255) NOT NULL,
         create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) $charset");
-    
+
     // Sales Reorder Table
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}reorder_sales (
         id INT AUTO_INCREMENT PRIMARY KEY,

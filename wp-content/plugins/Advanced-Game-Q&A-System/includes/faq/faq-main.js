@@ -722,10 +722,10 @@ jQuery(document).ready(function ($) {
         // If deletion is successful, hide the popup and remove the FAQ from the DOM
 
         if (response.includes("Success")) {
-          $(".faq-accordion[data-id='" + del + "']").remove();
-          $("#custom-faq-field-popup").removeClass("active");
+          // $(".faq-accordion[data-id='" + del + "']").remove();
+          $(".agqa-delete-popup-faq").removeClass("active");
           const $successMsg = $(
-            `<div class="submitted-successfully">"Successfully Deleted."</div>`
+            `<div class="submitted-successfully">Successfully Deleted.</div>`
           );
           jQuery(".faq-accordions").append($successMsg);
           // Hide after 3 seconds
