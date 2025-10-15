@@ -1019,8 +1019,9 @@ div#cuim-edit-fields input {
     font-size: 20px;
 }
 
-.faq-accordion .table-body-disabled,
-.table-body-disabled .table-body-col {
+.faq-accordion .table-body-disabled div,
+.custom-table-body .table-body-disabled div,
+.table-body-disabled .table-body-col div {
     opacity: .3;
     pointer-events: none;
 }

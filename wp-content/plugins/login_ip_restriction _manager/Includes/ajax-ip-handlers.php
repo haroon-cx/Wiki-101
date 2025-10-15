@@ -90,7 +90,7 @@ function handle_check_user_account()
             $account
         )
     );
-    
+
 
     // Check if user doesn't exist
     if ($user_exists == 1) {
@@ -100,9 +100,13 @@ function handle_check_user_account()
 
     wp_send_json_success(['message' => 'Account success']);
 
-     wp_die(); // End the AJAX request
+    wp_die(); // End the AJAX request
 }
 
+
+/**
+ * handle_add_user_ip
+ */
 
 add_action('wp_ajax_handle_add_user_ip', 'handle_add_user_ip');
 add_action('wp_ajax_nopriv_handle_add_user_ip', 'handle_add_user_ip');
@@ -137,12 +141,15 @@ function handle_add_user_ip()
 
 
     // All good
-   wp_send_json_success([
-  'message' => 'Submit Successful'
-]);
-
+    wp_send_json_success([
+        'message' => 'Submit Successful'
+    ]);
 }
 
+
+/**
+ * handle_edit_user_ip_update
+ */
 
 add_action('wp_ajax_handle_edit_user_ip_update', 'handle_edit_user_ip_update');
 add_action('wp_ajax_nopriv_handle_edit_user_ip_update', 'handle_edit_user_ip_update');

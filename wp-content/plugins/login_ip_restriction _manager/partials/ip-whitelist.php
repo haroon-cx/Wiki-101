@@ -15,7 +15,12 @@ $get_ip_list = $wpdb->get_results("
                 delete_user_id,
                 created_at
             FROM $table_agqa_ip_list
-            ORDER BY id DESC
+             ORDER BY 
+            CASE 
+                WHEN delete_status = 'table-body-disabled' THEN 1
+                ELSE 0
+            END,
+            id DESC
             ");
 
 include 'add-ip-form.php';
@@ -84,9 +89,10 @@ include 'add-ip-form.php';
                     </div>
                     <div class="custom-table-body">
                         <?php foreach ($get_ip_list as $ip_value) { ?>
-                            <div class="custom-table-row">
+                            <div class="custom-table-row <?php echo $ip_value->delete_status; ?>">
                                 <div class="table-body-col cuim-ip-user-account">
-                                    <?php echo $ip_value->account ?>
+                                    <?php echo $ip_value->account; ?>
+                                    <?php echo empty($ip_value->delete_user_name) ? '' : '(deleter | ' . $ip_value->delete_user_name . ')'; ?>
                                 </div>
                                 <div class="table-body-col cuim-ip-user-ipv4">
                                     <?php echo $ip_value->ipv4 ?>
@@ -169,9 +175,9 @@ include 'add-ip-form.php';
                                                 <h2>Delete</h2>
                                                 <div class="popup-form-cross-icon"></div>
                                                 <div class="form-message">Are you sure you want to Delete?</div>
-                                                <div class="agqa-popup-form-buttons delete-manage-ip d-flex">
+                                                <div class="agqa-popup-form-buttons delete-manage-ip d-flex" id="delete-ip-users">
                                                     <button class="no-cancel" type="button">No</button>
-                                                    <button type="submit" value="yes-cancel" class="yes-cancel">Yes</button>
+                                                    <button type="submit" value="<?php echo $ip_value->account; ?>" class="yes-cancel">Yes</button>
                                                 </div>
                                             </div>
                                         </div>

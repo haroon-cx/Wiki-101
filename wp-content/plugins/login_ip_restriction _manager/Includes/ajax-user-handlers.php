@@ -528,10 +528,69 @@ function handle_delete_manage_user()
 
     wp_die(); // End the AJAX request
 }
-/**
- * Profile Handler Section
- */
 
+
+/**
+ * ip delete user handler
+ */
+add_action('wp_ajax_delete_ip_user', 'handle_delete_ip_user');
+add_action('wp_ajax_nopriv_delete_ip_user', 'handle_delete_ip_user');
+
+function handle_delete_ip_user()
+{
+    global $wpdb;
+
+    // Check nonce for security
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        wp_send_json_error(['message' => 'Permission Denied']);
+    }
+
+    parse_str($_POST['form_data'], $data);
+
+    // Get the form data
+    $account = sanitize_text_field($data['username']);
+    $current_user = wp_get_current_user();
+    $current_user_id = get_current_user_id();
+
+
+    // Check if user exists in the custom table
+    $user_exists = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_ip WHERE account = %s",  // Use %s for strings
+            $account
+        )
+    );
+
+    // Check if user doesn't exist
+    if ($user_exists == 0) {
+        wp_send_json_error(['message' => 'User not found in custom table.']);
+        return;
+    }
+
+    // 1️⃣ Update custom table: set delete_status to 'deleted'
+    $table_name = $wpdb->prefix . 'agqa_wiki_add_ip';
+    $update_data = [
+        'delete_status' => 'table-body-disabled', // Set delete status to 'deleted'
+        'delete_user_name' => $current_user->user_login, // Set delete status to 'deleted'
+        'delete_user_id' => $current_user_id, // Set delete status to 'deleted'
+    ];
+
+    // Update custom table
+    $updated = $wpdb->update(
+        $table_name,
+        $update_data,
+        ['account' => $account], // Where condition
+        ['%s'], // Format for delete_status
+        ['%s']  // Format for account
+    );
+
+    // Respond with success message
+    $response['status']  = 'Success';
+    $response['message'] = 'Successfully Deleted.';
+    echo json_encode($response);
+
+    wp_die(); // End the AJAX request
+}
 
 /**
  * Profile Password Save in DB 

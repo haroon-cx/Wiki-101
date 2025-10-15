@@ -669,7 +669,7 @@ jQuery(function ($) {
   });
 
   $(".delete-user-button").on("click", function () {
-    $(".delete-popup").addClass("active");
+    $(this).siblings(".delete-popup").addClass("active");
   });
 
   $("#edit-ip-btn").on("click", function (e) {
@@ -701,8 +701,7 @@ jQuery(function ($) {
     $(".edit-manage-ip-form").removeClass("active");
   });
 
-  $('.notification-button').on('click', function() {
-    $('.notification-popup').toggleClass('active');
+  $(".notification-button").on("click", function () {
+    $(".notification-popup").toggleClass("active");
   });
-
 });

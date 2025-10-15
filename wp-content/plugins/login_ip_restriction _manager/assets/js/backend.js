@@ -762,6 +762,7 @@ jQuery(document).ready(function ($) {
             `<div class="submitted-successfully">The user will be successfully deleted.</div>`
           );
           jQuery(".custom-table-body").append($successMsg);
+          window.location.href = "/manage-user/";
           // Hide after 3 seconds
           setTimeout(function () {
             $successMsg.fadeOut(400, function () {
@@ -784,6 +785,59 @@ jQuery(document).ready(function ($) {
       },
     });
   });
+
+  /**
+   * ip user script
+   */
+  $("#delete-ip-users .yes-cancel").on("click", function (e) {
+    e.preventDefault(); // Prevent the default form submission
+    var formData = "username=" + jQuery(this).val();
+    // var formData = $form.serialize();
+    // alert(formData);
+    // return;
+    var nonce = cuim_ajax.nonce; // Nonce for security
+    // Send the AJAX request
+    $.ajax({
+      url: cuim_ajax.ajax_url,
+      type: "POST",
+      data: {
+        action: "delete_ip_user",
+        form_data: formData, // Pass the form data to the server
+        nonce: nonce,
+      },
+      success: function (response) {
+        // If deletion is successful, hide the popup and remove the FAQ from the DOM
+
+        if (response.includes("Success")) {
+          $(".agqa-delete-popup-faq").removeClass("active");
+          const $successMsg = $(
+            `<div class="submitted-successfully">The user will be successfully deleted.</div>`
+          );
+          jQuery(".custom-table-body").append($successMsg);
+          window.location.href = "/manage-ip-whitelist/";
+          // Hide after 3 seconds
+          setTimeout(function () {
+            $successMsg.fadeOut(400, function () {
+              $(this).remove();
+            });
+          }, 3000);
+
+          // Add the 'table-body-disabled' class to the table row with the matching username-data
+          var username = formData.split("=")[1]; // Get the username from formData
+          $(".custom-table-row[username-data='" + username + "']").addClass(
+            "table-body-disabled"
+          );
+        } else {
+          alert(response);
+        }
+      },
+      error: function (response) {
+        // Error message if AJAX fails
+        alert("An error occurred.");
+      },
+    });
+  });
+
   // jQuery(".toggle-password").on("click", function (e) {
   //   jQuery(this).toggleClass("show-pass");
   //   jQuery(".new-password");
