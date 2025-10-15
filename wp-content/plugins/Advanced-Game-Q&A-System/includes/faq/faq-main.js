@@ -724,6 +724,7 @@ jQuery(document).ready(function ($) {
         if (response.includes("Success")) {
           // $(".faq-accordion[data-id='" + del + "']").remove();
           $(".agqa-delete-popup-faq").removeClass("active");
+          window.location.href = "/faq/";
           const $successMsg = $(
             `<div class="submitted-successfully">Successfully Deleted.</div>`
           );

@@ -199,7 +199,7 @@ $remembered_password = isset($_COOKIE['remembered_passowrd']) ? $_COOKIE['rememb
         <div class="user-login-flow-box-inner login-box">
             <div class="user-login-flow-form">
                 <div class="user-login-flow-logo">
-                    <a href="#"><img src="<?php echo URIP_URL ?>assets/image/site-logo.svg" alt="Site Logo"></a>
+                    <a href="#"><img src="<?php echo URIP_URL ?>assets/image/site-logo-wiki.png" alt="Site Logo"></a>
                 </div>
                 <div class="user-login-flow-form-heading">
                     <h2>Log In</h2>
