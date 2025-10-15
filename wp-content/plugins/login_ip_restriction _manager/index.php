@@ -79,6 +79,20 @@ add_shortcode('wiki-home-page', function () {
     return ob_get_clean();
 });
 
+add_shortcode('wiki-login-records', function () {
+
+    ob_start();
+    include URIP_PATH . 'partials/login-records.php';
+    return ob_get_clean();
+});
+
+add_shortcode('wiki-approval-page', function () {
+
+    ob_start();
+    include URIP_PATH . 'partials/approval-page.php';
+    return ob_get_clean();
+});
+
 include URIP_PATH . 'partials/profile.php';
 
 /**

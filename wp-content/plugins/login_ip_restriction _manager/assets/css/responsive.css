@@ -31,6 +31,19 @@
         min-width: 74%;
         width: 74%;
     }
+
+    .approval-filter.filter-area {
+        min-width: 100%;
+        width: 100%;
+    }
+
+    .approval-filter .filter-select {
+        width: 40%;
+    }
+
+    .approval-filter .filter-select-title {
+        min-width: 220px;
+    }
 }
 
 @media (max-width: 1439px) and (min-width: 1200px) {

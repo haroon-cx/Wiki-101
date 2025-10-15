@@ -1350,6 +1350,58 @@ div#cuim-edit-fields input {
     margin-top: 4px;
 }
 
+.add-ip-from-ajax {
+  width: 119px;   
+}
+
+.approval-filter form {
+    gap: 16px;
+}
+
+.approval-filter .filter-select-title {
+    min-width: 400px;
+}
+
+.approval-filter .filter-selected-text {
+    background-color: transparent;
+    padding: 0;
+    pointer-events: none;
+}
+
+.approval-filter .agqa-cross-icon {
+    display: none;
+}
+
+.approval-table .table-head-col:nth-child(1),
+.approval-table .table-body-col:nth-child(1) {
+    min-width: 15.155%;
+}
+
+.approval-table .table-head-col:nth-child(2),
+.approval-table .table-body-col:nth-child(2) {
+    min-width: 41%;
+}
+
+.approval-table .table-head-col:nth-child(4),
+.approval-table .table-body-col:nth-child(4) {
+    text-align: center;
+    min-width: 22.733%;
+}
+
+.approval-table .table-head-col:nth-child(5),
+.approval-table .table-body-col:nth-child(5) {
+    min-width: 12.125%;
+}
+
+.rejected span {
+    background-color: #FF4D4F;
+}
+
+.approval-table .table-head-col,
+.approval-table .table-body-col {
+    text-transform: capitalize;
+}
+
 @media (max-width: 1659px) and (min-width: 1345px) {
 
     .home-page-card-link,

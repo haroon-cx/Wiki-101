@@ -221,6 +221,8 @@ tr {
 }
 
 .table-body-col-buttons button,
+.table-body-col-buttons .approval-view-button,
+.table-body-col-buttons .approval-edit-button,
 .table-body-col-buttons a.manage-user-edit-button {
     padding: 0 !important;
     width: 24px;
@@ -232,12 +234,14 @@ tr {
     background-position: center;
 }
 
-.login-history-icon {
+.login-history-icon,
+.approval-view-button {
     background-image: url(../image/login-history-icon.svg);
     background-size: 18px;
 }
 
-.manage-user-edit-button {
+.manage-user-edit-button,
+.approval-edit-button {
     background-image: url(../image/edit-icon.svg);
 }
 
@@ -254,7 +258,8 @@ tr {
     font-size: 12px;
 }
 
-.table-row-status.active span {
+.table-row-status.active span,
+.approved span {
     background-color: #52C41A;
 }
 
