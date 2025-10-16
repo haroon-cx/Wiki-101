@@ -205,7 +205,7 @@ $remembered_password = isset($_COOKIE['remembered_passowrd']) ? $_COOKIE['rememb
                     <h2>Log In</h2>
                 </div>
                 <div class="user-login-flow-form-inner">
-                    <form action="#" id="cuim-user-login-form">
+                    <form action="#" id="cuim-user-login-form" autocomplete="off" data-inited-validation="1">
                         <div class="user-login-flow-form-field user-login-flow-account">
                             <input type="text" name="user-login-flow-account" id="user-login-flow-account" placeholder="Please enter your account" value="<?php echo $remembered_username ?>">
                         </div>
@@ -235,15 +235,15 @@ $remembered_password = isset($_COOKIE['remembered_passowrd']) ? $_COOKIE['rememb
         <div class="user-login-flow-box-inner forget-password-box">
             <div class="user-login-flow-form">
                 <div class="user-login-flow-logo">
-                    <a href="#"><img src="<?php echo URIP_URL ?>assets/image/site-logo.svg" alt="Site Logo"></a>
+                    <a href="#"><img src="<?php echo URIP_URL ?>assets/image/site-logo-wiki.png" alt="Site Logo"></a>
                 </div>
                 <div class="user-login-flow-form-heading">
                     <h2>Forgot Password</h2>
                 </div>
                 <div class="user-login-flow-form-inner">
-                    <form action="#" id="cuim-user-forget-form">
+                    <form action="#" id="cuim-user-forget-form" autocomplete="off" data-inited-validation="1">
                         <div class="user-login-flow-form-field user-login-flow-email">
-                            <input type="email" class="cuim-user-login-flow-validation-254" name="user-login-flow-email" id="user-login-flow-email" placeholder="Please enter your email">
+                            <input type="email" class="cuim-user-login-flow-validation-254" name="user-login-flow-email" id="user-login-flow-email" placeholder="Please enter your email" required>
                         </div>
                         <div class="error-message"></div>
                         <div class="user-login-flow-form-field user-login-flow-login-button">

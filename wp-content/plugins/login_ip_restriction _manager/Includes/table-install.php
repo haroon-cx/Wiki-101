@@ -44,4 +44,18 @@ function agqa_create_tables_ip_users()
         delete_user_id VARCHAR(255) NOT NULL,
         created_at DATE NOT NULL DEFAULT (CURRENT_DATE)
     ) $charsets;");
+
+    $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_wiki_login_records (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        account VARCHAR(255) NOT NULL,
+        login_ip VARCHAR(255) NOT NULL,
+        created_at DATE NOT NULL DEFAULT (CURRENT_DATE)
+    ) $charsets;");
+
+    $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_wiki_read_user_profile (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        read_user_profile VARCHAR(255) NOT NULL
+    ) $charsets;");
 }

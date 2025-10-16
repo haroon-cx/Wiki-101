@@ -904,7 +904,6 @@ function cuim_login_check()
         setcookie('remembered_username', $account, $cookie_expiration, '/'); // 14 days expiration
         setcookie('remembered_email', $user->user_email, $cookie_expiration, '/'); // 14 days expiration
         setcookie('remembered_passowrd', $password, $cookie_expiration, '/'); // 14 days expiration
-    } else {
     }
     // Send success response with redirect URL
     wp_send_json_success(['redirect' => apply_filters('agqa_login_redirect', home_url('/'))]);
@@ -930,6 +929,9 @@ function handle_forget_user_password()
     // Extract and sanitize inputs
     $password = 'swxyz0123456789!@';
     $email    = sanitize_email($data['user-login-flow-email']);
+    if ($email == "") {
+        wp_send_json_error(['message' => 'Please enter a valid email address. This field is mandatory.']);
+    }
 
     // Check if the user exists by email
     $user = get_user_by('email', $email); // If not found, try email

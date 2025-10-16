@@ -442,13 +442,13 @@ function handle_faq_deletion()
     wp_die(); // End the AJAX request
 }
 
+/**
+ * Faqs report system
+ */
 // Hook to handle the deletion
 add_action('wp_ajax_faq_report_system', 'handle_faq_report_system');
 add_action('wp_ajax_nopriv_faq_report_system', 'handle_faq_report_system');
 
-/**
- * Faqs report system
- */
 function handle_faq_report_system()
 {
 
@@ -500,6 +500,39 @@ function handle_faq_report_system()
     echo json_encode($response);
     wp_die();
 }
+
+
+/**
+ * handle_faq_read_report
+ */
+
+add_action('wp_ajax_handle_faq_read_report', 'handle_faq_read_report');
+add_action('wp_ajax_nopriv_handle_faq_read_report', 'handle_faq_read_report');
+
+function handle_faq_read_report()
+{
+    global $wpdb;
+
+    // Verify nonce
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+        die('Permission Denied');
+    }
+    // Table name
+    $table_name = "{$wpdb->prefix}faq_report_system";
+
+    // Run raw SQL query to update all rows
+    $updated_rows = $wpdb->query(
+        "UPDATE $table_name SET read_report = 'read'"
+    );
+
+    // If everything went well, return success
+    $response['status']  = 'Success';
+    $response['message'] = 'Change the status to “Responded” and submit.';
+    echo json_encode($response);
+    wp_die();
+}
+
+
 /**
  * report_image_system_upload
  */

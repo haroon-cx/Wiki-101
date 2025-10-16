@@ -282,6 +282,8 @@ function agqa_create_tables()
         answer TEXT,
         reporter VARCHAR(255) NOT NULL,
         reply_time VARCHAR(255) NOT NULL,
+        read_report VARCHAR(255) NOT NULL,
+        user_read_report VARCHAR(255) NOT NULL,
         create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) $charset");
 

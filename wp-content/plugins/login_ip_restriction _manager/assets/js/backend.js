@@ -1921,4 +1921,9 @@ jQuery(document).ready(function ($) {
       $errorMessage.text("").hide();
     }
   });
+  $(".cuim-user-login-flow-validation-254").on("keypress", function (e) {
+    if (e.which === 32) {
+      e.preventDefault(); // Prevent spacebar
+    }
+  });
 });
