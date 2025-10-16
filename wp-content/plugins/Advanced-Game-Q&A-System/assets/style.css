@@ -69,7 +69,7 @@ textarea.wp-editor-area::-webkit-scrollbar,
 }
 
 .custom-table-ctn-inner::-webkit-scrollbar {
-  height: 8px !important;
+  height: 6px !important;
 }
 
 /* Track */
@@ -79,9 +79,13 @@ textarea.wp-editor-area::-webkit-scrollbar,
   background: transparent !important;
 }
 
+.custom-table-ctn-inner::-webkit-scrollbar-thumb {
+  background-color: #404040;
+  border-radius: 8px;
+}
+
 .form-input-fields:-webkit-scrollbar-track,
 .filter-select-list:-webkit-scrollbar-track,
-.custom-table-ctn-inner:-webkit-scrollbar-track,
 .fr-element.fr-view::-webkit-scrollbar-track,
 .fr-dropdown-menu::-webkit-scrollbar-track,
 .section-content::-webkit-scrollbar-track,
@@ -100,7 +104,6 @@ div#agqa-search-results::-webkit-scrollbar-track,
 /* Handle */
 .form-input-fields::-webkit-scrollbar-thumb,
 .filter-select-list::-webkit-scrollbar-thumb,
-.custom-table-ctn-inner::-webkit-scrollbar-thumb,
 .fr-element.fr-view::-webkit-scrollbar-thumb,
 .fr-dropdown-menu::-webkit-scrollbar-thumb,
 #pdfWrapper::-webkit-scrollbar-thumb,

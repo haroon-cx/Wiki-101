@@ -282,9 +282,31 @@ tr {
     min-width: 13.525%;
 }
 
+.manage-user-table .table-head-col:nth-child(1),
+.manage-user-table .table-body-col:nth-child(1) {
+    min-width: 20.615%;
+}
+
 .manage-user-table .table-head-col:nth-child(2),
 .manage-user-table .table-body-col:nth-child(2) {
     text-align: center;
+}
+
+.manage-user-table .table-head-col:nth-child(2),
+.manage-user-table .table-body-col:nth-child(2),
+.manage-user-table .table-head-col:nth-child(3),
+.manage-user-table .table-body-col:nth-child(3) {
+    min-width: 8.246%;
+}
+
+.manage-user-table .table-head-col:nth-child(4),
+.manage-user-table .table-body-col:nth-child(4) {
+    min-width: 13.744%;
+}
+
+.manage-user-table .table-head-col:nth-child(5),
+.manage-user-table .table-body-col:nth-child(5) {
+    min-width: 17.867%;
 }
 
 .table-head-col:nth-child(4),
@@ -295,6 +317,21 @@ tr {
 .table-head-col:nth-child(5),
 .table-body-col:nth-child(5) {
     min-width: 18.5%;
+}
+
+.manage-user-table .table-head-col:nth-child(6),
+.manage-user-table .table-body-col:nth-child(6) {
+    min-width: 11%;
+}
+
+.manage-user-table .table-head-col:nth-child(7),
+.manage-user-table .table-body-col:nth-child(7) {
+    min-width: 11.022%;
+}
+
+.manage-user-table .table-head-col:nth-child(8),
+.manage-user-table .table-body-col:nth-child(8) {
+    min-width: 8.22%;
 }
 
 .table-head-col:nth-child(7),
@@ -517,7 +554,7 @@ input:disabled::placeholder,
 .toggle-password.show-pass {
     background-image: url(../image/password-show-icon.svg);
     background-size: 22px;
-       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .toggle-password+input[type="password"] {
@@ -580,6 +617,7 @@ input:disabled::placeholder,
 .reset-link a.reset-link-disabled:hover::before {
     filter: brightness(0) saturate(100%) invert(59%) sepia(42%) saturate(0%) hue-rotate(257deg) brightness(103%) contrast(98%);
 }
+
 .reset-link a:hover {
     color: white;
     background-color: rgba(234, 221, 255, .30);

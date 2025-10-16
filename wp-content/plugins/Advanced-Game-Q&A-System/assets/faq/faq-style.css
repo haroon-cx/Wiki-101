@@ -482,3 +482,8 @@ textarea.fr-code:focus {
 #faq_report_form .custom-select-dropdown + .error-message {
     top: 0;
 }
+
+.agqa-deleter-status {
+    position: absolute;
+    right: 24px;
+}

@@ -4,6 +4,16 @@
     table thead {
         font-size: 18px;
     }
+    
+    .custom-table-ctn-inner {
+        width: 100%;
+        overflow-x: auto;
+        margin-bottom: 3px;
+    }
+
+    .custom-table {
+        width: 110%;
+    }
 }
 
 @media (max-width: 1760px) {
