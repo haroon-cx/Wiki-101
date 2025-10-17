@@ -1019,13 +1019,15 @@ div#cuim-edit-fields input {
     font-size: 20px;
 }
 
-.faq-accordion .table-body-disabled div,
+.faq-accordion .table-body-disabled .faq-accordion-bottom,
 .custom-table-body .table-body-disabled div,
 .table-body-disabled .table-body-col div {
     opacity: .3;
     pointer-events: none;
 }
-
+.faq-accordion .table-body-disabled div{
+ opacity: .3;
+}
 .reset-password-popup-inner {
     position: relative;
     width: 572px;
