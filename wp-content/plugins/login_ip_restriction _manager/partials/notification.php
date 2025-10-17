@@ -65,7 +65,7 @@ $found_user_id = $wpdb->get_var(
 ?>
 <div class="notification-ctn">
     <div class="notification-button">
-        <div class="notification-button-counting">2</div>
+        <div class="notification-button-counting">0</div>
         <div class="notification-button-icon">
             <img src="<?php echo URIP_URL ?>assets/image/notification-icon.svg" alt="Notification Icon">
         </div>
@@ -86,6 +86,19 @@ $found_user_id = $wpdb->get_var(
             </div>
             <div class="notification-list-heading"><strong>Notification</strong></div>
             <div class="notification-lists-ctn">
+
+
+
+                <div class="notification-list cuim-user-review-report" style="cursor: pointer;">
+                    <span class="notification-list-dot"></span>
+                    <div class="notification-list-title">
+                        Unread review responses available
+                    </div>
+                    <div class="notification-list-date">
+                        <?php echo date('Y/m/d', strtotime($last_report->create_time)); ?>
+                    </div>
+
+                </div>
                 <?php if ($last_report && $last_report->user_read_report !== "read") { ?>
                     <div class="notification-list cuim-user-faq-report" style="cursor: pointer;">
                         <span class="notification-list-dot"></span>
@@ -213,6 +226,13 @@ $found_user_id = $wpdb->get_var(
                 },
             });
         });
+        // Count the number of elements with class 'notification-list'
+        var count = jQuery('.notification-list').length;
 
+        // Show count in console (ya jahan chaho use kar sakte ho)
+        console.log("Total .notification-list elements:", count);
+
+        // Agar aap count ko kisi element mein show karna chahte ho, for example:
+        jQuery('.notification-button-counting').text(count);
     });
 </script>
