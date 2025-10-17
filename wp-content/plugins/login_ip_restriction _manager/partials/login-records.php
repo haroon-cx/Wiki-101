@@ -1,3 +1,62 @@
+<?php
+global $wpdb;
+$table_login_records_list = $wpdb->prefix . 'agqa_wiki_login_records';
+
+$get_login_records_list = $wpdb->get_results("
+            SELECT
+                id,
+                user_id,
+                account,
+                login_ip,
+                created_at
+            FROM $table_login_records_list
+             ORDER BY
+            id DESC
+            ");
+
+
+$dataTimezone = "Asia/Karachi";
+$curl = curl_init();
+$ip = ipum_get_client_ip();  // The IP address you want to use
+if ($ip == '::1') {
+    $ip = '39.61.50.216';
+}
+// Create the API request URL (dynamically pass the IP)
+$url = "https://get.geojs.io/v1/ip/geo/{$ip}.json";
+
+// Set cURL options
+curl_setopt_array($curl, array(
+    CURLOPT_URL => $url, // Use the dynamically generated URL
+    CURLOPT_RETURNTRANSFER => true, // Return the response as a string
+    CURLOPT_ENCODING => '', // Handle all encodings
+    CURLOPT_MAXREDIRS => 10, // Maximum redirects
+    CURLOPT_TIMEOUT => 30, // Timeout in seconds
+    CURLOPT_FOLLOWLOCATION => true, // Follow redirects
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, // HTTP version
+    CURLOPT_CUSTOMREQUEST => 'GET', // Custom request method (GET)
+));
+
+// Execute cURL request and get the response
+$response = curl_exec($curl);
+
+if (curl_errno($curl)) {
+    echo 'cURL Error: ' . curl_error($curl); // Handle any errors
+} else {
+    // Decode the JSON response
+    $data = json_decode($response, true);
+    // print_r($data);
+
+    // Check if the response contains the needed data and output it
+    if (isset($data['timezone'])) {
+        $dataTimezone = $data['timezone'];
+    } else {
+        echo "Error: Required data not found in the response.";
+    }
+}
+// Close cURL session
+curl_close($curl);
+?>
+
 <style>
     .login-records-filter input[type="search"] {
         min-width: 409px;
@@ -16,19 +75,22 @@
         background-color: #2b2937 !important;
     }
 
-    .table-head-col:nth-child(1), .table-body-col:nth-child(1) {
+    .table-head-col:nth-child(1),
+    .table-body-col:nth-child(1) {
         width: 37.888%;
     }
-    
-    .table-head-col:nth-child(2), .table-body-col:nth-child(2) {
+
+    .table-head-col:nth-child(2),
+    .table-body-col:nth-child(2) {
         width: 30.31%;
     }
 
     .table-head-col:nth-child(3) {
         text-align: left;
     }
-    
-    .table-head-col:nth-child(3), .table-body-col:nth-child(3) {
+
+    .table-head-col:nth-child(3),
+    .table-body-col:nth-child(3) {
         width: 31.7%;
     }
 
@@ -51,7 +113,6 @@
             flex-wrap: nowrap;
         }
     }
-
 </style>
 
 <div class="login-records-template">
@@ -82,91 +143,24 @@
                     <div class="table-head-col">Login IP Address</div>
                 </div>
                 <div class="custom-table-body">
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
-                    <div class="custom-table-row">
-                        <div class="table-body-col">johnsonjoshua</div>
-                        <div class="table-body-col">2026/11/12 12:02</div>
-                        <div class="table-body-col">111.222.33</div>
-                    </div>
+                    <?php foreach ($get_login_records_list as  $records_value) { ?>
+                        <div class="custom-table-row">
+                            <div class="table-body-col"><?php echo $records_value->account; ?></div>
+                            <div class="table-body-col">
+                                <?php
+                                // Get the current system time (local server time) as a string
+                                $date = new DateTime($records_value->created_at); // Convert the string into DateTime object
+
+                                // Convert to the 'Asia/Kolkata' time zone (Indian Standard Time)
+                                $date->setTimezone(new DateTimeZone($dataTimezone));
+
+                                // Output the time in 'Y/m/d H:i' format
+                                echo $date->format('Y/m/d H:i');
+                                ?>
+                            </div>
+                            <div class="table-body-col"><?php echo $records_value->login_ip; ?></div>
+                        </div>
+                    <?php  } ?>
                 </div>
             </div>
         </div>

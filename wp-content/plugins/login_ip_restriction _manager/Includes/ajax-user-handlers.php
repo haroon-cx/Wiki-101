@@ -986,6 +986,26 @@ function cuim_login_check()
         setcookie('remembered_email', $user->user_email, $cookie_expiration, '/'); // 14 days expiration
         setcookie('remembered_passowrd', $password, $cookie_expiration, '/'); // 14 days expiration
     }
+    $table_name = $wpdb->prefix . 'agqa_wiki_login_records';
+
+    // User details
+    $account = $user;
+    $login_ip = $_SERVER['REMOTE_ADDR'];
+
+    // Prepare data including user_id
+    $data = [
+        'account'  => $user,
+        'login_ip' => $login_ip,
+    ];
+
+    // Data format for insert (%d for integer, %s for string)
+    $format = ['%s', '%s'];
+
+    // Insert record
+    $wpdb->insert($table_name, $data, $format);
+
+
+
     // Send success response with redirect URL
     wp_send_json_success(['redirect' => apply_filters('agqa_login_redirect', home_url('/'))]);
 }

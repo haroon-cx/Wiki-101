@@ -210,7 +210,6 @@ $found_user_id = $wpdb->get_var(
                     nonce: nonce, // Nonce for security
                 },
                 success: function(response) {
-                    alert(response);
                     // If deletion is successful, hide the popup and remove the FAQ from the DOM
                     jQuery('.cuim-profile-form-wrapper').addClass('active');
                     jQuery('.notification-popup').removeClass('active');
@@ -218,7 +217,7 @@ $found_user_id = $wpdb->get_var(
                     if (response.includes("Success")) {
                         // $(".faq-accordion[data-id='" + del + "']").remove();
                     } else {
-                        alert(response);
+                        console.log(response);
                     }
                 },
                 error: function() {
