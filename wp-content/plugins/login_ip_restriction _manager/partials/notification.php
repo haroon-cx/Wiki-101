@@ -47,8 +47,7 @@ $table_agqa_manage_user = "{$wpdb->prefix}agqa_wiki_add_users";
 $add_manage_users_data = $wpdb->get_row(
     $wpdb->prepare("
         SELECT
-        
-            created_at
+        created_at
         FROM $table_agqa_manage_user
         WHERE user_id = %d
         LIMIT 1
@@ -106,7 +105,12 @@ $found_user_id = $wpdb->get_var(
                         <div class="notification-list-title">
                             Please set up your profile
                         </div>
-                        <div class="notification-list-date"> <?php echo date('Y/m/d', strtotime($add_manage_users_data->created_at)); ?></div>
+                        <?php if ($add_manage_users_data) { ?>
+                            <div class="notification-list-date"> <?php echo date('Y/m/d', strtotime($add_manage_users_data->created_at)); ?></div>
+                        <?php } else {
+
+                            echo '<div class="notification-list-date">2025/09/01</div>';
+                        } ?>
                     </div>
                 <?php } ?>
             </div>
