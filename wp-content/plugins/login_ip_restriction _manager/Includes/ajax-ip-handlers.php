@@ -52,6 +52,57 @@
  * Ajax Comparision (Check Account for IP to User)
  */
 
+// add_action('wp_ajax_check_user_account', 'handle_check_user_account');
+// add_action('wp_ajax_nopriv_check_user_account', 'handle_check_user_account');
+
+// function handle_check_user_account()
+// {
+//     global $wpdb;
+
+//     // Check nonce for security
+//     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+//         wp_send_json_error(['message' => 'Permission Denied']);
+//     }
+
+//     parse_str($_POST['form_data'], $data);
+
+//     // Get the form data
+//     $account = sanitize_text_field($data['account-name']);
+
+//     // Check if user exists in the custom table
+//     $user_exists = $wpdb->get_var(
+//         $wpdb->prepare(
+//             "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE account = %s",  // Use %s for strings
+//             $account
+//         )
+//     );
+
+//     // Check if user doesn't exist
+//     if ($user_exists == 0) {
+//         wp_send_json_error(['message' => 'Account not found']);
+//         return;
+//     }
+
+//     // Check if user exists in the custom table
+//     $user_exists = $wpdb->get_var(
+//         $wpdb->prepare(
+//             "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_ip WHERE account = %s",  // Use %s for strings
+//             $account
+//         )
+//     );
+
+
+//     // Check if user doesn't exist
+//     if ($user_exists == 1) {
+//         wp_send_json_error(['message' => 'The IP whitelist record already exists for this member']);
+//         return;
+//     }
+
+//     wp_send_json_success(['message' => 'Account success']);
+
+//     wp_die(); // End the AJAX request
+// }
+
 add_action('wp_ajax_check_user_account', 'handle_check_user_account');
 add_action('wp_ajax_nopriv_check_user_account', 'handle_check_user_account');
 
@@ -69,40 +120,43 @@ function handle_check_user_account()
     // Get the form data
     $account = sanitize_text_field($data['account-name']);
 
-    // Check if user exists in the custom table
+    // Check if user exists in users table
     $user_exists = $wpdb->get_var(
         $wpdb->prepare(
-            "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE account = %s",  // Use %s for strings
+            "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE account = %s",
             $account
         )
     );
 
-    // Check if user doesn't exist
     if ($user_exists == 0) {
         wp_send_json_error(['message' => 'Account not found']);
         return;
     }
 
-    // Check if user exists in the custom table
-    $user_exists = $wpdb->get_var(
+    // Fetch last IP whitelist record for the user
+    $last_ip_record = $wpdb->get_row(
         $wpdb->prepare(
-            "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_ip WHERE account = %s",  // Use %s for strings
+            "SELECT * FROM {$wpdb->prefix}agqa_wiki_add_ip WHERE account = %s ORDER BY id DESC LIMIT 1",
             $account
         )
     );
 
-
-    // Check if user doesn't exist
-    if ($user_exists == 1) {
-        wp_send_json_error(['message' => 'The IP whitelist record already exists for this member']);
-        return;
+    if ($last_ip_record) {
+        // Agar delete_status table-body-disabled hai to allow karo
+        if ($last_ip_record->delete_status === 'table-body-disabled') {
+            wp_send_json_success(['message' => 'IP whitelist record can be added again (last was disabled).']);
+            return;
+        } else {
+            // Agar active record already hai to error bhejo
+            wp_send_json_error(['message' => 'The IP whitelist record already exists for this member']);
+            return;
+        }
     }
 
+    // Agar koi IP record nahi mila, to allow karo
     wp_send_json_success(['message' => 'Account success']);
-
-    wp_die(); // End the AJAX request
+    wp_die();
 }
-
 
 /**
  * handle_add_user_ip

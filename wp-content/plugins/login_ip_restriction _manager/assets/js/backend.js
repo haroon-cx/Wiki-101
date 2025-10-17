@@ -756,7 +756,7 @@ jQuery(document).ready(function ($) {
       success: function (response) {
         // If deletion is successful, hide the popup and remove the FAQ from the DOM
 
-        if (response.includes("Success")) {
+        if (response.success) {
           $("div#custom-faq-field-popup").removeClass("active");
           const $successMsg = $(
             `<div class="submitted-successfully">The user will be successfully deleted.</div>`

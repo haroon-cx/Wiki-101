@@ -56,6 +56,13 @@ $add_manage_users_data = $wpdb->get_row(
 );
 
 
+// Table name
+$table_name_profile = "{$wpdb->prefix}agqa_wiki_read_user_profile";
+
+// Query: Get user_id from table where it matches current user
+$found_user_id = $wpdb->get_var(
+    $wpdb->prepare("SELECT user_id FROM $table_name_profile WHERE user_id = %d", $current_user_id)
+);
 ?>
 <div class="notification-ctn">
     <div class="notification-button">
@@ -81,7 +88,7 @@ $add_manage_users_data = $wpdb->get_row(
             <div class="notification-list-heading"><strong>Notification</strong></div>
             <div class="notification-lists-ctn">
                 <?php if ($last_report && $last_report->user_read_report !== "read") { ?>
-                    <div class="notification-list">
+                    <div class="notification-list cuim-user-faq-report" style="cursor: pointer;">
                         <span class="notification-list-dot"></span>
                         <div class="notification-list-title">
                             Unread report responses available
@@ -92,13 +99,16 @@ $add_manage_users_data = $wpdb->get_row(
 
                     </div>
                 <?php } ?>
-                <div class="notification-list">
-                    <span class="notification-list-dot"></span>
-                    <div class="notification-list-title">
-                        Please set up your profile
+                <?php if ($current_user_id !== (int) $found_user_id) { ?>
+
+                    <div class="notification-list cuim-user-profile-note" style="cursor: pointer;">
+                        <span class=" notification-list-dot"></span>
+                        <div class="notification-list-title">
+                            Please set up your profile
+                        </div>
+                        <div class="notification-list-date"> <?php echo date('Y/m/d', strtotime($add_manage_users_data->created_at)); ?></div>
                     </div>
-                    <div class="notification-list-date"> <?php echo date('Y/m/d', strtotime($add_manage_users_data->created_at)); ?></div>
-                </div>
+                <?php } ?>
             </div>
         </div>
     </div>
@@ -122,9 +132,9 @@ $add_manage_users_data = $wpdb->get_row(
         // }, 2000);
         jQuery('.notification-count.active').on('click', function(e) {
             e.preventDefault();
-            var nonce = agqa_ajax.nonce;
+            var nonce = cuim_ajax.nonce;
             jQuery.ajax({
-                url: agqa_ajax.ajax_url,
+                url: cuim_ajax.ajax_url,
                 type: "POST",
                 data: {
                     action: "handle_faq_read_report",
@@ -134,6 +144,60 @@ $add_manage_users_data = $wpdb->get_row(
                     // If deletion is successful, hide the popup and remove the FAQ from the DOM
                     window.location.href = "/report-system/?status=pending";
 
+                    if (response.includes("Success")) {
+                        // $(".faq-accordion[data-id='" + del + "']").remove();
+                    } else {
+                        alert(response);
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while deleting the FAQ.");
+                },
+            });
+        });
+        jQuery('.cuim-user-faq-report').on('click', function(e) {
+            e.preventDefault();
+            var nonce = cuim_ajax.nonce;
+            jQuery.ajax({
+                url: cuim_ajax.ajax_url,
+                type: "POST",
+                data: {
+                    action: "handle_faq_user_read_report",
+                    nonce: nonce, // Nonce for security
+                },
+                success: function(response) {
+                    // If deletion is successful, hide the popup and remove the FAQ from the DOM
+                    window.location.href = "/report-system/?status=pending";
+
+                    if (response.includes("Success")) {
+                        // $(".faq-accordion[data-id='" + del + "']").remove();
+                    } else {
+                        alert(response);
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while deleting the FAQ.");
+                },
+            });
+        });
+
+
+        jQuery('.cuim-user-profile-note').on('click', function(e) {
+            e.preventDefault();
+            var nonce = cuim_ajax.nonce;
+            jQuery.ajax({
+                url: cuim_ajax.ajax_url,
+                type: "POST",
+                data: {
+                    action: "handle_user_profile_notification",
+                    nonce: nonce, // Nonce for security
+                },
+                success: function(response) {
+                    alert(response);
+                    // If deletion is successful, hide the popup and remove the FAQ from the DOM
+                    jQuery('.cuim-profile-form-wrapper').addClass('active');
+                    jQuery('.notification-popup').removeClass('active');
+                    jQuery('.cuim-user-profile-note').hide();
                     if (response.includes("Success")) {
                         // $(".faq-accordion[data-id='" + del + "']").remove();
                     } else {

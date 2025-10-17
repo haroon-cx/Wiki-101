@@ -470,6 +470,67 @@ function handle_reset_password()
  * Delete users
  */
 
+// add_action('wp_ajax_delete_manage_user', 'handle_delete_manage_user');
+// add_action('wp_ajax_nopriv_delete_manage_user', 'handle_delete_manage_user');
+
+// function handle_delete_manage_user()
+// {
+//     global $wpdb;
+
+//     // Check nonce for security
+//     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+//         wp_send_json_error(['message' => 'Permission Denied']);
+//     }
+
+//     parse_str($_POST['form_data'], $data);
+
+//     // Get the form data
+//     $account = sanitize_text_field($data['username']);
+//     $current_user = wp_get_current_user();
+//     $current_user_id = get_current_user_id();
+
+
+//     // Check if user exists in the custom table
+//     $user_exists = $wpdb->get_var(
+//         $wpdb->prepare(
+//             "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE account = %s",  // Use %s for strings
+//             $account
+//         )
+//     );
+
+//     // Check if user doesn't exist
+//     if ($user_exists == 0) {
+//         wp_send_json_error(['message' => 'User not found in custom table.']);
+//         return;
+//     }
+
+//     // 1️⃣ Update custom table: set delete_status to 'deleted'
+//     $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
+//     $update_data = [
+//         'user_id' => '', // Set delete status to 'deleted'
+//         'delete_status' => 'table-body-disabled', // Set delete status to 'deleted'
+//         'delete_user_name' => $current_user->user_login, // Set delete status to 'deleted'
+//         'delete_user_id' => $current_user_id, // Set delete status to 'deleted'
+//     ];
+
+//     // Update custom table
+//     $updated = $wpdb->update(
+//         $table_name,
+//         $update_data,
+//         ['account' => $account], // Where condition
+//         ['%s'], // Format for delete_status
+//         ['%s']  // Format for account
+//     );
+
+//     // Respond with success message
+//     $response['status']  = 'Success';
+//     $response['message'] = 'Successfully Deleted.';
+//     echo json_encode($response);
+
+//     wp_die(); // End the AJAX request
+// }
+
+// Only for logged-in users (DO NOT expose nopriv)
 add_action('wp_ajax_delete_manage_user', 'handle_delete_manage_user');
 add_action('wp_ajax_nopriv_delete_manage_user', 'handle_delete_manage_user');
 
@@ -477,58 +538,78 @@ function handle_delete_manage_user()
 {
     global $wpdb;
 
-    // Check nonce for security
+    // 0) Security
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
         wp_send_json_error(['message' => 'Permission Denied']);
     }
+    if (!is_user_logged_in()) {
+        wp_send_json_error(['message' => 'You must be logged in.']);
+    }
+    // Optional: strong capability check
+    // if ( ! current_user_can('delete_users') ) {
+    //     wp_send_json_error(['message' => 'You do not have permission to delete users.']);
+    // }
 
+    // 1) Input
     parse_str($_POST['form_data'], $data);
-
-    // Get the form data
-    $account = sanitize_text_field($data['username']);
-    $current_user = wp_get_current_user();
+    if (empty($data['username'])) {
+        wp_send_json_error(['message' => 'Username (account) missing.']);
+    }
+    $account         = sanitize_text_field($data['username']); // this is user_login
     $current_user_id = get_current_user_id();
+    $table_name      = $wpdb->prefix . 'agqa_wiki_add_users';
 
+    // 2) Get WP user by user_login == $account
+    $user = get_user_by('login', $account);
+    if (!$user) {
+        wp_send_json_error(['message' => 'No WordPress user found with this login.']);
+    }
+    $wp_user_id = (int) $user->ID;
 
-    // Check if user exists in the custom table
-    $user_exists = $wpdb->get_var(
-        $wpdb->prepare(
-            "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_wiki_add_users WHERE account = %s",  // Use %s for strings
-            $account
-        )
-    );
-
-    // Check if user doesn't exist
-    if ($user_exists == 0) {
-        wp_send_json_error(['message' => 'User not found in custom table.']);
-        return;
+    // 3) Safety: do not allow deleting yourself
+    if ($wp_user_id === $current_user_id) {
+        wp_send_json_error(['message' => 'You cannot delete your own account.']);
     }
 
-    // 1️⃣ Update custom table: set delete_status to 'deleted'
-    $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
-    $update_data = [
-        'delete_status' => 'table-body-disabled', // Set delete status to 'deleted'
-        'delete_user_name' => $current_user->user_login, // Set delete status to 'deleted'
-        'delete_user_id' => $current_user_id, // Set delete status to 'deleted'
-    ];
+    // 4) Reassign posts to another admin (if available), else posts will be deleted
+    $admin_ids = get_users([
+        'role'    => 'administrator',
+        'fields'  => 'ID',
+        'exclude' => [$wp_user_id],
+        'number'  => 1,
+    ]);
+    $reassign_id = !empty($admin_ids) ? (int) $admin_ids[0] : null;
 
-    // Update custom table
+    // 5) Delete the WP user (this also deletes their usermeta)
+    $deleted = wp_delete_user($wp_user_id, $reassign_id);
+    if (!$deleted) {
+        wp_send_json_error(['message' => 'Failed to delete the WordPress user.']);
+    }
+
+    // 6) Update your custom table row for this account (clear link + mark deleted)
+    $current_user = wp_get_current_user();
+    $update_data = [
+        'user_id'          => '',
+        'delete_status'    => 'table-body-disabled',
+        'delete_user_name' => $current_user ? $current_user->user_login : '',
+        'delete_user_id'   => (int) $current_user_id,
+    ];
     $updated = $wpdb->update(
         $table_name,
         $update_data,
-        ['account' => $account], // Where condition
-        ['%s'], // Format for delete_status
-        ['%s']  // Format for account
+        ['account' => $account],
+        ['%s', '%s', '%s', '%d'],
+        ['%s']
     );
+    if ($updated === false) {
+        wp_send_json_error(['message' => 'User deleted, but failed to update custom table.']);
+    }
 
-    // Respond with success message
-    $response['status']  = 'Success';
-    $response['message'] = 'Successfully Deleted.';
-    echo json_encode($response);
-
-    wp_die(); // End the AJAX request
+    wp_send_json_success([
+        'status'  => 'Success',
+        'message' => 'WordPress user deleted by login and mapping cleared.'
+    ]);
 }
-
 
 /**
  * ip delete user handler
@@ -567,7 +648,7 @@ function handle_delete_ip_user()
         return;
     }
 
-    // 1️⃣ Update custom table: set delete_status to 'deleted'
+
     $table_name = $wpdb->prefix . 'agqa_wiki_add_ip';
     $update_data = [
         'delete_status' => 'table-body-disabled', // Set delete status to 'deleted'
@@ -963,4 +1044,130 @@ function handle_forget_user_password()
 
     // Return success response
     wp_send_json_success(['redirect' => apply_filters('agqa_login_redirect', home_url('/'))]);
+}
+/**
+ * handle_faq_read_report
+ */
+
+add_action('wp_ajax_handle_faq_read_report', 'handle_faq_read_report');
+add_action('wp_ajax_nopriv_handle_faq_read_report', 'handle_faq_read_report');
+
+function handle_faq_read_report()
+{
+    global $wpdb;
+
+    // Verify nonce
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        die('Permission Denied');
+    }
+    // Table name
+    $table_name = "{$wpdb->prefix}faq_report_system";
+
+    // Run raw SQL query to update all rows
+    $updated_rows = $wpdb->query(
+        "UPDATE $table_name SET read_report = 'read'"
+    );
+
+    // If everything went well, return success
+    $response['status']  = 'Success';
+    $response['message'] = 'Change the status to “Responded” and submit.';
+    echo json_encode($response);
+    wp_die();
+}
+
+/**
+ * faq_user_read_report
+ */
+
+add_action('wp_ajax_handle_faq_user_read_report', 'handle_faq_user_read_report');
+add_action('wp_ajax_nopriv_handle_faq_user_read_report', 'handle_faq_user_read_report');
+
+function handle_faq_user_read_report()
+{
+    global $wpdb;
+
+    // Verify nonce
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        wp_send_json_error(['message' => 'Permission Denied']);
+    }
+
+    // Get current user ID
+    $user_id = get_current_user_id();
+
+    if (!$user_id) {
+        wp_send_json_error(['message' => 'User not logged in']);
+    }
+
+    // Table name
+    $table_name = "{$wpdb->prefix}faq_report_system";
+
+    // Use $wpdb->update for safe updates
+    $updated = $wpdb->update(
+        $table_name,
+        ['user_read_report' => 'read'],     // Set this
+        ['user_id' => $user_id],            // Where this
+        ['%s'],                             // Data format for value
+        ['%d']                              // Data format for where
+    );
+
+    if ($updated !== false) {
+        wp_send_json_success([
+            'message' => 'User report marked as read.',
+            'rows_updated' => $updated
+        ]);
+    } else {
+        wp_send_json_error(['message' => 'No matching user record found or update failed.']);
+    }
+}
+
+
+/**
+ * 
+ */
+
+add_action('wp_ajax_handle_user_profile_notification', 'handle_user_profile_notification');
+add_action('wp_ajax_nopriv_handle_user_profile_notification', 'handle_user_profile_notification');
+
+function handle_user_profile_notification()
+{
+    global $wpdb;
+
+    // Verify nonce
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        wp_send_json_error(['message' => 'Permission Denied']);
+    }
+
+    $user_id = get_current_user_id();
+
+    if (!$user_id) {
+        wp_send_json_error(['message' => 'User not logged in.']);
+    }
+
+    // Table name
+    $table_name = "{$wpdb->prefix}agqa_wiki_read_user_profile";
+
+    // Optional: Check if this user_id already exists in the table
+    $exists = $wpdb->get_var(
+        $wpdb->prepare("SELECT COUNT(*) FROM $table_name WHERE user_id = %d", $user_id)
+    );
+
+    if ($exists > 0) {
+        wp_send_json_success(['message' => 'User already marked as read.']);
+    }
+
+    // Insert user_id
+    $inserted = $wpdb->insert(
+        $table_name,
+        ['user_id' => $user_id],
+        ['%d']
+    );
+
+    if ($inserted !== false) {
+        wp_send_json_success([
+            'message' => 'User profile read status recorded.',
+            'user_id' => $user_id
+        ]);
+    } else {
+        wp_send_json_error(['message' => 'Failed to insert record.']);
+    }
 }
