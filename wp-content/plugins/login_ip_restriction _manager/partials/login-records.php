@@ -145,8 +145,8 @@ curl_close($curl);
                 <div class="custom-table-body">
                     <?php foreach ($get_login_records_list as  $records_value) { ?>
                         <div class="custom-table-row">
-                            <div class="table-body-col"><?php echo $records_value->account; ?></div>
-                            <div class="table-body-col">
+                            <div class="table-body-col login-record-account"><?php echo $records_value->account; ?></div>
+                            <div class="table-body-col table-body-col-date">
                                 <?php
                                 // Get the current system time (local server time) as a string
                                 $date = new DateTime($records_value->created_at); // Convert the string into DateTime object
@@ -165,21 +165,21 @@ curl_close($curl);
             </div>
         </div>
     </div>
-       <div class="section-found">
-            <div class="no-found-ctn">
-                <div class="search-no-found">
-                    <div class="search-no-found-icon">
-                        <img src="<?php echo URIP_URL ?>assets/image/search-forund-icon.svg" alt="Search Icon">
-                    </div>
-                    <div class="search-no-found-text">
-                        <h2>Nothing matched your search</h2>
-                    </div>
+    <div class="section-found">
+        <div class="no-found-ctn">
+            <div class="search-no-found">
+                <div class="search-no-found-icon">
+                    <img src="<?php echo URIP_URL ?>assets/image/search-forund-icon.svg" alt="Search Icon">
+                </div>
+                <div class="search-no-found-text">
+                    <h2>Nothing matched your search</h2>
                 </div>
             </div>
         </div>
-        <div class="pagination-ctn">
-            <div id="pagination-demo"></div>
-        </div>
+    </div>
+    <div class="pagination-ctn">
+        <div id="pagination-demo"></div>
+    </div>
 </div>
 <script>
     jQuery(document).ready(function() {
@@ -243,5 +243,34 @@ curl_close($curl);
                 jQuery(this).hide();
             }
         });
+
+        setTimeout(function() {
+            // Clear the date range input field
+            jQuery('input[name="daterange"]').val("");
+        }, 2000); // 3000 milliseconds = 3 seconds
+
+        var startOfMonth = moment().startOf('month');
+        var endOfMonth = moment().endOf('month');
+
+        jQuery('input[name="daterange"]').daterangepicker({
+            opens: 'right',
+            locale: {
+                format: 'YYYY/MM/DD'
+            },
+            startDate: startOfMonth,
+            endDate: endOfMonth,
+            minDate: startOfMonth, // prevent picking before this month
+            maxDate: endOfMonth, // prevent picking after this month
+            autoUpdateInput: true // ensures the input shows the default range
+        });
+
+
+        // Handle the cancel or clear action
+        jQuery('input[name="daterange"]').on(
+            "cancel.daterangepicker",
+            function(ev, picker) {
+                jQuery(this).val(""); // Reset the input field to empty when the user cancels or clears the date range
+            }
+        );
     });
 </script>

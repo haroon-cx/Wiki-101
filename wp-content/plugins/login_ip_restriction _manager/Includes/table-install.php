@@ -50,7 +50,7 @@ function agqa_create_tables_ip_users()
         user_id VARCHAR(255) NOT NULL,
         account VARCHAR(255) NOT NULL,
         login_ip VARCHAR(255) NOT NULL,
-        created_at DATE NOT NULL DEFAULT (CURRENT_DATE)
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) $charsets;");
 
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_wiki_read_user_profile (
@@ -58,4 +58,7 @@ function agqa_create_tables_ip_users()
         user_id VARCHAR(255) NOT NULL,
         read_user_profile VARCHAR(255) NOT NULL
     ) $charsets;");
+
+    //  $table = $wpdb->prefix . 'agqa_wiki_login_records'; // => wp_agqa_wiki_login_records
+    // $wpdb->query("DROP TABLE IF EXISTS `$table`");
 }

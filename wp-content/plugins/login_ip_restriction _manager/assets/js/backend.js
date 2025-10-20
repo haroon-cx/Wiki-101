@@ -131,8 +131,8 @@ jQuery(document).ready(function ($) {
           // If the response is not successful, show an error message
           const $errorMsg = $(
             '<div class="submitted-unsuccessfully">' +
-              response.data.message +
-              "</div>"
+            response.data.message +
+            "</div>"
           );
           $form.append($errorMsg);
 
@@ -200,10 +200,10 @@ jQuery(document).ready(function ($) {
           // If successful, show a success message
           const $successMsg = $(
             '<div class="submitted-successfully">' +
-              "Resend Verification Email Successful<br>" +
-              "Verification email has been resent to your<br>" +
-              "Registered email address. Please check your inbox." +
-              "</div>"
+            "Resend Verification Email Successful<br>" +
+            "Verification email has been resent to your<br>" +
+            "Registered email address. Please check your inbox." +
+            "</div>"
           );
 
           $form.append($successMsg);
@@ -1364,23 +1364,23 @@ jQuery(document).ready(function ($) {
   function isValidIPv6(ip) {
     const ipv6Pattern = new RegExp(
       "^(" +
-        "([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:)|" + // full form
-        "([0-9A-Fa-f]{1,4}:){1,7}:|" + // :: at end
-        "([0-9A-Fa-f]{1,4}:){1,6}:[0-9A-Fa-f]{1,4}|" + // :: in middle
-        "([0-9A-Fa-f]{1,4}:){1,5}(:[0-9A-Fa-f]{1,4}){1,2}|" +
-        "([0-9A-Fa-f]{1,4}:){1,4}(:[0-9A-Fa-f]{1,4}){1,3}|" +
-        "([0-9A-Fa-f]{1,4}:){1,3}(:[0-9A-Fa-f]{1,4}){1,4}|" +
-        "([0-9A-Fa-f]{1,4}:){1,2}(:[0-9A-Fa-f]{1,4}){1,5}|" +
-        "[0-9A-Fa-f]{1,4}:((:[0-9A-Fa-f]{1,4}){1,6})|" +
-        ":((:[0-9A-Fa-f]{1,4}){1,7}|:)|" + // starts with ::
-        "fe80:(:[0-9A-Fa-f]{0,4}){0,4}%[0-9a-zA-Z]{1,}|" + // link-local
-        "::(ffff(:0{1,4}){0,1}:){0,1}" +
-        "((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9]).){3,3}" +
-        "(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])|" + // IPv4-mapped IPv6
-        "([0-9A-Fa-f]{1,4}:){1,4}:" +
-        "((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9]).){3,3}" +
-        "(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])" +
-        ")$"
+      "([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:)|" + // full form
+      "([0-9A-Fa-f]{1,4}:){1,7}:|" + // :: at end
+      "([0-9A-Fa-f]{1,4}:){1,6}:[0-9A-Fa-f]{1,4}|" + // :: in middle
+      "([0-9A-Fa-f]{1,4}:){1,5}(:[0-9A-Fa-f]{1,4}){1,2}|" +
+      "([0-9A-Fa-f]{1,4}:){1,4}(:[0-9A-Fa-f]{1,4}){1,3}|" +
+      "([0-9A-Fa-f]{1,4}:){1,3}(:[0-9A-Fa-f]{1,4}){1,4}|" +
+      "([0-9A-Fa-f]{1,4}:){1,2}(:[0-9A-Fa-f]{1,4}){1,5}|" +
+      "[0-9A-Fa-f]{1,4}:((:[0-9A-Fa-f]{1,4}){1,6})|" +
+      ":((:[0-9A-Fa-f]{1,4}){1,7}|:)|" + // starts with ::
+      "fe80:(:[0-9A-Fa-f]{0,4}){0,4}%[0-9a-zA-Z]{1,}|" + // link-local
+      "::(ffff(:0{1,4}){0,1}:){0,1}" +
+      "((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9]).){3,3}" +
+      "(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])|" + // IPv4-mapped IPv6
+      "([0-9A-Fa-f]{1,4}:){1,4}:" +
+      "((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9]).){3,3}" +
+      "(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])" +
+      ")$"
     );
     return ipv6Pattern.test(ip.trim());
   }
@@ -1925,5 +1925,153 @@ jQuery(document).ready(function ($) {
     if (e.which === 32) {
       e.preventDefault(); // Prevent spacebar
     }
+  });
+
+
+
+  /**
+   * login records search filter
+   */
+
+
+  $("#agqa-login-records-filters").on("click", function (event) {
+    event.preventDefault(); // Prevent form submission
+    // alert('fgfgfgf');
+    // var reportType = $("input.agqa-filter-select-hidden").val().toLowerCase();
+    var loginRecordText = $("input#login-records-search").val().toLowerCase();
+    // alert(IPaccountText);
+
+    var dateRange = $("#daterange").val(); // Get selected date range from inputa
+
+    // If date range is selected, parse the start and end dates as strings
+    var dateArray = dateRange.split(" - ");
+    var startDate = dateArray[0] || ""; // Start date string in "YYYY/MM/DD" format
+    var endDate = dateArray[1] || ""; // End date string in "YYYY/MM/DD" format
+    var resultsFound = false; // Flag to track if any result is found
+
+    if (!loginRecordText && !dateRange) {
+      $(".section-found").hide();
+      $(".custom-table-ctn").show();
+      $(".custom-table-row").show();
+      $("#pagination-demo").show();
+
+      setTimeout(function () {
+        // Recalculate pagination based on the filtered visible items
+        var itemsPerPages = 15;
+        var totalItemss = $(".custom-table-row").length; // Count only visible items after filtering
+        var totalPages = Math.ceil(totalItemss / itemsPerPages);
+        $(".custom-table-row").removeAttr("data-page"); // Remove the data-page attribute
+        // Reinitialize pagination
+        $(".custom-table-row").each(function (index) {
+          var pageNumber = Math.floor(index / itemsPerPages) + 1;
+          // var pageNumber = "sajid";
+          jQuery(this).attr("data-page", pageNumber);
+          jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
+            .addClass("active")
+            .siblings()
+            .removeClass("active");
+
+          jQuery(".custom-table-row").hide();
+          jQuery('.custom-table-row[data-page="' + "1" + '"]').show();
+        });
+        jQuery(".pagination-ctn ul li.page-item").show();
+        jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+      }, 500); // Delay of 500 milliseconds
+      return; // Return early if either is empty
+    }
+
+    // Initially hide pagination and "Nothing Found" message
+    $(".section-found").hide();
+    $(".custom-table-ctn").show();
+    $("div#pagination-demo").hide();
+
+    $(".custom-table-row").each(function () {
+      var IPaccountsearchText = $(this)
+        .find(".login-record-account")
+        .text()
+        .toLowerCase();
+
+      // var rowDateText = $(this).find(".table-body-col-date").text().trim(); // Get the date from the row (e.g., "2025/09/17")
+      var rowDateText = $(this).find(".table-body-col-date").text().trim(); // "2025/10/20 19:50"
+
+      // Option 1: split (handles multiple spaces too)
+      var dateOnly = rowDateText.split(/\s+/)[0]; // "2025/10/20"
+      var formatted = `${dateOnly}`;           // "(2025/10/20 )"
+      var isIPAccountMatch = IPaccountsearchText.includes(loginRecordText); // Check if the search term is found anywhere in the row content
+      // var isDateMatch = true; // Default to true (if no date range is selected)
+      if (startDate && endDate) {
+        // Check if the row's date is within the range
+        isDateMatch = formatted >= startDate && formatted <= endDate; // Lexicographical comparison works for "YYYY/MM/DD"
+      } else if (startDate) {
+        isDateMatch = formatted >= startDate; // If only start date is selected, check if the row's date is after start date
+      } else if (endDate) {
+        isDateMatch = formatted <= endDate; // If only end date is selected, check if the row's date is before end date
+      }
+
+      if (isIPAccountMatch && isDateMatch) {
+        $(this).show(); // Show the row if it matches the filters
+        resultsFound = true; // Mark that at least one result is found
+      } else {
+        $(this).hide(); // Hide the row if it does not match the filters
+      }
+    });
+
+    // If no results are found, show the 'nothing found' message
+    if (!resultsFound) {
+      $(".section-found").show(); // Show the 'no results' message
+      $(".custom-table-ctn").hide(); // Show the 'no results' message
+      $("div#pagination-demo").hide(); // Hide pagination
+    } else {
+      $("div#pagination-demo").show(); // Show pagination
+      $(".section-found").hide(); // Hide the 'nothing found' message
+      $(".custom-table-ctn").show(); // Show the 'no results' message
+    }
+
+    setTimeout(function () {
+      // Recalculate pagination based on the filtered visible items
+      var itemsPerPages = 15;
+      var totalItemss = $(".custom-table-row:visible").length; // Count only visible items after filtering
+      var totalPages = Math.ceil(totalItemss / itemsPerPages);
+
+      $(".custom-table-row").removeAttr("data-page"); // Remove the data-page attribute
+      // Reinitialize pagination
+      $(".custom-table-row:visible").each(function (index) {
+        var pageNumber = Math.floor(index / itemsPerPages) + 1;
+        // var pageNumber = "sajid";
+        jQuery(this).attr("data-page", pageNumber);
+        jQuery(this).addClass("active");
+        jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
+          .addClass("active")
+          .siblings()
+          .removeClass("active");
+        if (pageNumber === 1) {
+          $(this).show(); // Show items that belong to the current page
+        } else {
+          $(this).hide(); // Hide items that do not belong to the current page
+        }
+      });
+      jQuery(".pagination-ctn ul li.page-item").show();
+      jQuery(".pagination-ctn ul li.page-item")
+        .not(".prev, .next")
+        .each(function () {
+          var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+          if (pageNumbers === totalPages && totalPages !== 0) {
+            // Remove all <li> items that come after this one
+            jQuery(this).nextAll().not(".next").hide();
+
+            // Check the <li> just before the Next button
+            var prevLi = jQuery(
+              ".pagination-ctn ul li.page-item.active"
+            ).next();
+
+            // If the next page is hidden or .next button is visible, disable the next button
+            if (prevLi.is(":hidden")) {
+              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+            } else {
+              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+            }
+          }
+        });
+    }, 500); // Delay of 500 milliseconds
   });
 });

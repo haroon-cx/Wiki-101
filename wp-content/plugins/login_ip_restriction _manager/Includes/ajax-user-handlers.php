@@ -987,8 +987,8 @@ function cuim_login_check()
         setcookie('remembered_passowrd', $password, $cookie_expiration, '/'); // 14 days expiration
     }
     $table_name = $wpdb->prefix . 'agqa_wiki_login_records';
-     $account_name_user = get_user_by( 'login', $account );
-   $user_id = $account_name_user->ID;
+    $account_name_user = get_user_by('login', $account);
+    $user_id = $account_name_user->ID;
 
     // User details
     $account = $user;

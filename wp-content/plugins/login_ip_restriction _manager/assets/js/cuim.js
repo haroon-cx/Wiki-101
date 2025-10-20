@@ -394,29 +394,29 @@ jQuery(document).ready(function ($) {
   //   // Optionally change the icon or text on the button based on visibility
   // });
 
-  setTimeout(function () {
-    // Clear the date range input field
-    $('input[name="daterange"]').val("");
-  }, 2000); // 3000 milliseconds = 3 seconds
+  // setTimeout(function () {
+  //   // Clear the date range input field
+  //   $('input[name="daterange"]').val("");
+  // }, 2000); // 3000 milliseconds = 3 seconds
 
-  // Initialize the date range picker with max 30 days selection
-  $('input[name="daterange"]').daterangepicker({
-    opens: "right", // Position the calendar
-    locale: {
-      format: "YYYY/MM/DD", // Specify the date format
-    },
-    maxSpan: {
-      days: 30, // Limit the date range selection to a maximum of 30 days
-    },
-  });
+  // // Initialize the date range picker with max 30 days selection
+  // $('input[name="daterange"]').daterangepicker({
+  //   opens: "right", // Position the calendar
+  //   locale: {
+  //     format: "YYYY/MM/DD", // Specify the date format
+  //   },
+  //   maxSpan: {
+  //     days: 30, // Limit the date range selection to a maximum of 30 days
+  //   },
+  // });
 
-  // Handle the cancel or clear action
-  $('input[name="daterange"]').on(
-    "cancel.daterangepicker",
-    function (ev, picker) {
-      $(this).val(""); // Reset the input field to empty when the user cancels or clears the date range
-    }
-  );
+  // // Handle the cancel or clear action
+  // $('input[name="daterange"]').on(
+  //   "cancel.daterangepicker",
+  //   function (ev, picker) {
+  //     $(this).val(""); // Reset the input field to empty when the user cancels or clears the date range
+  //   }
+  // );
 });
 
 jQuery(function ($) {

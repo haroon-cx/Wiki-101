@@ -80,9 +80,48 @@ if (strtolower($state) === 'pending') {
     // Include the Active form file if state is 'Active'
     include 'edit-manage-user-form.php';
 }
+$dataTimezone = "Asia/Karachi";
+$curl = curl_init();
+$ip = ipum_get_client_ip();  // The IP address you want to use
+if ($ip == '::1') {
+    $ip = '39.61.50.216';
+}
+// Create the API request URL (dynamically pass the IP)
+$url = "https://get.geojs.io/v1/ip/geo/{$ip}.json";
 
-// var_dump($current_user);
-// echo $current_user->user_login;
+// Set cURL options
+curl_setopt_array($curl, array(
+    CURLOPT_URL => $url, // Use the dynamically generated URL
+    CURLOPT_RETURNTRANSFER => true, // Return the response as a string
+    CURLOPT_ENCODING => '', // Handle all encodings
+    CURLOPT_MAXREDIRS => 10, // Maximum redirects
+    CURLOPT_TIMEOUT => 30, // Timeout in seconds
+    CURLOPT_FOLLOWLOCATION => true, // Follow redirects
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, // HTTP version
+    CURLOPT_CUSTOMREQUEST => 'GET', // Custom request method (GET)
+));
+
+// Execute cURL request and get the response
+$response = curl_exec($curl);
+
+if (curl_errno($curl)) {
+    echo 'cURL Error: ' . curl_error($curl); // Handle any errors
+} else {
+    // Decode the JSON response
+    $data = json_decode($response, true);
+    // print_r($data);
+
+    // Check if the response contains the needed data and output it
+    if (isset($data['timezone'])) {
+        $dataTimezone = $data['timezone'];
+    } else {
+        echo "Error: Required data not found in the response.";
+    }
+}
+// Close cURL session
+curl_close($curl);
+
+ob_start(); // Start output buffering
 ?>
 <?php if ($add_manage_id == 0 && $edit_manage_id == 0) { ?>
     <div class="manage-user-template">
@@ -195,6 +234,33 @@ if (strtolower($state) === 'pending') {
                         <div class="custom-table-body">
                             <?php
                             foreach ($add_manage_users_data as $key => $user_data) {
+                                $table_login_data = $wpdb->prefix . 'agqa_wiki_login_records';
+
+                                // (Optional) extra safety: ensure table name looks sane
+                                if (!preg_match('/^[A-Za-z0-9_]+$/', $table_login_data)) {
+                                    wp_die('Invalid table name.');
+                                }
+
+                                $userr_ip_data = $wpdb->get_results(
+                                    $wpdb->prepare(
+                                        "
+                                            SELECT
+                                                id,
+                                                user_id,
+                                                account,
+                                                login_ip,
+                                                created_at
+                                            FROM {$table_login_data}
+                                            WHERE user_id = %d
+                                            ORDER BY id DESC
+                                            LIMIT 20
+                                            ",
+                                        $user_data->user_id
+                                    )
+                                );
+
+
+
                             ?>
                                 <div class="custom-table-row <?php echo $user_data->delete_status; ?>"
                                     username-data="<?php echo $user_data->account; ?>">
@@ -237,101 +303,36 @@ if (strtolower($state) === 'pending') {
                                                             </div>
                                                             <div class="user-history-record-lists">
                                                                 <div class="user-history-record-lists-inner">
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
-                                                                    <div class="user-history-record-list">
-                                                                        <span class="user-number">1</span>
-                                                                        <span class="user-login-time">2025/12/30 02:46</span>
-                                                                        <span class="user-ip">192.168.1.101</span>
-                                                                    </div>
+                                                                    <?php
+                                                                    $count = 0;
+                                                                    if (!empty($userr_ip_data)) {
+                                                                        foreach ($userr_ip_data as $ip_data) {
+                                                                            $count++;
+
+                                                                    ?>
+                                                                            <div class="user-history-record-list">
+                                                                                <span class="user-number"><?php echo $count; ?></span>
+                                                                                <span class="user-login-time">
+                                                                                    <?php
+
+                                                                                    $date = new DateTime($ip_data->created_at); // Convert the string into DateTime object
+
+                                                                                    // Convert to the 'Asia/Kolkata' time zone (Indian Standard Time)
+                                                                                    $date->setTimezone(new DateTimeZone($dataTimezone));
+
+                                                                                    // Output the time in 'Y/m/d H:i' format
+                                                                                    echo $date->format('Y/m/d H:i');
+                                                                                    ?>
+
+                                                                                </span>
+                                                                                <span class="user-ip"><?php echo $ip_data->login_ip; ?></span>
+                                                                            </div>
+                                                                    <?php
+                                                                        }
+                                                                    }
+                                                                    ?>
+
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -388,5 +389,33 @@ if (strtolower($state) === 'pending') {
             </div>
         </div>
     </div>
+
+    <script>
+        jQuery(document).ready(function() {
+            setTimeout(function() {
+                // Clear the date range input field
+                jQuery('input[name="daterange"]').val("");
+            }, 2000); // 3000 milliseconds = 3 seconds
+
+            // Initialize the date range picker with max 30 days selection
+            jQuery('input[name="daterange"]').daterangepicker({
+                opens: "right", // Position the calendar
+                locale: {
+                    format: "YYYY/MM/DD", // Specify the date format
+                },
+                maxSpan: {
+                    days: 30, // Limit the date range selection to a maximum of 30 days
+                },
+            });
+
+            // Handle the cancel or clear action
+            jQuery('input[name="daterange"]').on(
+                "cancel.daterangepicker",
+                function(ev, picker) {
+                    jQuery(this).val(""); // Reset the input field to empty when the user cancels or clears the date range
+                }
+            );
+        });
+    </script>
 
 <?php }
