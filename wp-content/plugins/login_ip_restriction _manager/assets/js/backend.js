@@ -759,7 +759,7 @@ jQuery(document).ready(function ($) {
         if (response.success) {
           $("div#custom-faq-field-popup").removeClass("active");
           const $successMsg = $(
-            `<div class="submitted-successfully">The user will be successfully deleted.</div>`
+            `<div class="submitted-successfully">The user successfully deleted.</div>`
           );
           jQuery(".custom-table-body").append($successMsg);
           window.location.href = "/manage-user/";
@@ -811,7 +811,7 @@ jQuery(document).ready(function ($) {
         if (response.includes("Success")) {
           $(".agqa-delete-popup-faq").removeClass("active");
           const $successMsg = $(
-            `<div class="submitted-successfully">The user will be successfully deleted.</div>`
+            `<div class="submitted-successfully">The user successfully deleted.</div>`
           );
           jQuery(".custom-table-body").append($successMsg);
           window.location.href = "/manage-ip-whitelist/";

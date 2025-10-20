@@ -22,7 +22,7 @@
                 <!-- <div class="form-field required">
                     <label for="new-password-field"><span>* </span>New Password</label>
                     <div class="toggle-password"></div>
-
+    
                     <input type="password" class="cuim-manage-user-pwd-validation-20" name="new-password"
                         id="new-password-field" required placeholder="Description">
 

@@ -987,6 +987,8 @@ function cuim_login_check()
         setcookie('remembered_passowrd', $password, $cookie_expiration, '/'); // 14 days expiration
     }
     $table_name = $wpdb->prefix . 'agqa_wiki_login_records';
+     $account_name_user = get_user_by( 'login', $account );
+   $user_id = $account_name_user->ID;
 
     // User details
     $account = $user;
@@ -994,6 +996,7 @@ function cuim_login_check()
 
     // Prepare data including user_id
     $data = [
+        'user_id'  => $user_id,
         'account'  => $user,
         'login_ip' => $login_ip,
     ];
@@ -1142,7 +1145,7 @@ function handle_faq_user_read_report()
 
 
 /**
- * 
+ * user_profile_notification
  */
 
 add_action('wp_ajax_handle_user_profile_notification', 'handle_user_profile_notification');
