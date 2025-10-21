@@ -1,5 +1,5 @@
 <?php
-$table_agqa_faq_review = $wpdb->prefix . 'agqa_faq_review';
+$table_agqa_faq_review = $wpdb->prefix . 'agqa_approval_review_page';
 
 if ($edit_faq_review !== 0) {
     $faq_data_review = $wpdb->get_results($wpdb->prepare("
@@ -23,7 +23,7 @@ if ($edit_faq_review !== 0) {
         <h1>FAQ</h1>
     </div>
     <div class="form-header-row">
-        <a href="<?php echo esc_url(home_url('/faq/?review=1')) ?>" class="back-button" type="button">
+        <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button" type="button">
             <img decoding="async" src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg" alt="Arrow Left Icon">
             Back
         </a>
@@ -93,11 +93,11 @@ if ($edit_faq_review !== 0) {
                                     <div class="form-message">Are you sure you want to cancel?</div>
                                     <div class="form-buttons agqa-popup-form-buttons d-flex">
                                         <button class="no-form-cancel" type="button">No</button>
-                                        <a href="<?php echo esc_url(home_url('/faq/?review=1')) ?>" class="back-button">Yes</a>
+                                        <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button">Yes</a>
                                     </div>
                                 </div>
                             </div>
-                            <a href="<?php echo esc_url(home_url('/faq/?review=1')) ?>" class="back-button"
+                            <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
                                 id="cancel-confirmation-button">Cancel</a>
 
                             <div id="confirm-submit-popup" class="confirm-submit-popup">
@@ -111,7 +111,7 @@ if ($edit_faq_review !== 0) {
                                     </div>
                                 </div>
                             </div>
-                            <!-- <button class="reject-button">Reject</button> -->
+                            <button class="reject-button">Reject</button>
                             <input type="submit" value="Approve" class="agqa-edit-submit-btn" id="confirm-submit-popup-button">
                         </div>
                     </form>

@@ -1,3 +1,64 @@
+<?php
+global $wpdb;
+$table_approval_review = $wpdb->prefix . 'agqa_approval_review_page';
+$add_username = isset($_GET['username']) ? $_GET['username'] : '';
+// echo $add_username;
+$get_data_approval = $wpdb->get_results("
+            SELECT
+                id,
+                question,
+                type_name,
+                status,
+                provider_name,
+                created_at
+            FROM $table_approval_review
+             ORDER BY
+            id DESC
+            ");
+
+
+$dataTimezone = "Asia/Karachi";
+$curl = curl_init();
+$ip = ipum_get_client_ip();  // The IP address you want to use
+if ($ip == '::1') {
+    $ip = '39.61.50.216';
+}
+// Create the API request URL (dynamically pass the IP)
+$url = "https://get.geojs.io/v1/ip/geo/{$ip}.json";
+
+// Set cURL options
+curl_setopt_array($curl, array(
+    CURLOPT_URL => $url, // Use the dynamically generated URL
+    CURLOPT_RETURNTRANSFER => true, // Return the response as a string
+    CURLOPT_ENCODING => '', // Handle all encodings
+    CURLOPT_MAXREDIRS => 10, // Maximum redirects
+    CURLOPT_TIMEOUT => 30, // Timeout in seconds
+    CURLOPT_FOLLOWLOCATION => true, // Follow redirects
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, // HTTP version
+    CURLOPT_CUSTOMREQUEST => 'GET', // Custom request method (GET)
+));
+
+// Execute cURL request and get the response
+$response = curl_exec($curl);
+
+if (curl_errno($curl)) {
+    echo 'cURL Error: ' . curl_error($curl); // Handle any errors
+} else {
+    // Decode the JSON response
+    $data = json_decode($response, true);
+    // print_r($data);
+
+    // Check if the response contains the needed data and output it
+    if (isset($data['timezone'])) {
+        $dataTimezone = $data['timezone'];
+    } else {
+        echo "Error: Required data not found in the response.";
+    }
+}
+// Close cURL session
+curl_close($curl);
+?>
+
 <style>
 
 </style>
@@ -56,66 +117,40 @@
                 <div class="table-head-col">Action</div>
             </div>
             <div class="custom-table-body">
-                <div class="custom-table-row">
-                    <div class="table-body-col">FAQ Add</div>
-                    <div class="table-body-col">CQ9</div>
-                    <div class="table-body-col table-row-status pending"><span>Pending</span></div>
-                    <div class="table-body-col">2026/11/12 12:02</div>
-                    <div class="table-body-col table-body-col-buttons">
-                        <a href="#" class="approval-view-button"></a>
-                        <a href="#" class="approval-edit-button"></a>
+                <?php foreach ($get_data_approval as $value_approval) {
+                    // var_dump($value_approval);
+                ?>
+                    <div class="custom-table-row">
+                        <div class="table-body-col"><?php echo $value_approval->type_name; ?></div>
+                        <div class="table-body-col"><?php echo $value_approval->question; ?></div>
+                        <div class="table-body-col table-row-status <?php echo strtolower($value_approval->status); ?>"><span><?php echo $value_approval->status; ?></span></div>
+                        <div class="table-body-col">
+                            <?php
+                            // Get the current system time (local server time) as a string
+                            $date = new DateTime($value_approval->created_at); // Convert the string into DateTime object
+
+                            // Convert to the 'Asia/Kolkata' time zone (Indian Standard Time)
+                            $date->setTimezone(new DateTimeZone($dataTimezone));
+
+                            // Output the time in 'Y/m/d H:i' format
+                            echo $date->format('Y/m/d H:i');
+                            ?>
+                        </div>
+                        <div class="table-body-col table-body-col-buttons">
+                            <a href="#" class="approval-view-button"></a>
+                            <?php 
+
+                            if($value_approval->type_name == 'FAQ Edit' || $value_approval->type_name == 'FAQ Add'){
+                                $cuim_page_value = 'faq/?edit-review=' . $value_approval->id; 
+                            }else{
+                                $cuim_page_value = '';
+                            }
+                            ?>
+                            <a href="<?php echo home_url('/' . $cuim_page_value); ?>" class="approval-edit-button"></a>
+                        </div>
                     </div>
-                </div>
-                <div class="custom-table-row">
-                    <div class="table-body-col">FAQ Add</div>
-                    <div class="table-body-col">Why didn’t I receive a reminder email or SMS?</div>
-                    <div class="table-body-col table-row-status pending"><span>Pending</span></div>
-                    <div class="table-body-col">2026/11/12 12:02</div>
-                    <div class="table-body-col table-body-col-buttons">
-                        <a href="#" class="approval-view-button"></a>
-                        <a href="#" class="approval-edit-button"></a>
-                    </div>
-                </div>
-                <div class="custom-table-row">
-                    <div class="table-body-col">FAQ Add</div>
-                    <div class="table-body-col">Can I customize the alert conditions?</div>
-                    <div class="table-body-col table-row-status rejected"><span>Rejected</span></div>
-                    <div class="table-body-col">2026/11/12 12:02</div>
-                    <div class="table-body-col table-body-col-buttons">
-                        <a href="#" class="approval-view-button"></a>
-                        <a href="#" class="approval-edit-button"></a>
-                    </div>
-                </div>
-                <div class="custom-table-row">
-                    <div class="table-body-col">FAQ Edit</div>
-                    <div class="table-body-col">How can I contact customer support?</div>
-                    <div class="table-body-col table-row-status rejected"><span>Rejected</span></div>
-                    <div class="table-body-col">2026/11/12 12:02</div>
-                    <div class="table-body-col table-body-col-buttons">
-                        <a href="#" class="approval-view-button"></a>
-                        <a href="#" class="approval-edit-button"></a>
-                    </div>
-                </div>
-                <div class="custom-table-row">
-                    <div class="table-body-col">API Edit</div>
-                    <div class="table-body-col">Tom Horn</div>
-                    <div class="table-body-col table-row-status rejected"><span>Rejected</span></div>
-                    <div class="table-body-col">2026/11/12 12:02</div>
-                    <div class="table-body-col table-body-col-buttons">
-                        <a href="#" class="approval-view-button"></a>
-                        <a href="#" class="approval-edit-button"></a>
-                    </div>
-                </div>
-                <div class="custom-table-row">
-                    <div class="table-body-col">API Edit</div>
-                    <div class="table-body-col">BGaming</div>
-                    <div class="table-body-col table-row-status approved"><span>Approved</span></div>
-                    <div class="table-body-col">2026/11/12 12:02</div>
-                    <div class="table-body-col table-body-col-buttons">
-                        <a href="#" class="approval-view-button"></a>
-                        <a href="#" class="approval-edit-button"></a>
-                    </div>
-                </div>
+                <?php  } ?>
+
             </div>
         </div>
     </div>

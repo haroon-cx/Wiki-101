@@ -23,7 +23,7 @@ function agqa_insert_review_faq()
     // Insert the FAQ into the database
     $current_user_id = get_current_user_id();
     $wpdb->insert(
-        "{$wpdb->prefix}agqa_faq_review",
+        "{$wpdb->prefix}agqa_approval_review_page",
         array(
             'faq_id' => 0,
             'question' => $question,
@@ -31,8 +31,9 @@ function agqa_insert_review_faq()
             'verified_answer' => $verified_answer,
             'faq_category' => $faq_category,
             'status' => 'Pending',
+            'type_name' => 'FAQ Add',
             'user_id' => $current_user_id,
-            'time' => current_time('mysql'),
+            'created_at' => current_time('mysql'),
 
         ),
         array(
@@ -119,9 +120,9 @@ function handle_faq_review_approval()
                     if ($updated_faq !== false) {
                         // Update the FAQ review status to 'approved'
                         $update_status = $wpdb->update(
-                            "{$wpdb->prefix}agqa_faq_review",
+                            "{$wpdb->prefix}agqa_approval_review_page",
                             array(
-                                'status' => 'approve',  // Set the status to approved
+                                'status' => 'approved',  // Set the status to approved
                             ),
                             array('id' => $review_id) // Update the review based on its ID
                         );
@@ -157,9 +158,9 @@ function handle_faq_review_approval()
 
             // Update the FAQ review status to 'approved' and set the faq_id in the review
             $wpdb->update(
-                "{$wpdb->prefix}agqa_faq_review",
+                "{$wpdb->prefix}agqa_approval_review_page",
                 array(
-                    'status' => 'approve', // Set status to approved
+                    'status' => 'approved', // Set status to approved
                     'faq_id' => $faq_id, // Set the newly inserted faq_id in the review
                 ),
                 array('id' => $review_id) // Update the specific review ID
@@ -215,11 +216,12 @@ function agqa_edit_faq()
 
     // Insert the FAQ into the database
     $wpdb->insert(
-        "{$wpdb->prefix}agqa_faq_review",
+        "{$wpdb->prefix}agqa_approval_review_page",
         array(
             'faq_id' => $faq_id,
             'question' => $question,
             'answer' => $answer,
+            'type_name' => 'FAQ Edit',
             'verified_answer' => $verified_answer,
             'faq_category' => $faq_category
         ),
@@ -421,10 +423,10 @@ function handle_faq_deletion()
     // Delete FAQ from agqa_faq table
     $wpdb->delete($table_faq, array('id' => $faq_id));
 
-    // Update corresponding record in wp_agqa_faq_review table
-    $table_faq_review = $wpdb->prefix . 'agqa_faq_review';
+    // Update corresponding record in wp_agqa_approval_review_page table
+    $table_faq_review = $wpdb->prefix . 'agqa_approval_review_page';
 
-    // Update the record in wp_agqa_faq_review table: set faq_id to 0 and status to 'Pending'
+    // Update the record in wp_agqa_approval_review_page table: set faq_id to 0 and status to 'Pending'
     $wpdb->update(
         $table_faq_review,
         array(

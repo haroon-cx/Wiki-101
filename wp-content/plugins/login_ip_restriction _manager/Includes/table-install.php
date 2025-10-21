@@ -1,7 +1,6 @@
 <?php
 // Main plugin file: register activation hook
 
-// Function to create tables
 function agqa_create_tables_ip_users()
 {
     global $wpdb;

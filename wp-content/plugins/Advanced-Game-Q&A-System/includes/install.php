@@ -165,6 +165,12 @@ function agqa_create_tables()
             url_update_date DATE NOT NULL
         ) $charset;");
 
+
+
+
+
+
+
     // Sales Table
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_sales (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -257,7 +263,7 @@ function agqa_create_tables()
 
     // FAQ Table Review
 
-    $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_faq_review (
+    $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}agqa_approval_review_page(
         id INT AUTO_INCREMENT PRIMARY KEY,
         faq_id INT NOT NULL,
         question TEXT NOT NULL,
@@ -266,7 +272,33 @@ function agqa_create_tables()
         faq_category VARCHAR(255) NOT NULL,
         user_id BIGINT(20) NOT NULL,
         status VARCHAR(20) DEFAULT 'pending',
-        time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        type_name VARCHAR(255) NOT NULL,
+        api_status VARCHAR (255) NOT NULL,
+        api_id INT NOT NULL,
+        provider_name VARCHAR(255) NOT NULL,
+        state VARCHAR(255) NOT NULL,
+        game_category_id BIGINT NOT NULL,
+        game_type_id BIGINT NOT NULL,
+        selling_price DECIMAL(5,2) NOT NULL,
+        api_cost DECIMAL(5,2) NOT NULL,
+        api_type VARCHAR(255) NOT NULL,
+        game_info_website VARCHAR(255) NOT NULL,
+        game_demo_website VARCHAR(255) NOT NULL,
+        representative_contact_info VARCHAR(255) NOT NULL,
+        representative_telegram VARCHAR(255) NOT NULL,
+        custom_label_1 VARCHAR(255),
+        custom_label_2 VARCHAR(255),
+        custom_label_3 VARCHAR(255),
+        custom_label_4 VARCHAR(255),
+        custom_field_1 VARCHAR(255),
+        custom_field_2 VARCHAR(255),
+        custom_field_3 VARCHAR(255),
+        custom_field_4 VARCHAR(255),
+        notes TEXT,
+        image_url VARCHAR(255),
+        contract_filename VARCHAR(255) NOT NULL,
+        url_update_date DATE NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) $charset;");
 
     // Report system table

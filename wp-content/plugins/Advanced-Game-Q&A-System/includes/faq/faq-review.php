@@ -1,6 +1,6 @@
 <?php
 global $wpdb;
-$table_agqa_faq_review = $wpdb->prefix . 'agqa_faq_review';
+$table_agqa_faq_review = $wpdb->prefix . 'agqa_approval_review_page';
 $faq_data_review = $wpdb->get_results("
             SELECT
                 id,
