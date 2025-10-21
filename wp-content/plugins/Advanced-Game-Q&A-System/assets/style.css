@@ -3181,6 +3181,12 @@ textarea {
   height: 48px;
 }
 
+.history-record-buttons button.button,
+.history-record-buttons a.button {
+  font-size: 20px !important;
+  box-sizing: border-box;
+}
+
 .manage-ip-form-buttons .cancel-button,
 .agqa-respond-buttons .report-cancel-button,
 .history-record-buttons .close-button,
