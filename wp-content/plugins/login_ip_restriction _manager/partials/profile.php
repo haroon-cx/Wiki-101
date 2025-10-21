@@ -43,6 +43,10 @@ function cui_pm_add_logout_button_footer()
             <input type="text" id="agqa-search-input" placeholder="search...">
             <div id="agqa-search-results"></div>
         </div> -->
+        <div class="language-switch-ctn">
+            <div class="language-button english-language"></div>
+            <div class="language-button chinese-language"></div>
+        </div>
         <?php 
         include URIP_PATH . 'partials/notification.php';
         ?>

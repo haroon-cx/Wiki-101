@@ -1229,6 +1229,7 @@ div#cuim-edit-fields input {
     position: relative;
 }
 
+.language-switch-ctn,
 .notification-button {
     position: relative;
     display: flex;
@@ -1239,6 +1240,22 @@ div#cuim-edit-fields input {
     border-radius: 50%;
     background-color: rgba(0, 0, 0, .2);
     cursor: pointer;
+}
+
+.language-button {
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.english-language {
+    background-image: url(../image/english-lang-icon.svg);
+}
+
+.chinese-language {
+    background-image: url(../image/chinese-lang-icon.svg);
 }
 
 .notification-button-counting {
