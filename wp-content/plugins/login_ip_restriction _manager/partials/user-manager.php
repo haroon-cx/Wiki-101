@@ -1,5 +1,6 @@
 <?php
 $add_manage_id = isset($_GET['add']) ? intval($_GET['add']) : 0;
+
 $edit_manage_id = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
 
 $state = isset($_GET['state']) ? sanitize_text_field($_GET['state']) : '';
@@ -339,7 +340,7 @@ ob_start(); // Start output buffering
                                                     </div>
                                                     <div class="history-record-buttons d-flex">
                                                         <button class="close-button">close</button>
-                                                        <button class="button">Go to Login History</button>
+                                                        <a href="<?php echo home_url('/login-records/?username=' . $user_data->account);  ?>" class="button">Go to Login History</a>
                                                     </div>
                                                 </div>
                                             </div>

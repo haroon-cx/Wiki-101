@@ -112,7 +112,7 @@ foreach ($providers_sales as $sale) {
     }
     ob_start();
     // Only render tabs & sections if user is NOT admin or contributor
-    if (current_user_can('administrator') || current_user_can('contributor')) {
+    // if (current_user_can('administrator') || current_user_can('contributor')) {
 ?>
 
 <div class="p-6 max-w-7xl mx-auto">
@@ -392,10 +392,10 @@ jQuery(document).ready(function() {
     </script>
 
 <?php
-    } else {
-        // Placeholder for non-admin/contributor users
-        echo '<p class="text-center text-gray-400 py-6 select-none">Restricted access for non-admin users.</p>';
-    }
+    // } else {
+    //     // Placeholder for non-admin/contributor users
+    //     echo '<p class="text-center text-gray-400 py-6 select-none">Restricted access for non-admin users.</p>';
+    // }
 
     return ob_get_clean();
 }

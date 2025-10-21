@@ -1998,7 +1998,7 @@ jQuery(document).ready(function ($) {
       var dateOnly = rowDateText.split(/\s+/)[0]; // "2025/10/20"
       var formatted = `${dateOnly}`;           // "(2025/10/20 )"
       var isIPAccountMatch = IPaccountsearchText.includes(loginRecordText); // Check if the search term is found anywhere in the row content
-      // var isDateMatch = true; // Default to true (if no date range is selected)
+      var isDateMatch = true; // Default to true (if no date range is selected)
       if (startDate && endDate) {
         // Check if the row's date is within the range
         isDateMatch = formatted >= startDate && formatted <= endDate; // Lexicographical comparison works for "YYYY/MM/DD"

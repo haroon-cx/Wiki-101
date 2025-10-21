@@ -1,7 +1,8 @@
 <?php
 global $wpdb;
 $table_login_records_list = $wpdb->prefix . 'agqa_wiki_login_records';
-
+$add_username = isset($_GET['username']) ? $_GET['username'] : '';
+// echo $add_username;
 $get_login_records_list = $wpdb->get_results("
             SELECT
                 id,
@@ -122,7 +123,7 @@ curl_close($curl);
     <div class="login-records-filter filter-area">
         <form action="#">
             <div class="filter-search-field">
-                <input type="search" class="cuim-login-records-search-validation-254" maxlength="254" name="login-records-search" id="login-records-search" placeholder="Search By Account">
+                <input type="search" value="<?php echo $add_username;  ?>" class="cuim-login-records-search-validation-254" maxlength="254" name="login-records-search" id="login-records-search" placeholder="Search By Account">
             </div>
             <div class="login-records-filter-date">
                 <div class="filter-select date-field">
@@ -272,5 +273,22 @@ curl_close($curl);
                 jQuery(this).val(""); // Reset the input field to empty when the user cancels or clears the date range
             }
         );
+    <?php if($add_username !== ''){ ?>    
+         setTimeout(function() {
+            var $btn = jQuery('#agqa-login-records-filters');
+            const btn = $btn.get(0);
+            // Create and dispatch mouse events
+            ['mousedown', 'mouseup', 'click'].forEach(eventType => {
+                btn.dispatchEvent(
+                    new MouseEvent(eventType, {
+                        view: window,
+                        bubbles: true,
+                        cancelable: true
+                    })
+                );
+            });
+
+        }, 2000);
+    <?php } ?>
     });
 </script>
