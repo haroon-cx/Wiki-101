@@ -8,6 +8,7 @@ if ($edit_faq_review !== 0) {
             faq_id,
             question,
             answer,
+            type_name,
             faq_category,
             verified_answer
         FROM $table_agqa_faq_review
@@ -22,17 +23,18 @@ if ($edit_faq_review !== 0) {
     <div class="template-title">
         <h1>FAQ</h1>
     </div>
+      <?php if (!empty($faq_data_review)) {
+                foreach ($faq_data_review as $faq_value) { ?>
     <div class="form-header-row">
         <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button" type="button">
             <img decoding="async" src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg" alt="Arrow Left Icon">
             Back
         </a>
-        <h2 class="form-heading">Edit FAQ Review</h2>
+        <h2 class="form-heading"><?php echo $faq_value->type_name; ?></h2>
     </div>
     <div class="faq-add-form-ctn">
         <div id="faq-add-form" class="faq-form">
-            <?php if (!empty($faq_data_review)) {
-                foreach ($faq_data_review as $faq_value) { ?>
+          
                     <form autocomplete="off" id="edit-form-faq-review" class="custom-form" novalidate="novalidate"
                         data-inited-validation="1">
                         <div class="form-field required">
