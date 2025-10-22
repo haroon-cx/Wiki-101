@@ -2191,6 +2191,7 @@ body .selected-dropdown-item,
 .reset-password-confirmation,
 .cancel-form-confirmation,
 .confirm-submit-popup,
+.reject-submit-popup,
 .login-history-popup {
   position: fixed;
   top: 0;
@@ -2215,6 +2216,7 @@ body .selected-dropdown-item,
 .reset-password-confirmation::before,
 .cancel-form-confirmation::before,
 .confirm-submit-popup::before,
+.reject-submit-popup::before,
 .login-history-popup::before {
   content: "";
   position: absolute;
@@ -2236,6 +2238,7 @@ body .selected-dropdown-item,
 .reset-password-confirmation.active::before,
 .cancel-form-confirmation.active::before,
 .confirm-submit-popup.active::before,
+.reject-submit-popup.active::before,
 .delete-popup.active::before,
 #custom-faq-field-popup.active::before,
 .login-history-popup.active::before {
@@ -2252,11 +2255,13 @@ body .selected-dropdown-item,
 }
 
 .delete-popup,
+.reject-submit-popup,
 #custom-faq-field-popup {
   pointer-events: none;
 }
 
 .delete-popup.active,
+.reject-submit-popup.active,
 #custom-faq-field-popup.active {
   pointer-events: initial;
 }
@@ -2271,6 +2276,7 @@ body .selected-dropdown-item,
 .cancel-form-confirmation.active .cancel-form-confirmation-box,
 .reset-password-confirmation.active .reset-password-confirmation-box,
 .confirm-submit-popup.active .confirm-submit-popup-box,
+.reject-submit-popup.active .confirm-submit-popup-box,
 .login-history-popup.active .login-history-popup-inner {
   opacity: 1;
   visibility: visible;
@@ -2286,6 +2292,7 @@ body .selected-dropdown-item,
 .reorder-popup-inner,
 .reset-password-confirmation-box,
 .cancel-form-confirmation-box,
+.reject-submit-popup .confirm-submit-popup-box,
 .confirm-submit-popup-box,
 .login-history-popup-inner {
   opacity: 0;
@@ -3196,6 +3203,7 @@ textarea {
 .reset-password-confirmation .no-form-cancel,
 .cancel-form-confirmation .no-form-cancel,
 .confirm-submit-popup .no-confirm-submit,
+.reject-submit-popup .no-confirm-submit,
 .agqa-popup-form-buttons .no-submit,
 .reorder-popup .cancel-button {
   color: #C770FE;
@@ -3212,6 +3220,7 @@ textarea {
 .reset-password-confirmation .no-form-cancel,
 .cancel-form-confirmation .no-form-cancel,
 .confirm-submit-popup .no-confirm-submit,
+.reject-submit-popup .no-confirm-submit,
 .agqa-popup-form-buttons .no-submit,
 .history-record-buttons .close-button {
   border: 1px solid #6B4EBD;
@@ -3556,6 +3565,7 @@ form .form-buttons button {
   font-size: 20px !important;
 }
 
+.reject-submit-popup .form-buttons,
 #custom-field-popup .form-buttons,
 .cancel-form-confirmation .form-buttons,
 .reset-password-confirmation .form-buttons,
@@ -3735,6 +3745,7 @@ form .form-buttons button {
   color: #747474;
 }
 
+.reject-submit-popup .form-buttons button,
 .delete-popup button,
 #custom-faq-field-popup button,
 .popup-content .form-buttons button,
@@ -3818,6 +3829,7 @@ form .form-buttons button {
   padding-right: 18px;
 }
 
+.reject-submit-popup h2,
 .reorder-popup-title h2 {
   color: #7644CE !important;
   font-weight: 500;
