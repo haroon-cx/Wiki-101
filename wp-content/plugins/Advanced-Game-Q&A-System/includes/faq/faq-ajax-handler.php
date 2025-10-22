@@ -213,7 +213,7 @@ function agqa_edit_faq()
 
     // Trim any leading or trailing spaces
     $answer = trim($answer);
-
+    $user_id = get_current_user_id();
     // Insert the FAQ into the database
     $wpdb->insert(
         "{$wpdb->prefix}agqa_approval_review_page",
@@ -223,7 +223,8 @@ function agqa_edit_faq()
             'answer' => $answer,
             'type_name' => 'FAQ Edit',
             'verified_answer' => $verified_answer,
-            'faq_category' => $faq_category
+            'faq_category' => $faq_category,
+            'user_id' => $user_id,
         ),
         array(
             '%s', // question

@@ -1,21 +1,40 @@
 <?php
 global $wpdb;
 $table_agqa_report_system = $wpdb->prefix . 'faq_report_system';
+$table_agqa_approval_sysetm = $wpdb->prefix . 'agqa_approval_review_page';
 $class_active = '';
+$class_approval_active = '';
 $pending_response_count = $wpdb->get_var("
-                SELECT COUNT(*) 
-                FROM $table_agqa_report_system
-                WHERE status = 'Pending Response'
-            ");
+SELECT COUNT(*) 
+FROM $table_agqa_report_system
+WHERE status = 'Pending Response'
+");
+
+
+$approval_pending_count = $wpdb->get_var("
+SELECT COUNT(*) 
+FROM $table_agqa_approval_sysetm
+WHERE status = 'Pending'
+");
 
 
 $pending_response_read = $wpdb->get_var("
-                SELECT COUNT(*) 
-                FROM $table_agqa_report_system
-                WHERE read_report = ''
-            ");
+SELECT COUNT(*) 
+FROM $table_agqa_report_system
+WHERE read_report = ''
+");
 if ($pending_response_read > 0) {
     $class_active = 'active';
+}
+
+
+$pending_approval_read = $wpdb->get_var("
+SELECT COUNT(*) 
+FROM $table_agqa_approval_sysetm
+WHERE read_report = ''
+");
+if ($pending_approval_read > 0) {
+    $class_approval_active = 'active';
 }
 
 
@@ -23,7 +42,7 @@ if ($pending_response_read > 0) {
 $current_user_id = get_current_user_id();
 
 // Build SQL
-$sql = $wpdb->prepare("
+$sql_read_report_user = $wpdb->prepare("
     SELECT
         id,
         user_id,
@@ -36,10 +55,23 @@ $sql = $wpdb->prepare("
 ", $current_user_id);
 
 // Get result
-$last_report = $wpdb->get_row($sql); // get_row returns only one row
+$last_report = $wpdb->get_row($sql_read_report_user); // get_row returns only one row
 
 
+$sql_review_read_user = $wpdb->prepare("
+    SELECT
+        id,
+        user_id,
+        user_read_report,
+       created_at
+    FROM {$wpdb->prefix}agqa_approval_review_page
+    WHERE user_id = %d
+    ORDER BY id DESC
+    LIMIT 1
+", $current_user_id);
 
+// Get result
+$last_review_report = $wpdb->get_row($sql_review_read_user);
 // Table name
 $table_agqa_manage_user = "{$wpdb->prefix}agqa_wiki_add_users";
 
@@ -76,57 +108,62 @@ $found_user_id = $wpdb->get_var(
                 <div class="notification-tag-card">
                     <span class="notification-dot <?php echo $class_active; ?>"></span>
                     <span>Pending Reports</span>
-                    <a href="#" class="notification-count active"><?php echo esc_html($pending_response_count); ?></a>
+                    <a href="#" class="notification-count active cuim-response-review-count"><?php echo $pending_response_count; ?></a>
                 </div>
                 <div class="notification-tag-card">
-                    <span class="notification-dot"></span>
+                    <span class="notification-dot <?php echo $class_approval_active; ?>"></span>
                     <span>Pending Review</span>
-                    <a href="#" class="notification-count">0</a>
+                    <?php if ($approval_pending_count > 0) { ?>
+                        <a href="#" class="notification-count active cuim-review-pending-count"><?php echo $approval_pending_count; ?></a>
+                    <?php } else { ?>
+                        <a href="#" class="notification-count"><?php echo $approval_pending_count; ?></a>
+                    <?php  } ?>
                 </div>
             </div>
-            <div class="notification-list-heading"><strong>Notification</strong></div>
-            <div class="notification-lists-ctn">
+            <?php if (($last_review_report && $last_review_report->user_read_report !== "read") || ($last_report && $last_report->user_read_report !== "read")  || $current_user_id !== (int) $found_user_id) { ?>
+                <div class="notification-list-heading"><strong>Notification</strong></div>
+                <div class="notification-lists-ctn">
+                    <?php if ($last_review_report && $last_review_report->user_read_report !== "read") { ?>
+                        <div class="notification-list cuim-user-review-report" style="cursor: pointer;">
+                            <span class="notification-list-dot"></span>
+                            <div class="notification-list-title">
+                                Unread review responses available
+                            </div>
+                            <div class="notification-list-date">
+                                <?php echo date('Y/m/d', strtotime($last_review_report->created_at)); ?>
+                            </div>
 
+                        </div>
+                    <?php } ?>
+                    <?php if ($last_report && $last_report->user_read_report !== "read") { ?>
+                        <div class="notification-list cuim-user-faq-report" style="cursor: pointer;">
+                            <span class="notification-list-dot"></span>
+                            <div class="notification-list-title">
+                                Unread report responses available
+                            </div>
+                            <div class="notification-list-date">
+                                <?php echo date('Y/m/d', strtotime($last_report->create_time)); ?>
+                            </div>
 
+                        </div>
+                    <?php } ?>
+                    <?php if ($current_user_id !== (int) $found_user_id) { ?>
 
-                <div class="notification-list cuim-user-review-report" style="cursor: pointer;">
-                    <span class="notification-list-dot"></span>
-                    <div class="notification-list-title">
-                        Unread review responses available
-                    </div>
-                    <div class="notification-list-date">
-                        <?php echo date('Y/m/d', strtotime($last_report->create_time)); ?>
-                    </div>
+                        <div class="notification-list cuim-user-profile-note" style="cursor: pointer;">
+                            <span class=" notification-list-dot"></span>
+                            <div class="notification-list-title">
+                                Please set up your profile
+                            </div>
+                            <?php if ($add_manage_users_data) { ?>
+                                <div class="notification-list-date"> <?php echo date('Y/m/d', strtotime($add_manage_users_data->created_at)); ?></div>
+                            <?php } else {
 
+                                echo '<div class="notification-list-date">2025/09/01</div>';
+                            } ?>
+                        </div>
+                    <?php } ?>
                 </div>
-                <?php if ($last_report && $last_report->user_read_report !== "read") { ?>
-                    <div class="notification-list cuim-user-faq-report" style="cursor: pointer;">
-                        <span class="notification-list-dot"></span>
-                        <div class="notification-list-title">
-                            Unread report responses available
-                        </div>
-                        <div class="notification-list-date">
-                            <?php echo date('Y/m/d', strtotime($last_report->create_time)); ?>
-                        </div>
-
-                    </div>
-                <?php } ?>
-                <?php if ($current_user_id !== (int) $found_user_id) { ?>
-
-                    <div class="notification-list cuim-user-profile-note" style="cursor: pointer;">
-                        <span class=" notification-list-dot"></span>
-                        <div class="notification-list-title">
-                            Please set up your profile
-                        </div>
-                        <?php if ($add_manage_users_data) { ?>
-                            <div class="notification-list-date"> <?php echo date('Y/m/d', strtotime($add_manage_users_data->created_at)); ?></div>
-                        <?php } else {
-
-                            echo '<div class="notification-list-date">2025/09/01</div>';
-                        } ?>
-                    </div>
-                <?php } ?>
-            </div>
+            <?php } ?>
         </div>
     </div>
 </div>
@@ -147,7 +184,7 @@ $found_user_id = $wpdb->get_var(
         //     });
 
         // }, 2000);
-        jQuery('.notification-count.active').on('click', function(e) {
+        jQuery('.cuim-response-review-count').on('click', function(e) {
             e.preventDefault();
             var nonce = cuim_ajax.nonce;
             jQuery.ajax({
@@ -172,6 +209,34 @@ $found_user_id = $wpdb->get_var(
                 },
             });
         });
+
+        jQuery('.cuim-review-pending-count').on('click', function(e) {
+            e.preventDefault();
+            var nonce = cuim_ajax.nonce;
+            jQuery.ajax({
+                url: cuim_ajax.ajax_url,
+                type: "POST",
+                data: {
+                    action: "handle_approval_read_report",
+                    nonce: nonce, // Nonce for security
+                },
+                success: function(response) {
+                    // If deletion is successful, hide the popup and remove the FAQ from the DOM
+                    window.location.href = "/approval-page/";
+
+                    if (response.includes("Success")) {
+                        // $(".faq-accordion[data-id='" + del + "']").remove();
+                    } else {
+                        alert(response);
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while deleting the FAQ.");
+                },
+            });
+        });
+
+
         jQuery('.cuim-user-faq-report').on('click', function(e) {
             e.preventDefault();
             var nonce = cuim_ajax.nonce;
@@ -198,6 +263,32 @@ $found_user_id = $wpdb->get_var(
             });
         });
 
+
+        jQuery('.cuim-user-review-report').on('click', function(e) {
+            e.preventDefault();
+            var nonce = cuim_ajax.nonce;
+            jQuery.ajax({
+                url: cuim_ajax.ajax_url,
+                type: "POST",
+                data: {
+                    action: "handle_approval_user_review_report",
+                    nonce: nonce, // Nonce for security
+                },
+                success: function(response) {
+                    // If deletion is successful, hide the popup and remove the FAQ from the DOM
+                    window.location.href = "/approval-page/";
+
+                    if (response.includes("Success")) {
+                        // $(".faq-accordion[data-id='" + del + "']").remove();
+                    } else {
+                        alert(response);
+                    }
+                },
+                error: function() {
+                    alert("An error occurred while deleting the FAQ.");
+                },
+            });
+        });
 
         jQuery('.cuim-user-profile-note').on('click', function(e) {
             e.preventDefault();

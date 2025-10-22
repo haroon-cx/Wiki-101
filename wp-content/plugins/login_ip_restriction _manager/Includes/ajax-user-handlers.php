@@ -1098,6 +1098,40 @@ function handle_faq_read_report()
     wp_die();
 }
 
+
+
+/**
+ * handle_approval_read_report
+ */
+
+
+add_action('wp_ajax_handle_approval_read_report', 'handle_approval_read_report');
+add_action('wp_ajax_nopriv_handle_approval_read_report', 'handle_approval_read_report');
+
+function handle_approval_read_report()
+{
+    global $wpdb;
+
+    // Verify nonce
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        die('Permission Denied');
+    }
+    // Table name
+    $table_name = "{$wpdb->prefix}agqa_approval_review_page";
+
+    // Run raw SQL query to update all rows
+    $updated_rows = $wpdb->query(
+        "UPDATE $table_name SET read_report = 'read'"
+    );
+
+    // If everything went well, return success
+    $response['status']  = 'Success';
+    $response['message'] = 'Change the status to “Responded” and submit.';
+    echo json_encode($response);
+    wp_die();
+}
+
+
 /**
  * faq_user_read_report
  */
@@ -1123,6 +1157,51 @@ function handle_faq_user_read_report()
 
     // Table name
     $table_name = "{$wpdb->prefix}faq_report_system";
+
+    // Use $wpdb->update for safe updates
+    $updated = $wpdb->update(
+        $table_name,
+        ['user_read_report' => 'read'],     // Set this
+        ['user_id' => $user_id],            // Where this
+        ['%s'],                             // Data format for value
+        ['%d']                              // Data format for where
+    );
+
+    if ($updated !== false) {
+        wp_send_json_success([
+            'message' => 'User report marked as read.',
+            'rows_updated' => $updated
+        ]);
+    } else {
+        wp_send_json_error(['message' => 'No matching user record found or update failed.']);
+    }
+}
+
+/**
+ * handle_approval_user_review_report
+ */
+
+add_action('wp_ajax_handle_approval_user_review_report', 'handle_approval_user_review_report');
+add_action('wp_ajax_nopriv_handle_approval_user_review_report', 'handle_approval_user_review_report');
+
+function handle_approval_user_review_report()
+{
+    global $wpdb;
+
+    // Verify nonce
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+        wp_send_json_error(['message' => 'Permission Denied']);
+    }
+
+    // Get current user ID
+    $user_id = get_current_user_id();
+
+    if (!$user_id) {
+        wp_send_json_error(['message' => 'User not logged in']);
+    }
+
+    // Table name
+    $table_name = "{$wpdb->prefix}agqa_approval_review_page";
 
     // Use $wpdb->update for safe updates
     $updated = $wpdb->update(

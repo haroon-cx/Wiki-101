@@ -28,14 +28,14 @@ $url = "https://get.geojs.io/v1/ip/geo/{$ip}.json";
 
 // Set cURL options
 curl_setopt_array($curl, array(
-    CURLOPT_URL => $url, // Use the dynamically generated URL
-    CURLOPT_RETURNTRANSFER => true, // Return the response as a string
-    CURLOPT_ENCODING => '', // Handle all encodings
-    CURLOPT_MAXREDIRS => 10, // Maximum redirects
-    CURLOPT_TIMEOUT => 30, // Timeout in seconds
-    CURLOPT_FOLLOWLOCATION => true, // Follow redirects
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, // HTTP version
-    CURLOPT_CUSTOMREQUEST => 'GET', // Custom request method (GET)
+    CURLOPT_URL => $url,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'GET',
 ));
 
 // Execute cURL request and get the response
@@ -138,11 +138,10 @@ curl_close($curl);
                         </div>
                         <div class="table-body-col table-body-col-buttons">
                             <a href="#" class="approval-view-button"></a>
-                            <?php 
-
-                            if($value_approval->type_name == 'FAQ Edit' || $value_approval->type_name == 'FAQ Add'){
-                                $cuim_page_value = 'faq/?edit-review=' . $value_approval->id; 
-                            }else{
+                            <?php
+                            if ($value_approval->type_name == 'FAQ Edit' || $value_approval->type_name == 'FAQ Add') {
+                                $cuim_page_value = 'faq/?edit-review=' . $value_approval->id;
+                            } else {
                                 $cuim_page_value = '';
                             }
                             ?>

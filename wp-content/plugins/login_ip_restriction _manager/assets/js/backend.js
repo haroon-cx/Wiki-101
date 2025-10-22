@@ -1997,34 +1997,34 @@ jQuery(document).ready(function ($) {
       // Option 1: split (handles multiple spaces too)
       var dateOnly = rowDateText.split(/\s+/)[0]; // "2025/10/20"
       var formatted = `${dateOnly}`;           // "(2025/10/20 )"
-      var isIPAccountMatch = IPaccountsearchText.includes(loginRecordText); // Check if the search term is found anywhere in the row content
-      var isDateMatch = true; // Default to true (if no date range is selected)
+      var isIPAccountMatch = IPaccountsearchText.includes(loginRecordText);
+      var isDateMatch = true;
       if (startDate && endDate) {
         // Check if the row's date is within the range
-        isDateMatch = formatted >= startDate && formatted <= endDate; // Lexicographical comparison works for "YYYY/MM/DD"
+        isDateMatch = formatted >= startDate && formatted <= endDate;
       } else if (startDate) {
-        isDateMatch = formatted >= startDate; // If only start date is selected, check if the row's date is after start date
+        isDateMatch = formatted >= startDate;
       } else if (endDate) {
-        isDateMatch = formatted <= endDate; // If only end date is selected, check if the row's date is before end date
+        isDateMatch = formatted <= endDate;
       }
 
       if (isIPAccountMatch && isDateMatch) {
-        $(this).show(); // Show the row if it matches the filters
-        resultsFound = true; // Mark that at least one result is found
+        $(this).show();
+        resultsFound = true;
       } else {
-        $(this).hide(); // Hide the row if it does not match the filters
+        $(this).hide();
       }
     });
 
     // If no results are found, show the 'nothing found' message
     if (!resultsFound) {
-      $(".section-found").show(); // Show the 'no results' message
-      $(".custom-table-ctn").hide(); // Show the 'no results' message
-      $("div#pagination-demo").hide(); // Hide pagination
+      $(".section-found").show();
+      $(".custom-table-ctn").hide();
+      $("div#pagination-demo").hide();
     } else {
-      $("div#pagination-demo").show(); // Show pagination
-      $(".section-found").hide(); // Hide the 'nothing found' message
-      $(".custom-table-ctn").show(); // Show the 'no results' message
+      $("div#pagination-demo").show();
+      $(".section-found").hide();
+      $(".custom-table-ctn").show();
     }
 
     setTimeout(function () {
