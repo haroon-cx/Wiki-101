@@ -112,20 +112,18 @@ if ($edit_faq_review !== 0) {
                                 </div>
                             </div>
 
-                            <div id="reject-submit-popup" class="reject-submit-popup active">
+                            <div id="reject-submit-popup" class="reject-submit-popup">
                                 <div class="confirm-submit-popup-box">
                                     <h2>Reject</h2>
                                     <div class="popup-form-cross-icon"></div>
                                     <div class="form-message">Are you sure you want to Reject?</div>
                                     <div class="form-buttons agqa-popup-form-buttons d-flex">
                                         <button class="no-confirm-submit" type="button">No</button>
-                                        <input type="submit" value="Yes" id="confirm-submit">
+                                        <button type="button" value="Yes" id="reject-confirm-submit" data-id="<?php echo $faq_value->id; ?>">Yes</button>
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" id="faq-reject-btn" class="reject-button">Reject</button>
-
-
+                            <button type="button" value="Reject" id="faq-reject-btn" class="reject-button">Reject</button>
                             <input type="submit" value="Approve" class="agqa-edit-submit-btn" id="confirm-submit-popup-button">
                         </div>
                     </form>

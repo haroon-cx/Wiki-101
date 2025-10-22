@@ -1230,124 +1230,236 @@ add_action('wp_ajax_nopriv_add_sale_provider_data', 'handle_add_sale_provider_da
  * Edit Revenue Form Handler
  */
 
+// function handle_edit_revnue_form()
+// {
+//     // Initialize response array
+//     $response = [
+//         'status'  => 'error', // Default status
+//         'message' => '',
+//     ];
+//     // Verify nonce
+//     if (! isset($_POST['nonce']) || ! wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+//         $response['message'] = 'Error: Invalid nonce!';
+//         echo json_encode($response);
+//         wp_die();
+//     }
+//     // Check for form data
+//     if (! isset($_POST['form_data'])) {
+//         $response['message'] = 'Error: Invalid data';
+//         echo json_encode($response);
+//         wp_die();
+//     }
+//     parse_str($_POST['form_data'], $data); // Parse serialized form data
+//     global $wpdb;
+//     // Get provider-id from the form data
+//     $provider_id = isset($data['provider-id']) ? intval($data['provider-id']) : 0;
+
+//     if ($provider_id <= 0) {
+//         $response['message'] = 'Error: Invalid provider ID';
+//         echo json_encode($response);
+//         wp_die();
+//     }
+
+//     // Sanitize other form data
+//     // $provider_name = sanitize_text_field($data['provider-name']);
+//     $image_url   = isset($data['imageurl']) ? esc_url_raw($data['imageurl']) : '';
+//     $image_urls = isset($data['imageurls']) && !empty($data['imageurls']) 
+//     ? esc_url_raw($data['imageurls']) 
+//     : (isset($data['already-upload-contract']) && !empty($data['already-upload-contract']) ? esc_url_raw($data['already-upload-contract']) : '');
+//     $insert_data = [
+//         // 'provider_name' => !empty($provider_name) ? sanitize_text_field($provider_name) : null,
+//         'state'                       => ! empty($data['state']) ? sanitize_text_field($data['state']) : null,
+//         'game_category_id'            => ! empty($data['select-game-category-id']) ? sanitize_text_field($data['select-game-category-id']) : null,
+//         'game_type_id'                => ! empty($data['select-game-type-id']) ? sanitize_text_field($data['select-game-type-id']) : null,
+//         'selling_price'               => isset($data['selling-price']) && is_numeric($data['selling-price']) ? floatval($data['selling-price']) : null,
+//         'api_cost'                    => isset($data['api-cost']) && is_numeric($data['api-cost']) ? floatval($data['api-cost']) : null,
+//         'api_type'                    => ! empty($data['api-type']) ? sanitize_text_field($data['api-type']) : null,
+//         'game_info_website'           => ! empty($data['game-info-website']) ? ($data['game-info-website']) : null,
+//         'game_demo_website'           => ! empty($data['game-demo-website']) ? ($data['game-demo-website']) : 'none',
+//         'representative_contact_info' => ! empty($data['representative-name']) ? sanitize_text_field($data['representative-name']) : null,
+//         'representative_telegram'     => ! empty($data['representative-telegram']) ? sanitize_text_field($data['representative-telegram']) : 'none',
+//         'custom_label_1'              => ! empty($data['custom-label-1']) ? sanitize_text_field($data['custom-label-1']) : null,
+//         'custom_label_2'              => ! empty($data['custom-label-2']) ? sanitize_text_field($data['custom-label-2']) : null,
+//         'custom_label_3'              => ! empty($data['custom-label-3']) ? sanitize_text_field($data['custom-label-3']) : null,
+//         'custom_label_4'              => ! empty($data['custom-label-4']) ? sanitize_text_field($data['custom-label-4']) : null,
+//         'custom_field_1'              => ! empty($data['custom-field-1']) ? sanitize_text_field($data['custom-field-1']) : null,
+//         'custom_field_2'              => ! empty($data['custom-field-2']) ? sanitize_text_field($data['custom-field-2']) : null,
+//         'custom_field_3'              => ! empty($data['custom-field-3']) ? sanitize_text_field($data['custom-field-3']) : null,
+//         'custom_field_4'              => ! empty($data['custom-field-4']) ? sanitize_text_field($data['custom-field-4']) : null,
+//         'notes'                       => ! empty($data['notes-detail']) ? sanitize_textarea_field($data['notes-detail']) : null,
+//         // 'image_url' => !empty($image_url) ? $image_url : null,
+//         'contract_filename'           => $image_urls,
+//         // 'contract_upload_date'        => current_time('mysql'), // Set this to current time
+//         'url_update_date'             => ! empty($data['url-update-date']) ? sanitize_text_field($data['url-update-date']) : null,
+//     ];
+
+// // 1) Inputs normalize
+//     $provider_name = isset($data['provider-game-name']) ? sanitize_text_field($data['provider-game-name']) : '';
+//     $cat_id        = ! empty($data['select-game-category-id']) ? intval($data['select-game-category-id']) : 0;
+//     $type_id       = ! empty($data['select-game-type-id']) ? intval($data['select-game-type-id']) : 0;
+
+// // 2) Guard (optional)
+//     if ($provider_name !== '' && $cat_id > 0 && $type_id > 0) {
+
+//         // 3) Check same combo in ANY OTHER row (id != current)
+//         $exists = $wpdb->get_var(
+//             $wpdb->prepare(
+//                 "SELECT COUNT(*)
+//              FROM {$wpdb->prefix}agqa_revenu
+//              WHERE provider_name = %s
+//                AND game_category_id = %d
+//                AND game_type_id = %d
+//                AND id != %d",
+//                 $provider_name,
+//                 $cat_id,
+//                 $type_id,
+//                 $provider_id // current editing row's id
+//             )
+//         );
+
+//         // 4) If found, block update with JSON
+//         if (intval($exists) > 0) {
+//             // $response['status']  = 'error';
+//             // $response['message'] = 'This is already exists';
+//             echo json_encode('This is already exists');
+//             wp_die();
+//         }
+//     }
+//     // Set the WHERE condition to update the correct record by provider-id
+//     $where = [
+//         'id' => $provider_id, // Use provider_id to identify the record
+//     ];
+
+//     // Update the record in the database
+//     $update_result = $wpdb->update($wpdb->prefix . 'agqa_revenu', $insert_data, $where);
+
+//     // Check if the update was successful
+//     if ($update_result === false) {
+//         $response['message'] = 'Error: Update failed! ' . $wpdb->last_error;
+//         echo json_encode($response);
+//         wp_die();
+//     }
+
+//     // If everything went well, return success
+//     $response['status']  = 'success';
+//     $response['message'] = 'Success: Provider data updated!';
+//     echo json_encode($response);
+//     wp_die();
+// }
+// add_action('wp_ajax_handle_edit_revnue_form', 'handle_edit_revnue_form');
+// add_action('wp_ajax_nopriv_handle_edit_revnue_form', 'handle_edit_revnue_form');
+
+
+
 function handle_edit_revnue_form()
 {
-    // Initialize response array
-    $response = [
-        'status'  => 'error', // Default status
-        'message' => '',
-    ];
-    // Verify nonce
-    if (! isset($_POST['nonce']) || ! wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
-        $response['message'] = 'Error: Invalid nonce!';
-        echo json_encode($response);
-        wp_die();
-    }
-    // Check for form data
-    if (! isset($_POST['form_data'])) {
-        $response['message'] = 'Error: Invalid data';
-        echo json_encode($response);
-        wp_die();
-    }
-    parse_str($_POST['form_data'], $data); // Parse serialized form data
-    global $wpdb;
-    // Get provider-id from the form data
-    $provider_id = isset($data['provider-id']) ? intval($data['provider-id']) : 0;
+    $response = ['status' => 'error', 'message' => ''];
 
+    // 1) Nonce check
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+        $response['message'] = 'Error: Invalid nonce!';
+        echo json_encode($response); wp_die();
+    }
+
+    // 2) Form data check
+    if (!isset($_POST['form_data'])) {
+        $response['message'] = 'Error: Invalid data';
+        echo json_encode($response); wp_die();
+    }
+
+    parse_str($_POST['form_data'], $data); // serialized form parse
+
+    global $wpdb;
+
+    // 3) Provider ID must be > 0
+    $provider_id = isset($data['provider-id']) ? intval($data['provider-id']) : 0;
     if ($provider_id <= 0) {
         $response['message'] = 'Error: Invalid provider ID';
-        echo json_encode($response);
-        wp_die();
+        echo json_encode($response); wp_die();
     }
 
-    // Sanitize other form data
-    // $provider_name = sanitize_text_field($data['provider-name']);
-    $image_url   = isset($data['imageurl']) ? esc_url_raw($data['imageurl']) : '';
-    $image_urls = isset($data['imageurls']) && !empty($data['imageurls']) 
-    ? esc_url_raw($data['imageurls']) 
-    : (isset($data['already-upload-contract']) && !empty($data['already-upload-contract']) ? esc_url_raw($data['already-upload-contract']) : '');
+    // 4) Image URLs preference: imageurls -> already-upload-contract -> ''
+    $image_urls = '';
+    if (!empty($data['imageurls'])) {
+        $image_urls = sanitize_text_field($data['imageurls']); // if comma-separated list, keep as text
+    } elseif (!empty($data['already-upload-contract'])) {
+        $image_urls = sanitize_text_field($data['already-upload-contract']);
+    }
+
+    // 5) Build insert data (NULL values hata dena chahein to neeche filter laga dia)
     $insert_data = [
-        // 'provider_name' => !empty($provider_name) ? sanitize_text_field($provider_name) : null,
-        'state'                       => ! empty($data['state']) ? sanitize_text_field($data['state']) : null,
-        'game_category_id'            => ! empty($data['select-game-category-id']) ? sanitize_text_field($data['select-game-category-id']) : null,
-        'game_type_id'                => ! empty($data['select-game-type-id']) ? sanitize_text_field($data['select-game-type-id']) : null,
-        'selling_price'               => isset($data['selling-price']) && is_numeric($data['selling-price']) ? floatval($data['selling-price']) : null,
-        'api_cost'                    => isset($data['api-cost']) && is_numeric($data['api-cost']) ? floatval($data['api-cost']) : null,
-        'api_type'                    => ! empty($data['api-type']) ? sanitize_text_field($data['api-type']) : null,
-        'game_info_website'           => ! empty($data['game-info-website']) ? ($data['game-info-website']) : null,
-        'game_demo_website'           => ! empty($data['game-demo-website']) ? ($data['game-demo-website']) : 'none',
-        'representative_contact_info' => ! empty($data['representative-name']) ? sanitize_text_field($data['representative-name']) : null,
-        'representative_telegram'     => ! empty($data['representative-telegram']) ? sanitize_text_field($data['representative-telegram']) : 'none',
-        'custom_label_1'              => ! empty($data['custom-label-1']) ? sanitize_text_field($data['custom-label-1']) : null,
-        'custom_label_2'              => ! empty($data['custom-label-2']) ? sanitize_text_field($data['custom-label-2']) : null,
-        'custom_label_3'              => ! empty($data['custom-label-3']) ? sanitize_text_field($data['custom-label-3']) : null,
-        'custom_label_4'              => ! empty($data['custom-label-4']) ? sanitize_text_field($data['custom-label-4']) : null,
-        'custom_field_1'              => ! empty($data['custom-field-1']) ? sanitize_text_field($data['custom-field-1']) : null,
-        'custom_field_2'              => ! empty($data['custom-field-2']) ? sanitize_text_field($data['custom-field-2']) : null,
-        'custom_field_3'              => ! empty($data['custom-field-3']) ? sanitize_text_field($data['custom-field-3']) : null,
-        'custom_field_4'              => ! empty($data['custom-field-4']) ? sanitize_text_field($data['custom-field-4']) : null,
-        'notes'                       => ! empty($data['notes-detail']) ? sanitize_textarea_field($data['notes-detail']) : null,
-        // 'image_url' => !empty($image_url) ? $image_url : null,
-        'contract_filename'           => $image_urls,
-        // 'contract_upload_date'        => current_time('mysql'), // Set this to current time
-        'url_update_date'             => ! empty($data['url-update-date']) ? sanitize_text_field($data['url-update-date']) : null,
+        'question'                       => $data['provider-game-name'],
+        'api_id'                       => $provider_id,
+        'type_name'                   => 'API Edit', // (agar 'revenue' chahiye to yahan change kar lein)
+        'api_status'                   => 'revnue', // (agar 'revenue' chahiye to yahan change kar lein)
+        'state'                        => !empty($data['state']) ? sanitize_text_field($data['state']) : null,
+        'game_category_id'             => !empty($data['select-game-category-id']) ? intval($data['select-game-category-id']) : null,
+        'game_type_id'                 => !empty($data['select-game-type-id']) ? intval($data['select-game-type-id']) : null,
+        'selling_price'                => (isset($data['selling-price']) && is_numeric($data['selling-price'])) ? floatval($data['selling-price']) : null,
+        'api_cost'                     => (isset($data['api-cost']) && is_numeric($data['api-cost'])) ? floatval($data['api-cost']) : null,
+        'api_type'                     => !empty($data['api-type']) ? sanitize_text_field($data['api-type']) : null,
+        'game_info_website'            => !empty($data['game-info-website']) ? esc_url_raw($data['game-info-website']) : null,
+        'game_demo_website'            => !empty($data['game-demo-website']) ? esc_url_raw($data['game-demo-website']) : 'none',
+        'representative_contact_info'  => !empty($data['representative-name']) ? sanitize_text_field($data['representative-name']) : null,
+        'representative_telegram'      => !empty($data['representative-telegram']) ? sanitize_text_field($data['representative-telegram']) : 'none',
+        'custom_label_1'               => !empty($data['custom-label-1']) ? sanitize_text_field($data['custom-label-1']) : null,
+        'custom_label_2'               => !empty($data['custom-label-2']) ? sanitize_text_field($data['custom-label-2']) : null,
+        'custom_label_3'               => !empty($data['custom-label-3']) ? sanitize_text_field($data['custom-label-3']) : null,
+        'custom_label_4'               => !empty($data['custom-label-4']) ? sanitize_text_field($data['custom-label-4']) : null,
+        'custom_field_1'               => !empty($data['custom-field-1']) ? sanitize_text_field($data['custom-field-1']) : null,
+        'custom_field_2'               => !empty($data['custom-field-2']) ? sanitize_text_field($data['custom-field-2']) : null,
+        'custom_field_3'               => !empty($data['custom-field-3']) ? sanitize_text_field($data['custom-field-3']) : null,
+        'custom_field_4'               => !empty($data['custom-field-4']) ? sanitize_text_field($data['custom-field-4']) : null,
+        'notes'                        => !empty($data['notes-detail']) ? sanitize_textarea_field($data['notes-detail']) : null,
+        'contract_filename'            => $image_urls,
+        'url_update_date'              => !empty($data['url-update-date']) ? sanitize_text_field($data['url-update-date']) : '',
     ];
 
-// 1) Inputs normalize
-    $provider_name = isset($data['provider-game-name']) ? sanitize_text_field($data['provider-game-name']) : '';
-    $cat_id        = ! empty($data['select-game-category-id']) ? intval($data['select-game-category-id']) : 0;
-    $type_id       = ! empty($data['select-game-type-id']) ? intval($data['select-game-type-id']) : 0;
+    // (optional) NULL values hata dein taake DB defaults apply hon
+    $insert_data = array_filter(
+        $insert_data,
+        function($v) { return !is_null($v); }
+    );
 
-// 2) Guard (optional)
-    if ($provider_name !== '' && $cat_id > 0 && $type_id > 0) {
-
-        // 3) Check same combo in ANY OTHER row (id != current)
-        $exists = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT COUNT(*)
-             FROM {$wpdb->prefix}agqa_revenu
-             WHERE provider_name = %s
-               AND game_category_id = %d
-               AND game_type_id = %d
-               AND id != %d",
-                $provider_name,
-                $cat_id,
-                $type_id,
-                $provider_id // current editing row's id
-            )
-        );
-
-        // 4) If found, block update with JSON
-        if (intval($exists) > 0) {
-            // $response['status']  = 'error';
-            // $response['message'] = 'This is already exists';
-            echo json_encode('This is already exists');
-            wp_die();
+    // 6) Formats — columns ke type ke mutabiq
+    $formats = [];
+    foreach ($insert_data as $col => $val) {
+        switch ($col) {
+            case 'api_id':
+            case 'game_category_id':
+            case 'game_type_id':
+                $formats[] = '%d';
+                break;
+            case 'selling_price':
+            case 'api_cost':
+                $formats[] = '%f';
+                break;
+            default:
+                $formats[] = '%s';
         }
     }
-    // Set the WHERE condition to update the correct record by provider-id
-    $where = [
-        'id' => $provider_id, // Use provider_id to identify the record
-    ];
 
-    // Update the record in the database
-    $update_result = $wpdb->update($wpdb->prefix . 'agqa_revenu', $insert_data, $where);
+    $table = $wpdb->prefix . 'agqa_approval_review_page';
 
-    // Check if the update was successful
-    if ($update_result === false) {
-        $response['message'] = 'Error: Update failed! ' . $wpdb->last_error;
-        echo json_encode($response);
-        wp_die();
+    // ✅ INSERT (no where!)
+    $inserted = $wpdb->insert($table, $insert_data, $formats);
+
+    if ($inserted === false) {
+        $response['message'] = 'Error: Insert failed! ' . $wpdb->last_error;
+        echo json_encode($response); wp_die();
     }
 
-    // If everything went well, return success
     $response['status']  = 'success';
-    $response['message'] = 'Success: Provider data updated!';
-    echo json_encode($response);
-    wp_die();
+    $response['message'] = 'Success: New provider row inserted!';
+    // optionally return new insert id
+    $response['insert_id'] = $wpdb->insert_id;
+
+    echo json_encode($response); wp_die();
 }
 add_action('wp_ajax_handle_edit_revnue_form', 'handle_edit_revnue_form');
 add_action('wp_ajax_nopriv_handle_edit_revnue_form', 'handle_edit_revnue_form');
+
+
 
 /**
  * Edit Sales Handler

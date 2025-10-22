@@ -306,13 +306,22 @@ function handle_verification_user_email()
     $table_name = $wpdb->prefix . 'agqa_wiki_add_users';
 
     // Check if user exists & fetch current state
-    $current = $wpdb->get_row(
-        $wpdb->prepare(
-            "SELECT account, state FROM {$table_name} WHERE account = %s LIMIT 1",
-            $account
-        )
-    );
-
+    // $current = $wpdb->get_row(
+    //     $wpdb->prepare(
+    //         "SELECT account, state FROM {$table_name} WHERE account = %s LIMIT 1",
+    //         $account
+    //     )
+    // );
+$current = $wpdb->get_row(
+    $wpdb->prepare(
+        "SELECT account, state
+         FROM {$table_name}
+         WHERE account = %s
+         ORDER BY created_at DESC, id DESC
+         LIMIT 1",
+        $account
+    )
+);
     if (! $current) {
         wp_send_json_error(['message' => 'User not found in custom table.']);
     }
@@ -1099,7 +1108,6 @@ function handle_faq_read_report()
 }
 
 
-
 /**
  * handle_approval_read_report
  */
@@ -1221,8 +1229,6 @@ function handle_approval_user_review_report()
         wp_send_json_error(['message' => 'No matching user record found or update failed.']);
     }
 }
-
-
 /**
  * user_profile_notification
  */

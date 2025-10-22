@@ -3,6 +3,7 @@
 function merged_api_ui_shortcode() {
     // Datebase
     $revenue_id      = isset( $_GET[ 'revenue' ] ) ? intval( $_GET[ 'revenue' ] ) : 0;
+    $edit_review_revenue_id = isset( $_GET[ 'review_revnue_api' ] ) ? intval( $_GET[ 'review_revnue_api' ] ) : 0;
     $edit_revenue_id = isset( $_GET[ 'edit' ] ) ? intval( $_GET[ 'edit' ] ) : 0;
     $add_revenue_id  = isset( $_GET[ 'add' ] ) ? intval( $_GET[ 'add' ] ) : 0;
     $revenu_back_button = '';
@@ -69,19 +70,22 @@ function merged_api_ui_shortcode() {
         }
 
         ob_start();
+        if ($edit_review_revenue_id) {
+            include 'revenu-review-api.php';
+        }
         if ($edit_revenue_id) {
             include 'edit-revenu-form.php';
         }
         if ($add_revenue_id) {
             include 'add-revenu-form.php';
         }
-		if ($edit_revenue_id == 0 && $add_revenue_id == 0) {
+		if ($edit_revenue_id == 0 && $add_revenue_id == 0 ) {
         include 'revenu-reorder.php';
         include 'report-form.php';
 		}
     ?>
         <!-- HEADING AREA - PRESERVED -->
-        <?php if ($edit_revenue_id == 0 && $add_revenue_id == 0) {?>
+        <?php if ($edit_revenue_id == 0 && $add_revenue_id == 0 && $edit_review_revenue_id == 0) {?>
         <div class="merged-ui-wrapper">
             <!--  Heading at Top -->
             <div class="api-heading-wrapper">

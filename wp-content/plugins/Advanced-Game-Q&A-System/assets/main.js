@@ -1525,7 +1525,8 @@ jQuery(document).ready(function ($) {
       }
       formData += "&imageurls=" + encodeURIComponent(imageUrls);
 
-      //       console.log(formData);
+            // alert(formData);
+            // return;
 
       var nonce = agqa_ajax.nonce;
       $.ajax({
@@ -1537,7 +1538,7 @@ jQuery(document).ready(function ($) {
           nonce: nonce,
         },
         success: function (response) {
-          // console.log(response);
+        //  alert(response);
           if (response.includes("Success")) {
             // alert("Provider data updated!");
             const $successMsg = $(
@@ -2345,5 +2346,13 @@ jQuery(document).ready(function ($) {
       },
     });
   });
-  // END
+
+/**
+ * reject popup 
+ */
+
+  jQuery('#faq-reject-btn').on("click", function(e){
+    e.preventDefault();
+     $("#reject-submit-popup").addClass("active");
+  });
 });

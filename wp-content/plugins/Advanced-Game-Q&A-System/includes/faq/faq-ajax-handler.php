@@ -182,6 +182,47 @@ function handle_faq_review_approval()
 add_action('wp_ajax_approve_faq_review', 'handle_faq_review_approval');
 add_action('wp_ajax_nopriv_approve_faq_review', 'handle_faq_review_approval'); // For non-logged-in users
 
+
+
+/**
+ * handle_reject_faq_review_approval
+ */
+
+function handle_reject_faq_review_approval()
+{
+    global $wpdb;
+
+    // Ensure nonce is valid for security
+    if (! isset($_POST['nonce']) || ! wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+        die('Permission Denied');
+    }
+
+    parse_str($_POST['form_data'], $data); // Parse serialized form data
+
+    $review_id = intval($data['review-id']);
+    $wpdb->update(
+        "{$wpdb->prefix}agqa_approval_review_page",
+        array(
+            'status' => 'rejected',
+        ),
+        array('id' => $review_id) // Update the specific review ID
+    );
+
+    // If everything went well, return success
+    $response['status']  = 'Success';
+    $response['message'] = 'Successfully Submitted';
+    echo json_encode($response);
+
+
+
+    wp_die(); // End AJAX request
+}
+
+// Hook the action to an AJAX call
+add_action('wp_ajax_handle_reject_faq_review_approval', 'handle_reject_faq_review_approval');
+add_action('wp_ajax_nopriv_handle_reject_faq_review_approval', 'handle_reject_faq_review_approval');
+
+
 /**
  * Edit form FAQ handler
  */

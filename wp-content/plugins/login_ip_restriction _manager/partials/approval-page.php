@@ -10,12 +10,12 @@ $get_data_approval = $wpdb->get_results("
                 type_name,
                 status,
                 provider_name,
+                api_status,
                 created_at
             FROM $table_approval_review
              ORDER BY
             id DESC
             ");
-
 
 $dataTimezone = "Asia/Karachi";
 $curl = curl_init();
@@ -142,8 +142,12 @@ curl_close($curl);
                             if ($value_approval->type_name == 'FAQ Edit' || $value_approval->type_name == 'FAQ Add') {
                                 $cuim_page_value = 'faq/?edit-review=' . $value_approval->id;
                             } else {
-                                $cuim_page_value = '';
+                                if($value_approval->api_status == 'revnue'){
+                                $cuim_page_value = '/api-revenue-share-lookup/revenue/?review_revnue_api=' . $value_approval->id;
+                            }else{
+                                 $cuim_page_value = '';
                             }
+                        }
                             ?>
                             <a href="<?php echo home_url('/' . $cuim_page_value); ?>" class="approval-edit-button"></a>
                         </div>
