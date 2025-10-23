@@ -716,6 +716,7 @@ thead {
 .daterangepicker .calendar-table td:hover,
 .daterangepicker .calendar-table td.active,
 .daterangepicker .calendar-table td.start-date,
+.daterangepicker .calendar-table td.in-range,
 .daterangepicker .calendar-table td.end-date {
     background-color: #6e6e6e !important;
 }

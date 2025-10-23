@@ -1,5 +1,5 @@
 <?php
-$edit_revenue_ids = isset($_GET['review_revnue_api']) ? intval($_GET['review_revnue_api']) : 0;
+$edit_revenue_ids = isset($_GET['review_sale_api']) ? intval($_GET['review_sale_api']) : 0;
 $edit_revenue_back = isset($_GET['back']) ? intval($_GET['back']) : 0;
 $edit_back_button = '';
 if ($edit_revenue_back) {
@@ -60,7 +60,7 @@ $rows_cat_names = $wpdb->get_results("
     </div>
     <div class="api-form-ctn">
         <div class="api-form-wrapper" id="UN">
-            <form autocomplete="off" id="edit-revnue-review-form" class="custom-form" novalidate="novalidate"
+            <form autocomplete="off" id="edit-sale-review-form" class="custom-form" novalidate="novalidate"
                 data-inited-validation="1">
                 <div class="form-field required">
                     <input type="hidden" name="review-id" value="<?php echo $edit_revenue_ids; ?>">

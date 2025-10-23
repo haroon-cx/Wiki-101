@@ -469,7 +469,9 @@ function agqa_like_question()
 
         $existing_like = $wpdb->get_var($wpdb->prepare(
             "SELECT COUNT(*) FROM {$wpdb->prefix}agqa_user_question_likes_dislikes WHERE user_id = %d AND question_id = %d AND action_type = %s",
-            $user_id, $question_id, 'like'
+            $user_id,
+            $question_id,
+            'like'
         ));
 
         if ($existing_like > 0) {
@@ -934,7 +936,6 @@ function handle_insert_provider_sale_data()
         // Determine table: revenue or sales
         $table_name = $wpdb->prefix . 'agqa_sales';
         $wpdb->insert($table_name, $insert_data);
-
     }
     echo 'Success: Provider data inserted!';
     wp_die();
@@ -969,15 +970,15 @@ function handle_add_revenue_provider_data()
         "SELECT image_url FROM {$wpdb->prefix}agqa_revenu WHERE id = %s LIMIT 1",
         $provider_id
     );
-     $image_pdf_query = $wpdb->prepare(
+    $image_pdf_query = $wpdb->prepare(
         "SELECT contract_filename FROM {$wpdb->prefix}agqa_revenu WHERE id = %s LIMIT 1",
         $provider_id
     );
-// Execute the query and fetch the image_url
+    // Execute the query and fetch the image_url
     $image_url = $wpdb->get_var($image_url_query);
     $image_pdf_url = $wpdb->get_var($image_pdf_query);
 
-// Split cat_id and type_id into arrays based on commas
+    // Split cat_id and type_id into arrays based on commas
     $cat_ids       = ! empty($data['select-game-category']) ? explode(',', $data['select-game-category']) : [];
     $game_type_ids = ! empty($data['select-game-type-id']) ? explode(',', $data['select-game-type-id']) : [];
     $provider_name = isset($data['provider-name']) ? sanitize_text_field($data['provider-name']) : '';
@@ -1024,7 +1025,7 @@ function handle_add_revenue_provider_data()
         $existing_record = $wpdb->get_var($wpdb->prepare(
             "SELECT id FROM {$wpdb->prefix}agqa_revenu WHERE provider_name = %s AND game_type_id = %d",
             $provider_name,
-            $type->id// Use the game_type_id from the fetched type
+            $type->id // Use the game_type_id from the fetched type
         ));
 
         if ($existing_record) {
@@ -1056,7 +1057,7 @@ function handle_add_revenue_provider_data()
             'custom_field_4'              => ! empty($data['custom-field-4']) ? sanitize_text_field($data['custom-field-4']) : null,
             'notes'                       => ! empty($data['notes-detail']) ? sanitize_textarea_field($data['notes-detail']) : null,
             'image_url'                   => ! empty($image_url) ? $image_url : null,
-            'contract_filename' => ! empty(trim($data['imageurls']))  ? esc_url_raw($data['imageurls'])  : ( ! empty($image_pdf_url) ? $image_pdf_url : 'none' ),
+            'contract_filename' => ! empty(trim($data['imageurls']))  ? esc_url_raw($data['imageurls'])  : (! empty($image_pdf_url) ? $image_pdf_url : 'none'),
             'contract_upload_date'        => current_time('mysql'), // Set this to current time
             'url_update_date'             => ! empty($data['url-update-date']) ? sanitize_text_field($data['url-update-date']) : '',
 
@@ -1115,11 +1116,11 @@ function handle_add_sale_provider_data()
         $provider_id
     );
 
-// Execute the query and fetch the image_url
+    // Execute the query and fetch the image_url
     $image_url = $wpdb->get_var($image_url_query);
     $image_pdf_url = $wpdb->get_var($image_pdf_query);
 
-// Split cat_id and type_id into arrays based on commas
+    // Split cat_id and type_id into arrays based on commas
     $cat_ids       = ! empty($data['select-game-category']) ? explode(',', $data['select-game-category']) : [];
     $game_type_ids = ! empty($data['select-game-type-id']) ? explode(',', $data['select-game-type-id']) : [];
     $provider_name = isset($data['provider-name']) ? sanitize_text_field($data['provider-name']) : '';
@@ -1167,7 +1168,7 @@ function handle_add_sale_provider_data()
         $existing_record = $wpdb->get_var($wpdb->prepare(
             "SELECT id FROM {$wpdb->prefix}agqa_sales WHERE provider_name = %s AND game_type_id = %d",
             $provider_name,
-            $type->id// Use the game_type_id from the fetched type
+            $type->id // Use the game_type_id from the fetched type
         ));
 
         if ($existing_record) {
@@ -1199,7 +1200,7 @@ function handle_add_sale_provider_data()
             'custom_field_4'          => ! empty($data['custom-field-4']) ? sanitize_text_field($data['custom-field-4']) : null,
             'notes'                   => ! empty($data['notes-detail']) ? sanitize_textarea_field($data['notes-detail']) : null,
             'image_url'               => ! empty($image_url) ? $image_url : null,
-            'contract_filename' => ! empty(trim($data['imageurls']))  ? esc_url_raw($data['imageurls']) : ( ! empty($image_pdf_url) ? $image_pdf_url : 'none' ),
+            'contract_filename' => ! empty(trim($data['imageurls']))  ? esc_url_raw($data['imageurls']) : (! empty($image_pdf_url) ? $image_pdf_url : 'none'),
             'contract_upload_date'    => current_time('mysql'), // Set this to current time
             'url_update_date'         => ! empty($data['url-update-date']) ? sanitize_text_field($data['url-update-date']) : '',
 
@@ -1263,9 +1264,9 @@ function handle_approved_revenue_review_data()
     // Sanitize other form data
     // $provider_name = sanitize_text_field($data['provider-name']);
     $image_url   = isset($data['imageurl']) ? esc_url_raw($data['imageurl']) : '';
-    $image_urls = isset($data['imageurls']) && !empty($data['imageurls']) 
-    ? esc_url_raw($data['imageurls']) 
-    : (isset($data['already-upload-contract']) && !empty($data['already-upload-contract']) ? esc_url_raw($data['already-upload-contract']) : '');
+    $image_urls = isset($data['imageurls']) && !empty($data['imageurls'])
+        ? esc_url_raw($data['imageurls'])
+        : (isset($data['already-upload-contract']) && !empty($data['already-upload-contract']) ? esc_url_raw($data['already-upload-contract']) : '');
     $insert_data = [
         // 'provider_name' => !empty($provider_name) ? sanitize_text_field($provider_name) : null,
         'state'                       => ! empty($data['state']) ? sanitize_text_field($data['state']) : null,
@@ -1293,12 +1294,12 @@ function handle_approved_revenue_review_data()
         'url_update_date'             => ! empty($data['url-update-date']) ? sanitize_text_field($data['url-update-date']) : null,
     ];
 
-// 1) Inputs normalize
+    // 1) Inputs normalize
     $provider_name = isset($data['provider-game-name']) ? sanitize_text_field($data['provider-game-name']) : '';
     $cat_id        = ! empty($data['select-game-category-id']) ? intval($data['select-game-category-id']) : 0;
     $type_id       = ! empty($data['select-game-type-id']) ? intval($data['select-game-type-id']) : 0;
 
-// 2) Guard (optional)
+    // 2) Guard (optional)
     if ($provider_name !== '' && $cat_id > 0 && $type_id > 0) {
 
         // 3) Check same combo in ANY OTHER row (id != current)
@@ -1339,6 +1340,15 @@ function handle_approved_revenue_review_data()
         echo json_encode($response);
         wp_die();
     }
+    $review_id = intval($data['review-id']);
+    // Update the FAQ review status to 'approved' and set the faq_id in the review
+    $wpdb->update(
+        "{$wpdb->prefix}agqa_approval_review_page",
+        array(
+            'status' => 'approved', // Set status to approved
+        ),
+        array('id' => $review_id) // Update the specific review ID
+    );
 
     // If everything went well, return success
     $response['status']  = 'success';
@@ -1358,13 +1368,15 @@ function handle_edit_revnue_form()
     // 1) Nonce check
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
         $response['message'] = 'Error: Invalid nonce!';
-        echo json_encode($response); wp_die();
+        echo json_encode($response);
+        wp_die();
     }
 
     // 2) Form data check
     if (!isset($_POST['form_data'])) {
         $response['message'] = 'Error: Invalid data';
-        echo json_encode($response); wp_die();
+        echo json_encode($response);
+        wp_die();
     }
 
     parse_str($_POST['form_data'], $data); // serialized form parse
@@ -1375,7 +1387,8 @@ function handle_edit_revnue_form()
     $provider_id = isset($data['provider-id']) ? intval($data['provider-id']) : 0;
     if ($provider_id <= 0) {
         $response['message'] = 'Error: Invalid provider ID';
-        echo json_encode($response); wp_die();
+        echo json_encode($response);
+        wp_die();
     }
 
     // 4) Image URLs preference: imageurls -> already-upload-contract -> ''
@@ -1418,7 +1431,9 @@ function handle_edit_revnue_form()
     // (optional) NULL values hata dein taake DB defaults apply hon
     $insert_data = array_filter(
         $insert_data,
-        function($v) { return !is_null($v); }
+        function ($v) {
+            return !is_null($v);
+        }
     );
 
     // 6) Formats — columns ke type ke mutabiq
@@ -1446,7 +1461,8 @@ function handle_edit_revnue_form()
 
     if ($inserted === false) {
         $response['message'] = 'Error: Insert failed! ' . $wpdb->last_error;
-        echo json_encode($response); wp_die();
+        echo json_encode($response);
+        wp_die();
     }
 
     $response['status']  = 'success';
@@ -1454,7 +1470,8 @@ function handle_edit_revnue_form()
     // optionally return new insert id
     $response['insert_id'] = $wpdb->insert_id;
 
-    echo json_encode($response); wp_die();
+    echo json_encode($response);
+    wp_die();
 }
 add_action('wp_ajax_handle_edit_revnue_form', 'handle_edit_revnue_form');
 add_action('wp_ajax_nopriv_handle_edit_revnue_form', 'handle_edit_revnue_form');
@@ -1464,7 +1481,7 @@ add_action('wp_ajax_nopriv_handle_edit_revnue_form', 'handle_edit_revnue_form');
 /**
  * Edit Sales Handler
  */
-function handle_edit_sales_form()
+function handle_approved_sales_review_data()
 {
     // Initialize response array
     $response = [
@@ -1497,9 +1514,9 @@ function handle_edit_sales_form()
     // Sanitize other form data
     // $provider_name = sanitize_text_field($data['provider-name']);
     $image_url   = isset($data['imageurl']) ? esc_url_raw($data['imageurl']) : '';
-     $image_urls = isset($data['imageurls']) && !empty($data['imageurls']) 
-    ? esc_url_raw($data['imageurls']) 
-    : (isset($data['already-upload-contract']) && !empty($data['already-upload-contract']) ? esc_url_raw($data['already-upload-contract']) : ''); // Get the image URL from the form data
+    $image_urls = isset($data['imageurls']) && !empty($data['imageurls'])
+        ? esc_url_raw($data['imageurls'])
+        : (isset($data['already-upload-contract']) && !empty($data['already-upload-contract']) ? esc_url_raw($data['already-upload-contract']) : ''); // Get the image URL from the form data
     $insert_data = [
         // 'provider_name' => !empty($provider_name) ? sanitize_text_field($provider_name) : null,
         'state'                   => ! empty($data['state']) ? sanitize_text_field($data['state']) : null,
@@ -1527,12 +1544,12 @@ function handle_edit_sales_form()
         'url_update_date'         => ! empty($data['url-update-date']) ? sanitize_text_field($data['url-update-date']) : null,
     ];
 
-// 1) Inputs normalize
+    // 1) Inputs normalize
     $provider_name = isset($data['provider-game-name']) ? sanitize_text_field($data['provider-game-name']) : '';
     $cat_id        = ! empty($data['select-game-category-id']) ? intval($data['select-game-category-id']) : 0;
     $type_id       = ! empty($data['select-game-type-id']) ? intval($data['select-game-type-id']) : 0;
 
-// 2) Guard (optional)
+    // 2) Guard (optional)
     if ($provider_name !== '' && $cat_id > 0 && $type_id > 0) {
 
         // 3) Check same combo in ANY OTHER row (id != current)
@@ -1574,16 +1591,150 @@ function handle_edit_sales_form()
         wp_die();
     }
 
+
+
+     $review_id = intval($data['review-id']);
+    // Update the FAQ review status to 'approved' and set the faq_id in the review
+    $wpdb->update(
+        "{$wpdb->prefix}agqa_approval_review_page",
+        array(
+            'status' => 'approved', // Set status to approved
+        ),
+        array('id' => $review_id) // Update the specific review ID
+    );
+
     // If everything went well, return success
     $response['status']  = 'success';
     $response['message'] = 'Success: Provider data updated!';
     echo json_encode($response);
     wp_die();
 }
+add_action('wp_ajax_handle_approved_sales_review_data', 'handle_approved_sales_review_data');
+add_action('wp_ajax_nopriv_handle_approved_sales_review_data', 'handle_approved_sales_review_data');
+
+
+
+/**
+ * 
+ */
+
+
+function handle_edit_sales_form()
+{
+   $response = ['status' => 'error', 'message' => ''];
+
+    // 1) Nonce check
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'agqa_nonce')) {
+        $response['message'] = 'Error: Invalid nonce!';
+        echo json_encode($response);
+        wp_die();
+    }
+
+    // 2) Form data check
+    if (!isset($_POST['form_data'])) {
+        $response['message'] = 'Error: Invalid data';
+        echo json_encode($response);
+        wp_die();
+    }
+
+    parse_str($_POST['form_data'], $data); // serialized form parse
+
+    global $wpdb;
+
+    // 3) Provider ID must be > 0
+    $provider_id = isset($data['provider-id']) ? intval($data['provider-id']) : 0;
+    if ($provider_id <= 0) {
+        $response['message'] = 'Error: Invalid provider ID';
+        echo json_encode($response);
+        wp_die();
+    }
+
+    // 4) Image URLs preference: imageurls -> already-upload-contract -> ''
+    $image_urls = '';
+    if (!empty($data['imageurls'])) {
+        $image_urls = sanitize_text_field($data['imageurls']); // if comma-separated list, keep as text
+    } elseif (!empty($data['already-upload-contract'])) {
+        $image_urls = sanitize_text_field($data['already-upload-contract']);
+    }
+
+    // 5) Build insert data (NULL values hata dena chahein to neeche filter laga dia)
+    $insert_data = [
+        'question'                       => $data['provider-game-name'],
+        'api_id'                       => $provider_id,
+        'type_name'                   => 'API Edit', // (agar 'revenue' chahiye to yahan change kar lein)
+        'api_status'                   => 'sale', // (agar 'revenue' chahiye to yahan change kar lein)
+        'state'                        => !empty($data['state']) ? sanitize_text_field($data['state']) : null,
+        'game_category_id'             => !empty($data['select-game-category-id']) ? intval($data['select-game-category-id']) : null,
+        'game_type_id'                 => !empty($data['select-game-type-id']) ? intval($data['select-game-type-id']) : null,
+        'selling_price'                => (isset($data['selling-price']) && is_numeric($data['selling-price'])) ? floatval($data['selling-price']) : null,
+        'api_cost'                     => (isset($data['api-cost']) && is_numeric($data['api-cost'])) ? floatval($data['api-cost']) : null,
+        'api_type'                     => !empty($data['api-type']) ? sanitize_text_field($data['api-type']) : null,
+        'game_info_website'            => !empty($data['game-info-website']) ? esc_url_raw($data['game-info-website']) : null,
+        'game_demo_website'            => !empty($data['game-demo-website']) ? esc_url_raw($data['game-demo-website']) : 'none',
+        'representative_contact_info'  => !empty($data['representative-name']) ? sanitize_text_field($data['representative-name']) : null,
+        'representative_telegram'      => !empty($data['representative-telegram']) ? sanitize_text_field($data['representative-telegram']) : 'none',
+        'custom_label_1'               => !empty($data['custom-label-1']) ? sanitize_text_field($data['custom-label-1']) : null,
+        'custom_label_2'               => !empty($data['custom-label-2']) ? sanitize_text_field($data['custom-label-2']) : null,
+        'custom_label_3'               => !empty($data['custom-label-3']) ? sanitize_text_field($data['custom-label-3']) : null,
+        'custom_label_4'               => !empty($data['custom-label-4']) ? sanitize_text_field($data['custom-label-4']) : null,
+        'custom_field_1'               => !empty($data['custom-field-1']) ? sanitize_text_field($data['custom-field-1']) : null,
+        'custom_field_2'               => !empty($data['custom-field-2']) ? sanitize_text_field($data['custom-field-2']) : null,
+        'custom_field_3'               => !empty($data['custom-field-3']) ? sanitize_text_field($data['custom-field-3']) : null,
+        'custom_field_4'               => !empty($data['custom-field-4']) ? sanitize_text_field($data['custom-field-4']) : null,
+        'notes'                        => !empty($data['notes-detail']) ? sanitize_textarea_field($data['notes-detail']) : null,
+        'contract_filename'            => $image_urls,
+        'url_update_date'              => !empty($data['url-update-date']) ? sanitize_text_field($data['url-update-date']) : '',
+    ];
+
+    // (optional) NULL values hata dein taake DB defaults apply hon
+    $insert_data = array_filter(
+        $insert_data,
+        function ($v) {
+            return !is_null($v);
+        }
+    );
+
+    // 6) Formats — columns ke type ke mutabiq
+    $formats = [];
+    foreach ($insert_data as $col => $val) {
+        switch ($col) {
+            case 'api_id':
+            case 'game_category_id':
+            case 'game_type_id':
+                $formats[] = '%d';
+                break;
+            case 'selling_price':
+            case 'api_cost':
+                $formats[] = '%f';
+                break;
+            default:
+                $formats[] = '%s';
+        }
+    }
+
+    $table = $wpdb->prefix . 'agqa_approval_review_page';
+
+    // ✅ INSERT (no where!)
+    $inserted = $wpdb->insert($table, $insert_data, $formats);
+
+    if ($inserted === false) {
+        $response['message'] = 'Error: Insert failed! ' . $wpdb->last_error;
+        echo json_encode($response);
+        wp_die();
+    }
+
+    $response['status']  = 'success';
+    $response['message'] = 'Success: New provider row inserted!';
+    // optionally return new insert id
+    $response['insert_id'] = $wpdb->insert_id;
+
+    echo json_encode($response);
+    wp_die();
+}
 add_action('wp_ajax_handle_edit_sales_form', 'handle_edit_sales_form');
 add_action('wp_ajax_nopriv_handle_edit_sales_form', 'handle_edit_sales_form');
 
-// END
+
 
 /**
  * Upload file in media handler
@@ -1596,7 +1747,7 @@ function ddmu_handle_upload()
         echo json_encode(['status' => 'error', 'message' => 'Nonce verification failed.']);
         wp_die();
     }
-   
+
 
     if (! empty($_FILES['file'])) {
         $uploaded_file = $_FILES['file'];
@@ -1629,7 +1780,8 @@ add_action('wp_ajax_nopriv_ddmu_handle_upload', 'ddmu_handle_upload');
 
 add_action('wp_ajax_save_user_revenue_sort_order', 'save_user_revenue_sort_order_handler');
 
-function save_user_revenue_sort_order_handler() {
+function save_user_revenue_sort_order_handler()
+{
     if (!is_user_logged_in()) {
         wp_send_json_error('You must be logged in.');
     }
@@ -1643,7 +1795,7 @@ function save_user_revenue_sort_order_handler() {
         wp_send_json_error('No form data received.');
     }
 
-    parse_str($_POST['form_data'], $data); 
+    parse_str($_POST['form_data'], $data);
 
     if (!isset($data['sort-by-revenue'])) {
         wp_send_json_error('Missing sort order.');
@@ -1693,7 +1845,7 @@ function save_user_revenue_sort_order_handler() {
         wp_send_json_success('Sort order inserted successfully.');
     }
 
-    wp_die(); 
+    wp_die();
 }
 
 
@@ -1706,7 +1858,8 @@ function save_user_revenue_sort_order_handler() {
 
 add_action('wp_ajax_save_user_sales_sort_order', 'save_user_sales_sort_order_handler');
 
-function save_user_sales_sort_order_handler() {
+function save_user_sales_sort_order_handler()
+{
     if (!is_user_logged_in()) {
         wp_send_json_error('You must be logged in.');
     }
@@ -1720,7 +1873,7 @@ function save_user_sales_sort_order_handler() {
         wp_send_json_error('No form data received.');
     }
 
-    parse_str($_POST['form_data'], $data); 
+    parse_str($_POST['form_data'], $data);
 
     if (!isset($data['sort-by-sales'])) {
         wp_send_json_error('Missing sort order.');
@@ -1770,7 +1923,7 @@ function save_user_sales_sort_order_handler() {
         wp_send_json_success('Sort order inserted successfully.');
     }
 
-    wp_die(); 
+    wp_die();
 }
 
 /**

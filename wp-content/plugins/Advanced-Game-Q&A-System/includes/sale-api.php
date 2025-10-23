@@ -4,6 +4,7 @@ function merged_sale_api_ui_shortcode()
 {
     // Datebase
     $revenue_id = isset($_GET['sale']) ? intval($_GET['sale']) : 0;
+    $edit_review_sale_id = isset($_GET['review_sale_api']) ? intval($_GET['review_sale_api']) : 0;
     $edit_revenue_id = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
     $add_revenue_id = isset($_GET['add']) ? intval($_GET['add']) : 0;
     $sale_back_button = '';
@@ -73,6 +74,9 @@ function merged_sale_api_ui_shortcode()
     }
 
     ob_start();
+    if ($edit_review_sale_id) {
+        include 'sale-review-api.php';
+    }
     if ($edit_revenue_id) {
         include 'edit-sale-form.php';
     }
@@ -83,7 +87,7 @@ function merged_sale_api_ui_shortcode()
     include 'report-form.php';
 ?>
     <!-- HEADING AREA - PRESERVED -->
-    <?php if ($edit_revenue_id == 0 && $add_revenue_id == 0) { ?>
+    <?php if ($edit_revenue_id == 0 && $add_revenue_id == 0  && $edit_review_sale_id == 0) { ?>
         <div class="merged-ui-wrapper">
             <!--  Heading at Top -->
             <div class="api-heading-wrapper">

@@ -144,8 +144,10 @@ curl_close($curl);
                             } else {
                                 if($value_approval->api_status == 'revnue'){
                                 $cuim_page_value = '/api-revenue-share-lookup/revenue/?review_revnue_api=' . $value_approval->id;
+                            }elseif($value_approval->api_status == 'sale'){
+                                  $cuim_page_value = '/api-revenue-share-lookup/sale/?review_sale_api=' . $value_approval->id;
                             }else{
-                                 $cuim_page_value = '';
+                                $cuim_page_value = '';
                             }
                         }
                             ?>
