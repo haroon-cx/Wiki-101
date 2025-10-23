@@ -778,12 +778,10 @@ jQuery(document).ready(function ($) {
         const box = $("#agqa-search-results").empty();
         if (res.success && res.data.length > 0) {
           res.data.forEach((row) => {
-            box.append(`<div class="agqa-search-result" data-question-id="${
-              row.question_id
-            }">
-                    <strong>${row.type.toUpperCase()}</strong> in <em>${
-              row.post_title
-            }</em>:<br>
+            box.append(`<div class="agqa-search-result" data-question-id="${row.question_id
+              }">
+                    <strong>${row.type.toUpperCase()}</strong> in <em>${row.post_title
+              }</em>:<br>
                     ${row.content}
                 </div>`);
           });
@@ -1525,8 +1523,8 @@ jQuery(document).ready(function ($) {
       }
       formData += "&imageurls=" + encodeURIComponent(imageUrls);
 
-            // alert(formData);
-            // return;
+      // alert(formData);
+      // return;
 
       var nonce = agqa_ajax.nonce;
       $.ajax({
@@ -1538,7 +1536,7 @@ jQuery(document).ready(function ($) {
           nonce: nonce,
         },
         success: function (response) {
-        //  alert(response);
+          //  alert(response);
           if (response.includes("Success")) {
             // alert("Provider data updated!");
             const $successMsg = $(
@@ -2347,12 +2345,90 @@ jQuery(document).ready(function ($) {
     });
   });
 
-/**
- * reject popup 
- */
+  /**
+   * reject popup 
+   */
 
-  jQuery('#faq-reject-btn').on("click", function(e){
+  jQuery('#faq-reject-btn').on("click", function (e) {
     e.preventDefault();
-     $("#reject-submit-popup").addClass("active");
+    $("#reject-submit-popup").addClass("active");
+  });
+
+
+  /**
+   * edit-revnue-review-form script
+   */
+
+  jQuery('#edit-revnue-review-form').on("submit", function (e) {
+    e.preventDefault();
+
+    var $form = jQuery(this);
+    var formData = $form.serialize();
+    // alert(formData);
+    // return;
+    // formData += "&imageurls=" + encodeURIComponent(imageUrls);
+    // formData +=
+    //   "&provider-name=" +
+    //   $(".agqa-main-game-type .custom-dropdown-selected-value").text();
+    // console.log(formData);
+    var nonce = agqa_ajax.nonce;
+    $.ajax({
+      type: "POST",
+      url: agqa_ajax.ajax_url,
+      data: {
+        action: "handle_approved_revenue_review_data",
+        form_data: formData,
+        nonce: nonce,
+      },
+      success: function (response) {
+        // console.log(response);
+        if (response.includes("Success")) {
+          // alert("Provider data updated!");
+          const $successMsg = $(
+            '<div class="submitted-successfully">Provider data updated!</div>'
+          );
+          $form.append($successMsg);
+
+          // Hide after 3 seconds
+          setTimeout(function () {
+            $successMsg.fadeOut(400, function () {
+              $(this).remove();
+            });
+          }, 3000);
+          // Find the *actual* back button
+          const $btn = $(".form-header-row .back-button");
+          const btn = $btn.get(0);
+          if (!btn) {
+            console.warn("Back button not found in DOM at success time.");
+            return;
+          }
+          $btn.trigger("click");
+
+          btn.click();
+
+          btn.dispatchEvent(
+            new MouseEvent("click", { bubbles: true, cancelable: true })
+          );
+        } else {
+          // alert(response);
+          const $successMsg = $(
+            `<div class="submitted-unsuccessfully">${response}</div>`
+          );
+          $form.append($successMsg);
+
+          // Hide after 3 seconds
+          setTimeout(function () {
+            $successMsg.fadeOut(400, function () {
+              $(this).remove();
+            });
+          }, 3000);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("AJAX Error:", error); // Log the error for debugging
+        alert("An error occurred! Please try again later.");
+      },
+    });
+
   });
 });

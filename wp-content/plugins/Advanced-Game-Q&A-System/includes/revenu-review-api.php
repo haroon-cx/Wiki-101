@@ -44,6 +44,11 @@ $rows_cat_names = $wpdb->get_results("
 ", ARRAY_A);
 
 ?>
+<style>
+    #edit-revnue-form .form-field{
+        pointer-events: none;
+    }
+</style>
 <div class="api-form-main">
     <div class="form-header-row">
         <a href="<?php echo esc_url(home_url('/approval-page/' )); ?>" class="back-button"
@@ -55,10 +60,10 @@ $rows_cat_names = $wpdb->get_results("
     </div>
     <div class="api-form-ctn">
         <div class="api-form-wrapper" id="UN">
-            <form autocomplete="off" id="edit-revnue-form" class="custom-form" novalidate="novalidate"
+            <form autocomplete="off" id="edit-revnue-review-form" class="custom-form" novalidate="novalidate"
                 data-inited-validation="1">
                 <div class="form-field required">
-                    <input type="hidden" name="provider-id" value="<?php echo $edit_revenue_ids; ?>">
+                    <input type="hidden" name="provider-id" value="<?php echo $revenu_data_edit->api_id; ?>">
                     <input type="hidden" name="provider-game-name" value="<?php echo $revenu_data_edit->question; ?>">
                     <label for="provider-name"><span>*</span> Provider Name</label>
                     <select name="provider-name" disabled id="provider-name">

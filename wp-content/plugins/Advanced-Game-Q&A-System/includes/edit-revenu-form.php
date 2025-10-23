@@ -67,6 +67,7 @@ $rows_cat_names = $wpdb->get_results("
                     </select>
                 </div>
                 <!-- New Input type -->
+                 
                 <div class="form-field required">
                     <label for="select-game-type-id"><span>*</span> State</label>
                     <div class="custom-select-dropdown">

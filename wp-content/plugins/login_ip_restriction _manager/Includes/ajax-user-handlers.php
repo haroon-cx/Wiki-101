@@ -996,7 +996,7 @@ function cuim_login_check()
         setcookie('remembered_passowrd', $password, $cookie_expiration, '/'); // 14 days expiration
     }
     $table_name = $wpdb->prefix . 'agqa_wiki_login_records';
-    $account_name_user = get_user_by('login', $account);
+    $account_name_user = get_user_by('login', $user);
     $user_id = $account_name_user->ID;
 
     // User details
@@ -1006,12 +1006,13 @@ function cuim_login_check()
     // Prepare data including user_id
     $data = [
         'user_id'  => $user_id,
-        'account'  => $user,
+        'account'  => $account,
         'login_ip' => $login_ip,
+        'created_at' => current_time('mysql'),
     ];
 
     // Data format for insert (%d for integer, %s for string)
-    $format = ['%s', '%s'];
+  $format = ['%d', '%s', '%s', '%s']; // Matching 4 fields
 
     // Insert record
     $wpdb->insert($table_name, $data, $format);
