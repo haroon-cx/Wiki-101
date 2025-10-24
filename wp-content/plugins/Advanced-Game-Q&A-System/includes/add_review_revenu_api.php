@@ -1,19 +1,20 @@
 <?php
-$edit_revenue_ids = isset($_GET['review_revnue_api']) ? intval($_GET['review_revnue_api']) : 0;
+
+$add_review_revenue_id = isset($_GET['review_add_revnue_api']) ? intval($_GET['review_add_revnue_api']) : 0;
 $edit_revenue_back = isset($_GET['back']) ? intval($_GET['back']) : 0;
 $edit_back_button = '';
 if ($edit_revenue_back) {
     $edit_back_button = '?revenue=' . $edit_revenue_back;
 }
 
-// print_r($edit_revenue_ids);
+// DB Tables
+
 global $wpdb;
 $table_revenu_edit   = $wpdb->prefix . 'agqa_approval_review_page';
 $table_category_edit = $wpdb->prefix . 'game_category';
 // print_r($table_category_edit);
 $table_type_edit = $wpdb->prefix . 'game_type';
-
-if ($edit_revenue_ids) {
+if ($add_review_revenue_id) {
     // Fetch the data for the specific revenue id
     $revenu_data_edit = $wpdb->get_row("
             SELECT
@@ -23,7 +24,7 @@ if ($edit_revenue_ids) {
             FROM $table_revenu_edit r
             LEFT JOIN $table_category_edit gc ON r.game_category_id = gc.id
             LEFT JOIN $table_type_edit gt ON r.game_type_id = gt.id
-            WHERE r.id = $edit_revenue_ids
+            WHERE r.id = $add_review_revenue_id
         ");
 }
 // Game Type Name
@@ -49,6 +50,7 @@ $rows_cat_names = $wpdb->get_results("
         pointer-events: none;
     }
 </style>
+<!-- Main -->
 <div class="api-form-main">
     <div class="form-header-row">
         <a href="<?php echo esc_url(home_url('/approval-page/')); ?>" class="back-button"
@@ -56,15 +58,15 @@ $rows_cat_names = $wpdb->get_results("
             <img decoding="async" src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg" alt="Arrow Left Icon">
             Back
         </a>
-        <h2 class="form-heading">API Edit</h2>
+        <h2 class="form-heading">API Add</h2>
     </div>
     <div class="api-form-ctn">
         <div class="api-form-wrapper" id="UN">
-            <form autocomplete="off" id="edit-revnue-review-form" class="custom-form" novalidate="novalidate"
+            <form autocomplete="off" id="add-revnue-review-form-api" class="custom-form" novalidate="novalidate"
                 data-inited-validation="1">
                 <div class="form-field required">
-                    <input type="hidden" name="review-id" value="<?php echo $edit_revenue_ids; ?>">
-                    <input type="hidden" name="provider-id" value="<?php echo $revenu_data_edit->api_id; ?>">
+                    <input type="hidden" name="review-id" value="<?php echo $add_review_revenue_id; ?>">
+
                     <input type="hidden" name="provider-game-name" value="<?php echo $revenu_data_edit->question; ?>">
                     <label for="provider-name"><span>*</span> Provider Name</label>
                     <select name="provider-name" disabled id="provider-name">
@@ -415,6 +417,7 @@ $rows_cat_names = $wpdb->get_results("
         </div>
     </div>
 </div>
+<!-- Main End -->
 <script>
     jQuery(document).ready(function($) {
         $('#select-game-category-id li').on('click', function() {

@@ -1405,7 +1405,7 @@ jQuery(document).ready(function ($) {
     const $form = $(this);
     var formDataBmodel = $form.serialize();
     var formDataObject = {};
-    console.log($('input[type="file"]')[0].files[0] );
+    console.log($('input[type="file"]')[0].files[0]);
     var formDataImage = new FormData();
     let isValid = true;
     // Check if all required fields are filled
@@ -1735,7 +1735,7 @@ jQuery(document).ready(function ($) {
       processData: false,
       contentType: false,
       success: function (response) {
-        // console.log(response);
+        // alert(response);edit-revnue-review-form
         var parsedResponse = JSON.parse(response);
         if (parsedResponse.status === "success") {
           // Get the image URL from the upload response
@@ -2434,11 +2434,11 @@ jQuery(document).ready(function ($) {
 
 
   /**
-   * 
+   * edit-sale-review-form
    */
 
 
- jQuery('#edit-sale-review-form').on("submit", function (e) {
+  jQuery('#edit-sale-review-form').on("submit", function (e) {
     e.preventDefault();
 
     var $form = jQuery(this);
@@ -2511,4 +2511,161 @@ jQuery(document).ready(function ($) {
 
   });
 
+
+  /**
+   * add-revnue-review-form-api
+   */
+
+  jQuery('#add-revnue-review-form-api').on("submit", function (e) {
+    e.preventDefault();
+
+    var $form = jQuery(this);
+    var formData = $form.serialize();
+    //  alert(formData);
+    //   return;
+    // formData += "&imageurls=" + encodeURIComponent(imageUrls);
+    // formData +=
+    //   "&provider-name=" +
+    //   $(".agqa-main-game-type .custom-dropdown-selected-value").text();
+    // console.log(formData);
+    var nonce = agqa_ajax.nonce;
+    $.ajax({
+      type: "POST",
+      url: agqa_ajax.ajax_url,
+      data: {
+        action: "handle_add_review_revenue_provider_api_data",
+        form_data: formData,
+        nonce: nonce,
+      },
+      success: function (response) {
+        // alert(response);
+        if (response.includes("Success")) {
+          // alert("Provider data updated!");
+          const $successMsg = $(
+            '<div class="submitted-successfully">Provider data updated!</div>'
+          );
+          $form.append($successMsg);
+
+          // Hide after 3 seconds
+          setTimeout(function () {
+            $successMsg.fadeOut(400, function () {
+              $(this).remove();
+            });
+          }, 3000);
+          // Find the *actual* back button
+          const $btn = $(".form-header-row .back-button");
+          const btn = $btn.get(0);
+          if (!btn) {
+            console.warn("Back button not found in DOM at success time.");
+            return;
+          }
+          $btn.trigger("click");
+
+          btn.click();
+
+          btn.dispatchEvent(
+            new MouseEvent("click", { bubbles: true, cancelable: true })
+          );
+        } else {
+          // alert(response);
+          const $successMsg = $(
+            `<div class="submitted-unsuccessfully">${response}</div>`
+          );
+          $form.append($successMsg);
+
+          // Hide after 3 seconds
+          setTimeout(function () {
+            $successMsg.fadeOut(400, function () {
+              $(this).remove();
+            });
+          }, 3000);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("AJAX Error:", error); // Log the error for debugging
+        alert("An error occurred! Please try again later.");
+      },
+    });
+
+  });
+
+
+
+  /**
+   * 
+   */
+
+
+    jQuery('#add-sale-review-form-api').on("submit", function (e) {
+    e.preventDefault();
+
+    var $form = jQuery(this);
+    var formData = $form.serialize();
+     alert(formData);
+      return;
+    // formData += "&imageurls=" + encodeURIComponent(imageUrls);
+    // formData +=
+    //   "&provider-name=" +
+    //   $(".agqa-main-game-type .custom-dropdown-selected-value").text();
+    // console.log(formData);
+    var nonce = agqa_ajax.nonce;
+    $.ajax({
+      type: "POST",
+      url: agqa_ajax.ajax_url,
+      data: {
+        action: "handle_add_sale_provider_api_data",
+        form_data: formData,
+        nonce: nonce,
+      },
+      success: function (response) {
+        // alert(response);
+        if (response.includes("Success")) {
+          // alert("Provider data updated!");
+          const $successMsg = $(
+            '<div class="submitted-successfully">Provider data updated!</div>'
+          );
+          $form.append($successMsg);
+
+          // Hide after 3 seconds
+          setTimeout(function () {
+            $successMsg.fadeOut(400, function () {
+              $(this).remove();
+            });
+          }, 3000);
+          // Find the *actual* back button
+          const $btn = $(".form-header-row .back-button");
+          const btn = $btn.get(0);
+          if (!btn) {
+            console.warn("Back button not found in DOM at success time.");
+            return;
+          }
+          $btn.trigger("click");
+
+          btn.click();
+
+          btn.dispatchEvent(
+            new MouseEvent("click", { bubbles: true, cancelable: true })
+          );
+        } else {
+          // alert(response);
+          const $successMsg = $(
+            `<div class="submitted-unsuccessfully">${response}</div>`
+          );
+          $form.append($successMsg);
+
+          // Hide after 3 seconds
+          setTimeout(function () {
+            $successMsg.fadeOut(400, function () {
+              $(this).remove();
+            });
+          }, 3000);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("AJAX Error:", error); // Log the error for debugging
+        alert("An error occurred! Please try again later.");
+      },
+    });
+
+  });
 });

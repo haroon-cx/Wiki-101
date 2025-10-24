@@ -298,6 +298,8 @@ function agqa_create_tables()
         image_url VARCHAR(255),
         contract_filename VARCHAR(255) NOT NULL,
         url_update_date DATE NOT NULL,
+          read_report VARCHAR(255) NOT NULL,
+        user_read_report VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) $charset;");
 

@@ -44,7 +44,7 @@ $rows_type_game = $wpdb->get_results("
                         <div class="custom-select-dropdown-lists">
                             <ul>
                                 <?php foreach ($rows_type_game as $value) { ?>
-                                <li data-value="<?php echo $value['id']; ?>"><?php echo $value['provider_name']; ?></li>
+                                    <li data-value="<?php echo $value['id']; ?>"><?php echo $value['provider_name']; ?></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -297,43 +297,43 @@ $rows_type_game = $wpdb->get_results("
 </div>
 
 <script>
-jQuery(document).ready(function($) {
-    $('#select-game-category-id li').on('click', function() {
-        var selectedCatId = $(this).data('value');
+    jQuery(document).ready(function($) {
+        $('#select-game-category-id li').on('click', function() {
+            var selectedCatId = $(this).data('value');
 
-        // Set a timeout to allow the hidden input to update and then process the data
-        setTimeout(function() {
-            // Get the value from the hidden input (CSV of category IDs)
-            var hiddenInputValue = $("input[name='select-game-category']").val();
+            // Set a timeout to allow the hidden input to update and then process the data
+            setTimeout(function() {
+                // Get the value from the hidden input (CSV of category IDs)
+                var hiddenInputValue = $("input[name='select-game-category']").val();
 
-            // Split the CSV string into an array of category IDs
-            var categoryIds = hiddenInputValue.split(',');
+                // Split the CSV string into an array of category IDs
+                var categoryIds = hiddenInputValue.split(',');
 
-            // Iterate over each custom type list item
-            $('.agqa-custom-type-list li').each(function() {
-                var optionCatId = $(this).data(
-                    'id-cat'); // Get the data-id-cat of the li
+                // Iterate over each custom type list item
+                $('.agqa-custom-type-list li').each(function() {
+                    var optionCatId = $(this).data(
+                        'id-cat'); // Get the data-id-cat of the li
 
-                // Ensure that optionCatId is defined before using .toString()
-                if (optionCatId && categoryIds.includes(optionCatId.toString())) {
-                    $(this).show(); // Show the li if it matches any category ID
-                } else {
-                    $(this).hide(); // Hide the li if it doesn't match any category ID
-                }
-            });
+                    // Ensure that optionCatId is defined before using .toString()
+                    if (optionCatId && categoryIds.includes(optionCatId.toString())) {
+                        $(this).show(); // Show the li if it matches any category ID
+                    } else {
+                        $(this).hide(); // Hide the li if it doesn't match any category ID
+                    }
+                });
 
-        }, 500); // Delay of 500ms
+            }, 500); // Delay of 500ms
 
-        // Reset the game type input and dropdown text
-        $('#select-game-type-id').val('');
+            // Reset the game type input and dropdown text
+            $('#select-game-type-id').val('');
+        });
+        $('input').keyup(function() {
+            $('.agqa-add-default-btn').hide();
+            $('.agqa-add-update-btn').show();
+        });
+        $('textarea').keyup(function() {
+            $('.agqa-add-default-btn').hide();
+            $('.agqa-add-update-btn').show();
+        });
     });
-    $('input').keyup(function() {
-        $('.agqa-add-default-btn').hide();
-        $('.agqa-add-update-btn').show();
-    });
-    $('textarea').keyup(function() {
-        $('.agqa-add-default-btn').hide();
-        $('.agqa-add-update-btn').show();
-    });
-});
 </script>

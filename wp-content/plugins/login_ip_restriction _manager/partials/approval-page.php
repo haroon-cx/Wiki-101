@@ -141,15 +141,18 @@ curl_close($curl);
                             <?php
                             if ($value_approval->type_name == 'FAQ Edit' || $value_approval->type_name == 'FAQ Add') {
                                 $cuim_page_value = 'faq/?edit-review=' . $value_approval->id;
-                            } else {
-                                if($value_approval->api_status == 'revnue'){
+                            } elseif($value_approval->api_status == 'revnue'){
                                 $cuim_page_value = '/api-revenue-share-lookup/revenue/?review_revnue_api=' . $value_approval->id;
                             }elseif($value_approval->api_status == 'sale'){
                                   $cuim_page_value = '/api-revenue-share-lookup/sale/?review_sale_api=' . $value_approval->id;
+                            }elseif($value_approval->api_status == 'revnueadd'){
+                                  $cuim_page_value = '/api-revenue-share-lookup/revenue/?review_add_revnue_api=' . $value_approval->id;
+                            }elseif($value_approval->api_status == 'saleadd'){
+                                  $cuim_page_value = '/api-revenue-share-lookup/sale/?review_add_sale_api=' . $value_approval->id;
                             }else{
                                 $cuim_page_value = '';
                             }
-                        }
+                        
                             ?>
                             <a href="<?php echo home_url('/' . $cuim_page_value); ?>" class="approval-edit-button"></a>
                         </div>
