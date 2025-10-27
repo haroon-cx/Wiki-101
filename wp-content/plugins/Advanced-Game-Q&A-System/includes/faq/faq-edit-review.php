@@ -1,5 +1,6 @@
 <?php
 $table_agqa_faq_review = $wpdb->prefix . 'agqa_approval_review_page';
+$faq_view_page  = isset($_GET['view']) ? $_GET['view'] : '';
 
 if ($edit_faq_review !== 0) {
     $faq_data_review = $wpdb->get_results($wpdb->prepare("
@@ -23,18 +24,18 @@ if ($edit_faq_review !== 0) {
     <div class="template-title">
         <h1>FAQ</h1>
     </div>
-      <?php if (!empty($faq_data_review)) {
-                foreach ($faq_data_review as $faq_value) { ?>
-    <div class="form-header-row">
-        <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button" type="button">
-            <img decoding="async" src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg" alt="Arrow Left Icon">
-            Back
-        </a>
-        <h2 class="form-heading"><?php echo $faq_value->type_name; ?></h2>
-    </div>
-    <div class="faq-add-form-ctn">
-        <div id="faq-add-form" class="faq-form">
-          
+    <?php if (!empty($faq_data_review)) {
+        foreach ($faq_data_review as $faq_value) { ?>
+            <div class="form-header-row">
+                <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button" type="button">
+                    <img decoding="async" src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg" alt="Arrow Left Icon">
+                    Back
+                </a>
+                <h2 class="form-heading"><?php echo $faq_value->type_name; ?></h2>
+            </div>
+            <div class="faq-add-form-ctn">
+                <div id="faq-add-form" class="faq-form">
+
                     <form autocomplete="off" id="edit-form-faq-review" class="custom-form" novalidate="novalidate"
                         data-inited-validation="1">
                         <div class="form-field required">
@@ -88,6 +89,7 @@ if ($edit_faq_review !== 0) {
                             </div>
                         </div>
                         <div class="form-buttons agqa-popup-form-buttons d-flex full-width agqa-add-update-btn">
+                              <?php if ($faq_view_page == '') { ?>
                             <div id="cancel-form-confirmation" class="cancel-form-confirmation" style="">
                                 <div class="cancel-form-confirmation-box">
                                     <h2>Cancel</h2>
@@ -99,8 +101,7 @@ if ($edit_faq_review !== 0) {
                                     </div>
                                 </div>
                             </div>
-                            <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
-                                id="cancel-confirmation-button">Cancel</a>
+
 
                             <div id="confirm-submit-popup" class="confirm-submit-popup">
                                 <div class="confirm-submit-popup-box">
@@ -125,12 +126,20 @@ if ($edit_faq_review !== 0) {
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" value="Reject" id="faq-reject-btn" class="reject-button">Reject</button>
-                            <input type="submit" value="Approve" class="agqa-edit-submit-btn" id="confirm-submit-popup-button">
+                          
+                                <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
+                                    id="cancel-confirmation-button">Cancel</a>
+                                <button type="button" value="Reject" id="faq-reject-btn" class="reject-button">Reject</button>
+                                <input type="submit" value="Approve" class="agqa-edit-submit-btn" id="confirm-submit-popup-button">
+                            <?php } ?>
+                            <?php if ($faq_view_page == 'page') { ?>
+                                <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
+                                    >Close</a>
+                            <?php } ?>
                         </div>
                     </form>
             <?php }
-            } ?>
-        </div>
-    </div>
+    } ?>
+                </div>
+            </div>
 </div>

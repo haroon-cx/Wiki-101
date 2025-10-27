@@ -45,7 +45,7 @@ $rows_cat_names = $wpdb->get_results("
 
 ?>
 <style>
-    #edit-revnue-form .form-field {
+    #edit-revnue-review-form .form-field {
         pointer-events: none;
     }
 </style>

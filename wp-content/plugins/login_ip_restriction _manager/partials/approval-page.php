@@ -80,10 +80,10 @@ curl_close($curl);
                 <div class="filter-select-list">
                     <ul>
                         <li>All</li>
-                        <li>API Add</li>
-                        <li>API Edit</li>
-                        <li>FAQ Add</li>
-                        <li>FAQ Edit</li>
+                        <li data-value="API Add">API Add</li>
+                        <li data-value="API Edit">API Edit</li>
+                        <li data-value="FAQ Add">FAQ Add</li>
+                        <li data-value="FAQ Edit">FAQ Edit</li>
                     </ul>
                 </div>
             </div>
@@ -96,9 +96,9 @@ curl_close($curl);
                 <div class="filter-select-list">
                     <ul>
                         <li>All</li>
-                        <li>Pending</li>
-                        <li>Approved</li>
-                        <li>Rejected</li>
+                        <li data-value="Pending">Pending</li>
+                        <li data-value="Approved">Approved</li>
+                        <li data-value="Rejected">Rejected</li>
                     </ul>
                 </div>
             </div>
@@ -137,24 +137,44 @@ curl_close($curl);
                             ?>
                         </div>
                         <div class="table-body-col table-body-col-buttons">
-                            <a href="#" class="approval-view-button"></a>
                             <?php
                             if ($value_approval->type_name == 'FAQ Edit' || $value_approval->type_name == 'FAQ Add') {
-                                $cuim_page_value = 'faq/?edit-review=' . $value_approval->id;
-                            } elseif($value_approval->api_status == 'revnue'){
-                                $cuim_page_value = '/api-revenue-share-lookup/revenue/?review_revnue_api=' . $value_approval->id;
-                            }elseif($value_approval->api_status == 'sale'){
-                                  $cuim_page_value = '/api-revenue-share-lookup/sale/?review_sale_api=' . $value_approval->id;
-                            }elseif($value_approval->api_status == 'revnueadd'){
-                                  $cuim_page_value = '/api-revenue-share-lookup/revenue/?review_add_revnue_api=' . $value_approval->id;
-                            }elseif($value_approval->api_status == 'saleadd'){
-                                  $cuim_page_value = '/api-revenue-share-lookup/sale/?review_add_sale_api=' . $value_approval->id;
-                            }else{
+                                $cuim_page_value = 'faq/?view=page&edit-review=' . $value_approval->id;
+                            } elseif ($value_approval->api_status == 'revnue') {
+                                $cuim_page_value = '/api-revenue-share-lookup/revenue/?view=page&review_revnue_api=' . $value_approval->id;
+                            } elseif ($value_approval->api_status == 'sale') {
+                                $cuim_page_value = '/api-revenue-share-lookup/sale/?view=page&review_sale_api=' . $value_approval->id;
+                            } elseif ($value_approval->api_status == 'revnueadd') {
+                                $cuim_page_value = '/api-revenue-share-lookup/revenue/?view=page&review_add_revnue_api=' . $value_approval->id;
+                            } elseif ($value_approval->api_status == 'saleadd') {
+                                $cuim_page_value = '/api-revenue-share-lookup/sale/?view=page&review_add_sale_api=' . $value_approval->id;
+                            } else {
                                 $cuim_page_value = '';
                             }
-                        
+
                             ?>
-                            <a href="<?php echo home_url('/' . $cuim_page_value); ?>" class="approval-edit-button"></a>
+                            <a href="<?php echo home_url('/' . $cuim_page_value); ?>" class="approval-view-button"></a>
+                            <?php if (strtolower($value_approval->status) == 'pending') { ?>
+                                <?php
+
+                                if ($value_approval->type_name == 'FAQ Edit' || $value_approval->type_name == 'FAQ Add') {
+                                    $cuim_page_value = 'faq/?edit-review=' . $value_approval->id;
+                                } elseif ($value_approval->api_status == 'revnue') {
+                                    $cuim_page_value = '/api-revenue-share-lookup/revenue/?review_revnue_api=' . $value_approval->id;
+                                } elseif ($value_approval->api_status == 'sale') {
+                                    $cuim_page_value = '/api-revenue-share-lookup/sale/?review_sale_api=' . $value_approval->id;
+                                } elseif ($value_approval->api_status == 'revnueadd') {
+                                    $cuim_page_value = '/api-revenue-share-lookup/revenue/?review_add_revnue_api=' . $value_approval->id;
+                                } elseif ($value_approval->api_status == 'saleadd') {
+                                    $cuim_page_value = '/api-revenue-share-lookup/sale/?review_add_sale_api=' . $value_approval->id;
+                                } else {
+                                    $cuim_page_value = '';
+                                }
+
+                                ?>
+
+                                <a href="<?php echo home_url('/' . $cuim_page_value); ?>" class="approval-edit-button"></a>
+                            <?php } ?>
                         </div>
                     </div>
                 <?php  } ?>
@@ -163,3 +183,85 @@ curl_close($curl);
         </div>
     </div>
 </div>
+    <div class="section-found">
+        <div class="no-found-ctn">
+            <div class="search-no-found">
+                <div class="search-no-found-icon">
+                    <img src="<?php echo URIP_URL ?>assets/image/search-forund-icon.svg" alt="Search Icon">
+                </div>
+                <div class="search-no-found-text">
+                    <h2>Nothing matched your search</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pagination-ctn">
+        <div id="pagination-demo"></div>
+    </div>
+<script>
+    jQuery(document).ready(function() {
+        var itemsPerPage = 15;
+        var totalItems = jQuery(".custom-table-ctn .custom-table-row").length;
+        var totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        // If no rows exist, disable pagination and return
+        if (totalItems === 0) {
+            jQuery("#pagination-demo").hide(); // Hide pagination if no items
+            return;
+        }
+
+        jQuery("#pagination-demo").twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 3,
+            onPageClick: function(event, page) {
+                // Hide all rows first
+                jQuery(".custom-table-ctn .custom-table-row").hide();
+
+                // Show the rows for the current page
+                jQuery('.custom-table-ctn .custom-table-row[data-page="' + page + '"]').show();
+
+                // Calculate the active items on the current page
+                var totalActiveItems = jQuery(".custom-table-row.active").length;
+                var totalActivePages = Math.ceil(totalActiveItems / itemsPerPage);
+
+                // Show/hide pagination links based on the active pages
+                jQuery(".custom-table-ctn .pagination-ctn ul li.page-item").nextAll().not(".next").show();
+
+                jQuery(".custom-table-ctn .pagination-ctn ul li.page-item").not(".prev, .next").each(function() {
+                    var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
+
+                    if (pageNumberss === totalActivePages && totalActivePages !== 0) {
+                        // Hide all <li> items that come after the last active page
+                        jQuery(this).nextAll().not(".next").hide();
+
+                        // Check if the "Next" button should be disabled
+                        var prevLi = jQuery(".custom-table-ctn .pagination-ctn ul li.page-item.active").next();
+
+                        // Disable or enable the "Next" button based on the visibility of the next page
+                        if (prevLi.is(":hidden")) {
+                            jQuery(".custom-table-ctn .pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+                        } else {
+                            jQuery(".custom-table-ctn .pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+                        }
+                    }
+                });
+            },
+        });
+
+        // Loop through each row and assign a page number based on its index
+        jQuery(".custom-table-ctn .custom-table-row").each(function(index) {
+            var page = Math.floor(index / itemsPerPage) + 1;
+            jQuery(this).attr("data-page", page); // Assign page data attribute
+
+            // Initially show or hide based on the page
+            if (page === 1) {
+                jQuery(this).show();
+            } else {
+                jQuery(this).hide();
+            }
+        });
+
+
+
+    });
+</script>

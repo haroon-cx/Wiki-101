@@ -46,7 +46,7 @@ $rows_cat_names = $wpdb->get_results("
 
 ?>
 <style>
-    #edit-revnue-form .form-field {
+    #add-sale-review-form-api .form-field {
         pointer-events: none;
     }
 </style>

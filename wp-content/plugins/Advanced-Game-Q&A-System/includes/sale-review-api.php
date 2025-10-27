@@ -1,6 +1,7 @@
 <?php
 $edit_revenue_ids = isset($_GET['review_sale_api']) ? intval($_GET['review_sale_api']) : 0;
 $edit_revenue_back = isset($_GET['back']) ? intval($_GET['back']) : 0;
+$faq_view_page  = isset($_GET['view']) ? $_GET['view'] : '';
 $edit_back_button = '';
 if ($edit_revenue_back) {
     $edit_back_button = '?revenue=' . $edit_revenue_back;
@@ -45,13 +46,13 @@ $rows_cat_names = $wpdb->get_results("
 
 ?>
 <style>
-    #edit-revnue-form .form-field{
+    #edit-sale-review-form .form-field {
         pointer-events: none;
     }
 </style>
 <div class="api-form-main">
     <div class="form-header-row">
-        <a href="<?php echo esc_url(home_url('/approval-page/' )); ?>" class="back-button"
+        <a href="<?php echo esc_url(home_url('/approval-page/')); ?>" class="back-button"
             type="button">
             <img decoding="async" src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg" alt="Arrow Left Icon">
             Back
@@ -147,14 +148,86 @@ $rows_cat_names = $wpdb->get_results("
                 </div>
                 <div class="form-field required">
                     <label for="game-info-website"><span>*</span> Game Info Website</label>
+
+                    <?php
+                    $value_raw = isset($revenu_data_edit->game_info_website) ? trim($revenu_data_edit->game_info_website) : '';
+
+                    // Helper: get host (domain) from URL string
+                    function extract_domain($url)
+                    {
+                        // Add scheme if missing so parse_url works
+                        if (strpos($url, '://') === false) {
+                            $url = 'http://' . $url;
+                        }
+                        $p = parse_url($url);
+                        return isset($p['host']) ? $p['host'] : '';
+                    }
+
+                    $display = '';
+
+                    // 1) If whole value is a URL (with or without scheme), show just the domain
+                    if (
+                        filter_var($value_raw, FILTER_VALIDATE_URL) ||                      // proper URL
+                        preg_match('/^(https?:\/\/|www\.)\S+$/i', $value_raw)               // looks like only a URL
+                    ) {
+                        $display = extract_domain($value_raw); // e.g., j.com
+                    } else {
+                        // 2) Otherwise remove any URLs inside the text and keep the rest
+                        $no_urls = preg_replace('/\b((https?:\/\/|www\.)\S+)/i', '', $value_raw);
+                        $display = trim(preg_replace('/\s+/', ' ', $no_urls));
+                    }
+
+                    // 3) Fallback if empty
+                    if ($display === '') {
+                        // Try stripping just the scheme, as a last resort
+                        $stripped = preg_replace('/^https?:\/\//i', '', $value_raw);
+                        $display = $stripped !== '' ? $stripped : 'none';
+                    }
+                    ?>
                     <input type="text" name="game-info-website"
-                        value="<?php echo empty($revenu_data_edit->game_info_website) ? 'none' : $revenu_data_edit->game_info_website; ?>"
+                        value="<?php echo esc_attr($display); ?>"
                         id="game-info-website" placeholder="Description" required>
+
                 </div>
                 <div class="form-field">
                     <label for="game-demo-website">Game Demo Website</label>
+                     <?php
+                    $value_raw = isset($revenu_data_edit->game_demo_website) ? trim($revenu_data_edit->game_demo_website) : '';
+
+                    // Helper: get host (domain) from URL string
+                    function extract_domain_website($url)
+                    {
+                        // Add scheme if missing so parse_url works
+                        if (strpos($url, '://') === false) {
+                            $url = 'http://' . $url;
+                        }
+                        $p = parse_url($url);
+                        return isset($p['host']) ? $p['host'] : '';
+                    }
+
+                    $display = '';
+
+                    // 1) If whole value is a URL (with or without scheme), show just the domain
+                    if (
+                        filter_var($value_raw, FILTER_VALIDATE_URL) ||                      // proper URL
+                        preg_match('/^(https?:\/\/|www\.)\S+$/i', $value_raw)               // looks like only a URL
+                    ) {
+                        $display = extract_domain_website($value_raw); // e.g., j.com
+                    } else {
+                        // 2) Otherwise remove any URLs inside the text and keep the rest
+                        $no_urls = preg_replace('/\b((https?:\/\/|www\.)\S+)/i', '', $value_raw);
+                        $display = trim(preg_replace('/\s+/', ' ', $no_urls));
+                    }
+
+                    // 3) Fallback if empty
+                    if ($display === '') {
+                        // Try stripping just the scheme, as a last resort
+                        $stripped = preg_replace('/^https?:\/\//i', '', $value_raw);
+                        $display = $stripped !== '' ? $stripped : 'none';
+                    }
+                    ?>
                     <input type="text" name="game-demo-website"
-                        value="<?php echo empty($revenu_data_edit->game_demo_website) ? 'none' : $revenu_data_edit->game_demo_website; ?>"
+                        value="<?php echo $display; ?>"
                         id="game-demo-website" placeholder="Description">
                 </div>
                 <div class="form-field required">
@@ -342,8 +415,9 @@ $rows_cat_names = $wpdb->get_results("
                         <input type="hidden" name="upload-contract" class="upload-contract">
                     </div>
                 </div>
-             
+
                 <div class="form-buttons agqa-popup-form-buttons d-flex full-width agqa-add-update-btn">
+                      <?php if ($faq_view_page == '') { ?>
                     <div id="cancel-form-confirmation" class="cancel-form-confirmation" style="">
                         <div class="cancel-form-confirmation-box">
                             <h2>Cancel</h2>
@@ -355,8 +429,7 @@ $rows_cat_names = $wpdb->get_results("
                             </div>
                         </div>
                     </div>
-                    <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
-                        id="cancel-confirmation-button">Cancel</a>
+                
 
                     <div id="confirm-submit-popup" class="confirm-submit-popup">
                         <div class="confirm-submit-popup-box">
@@ -381,8 +454,15 @@ $rows_cat_names = $wpdb->get_results("
                             </div>
                         </div>
                     </div>
+                        <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
+                        id="cancel-confirmation-button">Cancel</a>
                     <button type="button" value="Reject" id="faq-reject-btn" class="reject-button">Reject</button>
                     <input type="submit" value="Approve" class="agqa-edit-submit-btn" id="confirm-submit-popup-button">
+                            <?php } ?>
+                             <?php if ($faq_view_page == 'page') { ?>
+                                <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
+                                    >Close</a>
+                            <?php } ?>
                 </div>
                 <!-- <div class="form-buttons agqa-popup-form-buttons d-flex full-width agqa-add-update-btn" style="display:none;">
                     <div id="cancel-form-confirmation" class="cancel-form-confirmation" style="">

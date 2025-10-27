@@ -2,6 +2,7 @@
 
 $add_review_revenue_id = isset($_GET['review_add_revnue_api']) ? intval($_GET['review_add_revnue_api']) : 0;
 $edit_revenue_back = isset($_GET['back']) ? intval($_GET['back']) : 0;
+$api_add_page  = isset($_GET['view']) ? $_GET['view'] : '';
 $edit_back_button = '';
 if ($edit_revenue_back) {
     $edit_back_button = '?revenue=' . $edit_revenue_back;
@@ -46,7 +47,7 @@ $rows_cat_names = $wpdb->get_results("
 
 ?>
 <style>
-    #edit-revnue-form .form-field {
+    #add-revnue-review-form-api .form-field {
         pointer-events: none;
     }
 </style>
@@ -347,45 +348,51 @@ $rows_cat_names = $wpdb->get_results("
                 </div>
 
                 <div class="form-buttons agqa-popup-form-buttons d-flex full-width agqa-add-update-btn">
-                    <div id="cancel-form-confirmation" class="cancel-form-confirmation" style="">
-                        <div class="cancel-form-confirmation-box">
-                            <h2>Cancel</h2>
-                            <div class="popup-form-cross-icon"></div>
-                            <div class="form-message">Are you sure you want to cancel?</div>
-                            <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                <button class="no-form-cancel" type="button">No</button>
-                                <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button">Yes</a>
+                    <?php if ($api_add_page == '') { ?>
+                        <div id="cancel-form-confirmation" class="cancel-form-confirmation" style="">
+                            <div class="cancel-form-confirmation-box">
+                                <h2>Cancel</h2>
+                                <div class="popup-form-cross-icon"></div>
+                                <div class="form-message">Are you sure you want to cancel?</div>
+                                <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                    <button class="no-form-cancel" type="button">No</button>
+                                    <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button">Yes</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
-                        id="cancel-confirmation-button">Cancel</a>
 
-                    <div id="confirm-submit-popup" class="confirm-submit-popup">
-                        <div class="confirm-submit-popup-box">
-                            <h2>Approve</h2>
-                            <div class="popup-form-cross-icon"></div>
-                            <div class="form-message">Are you sure you want to submit?</div>
-                            <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                <button class="no-confirm-submit" type="button">No</button>
-                                <input type="submit" value="Yes" id="confirm-submit">
-                            </div>
-                        </div>
-                    </div>
 
-                    <div id="reject-submit-popup" class="reject-submit-popup">
-                        <div class="confirm-submit-popup-box">
-                            <h2>Reject</h2>
-                            <div class="popup-form-cross-icon"></div>
-                            <div class="form-message">Are you sure you want to Reject?</div>
-                            <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                <button class="no-confirm-submit" type="button">No</button>
-                                <button type="button" value="Yes" id="reject-confirm-submit" data-id="<?php echo $revenu_data_edit->id; ?>">Yes</button>
+                        <div id="confirm-submit-popup" class="confirm-submit-popup">
+                            <div class="confirm-submit-popup-box">
+                                <h2>Approve</h2>
+                                <div class="popup-form-cross-icon"></div>
+                                <div class="form-message">Are you sure you want to submit?</div>
+                                <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                    <button class="no-confirm-submit" type="button">No</button>
+                                    <input type="submit" value="Yes" id="confirm-submit">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <button type="button" value="Reject" id="faq-reject-btn" class="reject-button">Reject</button>
-                    <input type="submit" value="Approve" class="agqa-edit-submit-btn" id="confirm-submit-popup-button">
+
+                        <div id="reject-submit-popup" class="reject-submit-popup">
+                            <div class="confirm-submit-popup-box">
+                                <h2>Reject</h2>
+                                <div class="popup-form-cross-icon"></div>
+                                <div class="form-message">Are you sure you want to Reject?</div>
+                                <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                    <button class="no-confirm-submit" type="button">No</button>
+                                    <button type="button" value="Yes" id="reject-confirm-submit" data-id="<?php echo $revenu_data_edit->id; ?>">Yes</button>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
+                            id="cancel-confirmation-button">Cancel</a>
+                        <button type="button" value="Reject" id="faq-reject-btn" class="reject-button">Reject</button>
+                        <input type="submit" value="Approve" class="agqa-edit-submit-btn" id="confirm-submit-popup-button">
+                    <?php } ?>
+                    <?php if ($api_add_page == 'page') { ?>
+                        <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button">Close</a>
+                    <?php } ?>
                 </div>
                 <!-- <div class="form-buttons agqa-popup-form-buttons d-flex full-width agqa-add-update-btn" style="display:none;">
                     <div id="cancel-form-confirmation" class="cancel-form-confirmation" style="">
