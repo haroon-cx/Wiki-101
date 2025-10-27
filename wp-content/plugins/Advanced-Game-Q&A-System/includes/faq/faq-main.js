@@ -1014,6 +1014,7 @@ jQuery(document).ready(function ($) {
         success: function (response) {
           // console.log(response);
           if (response.includes("Success")) {
+            window.location.href = "/faq/";
             // alert("Successfully Submitted");
             jQuery("input#issue_type").val("");
             jQuery("textarea#detail-description").val("");
