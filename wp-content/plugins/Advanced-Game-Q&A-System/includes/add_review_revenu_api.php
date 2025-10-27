@@ -66,6 +66,7 @@ $rows_cat_names = $wpdb->get_results("
                 data-inited-validation="1">
                 <div class="form-field required">
                     <input type="hidden" name="review-id" value="<?php echo $add_review_revenue_id; ?>">
+                    <input type="hidden" name="provider-id" value="<?php echo $revenu_data_edit->api_id; ?>">
 
                     <input type="hidden" name="provider-game-name" value="<?php echo $revenu_data_edit->question; ?>">
                     <label for="provider-name"><span>*</span> Provider Name</label>

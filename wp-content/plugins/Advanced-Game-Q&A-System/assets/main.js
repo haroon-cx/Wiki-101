@@ -1774,7 +1774,8 @@ jQuery(document).ready(function ($) {
       formData +=
         "&provider-name=" +
         $(".agqa-main-game-type .custom-dropdown-selected-value").text();
-      // console.log(formData);
+      // alert(formData);
+      // return;
       var nonce = agqa_ajax.nonce;
       $.ajax({
         type: "POST",
@@ -2432,11 +2433,9 @@ jQuery(document).ready(function ($) {
 
   });
 
-
   /**
    * edit-sale-review-form
    */
-
 
   jQuery('#edit-sale-review-form').on("submit", function (e) {
     e.preventDefault();
@@ -2510,7 +2509,6 @@ jQuery(document).ready(function ($) {
     });
 
   });
-
 
   /**
    * add-revnue-review-form-api
@@ -2589,20 +2587,17 @@ jQuery(document).ready(function ($) {
 
   });
 
-
-
   /**
-   * 
+   * Add Sale Review Form API
    */
 
-
-    jQuery('#add-sale-review-form-api').on("submit", function (e) {
+  jQuery('#add-sale-review-form-api').on("submit", function (e) {
     e.preventDefault();
 
     var $form = jQuery(this);
     var formData = $form.serialize();
-     alert(formData);
-      return;
+    //  alert(formData);
+    //   return;
     // formData += "&imageurls=" + encodeURIComponent(imageUrls);
     // formData +=
     //   "&provider-name=" +

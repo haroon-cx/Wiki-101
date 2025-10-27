@@ -120,11 +120,11 @@ $found_user_id = $wpdb->get_var(
                     <?php  } ?>
                 </div>
             </div>
-            <?php if (($last_review_report && $last_review_report->user_read_report !== "read") || ($last_report && $last_report->user_read_report !== "read")  || $current_user_id !== (int) $found_user_id) { ?>
+            <?php if (($last_report && $last_report->user_read_report !== "read")  || $current_user_id !== (int) $found_user_id) { ?>
                 <div class="notification-list-heading"><strong>Notification</strong></div>
                 <div class="notification-lists-ctn">
                     <?php if ($last_review_report && $last_review_report->user_read_report !== "read") { ?>
-                        <div class="notification-list cuim-user-review-report" style="cursor: pointer;">
+                        <!-- <div class="notification-list cuim-user-review-report" style="cursor: pointer;">
                             <span class="notification-list-dot"></span>
                             <div class="notification-list-title">
                                 Unread review responses available
@@ -133,7 +133,7 @@ $found_user_id = $wpdb->get_var(
                                 <?php echo date('Y/m/d', strtotime($last_review_report->created_at)); ?>
                             </div>
 
-                        </div>
+                        </div> -->
                     <?php } ?>
                     <?php if ($last_report && $last_report->user_read_report !== "read") { ?>
                         <div class="notification-list cuim-user-faq-report" style="cursor: pointer;">

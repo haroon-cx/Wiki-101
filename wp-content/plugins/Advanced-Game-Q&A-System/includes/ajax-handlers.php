@@ -962,7 +962,7 @@ function handle_add_review_revenue_provider_api_data()
     parse_str($_POST['form_data'], $data);
     global $wpdb;
     // Sanitize basic values
-    $provider_name   = sanitize_text_field($data['provider-name']);
+    $provider_name   = sanitize_text_field($data['provider-game-name']);
     $game_type_input = explode(',', $data['select-game-type-id']);
     $budget          = sanitize_text_field($data['budget']);
     $provider_id     = isset($data['provider-id']) ? intval($data['provider-id']) : 0;
@@ -981,7 +981,7 @@ function handle_add_review_revenue_provider_api_data()
     // Split cat_id and type_id into arrays based on commas
     $cat_ids       = ! empty($data['select-game-category']) ? explode(',', $data['select-game-category']) : [];
     $game_type_ids = ! empty($data['select-game-type-id']) ? explode(',', $data['select-game-type-id']) : [];
-    $provider_name = isset($data['provider-name']) ? sanitize_text_field($data['provider-name']) : '';
+    $provider_name = isset($data['provider-game-name']) ? sanitize_text_field($data['provider-game-name']) : '';
     foreach ($cat_ids as $cat_id) {
         foreach ($game_type_ids as $game_type_id) {
 
@@ -1096,7 +1096,7 @@ add_action('wp_ajax_nopriv_handle_add_review_revenue_provider_api_data', 'handle
 
 
 /**
- * 
+ * add_revenue_provider_data
  */
 
 
@@ -1191,7 +1191,7 @@ function handle_add_revenue_provider_data()
         $insert_data = [
             'question'                       => $provider_name,
             'user_id' => get_current_user_id(),
-            // 'api_id'                       => $provider_id,
+            'api_id'                       => $provider_id,
             'type_name'                   => 'API Add', // (agar 'revenue' chahiye to yahan change kar lein)
             'api_status'                   => 'revnueadd', // (agar 'revenue' chahiye to yahan change kar lein)
             'provider_name'               => $provider_name,
@@ -1265,10 +1265,12 @@ function handle_add_sale_provider_api_data()
     $game_type_input = explode(',', $data['select-game-type-id']);
     $budget          = sanitize_text_field($data['budget']);
     $provider_id     = isset($data['provider-id']) ? intval($data['provider-id']) : 0;
+
     $image_url_query = $wpdb->prepare(
         "SELECT image_url FROM {$wpdb->prefix}agqa_sales WHERE id = %s LIMIT 1",
         $provider_id
     );
+
     $image_pdf_query = $wpdb->prepare(
         "SELECT contract_filename FROM {$wpdb->prefix}agqa_sales WHERE id = %s LIMIT 1",
         $provider_id
@@ -1276,12 +1278,14 @@ function handle_add_sale_provider_api_data()
 
     // Execute the query and fetch the image_url
     $image_url = $wpdb->get_var($image_url_query);
+    // echo $image_url;
+    // wp_die();
     $image_pdf_url = $wpdb->get_var($image_pdf_query);
 
     // Split cat_id and type_id into arrays based on commas
     $cat_ids       = ! empty($data['select-game-category']) ? explode(',', $data['select-game-category']) : [];
     $game_type_ids = ! empty($data['select-game-type-id']) ? explode(',', $data['select-game-type-id']) : [];
-    $provider_name = isset($data['provider-name']) ? sanitize_text_field($data['provider-name']) : '';
+    $provider_name = isset($data['provider-game-name']) ? sanitize_text_field($data['provider-game-name']) : '';
 
     foreach ($cat_ids as $cat_id) {
         foreach ($game_type_ids as $game_type_id) {
@@ -1357,7 +1361,7 @@ function handle_add_sale_provider_api_data()
             'custom_field_3'          => ! empty($data['custom-field-3']) ? sanitize_text_field($data['custom-field-3']) : null,
             'custom_field_4'          => ! empty($data['custom-field-4']) ? sanitize_text_field($data['custom-field-4']) : null,
             'notes'                   => ! empty($data['notes-detail']) ? sanitize_textarea_field($data['notes-detail']) : null,
-            'image_url'               => ! empty($data['image_url']) ? sanitize_text_field($data['image_url']) : '',
+            'image_url'               => ! empty($image_url) ? $image_url : null,
             'contract_filename' => ! empty(trim($data['imageurls']))  ? esc_url_raw($data['imageurls']) : (! empty($image_pdf_url) ? $image_pdf_url : 'none'),
             'contract_upload_date'    => current_time('mysql'), // Set this to current time
             'url_update_date'         => ! empty($data['url-update-date']) ? sanitize_text_field($data['url-update-date']) : '',
@@ -1376,6 +1380,17 @@ function handle_add_sale_provider_api_data()
         }
     }
 
+    $review_id = intval($data['review-id']);
+    // Update the FAQ review status to 'approved' and set the faq_id in the review
+    $wpdb->update(
+        "{$wpdb->prefix}agqa_approval_review_page",
+        array(
+            'status' => 'approved', // Set status to approved
+        ),
+        array('id' => $review_id) // Update the specific review ID
+    );
+
+
     echo 'Success: Provider data inserted!';
     wp_die();
 }
@@ -1385,7 +1400,7 @@ add_action('wp_ajax_nopriv_handle_add_sale_provider_api_data', 'handle_add_sale_
 
 /**
  * add sale api
-*/
+ */
 
 
 function handle_add_sale_provider_data()
@@ -1481,14 +1496,14 @@ function handle_add_sale_provider_data()
         $insert_data = [
             'question'                       => $provider_name,
             'user_id' => get_current_user_id(),
-            // 'api_id'                       => $provider_id,
+            'api_id'                       => $provider_id,
             'type_name'                   => 'API Add', // (agar 'revenue' chahiye to yahan change kar lein)
             'api_status'                   => 'saleadd', // (agar 'revenue' chahiye to yahan change kar lein)
             'provider_name'               => $provider_name,
             'state'                   => ! empty($data['state']) ? sanitize_text_field($data['state']) : 0,
             'game_category_id'        => $type->game_category_id,
             'game_type_id'            => $type->id,
-             'selling_price'               => isset($data['selling-price']) && is_numeric($data['selling-price']) ? floatval($data['selling-price']) : null,
+            'selling_price'               => isset($data['selling-price']) && is_numeric($data['selling-price']) ? floatval($data['selling-price']) : null,
             'api_cost'                    => isset($data['api-cost']) && is_numeric($data['api-cost']) ? floatval($data['api-cost']) : null,
             'api_type'                => ! empty($data['api-type']) ? sanitize_text_field($data['api-type']) : null,
             'game_info_website'       => ! empty($data['game-info-website']) ? ($data['game-info-website']) : null,
@@ -1565,13 +1580,13 @@ function handle_approved_revenue_review_data()
     }
 
     // Sanitize other form data
-    // $provider_name = sanitize_text_field($data['provider-name']);
+    $provider_name = sanitize_text_field($data['provider-game-name']);
     $image_url   = isset($data['imageurl']) ? esc_url_raw($data['imageurl']) : '';
     $image_urls = isset($data['imageurls']) && !empty($data['imageurls'])
         ? esc_url_raw($data['imageurls'])
         : (isset($data['already-upload-contract']) && !empty($data['already-upload-contract']) ? esc_url_raw($data['already-upload-contract']) : '');
     $insert_data = [
-        // 'provider_name' => !empty($provider_name) ? sanitize_text_field($provider_name) : null,
+        'provider_name' => !empty($provider_name) ? sanitize_text_field($provider_name) : null,
         'state'                       => ! empty($data['state']) ? sanitize_text_field($data['state']) : null,
         'game_category_id'            => ! empty($data['select-game-category-id']) ? sanitize_text_field($data['select-game-category-id']) : null,
         'game_type_id'                => ! empty($data['select-game-type-id']) ? sanitize_text_field($data['select-game-type-id']) : null,
@@ -1816,13 +1831,13 @@ function handle_approved_sales_review_data()
     }
 
     // Sanitize other form data
-    // $provider_name = sanitize_text_field($data['provider-name']);
+    $provider_name = sanitize_text_field($data['provider-name']);
     $image_url   = isset($data['imageurl']) ? esc_url_raw($data['imageurl']) : '';
     $image_urls = isset($data['imageurls']) && !empty($data['imageurls'])
         ? esc_url_raw($data['imageurls'])
         : (isset($data['already-upload-contract']) && !empty($data['already-upload-contract']) ? esc_url_raw($data['already-upload-contract']) : ''); // Get the image URL from the form data
     $insert_data = [
-        // 'provider_name' => !empty($provider_name) ? sanitize_text_field($provider_name) : null,
+        'provider_name' => !empty($provider_name) ? sanitize_text_field($provider_name) : null,
         'state'                   => ! empty($data['state']) ? sanitize_text_field($data['state']) : null,
         'game_category_id'        => ! empty($data['select-game-category-id']) ? sanitize_text_field($data['select-game-category-id']) : null,
         'game_type_id'            => ! empty($data['select-game-type-id']) ? sanitize_text_field($data['select-game-type-id']) : null,
