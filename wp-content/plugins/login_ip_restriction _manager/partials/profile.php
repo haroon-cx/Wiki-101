@@ -5,11 +5,7 @@
 add_action('wp_body_open', 'cui_pm_add_logout_button_footer');
 function cui_pm_add_logout_button_footer()
 {
-    // if (is_user_logged_in() && (
-    //         current_user_can('administrator') ||
-    //         current_user_can('editor') ||
-    //         current_user_can('contributor')
-    //     )) {
+    if (is_user_logged_in() ) {
 
     ?>
   <header class="header">
@@ -79,7 +75,7 @@ function cui_pm_add_logout_button_footer()
     </div>
     </header>
     <?php
-    // }
+    }
 ?>
     <?php
 

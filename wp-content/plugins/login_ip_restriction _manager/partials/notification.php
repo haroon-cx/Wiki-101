@@ -292,6 +292,17 @@ $found_user_id = $wpdb->get_var(
 
         jQuery('.cuim-user-profile-note').on('click', function(e) {
             e.preventDefault();
+            // $notificationCounting = jQuery('.notification-button-counting').text();
+            var $el = jQuery('.notification-button-counting');
+            var count = parseInt($el.text().trim(), 10) || 0;
+
+            if (count > 1) {
+                $el.text(count - 1);
+            } else if (count == 1) {
+                $el.text(count - 1);
+                jQuery('.notification-list-heading').remove();
+                jQuery('.notification-lists-ctn').remove();
+            }
             var nonce = cuim_ajax.nonce;
             jQuery.ajax({
                 url: cuim_ajax.ajax_url,

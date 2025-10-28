@@ -2074,4 +2074,142 @@ jQuery(document).ready(function ($) {
         });
     }, 500); // Delay of 500 milliseconds
   });
+
+
+
+  /**
+   * Approval Page Filter
+   */
+
+  $("#agqa-approval-page-filter").on("click", function (e) {
+    e.preventDefault(); // Prevent form submission
+    // alert('fgfgfgfgffffffffff');
+    // return;
+    var reportType = $("input.agqa-filter-select-hidden").val().toLowerCase();
+    var statusApproval = $(".agqa-filter-select-hidden.cuim-status").val().toLowerCase();
+    // var loginRecordText = $("input#login-records-search").val().toLowerCase();
+    //     alert(statusApproval);
+    // return;
+    var resultsFound = false; // Flag to track if any result is found
+    jQuery('.custom-table-row.active').removeClass('active');
+
+    if (!reportType && !statusApproval) {
+      $(".section-found").hide();
+      $(".custom-table-ctn").show();
+      $(".custom-table-row").show();
+      $("#pagination-demo").show();
+
+      setTimeout(function () {
+        // Recalculate pagination based on the filtered visible items
+        var itemsPerPages = 15;
+        var totalItemss = $(".custom-table-row").length; // Count only visible items after filtering
+        var totalPages = Math.ceil(totalItemss / itemsPerPages);
+        $(".custom-table-row").removeAttr("data-page"); // Remove the data-page attribute
+        // Reinitialize pagination
+        $(".custom-table-row").each(function (index) {
+          var pageNumber = Math.floor(index / itemsPerPages) + 1;
+          // var pageNumber = "sajid";
+          jQuery(this).attr("data-page", pageNumber);
+          jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
+            .addClass("active")
+            .siblings()
+            .removeClass("active");
+
+          jQuery(".custom-table-row").hide();
+          jQuery('.custom-table-row[data-page="' + "1" + '"]').show();
+        });
+        jQuery(".pagination-ctn ul li.page-item").show();
+        jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+      }, 500); // Delay of 500 milliseconds
+      return; // Return early if either is empty
+    }
+
+    // Initially hide pagination and "Nothing Found" message
+    $(".section-found").hide();
+    $(".custom-table-ctn").show();
+    $("div#pagination-demo").hide();
+
+    $(".custom-table-row").each(function () {
+      var IPaccountsearchText = $(this)
+        .find(".cuim-type-name-approval")
+        .text()
+        .toLowerCase();
+      var matchStatus = $(this)
+        .find(".table-row-status span")
+        .text()
+        .toLowerCase();
+      // alert(IPaccountsearchText);
+
+      var isIPAccountMatch = reportType === "all" ||
+        reportType === "" || IPaccountsearchText.trim() === reportType;
+      var isMatchStatus = statusApproval === "all" ||
+        statusApproval === "" || matchStatus.trim() === statusApproval;
+
+
+      if (isIPAccountMatch && isMatchStatus) {
+        $(this).show();
+        resultsFound = true;
+      } else {
+        $(this).hide();
+      }
+    });
+
+    // If no results are found, show the 'nothing found' message
+    if (!resultsFound) {
+      $(".section-found").show();
+      $(".custom-table-ctn").hide();
+      $("div#pagination-demo").hide();
+    } else {
+      $("div#pagination-demo").show();
+      $(".section-found").hide();
+      $(".custom-table-ctn").show();
+    }
+
+    setTimeout(function () {
+      // Recalculate pagination based on the filtered visible items
+      var itemsPerPages = 15;
+      var totalItemss = $(".custom-table-row:visible").length; // Count only visible items after filtering
+      var totalPages = Math.ceil(totalItemss / itemsPerPages);
+
+      $(".custom-table-row").removeAttr("data-page"); // Remove the data-page attribute
+      // Reinitialize pagination
+      $(".custom-table-row:visible").each(function (index) {
+        var pageNumber = Math.floor(index / itemsPerPages) + 1;
+        // var pageNumber = "sajid";
+        jQuery(this).attr("data-page", pageNumber);
+        jQuery(this).addClass("active");
+        jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
+          .addClass("active")
+          .siblings()
+          .removeClass("active");
+        if (pageNumber === 1) {
+          $(this).show(); // Show items that belong to the current page
+        } else {
+          $(this).hide(); // Hide items that do not belong to the current page
+        }
+      });
+      jQuery(".pagination-ctn ul li.page-item").show();
+      jQuery(".pagination-ctn ul li.page-item")
+        .not(".prev, .next")
+        .each(function () {
+          var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+          if (pageNumbers === totalPages && totalPages !== 0) {
+            // Remove all <li> items that come after this one
+            jQuery(this).nextAll().not(".next").hide();
+
+            // Check the <li> just before the Next button
+            var prevLi = jQuery(
+              ".pagination-ctn ul li.page-item.active"
+            ).next();
+
+            // If the next page is hidden or .next button is visible, disable the next button
+            if (prevLi.is(":hidden")) {
+              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+            } else {
+              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+            }
+          }
+        });
+    }, 500); // Delay of 500 milliseconds
+  });
 });

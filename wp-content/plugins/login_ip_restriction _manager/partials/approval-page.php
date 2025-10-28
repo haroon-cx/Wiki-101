@@ -65,7 +65,7 @@ curl_close($curl);
 
 <div class="approval-template">
     <div class="template-title">
-        <h1>Login Records</h1>
+        <h1>Approval Page</h1>
     </div>
 </div>
 <div class="filter-container">
@@ -88,7 +88,7 @@ curl_close($curl);
                 </div>
             </div>
             <div class="filter-select">
-                <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden">
+                <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden cuim-status">
                 <button class="filter-select-title select-states">
                     <span class="filter-default-text">Select A Status</span>
                     <span class="filter-selected-text"></span>
@@ -102,7 +102,7 @@ curl_close($curl);
                     </ul>
                 </div>
             </div>
-            <button type="submit" class="filter-select-button" id="agqa-game-filter"><span>Search</span></button>
+            <button type="submit" class="filter-select-button" id="agqa-approval-page-filter"><span>Search</span></button>
         </form>
     </div>
 </div>
@@ -121,7 +121,7 @@ curl_close($curl);
                     // var_dump($value_approval);
                 ?>
                     <div class="custom-table-row">
-                        <div class="table-body-col"><?php echo $value_approval->type_name; ?></div>
+                        <div class="table-body-col cuim-type-name-approval"><?php echo $value_approval->type_name; ?></div>
                         <div class="table-body-col"><?php echo $value_approval->question; ?></div>
                         <div class="table-body-col table-row-status <?php echo strtolower($value_approval->status); ?>"><span><?php echo $value_approval->status; ?></span></div>
                         <div class="table-body-col">
@@ -225,9 +225,9 @@ curl_close($curl);
                 var totalActivePages = Math.ceil(totalActiveItems / itemsPerPage);
 
                 // Show/hide pagination links based on the active pages
-                jQuery(".custom-table-ctn .pagination-ctn ul li.page-item").nextAll().not(".next").show();
+                jQuery(".pagination-ctn ul li.page-item").nextAll().not(".next").show();
 
-                jQuery(".custom-table-ctn .pagination-ctn ul li.page-item").not(".prev, .next").each(function() {
+                jQuery(".pagination-ctn ul li.page-item").not(".prev, .next").each(function() {
                     var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
 
                     if (pageNumberss === totalActivePages && totalActivePages !== 0) {
@@ -235,13 +235,13 @@ curl_close($curl);
                         jQuery(this).nextAll().not(".next").hide();
 
                         // Check if the "Next" button should be disabled
-                        var prevLi = jQuery(".custom-table-ctn .pagination-ctn ul li.page-item.active").next();
+                        var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
 
                         // Disable or enable the "Next" button based on the visibility of the next page
                         if (prevLi.is(":hidden")) {
-                            jQuery(".custom-table-ctn .pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+                            jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
                         } else {
-                            jQuery(".custom-table-ctn .pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+                            jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
                         }
                     }
                 });
