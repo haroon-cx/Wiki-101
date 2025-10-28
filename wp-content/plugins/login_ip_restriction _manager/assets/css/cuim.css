@@ -1286,7 +1286,8 @@ div#cuim-edit-fields input {
     background-color: white;
     border-radius: 8px;
     padding: 16px 0 13px;
-    width: 417px;
+   width: 450px;
+    min-width: 417px;
 }
 
 .notification-popup.active {

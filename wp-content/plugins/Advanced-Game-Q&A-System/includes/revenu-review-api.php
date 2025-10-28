@@ -1,6 +1,7 @@
 <?php
 $edit_revenue_ids = isset($_GET['review_revnue_api']) ? intval($_GET['review_revnue_api']) : 0;
 $edit_revenue_back = isset($_GET['back']) ? intval($_GET['back']) : 0;
+$faq_view_page  = isset($_GET['view']) ? $_GET['view'] : '';
 $edit_back_button = '';
 if ($edit_revenue_back) {
     $edit_back_button = '?revenue=' . $edit_revenue_back;
@@ -344,6 +345,7 @@ $rows_cat_names = $wpdb->get_results("
                 </div>
 
                 <div class="form-buttons agqa-popup-form-buttons d-flex full-width agqa-add-update-btn">
+                     <?php if ($faq_view_page == '') { ?>
                     <div id="cancel-form-confirmation" class="cancel-form-confirmation" style="">
                         <div class="cancel-form-confirmation-box">
                             <h2>Cancel</h2>
@@ -355,8 +357,7 @@ $rows_cat_names = $wpdb->get_results("
                             </div>
                         </div>
                     </div>
-                    <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
-                        id="cancel-confirmation-button">Cancel</a>
+                   
 
                     <div id="confirm-submit-popup" class="confirm-submit-popup">
                         <div class="confirm-submit-popup-box">
@@ -381,8 +382,15 @@ $rows_cat_names = $wpdb->get_results("
                             </div>
                         </div>
                     </div>
+                     <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
+                        id="cancel-confirmation-button">Cancel</a>
                     <button type="button" value="Reject" id="faq-reject-btn" class="reject-button">Reject</button>
                     <input type="submit" value="Approve" class="agqa-edit-submit-btn" id="confirm-submit-popup-button">
+                    <?php } ?>
+                             <?php if ($faq_view_page == 'page') { ?>
+                                <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
+                                    >Close</a>
+                            <?php } ?>
                 </div>
                 <!-- <div class="form-buttons agqa-popup-form-buttons d-flex full-width agqa-add-update-btn" style="display:none;">
                     <div id="cancel-form-confirmation" class="cancel-form-confirmation" style="">
