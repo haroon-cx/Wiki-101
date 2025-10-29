@@ -1,7 +1,8 @@
 <?php
-
 function merged_api_ui_shortcode()
 {
+
+    $getUserRole = get_user_role_simple();
     // Datebase
     $revenue_id      = isset($_GET['revenue']) ? intval($_GET['revenue']) : 0;
     $add_review_revenue_id = isset($_GET['review_add_revnue_api']) ? intval($_GET['review_add_revnue_api']) : 0;
@@ -121,17 +122,19 @@ function merged_api_ui_shortcode()
                             </form>
                         <?php } ?>
                     </div>
-                    <div class="api-filter-buttons">
-                        <?php if (empty($_GET['revenue'])) { ?>
-                            <button class="reorder-button"><img src="<?php echo AGQA_URL ?>assets/images/reorder-icon.svg"
-                                    alt="Reorder Icon">
-                                Reorder</button>
-                        <?php } ?>
-                        <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/revenue/') . '?add=1'); ?>"
-                            class="add-category-button"><img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg"
-                                alt="Plus Icon">
-                            Add API</a>
-                    </div>
+                    <?php if ($getUserRole !== 'viewer') { ?>
+                        <div class="api-filter-buttons">
+                            <?php if (empty($_GET['revenue'])) { ?>
+                                <button class="reorder-button"><img src="<?php echo AGQA_URL ?>assets/images/reorder-icon.svg"
+                                        alt="Reorder Icon">
+                                    Reorder</button>
+                            <?php } ?>
+                            <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/revenue/') . '?add=1'); ?>"
+                                class="add-category-button"><img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg"
+                                    alt="Plus Icon">
+                                Add API</a>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
             <!--  CARDS WRAPPER -->
@@ -321,69 +324,71 @@ function merged_api_ui_shortcode()
                                 <img src="<?php echo AGQA_URL ?>assets/images/alert-icon.svg" alt="Alert Icon"> Report
                             </button>
                         </div> -->
-                            <div class="api-card-bottom-buttons">
-                                <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/revenue/') . '?edit=' . $item->id) . $revenu_back_button; ?>"
-                                    class="api-edit-button api-card-button">
-                                    <img src="<?php echo AGQA_URL ?>assets/images/edit-icon.svg" alt="Edit Icon"> Edit
-                                </a>
-                                <button class="api-report-button api-card-button">
-                                    <img src="<?php echo AGQA_URL ?>assets/images/alert-icon.svg" alt="Alert Icon"> Report
-                                </button>
-                                <div class="api-card-approval-history">
-                                    <div class="approval-history-head">
-                                        <span class="approval-duration">2025/07/22 14:35</span>
-                                        <span class="approval-account">heather01 </span>
-                                    </div>
-                                    <div class="dropdown-lists">
-                                        <div class="dropdown-list-head">
-                                            <div class="dropdown-list-head-item">
-                                                Change Time
-                                            </div>
-                                            <div class="dropdown-list-head-item">
-                                                Account
-                                            </div>
-                                            <div class="dropdown-list-head-item">
-                                                Approval Time
-                                            </div>
+                            <?php if ($getUserRole !== 'viewer') { ?>
+                                <div class="api-card-bottom-buttons">
+                                    <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/revenue/') . '?edit=' . $item->id) . $revenu_back_button; ?>"
+                                        class="api-edit-button api-card-button">
+                                        <img src="<?php echo AGQA_URL ?>assets/images/edit-icon.svg" alt="Edit Icon"> Edit
+                                    </a>
+                                    <button class="api-report-button api-card-button">
+                                        <img src="<?php echo AGQA_URL ?>assets/images/alert-icon.svg" alt="Alert Icon"> Report
+                                    </button>
+                                    <div class="api-card-approval-history">
+                                        <div class="approval-history-head">
+                                            <span class="approval-duration">2025/07/22 14:35</span>
+                                            <span class="approval-account">heather01 </span>
                                         </div>
-                                        <div class="dropdown-list-body">
-                                            <div class="dropdown-list-row">
+                                        <div class="dropdown-lists">
+                                            <div class="dropdown-list-head">
                                                 <div class="dropdown-list-head-item">
-                                                    2025/07/22
+                                                    Change Time
                                                 </div>
                                                 <div class="dropdown-list-head-item">
-                                                    Heather01
+                                                    Account
                                                 </div>
                                                 <div class="dropdown-list-head-item">
-                                                    2025/07/25
-                                                </div>
-                                            </div>
-                                            <div class="dropdown-list-row">
-                                                <div class="dropdown-list-head-item">
-                                                    2025/07/22
-                                                </div>
-                                                <div class="dropdown-list-head-item">
-                                                    Heather01
-                                                </div>
-                                                <div class="dropdown-list-head-item">
-                                                    2025/07/25
+                                                    Approval Time
                                                 </div>
                                             </div>
-                                            <div class="dropdown-list-row">
-                                                <div class="dropdown-list-head-item">
-                                                    2025/07/22
+                                            <div class="dropdown-list-body">
+                                                <div class="dropdown-list-row">
+                                                    <div class="dropdown-list-head-item">
+                                                        2025/07/22
+                                                    </div>
+                                                    <div class="dropdown-list-head-item">
+                                                        Heather01
+                                                    </div>
+                                                    <div class="dropdown-list-head-item">
+                                                        2025/07/25
+                                                    </div>
                                                 </div>
-                                                <div class="dropdown-list-head-item">
-                                                    Heather01
+                                                <div class="dropdown-list-row">
+                                                    <div class="dropdown-list-head-item">
+                                                        2025/07/22
+                                                    </div>
+                                                    <div class="dropdown-list-head-item">
+                                                        Heather01
+                                                    </div>
+                                                    <div class="dropdown-list-head-item">
+                                                        2025/07/25
+                                                    </div>
                                                 </div>
-                                                <div class="dropdown-list-head-item">
-                                                    2025/07/25
+                                                <div class="dropdown-list-row">
+                                                    <div class="dropdown-list-head-item">
+                                                        2025/07/22
+                                                    </div>
+                                                    <div class="dropdown-list-head-item">
+                                                        Heather01
+                                                    </div>
+                                                    <div class="dropdown-list-head-item">
+                                                        2025/07/25
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            <?php } ?>
                         </div>
                     </div>
 

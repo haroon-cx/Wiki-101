@@ -154,3 +154,34 @@ function cuim_allow_contributor_uploads()
     }
 }
 add_action('admin_init', 'cuim_allow_contributor_uploads');
+
+
+/**
+ * Get User Role
+ */
+
+// 1) Function: return-only (NO echo inside)
+// 1) Function: return-only (NO echo inside)
+
+function get_user_role_simple() {
+    global $wpdb;
+
+    $table   = $wpdb->prefix . 'agqa_wiki_add_users';
+    $user_id = get_current_user_id();
+
+    if (!$user_id) {
+        return 'guest';
+    }
+
+    // Custom role
+    $role = $wpdb->get_var(
+        $wpdb->prepare("SELECT user_role FROM {$table} WHERE user_id = %d LIMIT 1", $user_id)
+    );
+
+    if (empty($role)) {
+        $user = wp_get_current_user();
+        $role = !empty($user->roles) ? $user->roles[0] : 'guest';
+    }
+
+    return $role;
+}

@@ -1,4 +1,5 @@
 <?php
+  $getUserRole = get_user_role_simple();
 $add_manage_id = isset($_GET['add']) ? intval($_GET['add']) : 0;
 
 $edit_manage_id = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
@@ -7,38 +8,98 @@ $state = isset($_GET['state']) ? sanitize_text_field($_GET['state']) : '';
 global $wpdb;
 $table_agqa_manage_user = $wpdb->prefix . 'agqa_wiki_add_users';
 
+// if ($add_manage_id == 0 && $edit_manage_id == 0) {
+//     $add_manage_users_data = $wpdb->get_results("
+//             SELECT
+//                 id,
+//                user_id,
+//                 account,
+//                 new_password,
+//                 confirm_password,
+//                 state,
+//                 user_role,
+//                 company_name,
+//                 email,
+//                 delete_status,
+//                 delete_user_name,
+//                 custom_label_1,
+//                 custom_label_2,
+//                 custom_label_3,
+//                 custom_label_4,
+//                 custom_field_1,
+//                 custom_field_2,
+//                 custom_field_3,
+//                 custom_field_4,
+//                 created_at
+//            FROM $table_agqa_manage_user
+//         ORDER BY 
+//             CASE 
+//                 WHEN delete_status = 'table-body-disabled' THEN 1
+//                 ELSE 0
+//             END,
+//             id DESC
+//     ");
+// }
+
 if ($add_manage_id == 0 && $edit_manage_id == 0) {
-    $add_manage_users_data = $wpdb->get_results("
-            SELECT
-                id,
-               user_id,
-                account,
-                new_password,
-                confirm_password,
-                state,
-                user_role,
-                company_name,
-                email,
-                delete_status,
-                delete_user_name,
-                custom_label_1,
-                custom_label_2,
-                custom_label_3,
-                custom_label_4,
-                custom_field_1,
-                custom_field_2,
-                custom_field_3,
-                custom_field_4,
-                created_at
-           FROM $table_agqa_manage_user
-        ORDER BY 
-            CASE 
-                WHEN delete_status = 'table-body-disabled' THEN 1
-                ELSE 0
-            END,
-            id DESC
-    ");
+
+    // Get current user's role
+    $getUserRole = get_user_role_simple();
+
+    // Select clause (same for both cases)
+    $select_sql = "
+        SELECT
+            id,
+            user_id,
+            account,
+            new_password,
+            confirm_password,
+            state,
+            user_role,
+            company_name,
+            email,
+            delete_status,
+            delete_user_name,
+            custom_label_1,
+            custom_label_2,
+            custom_label_3,
+            custom_label_4,
+            custom_field_1,
+            custom_field_2,
+            custom_field_3,
+            custom_field_4,
+            created_at
+        FROM {$table_agqa_manage_user}
+    ";
+
+    // Only admins see deleted rows; others don't
+    $is_admin = in_array(strtolower($getUserRole), ['admin', 'administrator'], true);
+
+    if ($is_admin) {
+        // Admin: show all rows, but push deleted ones to bottom
+        $order_by = "
+            ORDER BY 
+                CASE 
+                    WHEN delete_status = 'table-body-disabled' THEN 1
+                    ELSE 0
+                END,
+                id DESC
+        ";
+        $where = ""; // no filtering
+    } else {
+        // Non-admin: hide deleted rows entirely
+        $where = "WHERE (delete_status IS NULL OR delete_status <> 'table-body-disabled')";
+        $order_by = "ORDER BY id DESC";
+    }
+
+    // Final query
+    $sql = $select_sql . ' ' . $where . ' ' . $order_by;
+
+    // Run
+    $add_manage_users_data = $wpdb->get_results($sql);
 }
+
+
 if ($edit_manage_id !== 0) {
     $edit_user_data = $wpdb->get_results(
         $wpdb->prepare(
@@ -212,11 +273,13 @@ ob_start(); // Start output buffering
                     </form>
                 </div>
                 <div class="filter-right-area">
+                     <?php if ($getUserRole !== 'viewer') { ?>
                     <div class="add-button-ctn">
                         <a href="<?php echo esc_url(home_url('/manage-user/?add=1')) ?>" class="add-button">
                             <img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg" alt="Plus Icon">Add User
                         </a>
                     </div>
+                    <?php } ?>
                 </div>
             </div>
             <div class="custom-table-ctn">
@@ -230,7 +293,8 @@ ob_start(); // Start output buffering
                             <div class="table-head-col">Mail</div>
                             <div class="table-head-col">Contact Method</div>
                             <div class="table-head-col">Creation Time</div>
-                            <div class="table-head-col">Actions</div>
+                             <?php if ($getUserRole !== 'viewer') { ?>
+                            <div class="table-head-col">Actions</div><?php } ?>
                         </div>
                         <div class="custom-table-body">
                             <?php
@@ -285,6 +349,7 @@ ob_start(); // Start output buffering
                                     <div class="table-body-col table-body-col-date">
                                         <?php echo str_replace('-', '/', $user_data->created_at); ?>
                                     </div>
+                                     <?php if ($getUserRole !== 'viewer') { ?>
                                     <div class="table-body-col table-body-col-buttons">
                                         <div class="login-history-ctn">
                                             <button class="login-history-icon"></button>
@@ -349,6 +414,7 @@ ob_start(); // Start output buffering
                                             <a href="<?php echo esc_url(home_url('/manage-user/?edit=' . $user_data->id . '&state=' . urlencode($user_data->state))); ?>"
                                                 class="manage-user-edit-button"></a>
                                         </div>
+                                        <?php if ($getUserRole !== 'contributor') { ?>
                                         <div class="delete-user-ctn">
                                             <button class="delete-user-button"></button>
                                             <div id="custom-faq-field-popup">
@@ -364,7 +430,9 @@ ob_start(); // Start output buffering
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php } ?>
                                     </div>
+                                    <?php } ?>
                                 </div>
                             <?php } ?>
 
