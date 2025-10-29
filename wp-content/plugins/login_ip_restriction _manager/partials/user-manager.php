@@ -1,5 +1,5 @@
 <?php
-  $getUserRole = get_user_role_simple();
+$getUserRole = get_user_role_simple();
 $add_manage_id = isset($_GET['add']) ? intval($_GET['add']) : 0;
 
 $edit_manage_id = isset($_GET['edit']) ? intval($_GET['edit']) : 0;

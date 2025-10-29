@@ -1,7 +1,7 @@
 <?php
 function custom_faq_shortcode()
 {
-
+    $getUserRole = get_user_role_simple();
     $add_faq_new  = isset($_GET['add']) ? intval($_GET['add']) : 0;
     $add_faq_edit  = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
     $add_faq_history = isset($_GET['history']) ? intval($_GET['history']) : 0;
@@ -16,25 +16,60 @@ function custom_faq_shortcode()
 
 
     if ($add_faq_edit == 0 && $add_faq_new == 0) {
-        $faq_data = $wpdb->get_results("
-            SELECT
-                id,
-                question,
-                answer,
-                faq_category,
-                verified_answer,
-                delete_status,
-                delete_user_name,
-                delete_user_date
-            FROM $table_agqa_faq
-            ORDER BY 
+        // $faq_data = $wpdb->get_results("
+        //     SELECT
+        //         id,
+        //         question,
+        //         answer,
+        //         faq_category,
+        //         verified_answer,
+        //         delete_status,
+        //         delete_user_name,
+        //         delete_user_date
+        //     FROM $table_agqa_faq
+        //     ORDER BY 
+        //     CASE 
+        //         WHEN delete_status = 'table-body-disabled' THEN 1
+        //         ELSE 0
+        //     END,
+        //     id DESC
+        // ");
+        // Base SELECT
+        $select_sql = "
+    SELECT
+        id,
+        question,
+        answer,
+        faq_category,
+        verified_answer,
+        delete_status,
+        delete_user_name,
+        delete_user_date
+    FROM {$table_agqa_faq}
+";
+
+        // Role-wise WHERE + ORDER
+        if ($getUserRole == 'admin') {
+            // Admin: show all; deleted at bottom
+            $where    = "";
+            $order_by = "
+        ORDER BY 
             CASE 
                 WHEN delete_status = 'table-body-disabled' THEN 1
                 ELSE 0
             END,
             id DESC
-        ");
+    ";
+        } else {
+            // Non-admin: hide deleted entirely
+            $where    = "WHERE (delete_status IS NULL OR delete_status <> 'table-body-disabled')";
+            $order_by = "ORDER BY id DESC";
+        }
 
+        // Final query
+        $sql = $select_sql . ' ' . $where . ' ' . $order_by;
+
+        $faq_data = $wpdb->get_results($sql);
         $table_data_like = $wpdb->get_results("
             SELECT
                 id,
@@ -118,13 +153,15 @@ function custom_faq_shortcode()
                         <button type="submit" class="filter-select-button" id="agqa-faq-filter"><span>Search</span></button>
                     </form>
                 </div>
-                <div class="filter-right-area">
-                    <div class="add-button-ctn">
-                        <a href="<?php echo esc_url(home_url('faq/') . '?add=1'); ?>" class="add-button">
-                            <img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg" alt="Plus Icon">Add FAQ
-                        </a>
+                <?php if ($getUserRole !== 'viewer') { ?>
+                    <div class="filter-right-area">
+                        <div class="add-button-ctn">
+                            <a href="<?php echo esc_url(home_url('faq/') . '?add=1'); ?>" class="add-button">
+                                <img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg" alt="Plus Icon">Add FAQ
+                            </a>
+                        </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
             <!-- filter End -->
 
@@ -220,34 +257,37 @@ function custom_faq_shortcode()
                                         </div>
                                         <span>Copy</span>
                                     </button>
-
-                                    <a href="<?php echo esc_url(home_url('faq/') . '?edit=' . $faq_value->id); ?>"
-                                        class="faq-accordion-button edit-button">
-                                        <div class="faq-accordion-icon">
-                                            <img src="<?php echo esc_url(AGQA_URL . 'assets/images/edit-icon.svg'); ?>" alt="Edit Icon">
-                                        </div>
-                                        Edit
-                                    </a>
-                                    <div id="custom-faq-field-popup" class="agqa-delete-popup-faq">
-                                        <div id="custom-faq-field-popup-inner">
-                                            <h2>Delete</h2>
-                                            <div class="popup-form-cross-icon"></div>
-                                            <div class="form-message">Are you sure you want to Delete?</div>
-                                            <div class="agqa-popup-form-buttons d-flex" id="delete-faq-div">
-                                                <button class="no-cancel" type="button">No</button>
-                                                <button id="yes-cancel" type="submit" value="<?php echo $faq_value->id; ?>">Yes</button>
+                                    <?php if ($getUserRole !== 'viewer') { ?>
+                                        <a href="<?php echo esc_url(home_url('faq/') . '?edit=' . $faq_value->id); ?>"
+                                            class="faq-accordion-button edit-button">
+                                            <div class="faq-accordion-icon">
+                                                <img src="<?php echo esc_url(AGQA_URL . 'assets/images/edit-icon.svg'); ?>" alt="Edit Icon">
+                                            </div>
+                                            Edit
+                                        </a>
+                                    <?php } ?>
+                                    <?php if ($getUserRole !== 'viewer' && $getUserRole !== 'contributor') { ?>
+                                        <div id="custom-faq-field-popup" class="agqa-delete-popup-faq">
+                                            <div id="custom-faq-field-popup-inner">
+                                                <h2>Delete</h2>
+                                                <div class="popup-form-cross-icon"></div>
+                                                <div class="form-message">Are you sure you want to Delete?</div>
+                                                <div class="agqa-popup-form-buttons d-flex" id="delete-faq-div">
+                                                    <button class="no-cancel" type="button">No</button>
+                                                    <button id="yes-cancel" type="submit" value="<?php echo $faq_value->id; ?>">Yes</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <button class="faq-accordion-button delete-button">
-                                        <div class="faq-accordion-icon">
-                                            <input type="hidden" class="agqa-dell" name="faq-id"
-                                                value="<?php echo esc_attr($faq_value->id); ?>">
-                                            <img src="<?php echo esc_url(AGQA_URL . 'assets/images/delete-icon.svg'); ?>"
-                                                alt="Delete Icon">
-                                        </div>
-                                        <span>Delete</span>
-                                    </button>
+                                        <button class="faq-accordion-button delete-button">
+                                            <div class="faq-accordion-icon">
+                                                <input type="hidden" class="agqa-dell" name="faq-id"
+                                                    value="<?php echo esc_attr($faq_value->id); ?>">
+                                                <img src="<?php echo esc_url(AGQA_URL . 'assets/images/delete-icon.svg'); ?>"
+                                                    alt="Delete Icon">
+                                            </div>
+                                            <span>Delete</span>
+                                        </button>
+                                    <?php } ?>
 
                                     <button class="faq-accordion-button report-button">
                                         <div class="faq-accordion-icon">
