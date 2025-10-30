@@ -1,4 +1,9 @@
 <?php
+$getUserRole = get_user_role_simple();
+if ($getUserRole == 'viewer') {
+    echo "Permission not allowed";
+    return;
+}
 global $wpdb;
 $table_approval_review = $wpdb->prefix . 'agqa_approval_review_page';
 $add_username = isset($_GET['username']) ? $_GET['username'] : '';
@@ -153,8 +158,9 @@ curl_close($curl);
                             }
 
                             ?>
+
                             <a href="<?php echo home_url('/' . $cuim_page_value); ?>" class="approval-view-button"></a>
-                            <?php if (strtolower($value_approval->status) == 'pending') { ?>
+                            <?php if (strtolower($value_approval->status) == 'pending' && $getUserRole !== 'contributor') { ?>
                                 <?php
 
                                 if ($value_approval->type_name == 'FAQ Edit' || $value_approval->type_name == 'FAQ Add') {
@@ -183,21 +189,21 @@ curl_close($curl);
         </div>
     </div>
 </div>
-    <div class="section-found">
-        <div class="no-found-ctn">
-            <div class="search-no-found">
-                <div class="search-no-found-icon">
-                    <img src="<?php echo URIP_URL ?>assets/image/search-forund-icon.svg" alt="Search Icon">
-                </div>
-                <div class="search-no-found-text">
-                    <h2>Nothing matched your search</h2>
-                </div>
+<div class="section-found">
+    <div class="no-found-ctn">
+        <div class="search-no-found">
+            <div class="search-no-found-icon">
+                <img src="<?php echo URIP_URL ?>assets/image/search-forund-icon.svg" alt="Search Icon">
+            </div>
+            <div class="search-no-found-text">
+                <h2>Nothing matched your search</h2>
             </div>
         </div>
     </div>
-    <div class="pagination-ctn">
-        <div id="pagination-demo"></div>
-    </div>
+</div>
+<div class="pagination-ctn">
+    <div id="pagination-demo"></div>
+</div>
 <script>
     jQuery(document).ready(function() {
         var itemsPerPage = 15;

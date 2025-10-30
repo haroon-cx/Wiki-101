@@ -1,4 +1,5 @@
 <?php
+$getUserRole = get_user_role_simple();
 global $wpdb;
 $table_agqa_report_system = $wpdb->prefix . 'faq_report_system';
 $table_agqa_approval_sysetm = $wpdb->prefix . 'agqa_approval_review_page';
@@ -104,12 +105,14 @@ $found_user_id = $wpdb->get_var(
     </div>
     <div class="notification-popup">
         <div class="notification-popup-head">
+             <?php if ($getUserRole !== 'viewer') { ?>
             <div class="notification-tags">
                 <div class="notification-tag-card">
                     <span class="notification-dot <?php echo $class_active; ?>"></span>
                     <span>Pending Reports</span>
                     <a href="#" class="notification-count active cuim-response-review-count"><?php echo $pending_response_count; ?></a>
                 </div>
+                 <?php if ($getUserRole !== 'contributor') { ?>
                 <div class="notification-tag-card">
                     <span class="notification-dot <?php echo $class_approval_active; ?>"></span>
                     <span>Pending Review</span>
@@ -119,7 +122,9 @@ $found_user_id = $wpdb->get_var(
                         <a href="#" class="notification-count"><?php echo $approval_pending_count; ?></a>
                     <?php  } ?>
                 </div>
+                <?php  } ?>
             </div>
+            <?php } ?>
             <?php if (($last_report && $last_report->user_read_report !== "read")  || $current_user_id !== (int) $found_user_id) { ?>
                 <div class="notification-list-heading"><strong>Notification</strong></div>
                 <div class="notification-lists-ctn">

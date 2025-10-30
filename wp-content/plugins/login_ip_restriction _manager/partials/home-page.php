@@ -1,5 +1,6 @@
 <?php
 $userName = wp_get_current_user();
+$getUserRole = get_user_role_simple();
 ?>
 
 <div class="home-page-template">
@@ -19,30 +20,32 @@ $userName = wp_get_current_user();
                 </div>
             </a>
         </div>
-        <div class="home-page-card-link">
-            <a href="<?php echo home_url('/approval-page') ?>">
-                <div class="page-link-inner">
-                    <div class="home-page-card-link-heading">
-                        <h2>Approval Page</h2>
+        <?php if ($getUserRole !== 'viewer') { ?>
+            <div class="home-page-card-link">
+                <a href="<?php echo home_url('/approval-page') ?>">
+                    <div class="page-link-inner">
+                        <div class="home-page-card-link-heading">
+                            <h2>Approval Page</h2>
+                        </div>
+                        <div class="home-page-card-link-icon">
+                            <img src="<?php echo URIP_URL ?>assets/image/approval-page-icon.svg" alt="approval-page-icon">
+                        </div>
                     </div>
-                    <div class="home-page-card-link-icon">
-                        <img src="<?php echo URIP_URL ?>assets/image/approval-page-icon.svg" alt="approval-page-icon">
+                </a>
+            </div>
+            <div class="home-page-card-link">
+                <a href="<?php echo home_url('/login-records') ?>">
+                    <div class="page-link-inner">
+                        <div class="home-page-card-link-heading">
+                            <h2>Login Records</h2>
+                        </div>
+                        <div class="home-page-card-link-icon">
+                            <img src="<?php echo URIP_URL ?>assets/image/login-records-icon.svg" alt="login-records-icon">
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
-        <div class="home-page-card-link">
-            <a href="<?php echo home_url('/login-records') ?>">
-                <div class="page-link-inner">
-                    <div class="home-page-card-link-heading">
-                        <h2>Login Records</h2>
-                    </div>
-                    <div class="home-page-card-link-icon">
-                        <img src="<?php echo URIP_URL ?>assets/image/login-records-icon.svg" alt="login-records-icon">
-                    </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
+        <?php } ?>
         <div class="home-page-card-link">
             <a href="<?php echo home_url('/faq') ?>">
                 <div class="page-link-inner">
@@ -67,6 +70,7 @@ $userName = wp_get_current_user();
                 </div>
             </a>
         </div>
+         <?php if ($getUserRole !== 'viewer') { ?>
         <div class="home-page-card-link">
             <a href="<?php echo home_url('/manage-ip-whitelist') ?>">
                 <div class="page-link-inner">
@@ -79,6 +83,7 @@ $userName = wp_get_current_user();
                 </div>
             </a>
         </div>
+        <?php } ?>
         <div class="home-page-card-link">
             <a href="<?php echo home_url('/game-categories') ?>">
                 <div class="page-link-inner">

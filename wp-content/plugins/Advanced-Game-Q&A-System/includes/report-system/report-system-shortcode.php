@@ -3,7 +3,7 @@
 function report_system_shortcode()
 {
 
-
+    $getUserRole = get_user_role_simple();
     $add_faq_report = isset($_GET['add']) ? intval($_GET['add']) : 0;
     $add_report_status = isset($_GET['status']) ? $_GET['status'] : '';
     // echo $add_report_status;
@@ -17,7 +17,38 @@ function report_system_shortcode()
 
     if ($add_faq_report == 0) {
 
-        $sql = "
+        //         $sql = "
+        //     SELECT
+        //         id,
+        //         user_id,
+        //         report_type,
+        //         status,
+        //         issue_detail,
+        //         issue_detail_reply,
+        //         upload_attachments,
+        //         answer,
+        //         reporter,
+        //         reply_time,
+        //         create_time
+        //     FROM $table_agqa_report_system
+        // ";
+
+        //         // Add WHERE clause only if status is provided
+        //         if (!empty($add_report_status)) {
+        //             // Escaping the value to prevent SQL injection
+        //             $safe_status = esc_sql($add_report_status);
+        //             $sql .= " WHERE status = '$safe_status Response'";
+        //         }
+
+        //         // Final ORDER BY
+        //         $sql .= " ORDER BY id DESC";
+
+        //         // Run the query
+        //         $report_system_data = $wpdb->get_results($sql);
+
+
+        // Base SELECT
+        $sql  = "
     SELECT
         id,
         user_id,
@@ -33,23 +64,51 @@ function report_system_shortcode()
     FROM $table_agqa_report_system
 ";
 
-        // Add WHERE clause only if status is provided
-        if (!empty($add_report_status)) {
-            // Escaping the value to prevent SQL injection
-            $safe_status = esc_sql($add_report_status);
-            $sql .= " WHERE status = '$safe_status Response'";
+        // WHERE parts + args
+        $where = [];
+        $args  = [];
+
+        // Status filter (e.g., "Pending Response")
+        if (! empty($add_report_status)) {
+            $where[] = "status = %s";
+            $args[]  = $add_report_status . ' Response';
         }
 
-        // Final ORDER BY
+        // Viewer => only own records
+        if ($getUserRole === 'viewer') {
+            $where[] = "user_id = %d";
+            $args[]  = (int) $user_id;
+        }
+
+        // Attach WHERE if any
+        if (!empty($where)) {
+            $sql .= " WHERE " . implode(' AND ', $where);
+        }
+
+        // Order by latest first
         $sql .= " ORDER BY id DESC";
 
-        // Run the query
+        // Prepare (only if we have args)
+        if (!empty($args)) {
+            $sql = $wpdb->prepare($sql, $args);
+        }
+
+        // Run
         $report_system_data = $wpdb->get_results($sql);
-        $pending_response_count = $wpdb->get_var("
-                SELECT COUNT(*) 
-                FROM $table_agqa_report_system
-                WHERE status = 'Pending Response'
-            ");
+        // $pending_response_count = $wpdb->get_var("
+        //         SELECT COUNT(*) 
+        //         FROM $table_agqa_report_system
+        //         WHERE status = 'Pending Response'
+        //     ");
+        $count_sql  = "SELECT COUNT(*) FROM $table_agqa_report_system WHERE status = %s";
+$count_args = ['Pending Response'];
+
+// If viewer, only their own records
+if ($getUserRole === 'viewer') {
+    $count_sql  .= " AND user_id = %d";
+    $count_args[] = $user_id;
+}
+        $pending_response_count = (int) $wpdb->get_var( $wpdb->prepare($count_sql, $count_args) );
 
         // Query to fetch the user role for the current user
         $report_get_current_user = $wpdb->get_results("

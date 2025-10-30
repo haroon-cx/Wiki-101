@@ -1,28 +1,106 @@
 <?php
+// $getUserRole = get_user_role_simple();
+// if ($getUserRole == 'viewer') {
+//     echo "Permission not allowed";
+//     return;
+// }
+// global $wpdb;
+// $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
+
+// $get_ip_list = $wpdb->get_results("
+//             SELECT
+//                 id,
+//                 user_id,
+//                 account,
+//                 ipv4,
+//                 ipv6,
+//                 delete_status,
+//                 delete_user_name,
+//                 delete_user_id,
+//                 created_at
+//             FROM $table_agqa_ip_list
+//              ORDER BY 
+//             CASE 
+//                 WHEN delete_status = 'table-body-disabled' THEN 1
+//                 ELSE 0
+//             END,
+//             id DESC
+//             ");
+$getUserRole = get_user_role_simple();
+if ($getUserRole === 'viewer') {
+    echo "Permission not allowed";
+    return;
+}
 
 global $wpdb;
+
+// Tables
 $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
+$table_agqa_users   = $wpdb->prefix . 'agqa_wiki_add_users';
 
-$get_ip_list = $wpdb->get_results("
-            SELECT
-                id,
-                user_id,
-                account,
-                ipv4,
-                ipv6,
-                delete_status,
-                delete_user_name,
-                delete_user_id,
-                created_at
-            FROM $table_agqa_ip_list
-             ORDER BY 
-            CASE 
-                WHEN delete_status = 'table-body-disabled' THEN 1
-                ELSE 0
-            END,
-            id DESC
-            ");
+// Role hierarchy
+$role_level = [
+    'viewer'      => 1,
+    'contributor' => 2,
+    'manager'     => 3,
+    'admin'       => 4,
+];
 
+// Helper to get roles up to ceiling
+$roles_up_to = function($maxRole) use ($role_level) {
+    $maxRole = strtolower($maxRole);
+    if (!isset($role_level[$maxRole])) $maxRole = 'viewer';
+    $max = $role_level[$maxRole];
+    $out = [];
+    foreach ($role_level as $r => $lvl) {
+        if ($lvl <= $max) $out[] = $r;
+    }
+    return $out;
+};
+
+$is_admin = (strtolower($getUserRole) === 'admin');
+
+// Current user's allowed roles (admin gets all, others get up to their level)
+$allowed_roles = $roles_up_to($getUserRole);
+
+// Build placeholders for role IN (...)
+$role_placeholders = implode(',', array_fill(0, count($allowed_roles), '%s'));
+$params = array_map('strtolower', $allowed_roles);
+
+// Base SQL with JOIN to fetch account_role
+$sql = "
+    SELECT
+        i.id,
+        i.user_id,
+        i.account,
+        i.ipv4,
+        i.ipv6,
+        i.delete_status,
+        i.delete_user_name,
+        i.delete_user_id,
+        i.created_at,
+        u.user_role AS account_role
+    FROM {$table_agqa_ip_list} AS i
+    INNER JOIN {$table_agqa_users} AS u
+        ON u.account = i.account
+    WHERE LOWER(u.user_role) IN ($role_placeholders)
+";
+
+// Non-admins should NOT see deleted rows
+if (!$is_admin) {
+    $sql .= " AND (i.delete_status IS NULL OR i.delete_status <> %s)";
+    $params[] = 'table-body-disabled';
+}
+
+$sql .= "
+    ORDER BY 
+        CASE WHEN i.delete_status = 'table-body-disabled' THEN 1 ELSE 0 END,
+        i.id DESC
+";
+
+// Run
+// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+$get_ip_list = $wpdb->get_results($wpdb->prepare($sql, $params));
 include 'add-ip-form.php';
 
 ?>

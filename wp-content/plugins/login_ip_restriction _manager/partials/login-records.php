@@ -1,4 +1,9 @@
 <?php
+$getUserRole = get_user_role_simple();
+if ($getUserRole == 'viewer') {
+    echo "Permission not allowed";
+    return;
+}
 global $wpdb;
 $table_login_records_list = $wpdb->prefix . 'agqa_wiki_login_records';
 $add_username = isset($_GET['username']) ? $_GET['username'] : '';

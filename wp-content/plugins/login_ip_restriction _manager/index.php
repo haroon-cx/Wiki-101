@@ -299,3 +299,49 @@ function hide_admin_bar_for_subscribers()
     }
 }
 add_action('wp', 'hide_admin_bar_for_subscribers');
+
+/**
+ * 
+ */
+
+add_filter('wp_nav_menu_objects', function ($items, $args) {
+    // Only affect the front end
+    if (is_admin()) {
+        return $items;
+    }
+
+    // Check role: adjust 'viewer' if your role slug is different
+      $user = get_user_role_simple();
+    // $user      = wp_get_current_user();
+    $is_viewer = $user == 'viewer';
+
+    if (!$is_viewer) {
+        return $items; // Do nothing for other roles
+    }
+
+    // 1) Match by menu item Title (case-insensitive)
+    $block_titles = [
+        'login records',
+        'manage ip’s whitelist',
+        'approval page',
+    ];
+
+    // 2) (Optional) Match by custom CSS class on the menu item
+    // In Appearance → Menus → Screen Options → check "CSS Classes",
+    // then add one of these classes to those items.
+    $block_classes = ['hide-for-viewer', 'login-records', 'manage-ip-whitelist', 'approval-page'];
+
+    foreach ($items as $key => $item) {
+        $title = strtolower(trim($item->title));
+        $classes = array_map('strtolower', (array) $item->classes);
+
+        $match_by_title  = in_array($title, $block_titles, true);
+        $match_by_class  = count(array_intersect($classes, $block_classes)) > 0;
+
+        if ($match_by_title || $match_by_class) {
+            unset($items[$key]); // remove the item for viewer role
+        }
+    }
+
+    return $items;
+}, 10, 2);
