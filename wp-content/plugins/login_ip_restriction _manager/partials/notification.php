@@ -1,5 +1,7 @@
 <?php
+
 $getUserRole = get_user_role_simple();
+
 global $wpdb;
 $table_agqa_report_system = $wpdb->prefix . 'faq_report_system';
 $table_agqa_approval_sysetm = $wpdb->prefix . 'agqa_approval_review_page';

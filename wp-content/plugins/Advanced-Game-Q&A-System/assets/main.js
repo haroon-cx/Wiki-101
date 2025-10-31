@@ -2663,4 +2663,13 @@ jQuery(document).ready(function ($) {
     });
 
   });
+
+  /**
+   * Approval rejection button popup
+   */
+  jQuery('.agqa-approval-no-button').on("click", function (e) {
+    e.preventDefault();
+    // alert('kuch bhi');
+    jQuery('.reject-submit-popup').removeClass('active');
+  });
 });

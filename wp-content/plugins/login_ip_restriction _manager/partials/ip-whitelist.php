@@ -47,7 +47,7 @@ $role_level = [
 ];
 
 // Helper to get roles up to ceiling
-$roles_up_to = function($maxRole) use ($role_level) {
+$roles_up_to = function ($maxRole) use ($role_level) {
     $maxRole = strtolower($maxRole);
     if (!isset($role_level[$maxRole])) $maxRole = 'viewer';
     $max = $role_level[$maxRole];

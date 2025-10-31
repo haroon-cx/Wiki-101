@@ -312,16 +312,16 @@ function handle_verification_user_email()
     //         $account
     //     )
     // );
-$current = $wpdb->get_row(
-    $wpdb->prepare(
-        "SELECT account, state
+    $current = $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT account, state
          FROM {$table_name}
          WHERE account = %s
          ORDER BY created_at DESC, id DESC
          LIMIT 1",
-        $account
-    )
-);
+            $account
+        )
+    );
     if (! $current) {
         wp_send_json_error(['message' => 'User not found in custom table.']);
     }
@@ -949,12 +949,37 @@ function cuim_login_check()
 
     }
 
+   global $wpdb;
 
     $user = $user->user_login;
+    // 1️⃣ Get stored IPs from your custom table
+    $table = $wpdb->prefix . 'agqa_wiki_add_ip';
+    $stored = $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT ipv4, ipv6 FROM $table WHERE account = %s LIMIT 1",
+            $user
+        ),
+        ARRAY_A
+    );
+    // if (!$stored) {
+    //     echo 'No Found User';
+    //     wp_die(); // No stored record
+    // }
 
 
     if (!$user) {
         wp_send_json_error(['code' => 'The account does not exist.']);
+    }
+
+    
+    $cuimClientIp = ipum_get_client_ipv4_ipv6();
+     // 3️⃣ Compare both arrays
+    $ipv4_match = !empty($stored['ipv4']) && $stored['ipv4'] === $cuimClientIp['ipv4'];
+    $ipv6_match = !empty($stored['ipv6']) && $stored['ipv6'] === $cuimClientIp['ipv6'];
+
+
+    if (!$ipv4_match && !$ipv6_match) {
+        wp_send_json_error(['code' => 'Your IP do not exists.']);
     }
 
     // Query the custom table for the user state
@@ -1012,7 +1037,7 @@ function cuim_login_check()
     ];
 
     // Data format for insert (%d for integer, %s for string)
-  $format = ['%d', '%s', '%s', '%s']; // Matching 4 fields
+    $format = ['%d', '%s', '%s', '%s']; // Matching 4 fields
 
     // Insert record
     $wpdb->insert($table_name, $data, $format);

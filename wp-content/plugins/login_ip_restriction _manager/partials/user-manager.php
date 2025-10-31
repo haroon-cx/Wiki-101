@@ -273,12 +273,12 @@ ob_start(); // Start output buffering
                     </form>
                 </div>
                 <div class="filter-right-area">
-                     <?php if ($getUserRole !== 'viewer') { ?>
-                    <div class="add-button-ctn">
-                        <a href="<?php echo esc_url(home_url('/manage-user/?add=1')) ?>" class="add-button">
-                            <img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg" alt="Plus Icon">Add User
-                        </a>
-                    </div>
+                    <?php if ($getUserRole !== 'viewer') { ?>
+                        <div class="add-button-ctn">
+                            <a href="<?php echo esc_url(home_url('/manage-user/?add=1')) ?>" class="add-button">
+                                <img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg" alt="Plus Icon">Add User
+                            </a>
+                        </div>
                     <?php } ?>
                 </div>
             </div>
@@ -293,8 +293,8 @@ ob_start(); // Start output buffering
                             <div class="table-head-col">Mail</div>
                             <div class="table-head-col">Contact Method</div>
                             <div class="table-head-col">Creation Time</div>
-                             <?php if ($getUserRole !== 'viewer') { ?>
-                            <div class="table-head-col">Actions</div><?php } ?>
+                            <?php if ($getUserRole !== 'viewer') { ?>
+                                <div class="table-head-col">Actions</div><?php } ?>
                         </div>
                         <div class="custom-table-body">
                             <?php
@@ -349,89 +349,118 @@ ob_start(); // Start output buffering
                                     <div class="table-body-col table-body-col-date">
                                         <?php echo str_replace('-', '/', $user_data->created_at); ?>
                                     </div>
-                                     <?php if ($getUserRole !== 'viewer') { ?>
-                                    <div class="table-body-col table-body-col-buttons">
-                                        <div class="login-history-ctn">
-                                            <button class="login-history-icon"></button>
-                                            <div class="login-history-popup">
-                                                <div class="login-history-popup-inner">
-                                                    <div class="popup-form-cross-icon"></div>
-                                                    <div class="popup-head">
-                                                        <h2>Login History</h2>
-                                                        <span class="userName"><?php echo $user_data->account; ?></span>
-                                                    </div>
-                                                    <div class="user-history-records">
-                                                        <div class="user-history-records-inner">
-                                                            <div class="user-history-record-head">
-                                                                <span class="user-number-title">No.</span>
-                                                                <span class="user-login-time-title">Login Time</span>
-                                                                <span class="user-ip-title">Login IP Address</span>
-                                                            </div>
-                                                            <div class="user-history-record-lists">
-                                                                <div class="user-history-record-lists-inner">
-                                                                    <?php
-                                                                    $count = 0;
-                                                                    if (!empty($userr_ip_data)) {
-                                                                        foreach ($userr_ip_data as $ip_data) {
-                                                                            $count++;
+                                    <?php if ($getUserRole !== 'viewer') { ?>
+                                        <div class="table-body-col table-body-col-buttons">
+                                            <div class="login-history-ctn">
+                                                <button class="login-history-icon"></button>
+                                                <div class="login-history-popup">
+                                                    <div class="login-history-popup-inner">
+                                                        <div class="popup-form-cross-icon"></div>
+                                                        <div class="popup-head">
+                                                            <h2>Login History</h2>
+                                                            <span class="userName"><?php echo $user_data->account; ?></span>
+                                                        </div>
+                                                        <div class="user-history-records">
+                                                            <div class="user-history-records-inner">
+                                                                <div class="user-history-record-head">
+                                                                    <span class="user-number-title">No.</span>
+                                                                    <span class="user-login-time-title">Login Time</span>
+                                                                    <span class="user-ip-title">Login IP Address</span>
+                                                                </div>
+                                                                <div class="user-history-record-lists">
+                                                                    <div class="user-history-record-lists-inner">
+                                                                        <?php
+                                                                        $count = 0;
+                                                                        if (!empty($userr_ip_data)) {
+                                                                            foreach ($userr_ip_data as $ip_data) {
+                                                                                $count++;
 
-                                                                    ?>
-                                                                            <div class="user-history-record-list">
-                                                                                <span class="user-number"><?php echo $count; ?></span>
-                                                                                <span class="user-login-time">
-                                                                                    <?php
+                                                                        ?>
+                                                                                <div class="user-history-record-list">
+                                                                                    <span class="user-number"><?php echo $count; ?></span>
+                                                                                    <span class="user-login-time">
+                                                                                        <?php
 
-                                                                                    $date = new DateTime($ip_data->created_at); // Convert the string into DateTime object
+                                                                                        $date = new DateTime($ip_data->created_at); // Convert the string into DateTime object
 
-                                                                                    // Convert to the 'Asia/Kolkata' time zone (Indian Standard Time)
-                                                                                    $date->setTimezone(new DateTimeZone($dataTimezone));
+                                                                                        // Convert to the 'Asia/Kolkata' time zone (Indian Standard Time)
+                                                                                        $date->setTimezone(new DateTimeZone($dataTimezone));
 
-                                                                                    // Output the time in 'Y/m/d H:i' format
-                                                                                    echo $date->format('Y/m/d H:i');
-                                                                                    ?>
+                                                                                        // Output the time in 'Y/m/d H:i' format
+                                                                                        echo $date->format('Y/m/d H:i');
+                                                                                        ?>
 
-                                                                                </span>
-                                                                                <span class="user-ip"><?php echo $ip_data->login_ip; ?></span>
-                                                                            </div>
-                                                                    <?php
+                                                                                    </span>
+                                                                                    <span class="user-ip"><?php echo $ip_data->login_ip; ?></span>
+                                                                                </div>
+                                                                        <?php
+                                                                            }
                                                                         }
-                                                                    }
-                                                                    ?>
+                                                                        ?>
 
 
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="history-record-buttons d-flex">
-                                                        <button class="close-button">close</button>
-                                                        <a href="<?php echo home_url('/login-records/?username=' . $user_data->account);  ?>" class="button">Go to Login History</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="manage-user-edit-ctn">
-                                            <a href="<?php echo esc_url(home_url('/manage-user/?edit=' . $user_data->id . '&state=' . urlencode($user_data->state))); ?>"
-                                                class="manage-user-edit-button"></a>
-                                        </div>
-                                        <?php if ($getUserRole !== 'contributor') { ?>
-                                        <div class="delete-user-ctn">
-                                            <button class="delete-user-button"></button>
-                                            <div id="custom-faq-field-popup">
-                                                <div id="custom-faq-field-popup-inner">
-                                                    <h2>Delete</h2>
-                                                    <div class="popup-form-cross-icon"></div>
-                                                    <div class="form-message">Are you sure you want to Delete?</div>
-                                                    <div class="agqa-popup-form-buttons d-flex" id="delete-manage-users">
-                                                        <button class="no-cancel" type="button">No</button>
-                                                        <button id="yes-cancel" type="submit"
-                                                            value="<?php echo $user_data->account; ?>">Yes</button>
+                                                        <div class="history-record-buttons d-flex">
+                                                            <button class="close-button">close</button>
+                                                            <a href="<?php echo home_url('/login-records/?username=' . $user_data->account);  ?>" class="button">Go to Login History</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="manage-user-edit-ctn">
+                                                <?php
+                                                $targetRole = $user_data->user_role;   // Jis user ko edit kar rahe hain, uska role
+
+                                                // Default: button allowed
+                                                $disable_button = false;
+
+                                                // Contributor restrictions
+                                                if ($getUserRole === 'contributor') {
+                                                    if (in_array($targetRole, ['admin', 'manager', 'contributor'])) {
+                                                        $disable_button = true;
+                                                    }
+                                                }
+
+                                                // Manager restrictions
+                                                elseif ($getUserRole === 'manager') {
+                                                    if (in_array($targetRole, ['admin', 'manager'])) {
+                                                        $disable_button = true;
+                                                    }
+                                                }
+
+                                                // Admin can edit anyone, so no change needed
+
+                                                // Button URL
+                                                $edit_url = esc_url(
+                                                    home_url('/manage-user/?edit=' . $user_data->id . '&state=' . urlencode($user_data->state))
+                                                );
+                                                ?>
+                                                <a href="<?php echo $disable_button ? '#' : $edit_url; ?>"
+                                                    class="manage-user-edit-button"
+                                                    <?php echo $disable_button ? 'style="pointer-events:none;opacity:0.5;cursor:not-allowed;"' : ''; ?>>
+                                                </a>
+                                            </div>
+                                            <?php if ($getUserRole !== 'contributor') { ?>
+                                                <div class="delete-user-ctn">
+                                                    <button class="delete-user-button"></button>
+                                                    <div id="custom-faq-field-popup">
+                                                        <div id="custom-faq-field-popup-inner">
+                                                            <h2>Delete</h2>
+                                                            <div class="popup-form-cross-icon"></div>
+                                                            <div class="form-message">Are you sure you want to Delete?</div>
+                                                            <div class="agqa-popup-form-buttons d-flex" id="delete-manage-users">
+                                                                <button class="no-cancel" type="button">No</button>
+                                                                <button id="yes-cancel" type="submit"
+                                                                    value="<?php echo $user_data->account; ?>">Yes</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
                                         </div>
-                                        <?php } ?>
-                                    </div>
                                     <?php } ?>
                                 </div>
                             <?php } ?>

@@ -1,3 +1,6 @@
+<?php
+$getUserRole = get_user_role_simple();
+?>
 <div class="manage-user-form-ctn">
     <div class="template-title">
         <h1>Manage User</h1>
@@ -70,9 +73,13 @@
                         </div>
                         <div class="custom-select-dropdown-lists">
                             <ul>
-                                <li data-value="Admin">Admin</li>
-                                <li data-value="Manager">Manager</li>
-                                <li data-value="Contributor">Contributor</li>
+                                <?php if ($getUserRole !== 'contributor') { ?>
+                                    <?php if ($getUserRole !== 'manager') { ?>
+                                        <li data-value="Admin">Admin</li>
+                                        <li data-value="Manager">Manager</li>
+                                    <?php } ?>
+                                    <li data-value="Contributor">Contributor</li>
+                                <?php } ?>
                                 <li data-value="Viewer">Viewer</li>
                             </ul>
                         </div>

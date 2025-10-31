@@ -77,9 +77,10 @@ curl_close($curl);
     <div class="approval-filter filter-area">
         <form action="#" autocomplete="off">
             <div class="filter-select">
-                <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden">
+                <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden" value="all">
                 <button class="filter-select-title">
-                    <span class="filter-default-text">Select A Type</span>
+                    <span class="filter-default-text">All</span>
+                    <!-- <span class="filter-default-text">Select A Type</span> -->
                     <span class="filter-selected-text"></span>
                 </button>
                 <div class="filter-select-list">
@@ -93,9 +94,10 @@ curl_close($curl);
                 </div>
             </div>
             <div class="filter-select">
-                <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden cuim-status">
+                <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden cuim-status" value="pending">
                 <button class="filter-select-title select-states">
-                    <span class="filter-default-text">Select A Status</span>
+                    <span class="filter-default-text">Pending</span>
+                    <!-- <span class="filter-default-text">Select A Status</span> -->
                     <span class="filter-selected-text"></span>
                 </button>
                 <div class="filter-select-list">
@@ -218,7 +220,8 @@ curl_close($curl);
 
         jQuery("#pagination-demo").twbsPagination({
             totalPages: totalPages,
-            visiblePages: 3,
+            visiblePages: totalPages,
+            initiateStartPageClick: false,
             onPageClick: function(event, page) {
                 // Hide all rows first
                 jQuery(".custom-table-ctn .custom-table-row").hide();
@@ -240,15 +243,15 @@ curl_close($curl);
                         // Hide all <li> items that come after the last active page
                         jQuery(this).nextAll().not(".next").hide();
 
-                        // Check if the "Next" button should be disabled
                         var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
+var $nextBtn = jQuery(".pagination-ctn ul li.next");
 
-                        // Disable or enable the "Next" button based on the visibility of the next page
-                        if (prevLi.is(":hidden")) {
-                            jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
-                        } else {
-                            jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
-                        }
+// Disable if: no next item, next is hidden, or next IS the .next button (last page)
+if (!prevLi.length || prevLi.is(":hidden") || prevLi.hasClass("next")) {
+  $nextBtn.addClass("disabled");
+} else {
+  $nextBtn.removeClass("disabled");
+}
                     }
                 });
             },
@@ -268,6 +271,20 @@ curl_close($curl);
         });
 
 
+        setTimeout(function() {
+            var $btn = jQuery('#agqa-approval-page-filter');
+            const btn = $btn.get(0);
+            // Create and dispatch mouse events
+            ['mousedown', 'mouseup', 'click'].forEach(eventType => {
+                btn.dispatchEvent(
+                    new MouseEvent(eventType, {
+                        view: window,
+                        bubbles: true,
+                        cancelable: true
+                    })
+                );
+            });
 
+        }, 500);
     });
 </script>

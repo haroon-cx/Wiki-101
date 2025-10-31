@@ -366,7 +366,7 @@ $rows_cat_names = $wpdb->get_results("
                             <div class="confirm-submit-popup-box">
                                 <h2>Approve</h2>
                                 <div class="popup-form-cross-icon"></div>
-                                <div class="form-message">Are you sure you want to submit?</div>
+                                <div class="form-message">Are you sure you want to approve?</div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
                                     <button class="no-confirm-submit" type="button">No</button>
                                     <input type="submit" value="Yes" id="confirm-submit">
@@ -377,10 +377,10 @@ $rows_cat_names = $wpdb->get_results("
                         <div id="reject-submit-popup" class="reject-submit-popup">
                             <div class="confirm-submit-popup-box">
                                 <h2>Reject</h2>
-                                <div class="popup-form-cross-icon"></div>
+                                <div class="popup-form-cross-icon agqa-approval-no-button"></div>
                                 <div class="form-message">Are you sure you want to Reject?</div>
                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                    <button class="no-confirm-submit" type="button">No</button>
+                                    <button class="no-confirm-submit agqa-approval-no-button" type="button">No</button>
                                     <button type="button" value="Yes" id="reject-confirm-submit" data-id="<?php echo $revenu_data_edit->id; ?>">Yes</button>
                                 </div>
                             </div>

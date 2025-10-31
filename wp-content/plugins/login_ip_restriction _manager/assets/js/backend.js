@@ -2170,6 +2170,7 @@ jQuery(document).ready(function ($) {
       var itemsPerPages = 15;
       var totalItemss = $(".custom-table-row:visible").length; // Count only visible items after filtering
       var totalPages = Math.ceil(totalItemss / itemsPerPages);
+     
 
       $(".custom-table-row").removeAttr("data-page"); // Remove the data-page attribute
       // Reinitialize pagination
