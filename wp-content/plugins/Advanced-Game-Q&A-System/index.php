@@ -183,5 +183,5 @@ function get_user_role_simple() {
         $role = !empty($user->roles) ? $user->roles[0] : 'guest';
     }
 
-    return $role;
+    return strtolower($role);
 }

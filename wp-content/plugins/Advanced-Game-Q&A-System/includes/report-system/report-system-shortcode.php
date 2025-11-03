@@ -101,14 +101,14 @@ function report_system_shortcode()
         //         WHERE status = 'Pending Response'
         //     ");
         $count_sql  = "SELECT COUNT(*) FROM $table_agqa_report_system WHERE status = %s";
-$count_args = ['Pending Response'];
+        $count_args = ['Pending Response'];
 
-// If viewer, only their own records
-if ($getUserRole === 'viewer') {
-    $count_sql  .= " AND user_id = %d";
-    $count_args[] = $user_id;
-}
-        $pending_response_count = (int) $wpdb->get_var( $wpdb->prepare($count_sql, $count_args) );
+        // If viewer, only their own records
+        if ($getUserRole === 'viewer') {
+            $count_sql  .= " AND user_id = %d";
+            $count_args[] = $user_id;
+        }
+        $pending_response_count = (int) $wpdb->get_var($wpdb->prepare($count_sql, $count_args));
 
         // Query to fetch the user role for the current user
         $report_get_current_user = $wpdb->get_results("

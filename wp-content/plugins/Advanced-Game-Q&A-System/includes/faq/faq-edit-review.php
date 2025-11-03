@@ -89,52 +89,51 @@ if ($edit_faq_review !== 0) {
                             </div>
                         </div>
                         <div class="form-buttons agqa-popup-form-buttons d-flex full-width agqa-add-update-btn">
-                              <?php if ($faq_view_page == '') { ?>
-                            <div id="cancel-form-confirmation" class="cancel-form-confirmation" style="">
-                                <div class="cancel-form-confirmation-box">
-                                    <h2>Cancel</h2>
-                                    <div class="popup-form-cross-icon"></div>
-                                    <div class="form-message">Are you sure you want to cancel?</div>
-                                    <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                        <button class="no-form-cancel" type="button">No</button>
-                                        <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button">Yes</a>
+                            <?php if ($faq_view_page == '') { ?>
+                                <div id="cancel-form-confirmation" class="cancel-form-confirmation" style="">
+                                    <div class="cancel-form-confirmation-box">
+                                        <h2>Cancel</h2>
+                                        <div class="popup-form-cross-icon"></div>
+                                        <div class="form-message">Are you sure you want to cancel?</div>
+                                        <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                            <button class="no-form-cancel" type="button">No</button>
+                                            <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button">Yes</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
 
-                            <div id="confirm-submit-popup" class="confirm-submit-popup">
-                                <div class="confirm-submit-popup-box">
-                                    <h2>Approve</h2>
-                                    <div class="popup-form-cross-icon"></div>
-                                    <div class="form-message">Are you sure you want to approve?</div>
-                                    <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                        <button class="no-confirm-submit" type="button">No</button>
-                                        <input type="submit" value="Yes" id="confirm-submit">
+                                <div id="confirm-submit-popup" class="confirm-submit-popup">
+                                    <div class="confirm-submit-popup-box">
+                                        <h2>Approve</h2>
+                                        <div class="popup-form-cross-icon"></div>
+                                        <div class="form-message">Are you sure you want to approve?</div>
+                                        <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                            <button class="no-confirm-submit" type="button">No</button>
+                                            <input type="submit" value="Yes" id="confirm-submit">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div id="reject-submit-popup" class="reject-submit-popup">
-                                <div class="confirm-submit-popup-box">
-                                    <h2>Reject</h2>
-                                    <div class="popup-form-cross-icon agqa-approval-no-button"></div>
-                                    <div class="form-message">Are you sure you want to Reject?</div>
-                                    <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                        <button class="no-confirm-submit agqa-approval-no-button" type="button">No</button>
-                                        <button type="button" value="Yes" id="reject-confirm-submit" data-id="<?php echo $faq_value->id; ?>">Yes</button>
+                                <div id="reject-submit-popup" class="reject-submit-popup">
+                                    <div class="confirm-submit-popup-box">
+                                        <h2>Reject</h2>
+                                        <div class="popup-form-cross-icon agqa-approval-no-button"></div>
+                                        <div class="form-message">Are you sure you want to Reject?</div>
+                                        <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                            <button class="no-confirm-submit agqa-approval-no-button" type="button">No</button>
+                                            <button type="button" value="Yes" id="reject-confirm-submit" data-id="<?php echo $faq_value->id; ?>">Yes</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                          
+
                                 <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
                                     id="cancel-confirmation-button">Cancel</a>
                                 <button type="button" value="Reject" id="faq-reject-btn" class="reject-button">Reject</button>
                                 <input type="submit" value="Approve" class="agqa-edit-submit-btn" id="confirm-submit-popup-button">
                             <?php } ?>
                             <?php if ($faq_view_page == 'page') { ?>
-                                <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button"
-                                    >Close</a>
+                                <a href="<?php echo esc_url(home_url('/approval-page/')) ?>" class="back-button">Close</a>
                             <?php } ?>
                         </div>
                     </form>
