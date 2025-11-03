@@ -1,6 +1,5 @@
 <?php
 // Get remembered username and email cookies
-// Get remembered username and email cookies
 $remembered_username = isset($_COOKIE['remembered_username']) ? $_COOKIE['remembered_username'] : '';
 $remembered_email = isset($_COOKIE['remembered_email']) ? $_COOKIE['remembered_email'] : '';
 
@@ -10,7 +9,6 @@ if (empty($remembered_username) && !empty($remembered_email)) {
 }
 $remembered_password = isset($_COOKIE['remembered_passowrd']) ? $_COOKIE['remembered_passowrd'] : '';
 
-// Print all cookies to check if the cookies are set properly
 
 ?>
 

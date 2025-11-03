@@ -107,25 +107,25 @@ $found_user_id = $wpdb->get_var(
     </div>
     <div class="notification-popup">
         <div class="notification-popup-head">
-             <?php if ($getUserRole !== 'viewer') { ?>
-            <div class="notification-tags">
-                <div class="notification-tag-card">
-                    <span class="notification-dot <?php echo $class_active; ?>"></span>
-                    <span>Pending Reports</span>
-                    <a href="#" class="notification-count active cuim-response-review-count"><?php echo $pending_response_count; ?></a>
-                </div>
-                 <?php if ($getUserRole !== 'contributor') { ?>
-                <div class="notification-tag-card">
-                    <span class="notification-dot <?php echo $class_approval_active; ?>"></span>
-                    <span>Pending Review</span>
-                    <?php if ($approval_pending_count > 0) { ?>
-                        <a href="#" class="notification-count active cuim-review-pending-count"><?php echo $approval_pending_count; ?></a>
-                    <?php } else { ?>
-                        <a href="#" class="notification-count"><?php echo $approval_pending_count; ?></a>
+            <?php if ($getUserRole !== 'viewer') { ?>
+                <div class="notification-tags">
+                    <div class="notification-tag-card">
+                        <span class="notification-dot <?php echo $class_active; ?>"></span>
+                        <span>Pending Reports</span>
+                        <a href="#" class="notification-count active cuim-response-review-count"><?php echo $pending_response_count; ?></a>
+                    </div>
+                    <?php if ($getUserRole !== 'contributor') { ?>
+                        <div class="notification-tag-card">
+                            <span class="notification-dot <?php echo $class_approval_active; ?>"></span>
+                            <span>Pending Review</span>
+                            <?php if ($approval_pending_count > 0) { ?>
+                                <a href="#" class="notification-count active cuim-review-pending-count"><?php echo $approval_pending_count; ?></a>
+                            <?php } else { ?>
+                                <a href="#" class="notification-count"><?php echo $approval_pending_count; ?></a>
+                            <?php  } ?>
+                        </div>
                     <?php  } ?>
                 </div>
-                <?php  } ?>
-            </div>
             <?php } ?>
             <?php if (($last_report && $last_report->user_read_report !== "read")  || $current_user_id !== (int) $found_user_id) { ?>
                 <div class="notification-list-heading"><strong>Notification</strong></div>

@@ -244,14 +244,14 @@ curl_close($curl);
                         jQuery(this).nextAll().not(".next").hide();
 
                         var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
-var $nextBtn = jQuery(".pagination-ctn ul li.next");
+                        var $nextBtn = jQuery(".pagination-ctn ul li.next");
 
-// Disable if: no next item, next is hidden, or next IS the .next button (last page)
-if (!prevLi.length || prevLi.is(":hidden") || prevLi.hasClass("next")) {
-  $nextBtn.addClass("disabled");
-} else {
-  $nextBtn.removeClass("disabled");
-}
+                        // Disable if: no next item, next is hidden, or next IS the .next button (last page)
+                        if (!prevLi.length || prevLi.is(":hidden") || prevLi.hasClass("next")) {
+                            $nextBtn.addClass("disabled");
+                        } else {
+                            $nextBtn.removeClass("disabled");
+                        }
                     }
                 });
             },

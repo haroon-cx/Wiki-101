@@ -12,11 +12,11 @@
     </div>
 </div>
 <script>
-jQuery(document).ready(function() {
-    setTimeout(function() {
-        window.location.href = '<?php echo get_home_url(); ?>'; // Redirect after alert
-    }, 3000);
+    jQuery(document).ready(function() {
+        setTimeout(function() {
+            window.location.href = '<?php echo get_home_url(); ?>'; // Redirect after alert
+        }, 3000);
 
 
-});
+    });
 </script>

@@ -5,78 +5,78 @@
 add_action('wp_body_open', 'cui_pm_add_logout_button_footer');
 function cui_pm_add_logout_button_footer()
 {
-    if (is_user_logged_in() ) {
+    if (is_user_logged_in()) {
 
-    ?>
-  <header class="header">
-    <div class="header-wrapper">
-    <?php
-    // Get saved viewer mode flag for current user
-    $user_id = get_current_user_id();
-    $viewer_mode = get_user_meta($user_id, 'cuim_viewer_mode', true);
-    $is_on = ($viewer_mode === '1'); // boolean
+?>
+        <header class="header">
+            <div class="header-wrapper">
+                <?php
+                // Get saved viewer mode flag for current user
+                $user_id = get_current_user_id();
+                $viewer_mode = get_user_meta($user_id, 'cuim_viewer_mode', true);
+                $is_on = ($viewer_mode === '1'); // boolean
 
-    if (function_exists('the_custom_logo') && has_custom_logo()) {
-        $custom_logo_id = get_theme_mod('custom_logo');
-        $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
+                if (function_exists('the_custom_logo') && has_custom_logo()) {
+                    $custom_logo_id = get_theme_mod('custom_logo');
+                    $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
 
-        if ($logo) {
-            echo '<a href="' . esc_url(home_url('/')) . '" class="agqa-site-logo" rel="home">
+                    if ($logo) {
+                        echo '<a href="' . esc_url(home_url('/')) . '" class="agqa-site-logo" rel="home">
                         <img src="' . URIP_URL . '/assets/image/site-logo.svg" alt="Site logo">
                     </a>';
-        }
-    }
-    $user = wp_get_current_user();
-    $logout_url = wp_logout_url(home_url());
-    $profile_image = get_user_meta($user_id, 'profile_image', true);
-    if (empty($profile_image)) {
-        $profile_image = URIP_URL . '/assets/image/profile-user-image.jpg';
-    }
-    ?>
-    <div class="header-right">
-  
-        <!-- <div id="agqa-search-box">
+                    }
+                }
+                $user = wp_get_current_user();
+                $logout_url = wp_logout_url(home_url());
+                $profile_image = get_user_meta($user_id, 'profile_image', true);
+                if (empty($profile_image)) {
+                    $profile_image = URIP_URL . '/assets/image/profile-user-image.jpg';
+                }
+                ?>
+                <div class="header-right">
+
+                    <!-- <div id="agqa-search-box">
             <input type="text" id="agqa-search-input" placeholder="search...">
             <div id="agqa-search-results"></div>
         </div> -->
-        <div class="language-switch-ctn">
-            <div class="language-button english-language"></div>
-            <div class="language-button chinese-language"></div>
-        </div>
-        <?php 
-        include URIP_PATH . 'partials/notification.php';
-        ?>
-        
-         <div class="cuim-profile-box">
-            <img src="<?php echo $profile_image; ?>" alt="Avatar" />
-            <div class="cuim-profile-dropdown-ctn">
-            <div class="cuim-profile-dropdown">
-                <div class="cuim-profile-dropdown-head">
-                    <img src="<?php echo $profile_image; ?>" alt="Avatar" />
-                    <div>
-                        <h2 class="cuim-user-name"><?php echo $user->first_name; ?> </h2>
-                        <span class="cuim-profile-name"><?php echo $user->user_email; ?> </span>
+                    <div class="language-switch-ctn">
+                        <div class="language-button english-language"></div>
+                        <div class="language-button chinese-language"></div>
                     </div>
-                </div>
-                <div class="cuim-profile-button-box">
-                    <a href="#" class="cuim-edit-profile-button" >Edit Profile</a>
-                    <a href=" <?php echo $logout_url; ?>" class="cuim-logout-button">Log Out</a>
+                    <?php
+                    include URIP_PATH . 'partials/notification.php';
+                    ?>
+
+                    <div class="cuim-profile-box">
+                        <img src="<?php echo $profile_image; ?>" alt="Avatar" />
+                        <div class="cuim-profile-dropdown-ctn">
+                            <div class="cuim-profile-dropdown">
+                                <div class="cuim-profile-dropdown-head">
+                                    <img src="<?php echo $profile_image; ?>" alt="Avatar" />
+                                    <div>
+                                        <h2 class="cuim-user-name"><?php echo $user->first_name; ?> </h2>
+                                        <span class="cuim-profile-name"><?php echo $user->user_email; ?> </span>
+                                    </div>
+                                </div>
+                                <div class="cuim-profile-button-box">
+                                    <a href="#" class="cuim-edit-profile-button">Edit Profile</a>
+                                    <a href=" <?php echo $logout_url; ?>" class="cuim-logout-button">Log Out</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hamburger-menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
                 </div>
             </div>
-            </div>
-        </div>
-        <div class="hamburger-menu">
-        <span></span>
-        <span></span>
-        <span></span>
-        </div>
-        
-    </div>
-    </div>
-    </header>
+        </header>
     <?php
     }
-?>
+    ?>
     <?php
 
     // $user_id = get_current_user_id();

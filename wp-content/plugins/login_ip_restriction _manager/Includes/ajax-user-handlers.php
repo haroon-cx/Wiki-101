@@ -949,7 +949,7 @@ function cuim_login_check()
 
     }
 
-   global $wpdb;
+    global $wpdb;
 
     $user = $user->user_login;
     // 1️⃣ Get stored IPs from your custom table
@@ -971,9 +971,45 @@ function cuim_login_check()
         wp_send_json_error(['code' => 'The account does not exist.']);
     }
 
-    
+    function ipum_get_client_ipv4_ipv6()
+    {
+        $possible_headers = [
+            'HTTP_CF_CONNECTING_IP',
+            'HTTP_X_FORWARDED_FOR',
+            'X_FORWARDED_FOR',
+            'HTTP_CLIENT_IP',
+            'CLIENT_IP',
+            'REMOTE_ADDR',
+        ];
+
+        $ips = [
+            'ipv4' => '',
+            'ipv6' => ''
+        ];
+
+        foreach ($possible_headers as $hdr) {
+            if (! empty($_SERVER[$hdr])) {
+                $ip_list = explode(',', $_SERVER[$hdr]);
+
+                foreach ($ip_list as $ip) {
+                    $ip = sanitize_text_field(trim($ip));
+
+                    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && empty($ips['ipv4'])) {
+                        $ips['ipv4'] = $ip;
+                    }
+
+                    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) && empty($ips['ipv6'])) {
+                        $ips['ipv6'] = $ip;
+                    }
+                }
+            }
+        }
+
+        return $ips;
+    }
+
     $cuimClientIp = ipum_get_client_ipv4_ipv6();
-     // 3️⃣ Compare both arrays
+    // 3️⃣ Compare both arrays
     $ipv4_match = !empty($stored['ipv4']) && $stored['ipv4'] === $cuimClientIp['ipv4'];
     $ipv6_match = !empty($stored['ipv6']) && $stored['ipv6'] === $cuimClientIp['ipv6'];
 

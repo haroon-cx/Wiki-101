@@ -125,41 +125,41 @@ function ipum_get_client_ip()
     // Fallback to REMOTE_ADDR
     return sanitize_text_field($_SERVER['REMOTE_ADDR'] ?? '');
 }
-function ipum_get_client_ipv4_ipv6() {
-    $possible_headers = [
-        'HTTP_CF_CONNECTING_IP',
-        'HTTP_X_FORWARDED_FOR',
-        'X_FORWARDED_FOR',
-        'HTTP_CLIENT_IP',
-        'CLIENT_IP',
-        'REMOTE_ADDR',
-    ];
+// function ipum_get_client_ipv4_ipv6() {
+//     $possible_headers = [
+//         'HTTP_CF_CONNECTING_IP',
+//         'HTTP_X_FORWARDED_FOR',
+//         'X_FORWARDED_FOR',
+//         'HTTP_CLIENT_IP',
+//         'CLIENT_IP',
+//         'REMOTE_ADDR',
+//     ];
 
-    $ips = [
-        'ipv4' => '',
-        'ipv6' => ''
-    ];
+//     $ips = [
+//         'ipv4' => '',
+//         'ipv6' => ''
+//     ];
 
-    foreach ($possible_headers as $hdr) {
-        if (! empty($_SERVER[$hdr])) {
-            $ip_list = explode(',', $_SERVER[$hdr]);
+//     foreach ($possible_headers as $hdr) {
+//         if (! empty($_SERVER[$hdr])) {
+//             $ip_list = explode(',', $_SERVER[$hdr]);
 
-            foreach ($ip_list as $ip) {
-                $ip = sanitize_text_field(trim($ip));
+//             foreach ($ip_list as $ip) {
+//                 $ip = sanitize_text_field(trim($ip));
 
-                if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && empty($ips['ipv4'])) {
-                    $ips['ipv4'] = $ip;
-                }
+//                 if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && empty($ips['ipv4'])) {
+//                     $ips['ipv4'] = $ip;
+//                 }
 
-                if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) && empty($ips['ipv6'])) {
-                    $ips['ipv6'] = $ip;
-                }
-            }
-        }
-    }
+//                 if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) && empty($ips['ipv6'])) {
+//                     $ips['ipv6'] = $ip;
+//                 }
+//             }
+//         }
+//     }
 
-    return $ips;
-}
+//     return $ips;
+// }
 
 // add_filter('authenticate', 'cui_pm_admin_bypass_ip_whitelist', 30, 3);
 // function cui_pm_admin_bypass_ip_whitelist($user, $username, $password)

@@ -43,29 +43,29 @@ if ($username) {
 ?>
 
 <style>
-.sidebar.widget_area.left.sidebar_below.sidebar_default {
-    display: none;
-}
+    .sidebar.widget_area.left.sidebar_below.sidebar_default {
+        display: none;
+    }
 
-.page_content_wrap .content_wrap,
-.page_content_wrap .content_container,
-.content_wrap,
-.content_container {
-    width: 100% !important;
-    max-width: 100%;
-}
+    .page_content_wrap .content_wrap,
+    .page_content_wrap .content_container,
+    .content_wrap,
+    .content_container {
+        width: 100% !important;
+        max-width: 100%;
+    }
 
-body.body_style_wide:not(.expand_content) .page_content_wrap .content_wrap>.content,
-body.body_style_wide:not(.expand_content) .content_wrap>.content {
-    width: 100% !important;
-}
+    body.body_style_wide:not(.expand_content) .page_content_wrap .content_wrap>.content,
+    body.body_style_wide:not(.expand_content) .content_wrap>.content {
+        width: 100% !important;
+    }
 </style>
 
 
-<?php 
-if($login_again == '1') {
-include 'login-again.php'; 
- return;
+<?php
+if ($login_again == '1') {
+    include 'login-again.php';
+    return;
 }
 
 ?>
@@ -73,84 +73,84 @@ include 'login-again.php';
 
 <?php if ($date_diff > 7) { ?>
 
-<div class="successfull-message-ctn">
-    <div class="successfull-message-ctn-content">
-        <div class="successfull-message-icon">
-            <img src="<?php echo URIP_URL ?>assets/image/successfull-message-icon.svg" alt="Success Icon">
-        </div>
-        <div class="successfull-message-text">
-            <div class="error-message">
-                <h2> The link has expired. Please request a new one. </h2>
+    <div class="successfull-message-ctn">
+        <div class="successfull-message-ctn-content">
+            <div class="successfull-message-icon">
+                <img src="<?php echo URIP_URL ?>assets/image/successfull-message-icon.svg" alt="Success Icon">
+            </div>
+            <div class="successfull-message-text">
+                <div class="error-message">
+                    <h2> The link has expired. Please request a new one. </h2>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 <?php return;
 } ?>
 
 <?php if (!$user_info) { ?>
-<div class="successfull-message-ctn">
-    <div class="successfull-message-ctn-content">
-        <div class="successfull-message-icon">
-            <img src="<?php echo URIP_URL ?>assets/image/successfull-message-icon.svg" alt="Success Icon">
-        </div>
-        <div class="successfull-message-text">
-            <div class="error-message">
-                <h2> User not found. </h2>
+    <div class="successfull-message-ctn">
+        <div class="successfull-message-ctn-content">
+            <div class="successfull-message-icon">
+                <img src="<?php echo URIP_URL ?>assets/image/successfull-message-icon.svg" alt="Success Icon">
+            </div>
+            <div class="successfull-message-text">
+                <div class="error-message">
+                    <h2> User not found. </h2>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<?php 
-return; 
+<?php
+    return;
 } ?>
 
 <?php if ($user_info && $date_diff < 7) { ?>
 
-<div class="successfull-message-ctn">
-    <div class="successfull-message-ctn-content">
-        <div class="successfull-message-icon">
-            <img src="<?php echo URIP_URL ?>assets/image/successfull-message-icon.svg" alt="Success Icon">
+    <div class="successfull-message-ctn">
+        <div class="successfull-message-ctn-content">
+            <div class="successfull-message-icon">
+                <img src="<?php echo URIP_URL ?>assets/image/successfull-message-icon.svg" alt="Success Icon">
+            </div>
+            <div class="successfull-message-text">
+                <h2>Your account has been activated successfully.
+                </h2>
+            </div>
+            <input type="hidden" class="agqa-user-name" value="<?php echo $username ?>">
         </div>
-        <div class="successfull-message-text">
-            <h2>Your account has been activated successfully.
-            </h2>
-        </div>
-        <input type="hidden" class="agqa-user-name" value="<?php echo $username ?>">
     </div>
-</div>
 
-<script>
-jQuery(document).ready(function($) {
-    var formData = "username=" + jQuery('.agqa-user-name').val();
-    // var formData = $form.serialize();
+    <script>
+        jQuery(document).ready(function($) {
+            var formData = "username=" + jQuery('.agqa-user-name').val();
+            // var formData = $form.serialize();
 
 
-    var nonce = cuim_ajax.nonce; // Nonce for security
+            var nonce = cuim_ajax.nonce; // Nonce for security
 
-    // Send the AJAX request
-    $.ajax({
-        url: cuim_ajax.ajax_url,
-        type: "POST",
-        data: {
-            action: "verification_user_email",
-            form_data: formData, // Pass the form data to the server
-            nonce: nonce,
-        },
-        success: function(response) {
-            if (response.success) {
+            // Send the AJAX request
+            $.ajax({
+                url: cuim_ajax.ajax_url,
+                type: "POST",
+                data: {
+                    action: "verification_user_email",
+                    form_data: formData, // Pass the form data to the server
+                    nonce: nonce,
+                },
+                success: function(response) {
+                    if (response.success) {
 
-            } else {
-                // Failure message
-            }
-        },
-        error: function(response) {
-            alert('123')
-            // Error message if AJAX fails
-            alert("An error occurred.");
-        },
-    });
-});
-</script>
+                    } else {
+                        // Failure message
+                    }
+                },
+                error: function(response) {
+                    alert('123')
+                    // Error message if AJAX fails
+                    alert("An error occurred.");
+                },
+            });
+        });
+    </script>
 <?php } ?>
