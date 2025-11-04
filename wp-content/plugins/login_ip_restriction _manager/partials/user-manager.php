@@ -443,7 +443,7 @@ ob_start(); // Start output buffering
                                                     <?php echo $disable_button ? 'style="pointer-events:none;opacity:0.5;cursor:not-allowed;"' : ''; ?>>
                                                 </a>
                                             </div>
-                                            <?php if ($getUserRole !== 'contributor' && $getUserRole == 'manager') { ?>
+                                            <?php if ($getUserRole !== 'contributor' && $getUserRole !== 'manager') { ?>
                                                 <div class="delete-user-ctn">
                                                     <button class="delete-user-button"></button>
                                                     <div id="custom-faq-field-popup">

@@ -40,8 +40,8 @@ function cui_pm_add_logout_button_footer()
             <div id="agqa-search-results"></div>
         </div> -->
                     <div class="language-switch-ctn">
-                        <div class="language-button english-language"></div>
-                        <div class="language-button chinese-language"></div>
+                        <div class="language-button english-language" data-lang="" style="display: none;"></div>
+                        <div class="language-button chinese-language" data-lang="zh"></div>
                     </div>
                     <?php
                     include URIP_PATH . 'partials/notification.php';
@@ -314,6 +314,58 @@ function cui_pm_add_logout_button_footer()
             margin-bottom: 0;
         }
     </style>
+    <!-- <script>
+      jQuery(document).ready(function ($) {
+        jQuery('.language-button').click(function(){
+             var lang = jQuery(this).data('lang');
+             jQuery(this).hide().siblings().show();
+            // alert(lang);
+        });
+      });
+    </script> -->
+    <script>
+        jQuery(document).ready(function($) {
+
+            // 🔍 On page load — set which button to show
+            var currentPath = window.location.pathname;
+            if (currentPath.includes('/zh/')) {
+                $('.chinese-language').hide();
+                $('.english-language').show();
+            } else {
+                $('.english-language').hide();
+                $('.chinese-language').show();
+            }
+
+            // 🌐 On language button click
+            jQuery('.language-button').click(function() {
+                var lang = jQuery(this).data('lang');
+                jQuery(this).hide().siblings().show();
+
+                // ✅ Get current path and clean it
+                var pathParts = window.location.pathname.split('/').filter(Boolean);
+
+                // 🔄 Remove existing language code if present
+                if (pathParts[0] === 'zh') {
+                    pathParts.shift(); // remove 'zh' from start
+                }
+
+                // 🧠 Build new path (insert lang only if it's not empty)
+                var newPath = lang ? '/' + lang + '/' + pathParts.join('/') : '/' + pathParts.join('/');
+
+                // ✅ Final URL (avoid double slashes)
+                var newUrl = window.location.origin + newPath.replace(/\/+/g, '/') + '/';
+
+                console.log("New URL:", newUrl);
+
+                // 👉 Optional redirect after delay
+                window.location.href = newUrl;
+                setTimeout(function() {
+                }, 1000);
+            });
+        });
+    </script>
+
+
 <?php
 }
 ?>

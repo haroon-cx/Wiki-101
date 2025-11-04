@@ -5247,3 +5247,6 @@ body.page_content_blocks:not(.single-post):not(.single-job_listing):not(.element
   overflow-y: auto;
   padding-right: 10px;
 }
+.add-ip-from-ajax {
+    width: 119px !important;
+}

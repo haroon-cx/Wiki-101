@@ -26,6 +26,82 @@
 //             END,
 //             id DESC
 //             ");
+// $getUserRole = get_user_role_simple();
+// if ($getUserRole === 'viewer') {
+//     echo "Permission not allowed";
+//     return;
+// }
+
+// global $wpdb;
+
+// // Tables
+// $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
+// $table_agqa_users   = $wpdb->prefix . 'agqa_wiki_add_users';
+
+// // Role hierarchy
+// $role_level = [
+//     'viewer'      => 1,
+//     'contributor' => 2,
+//     'manager'     => 3,
+//     'admin'       => 4,
+// ];
+
+// // Helper to get roles up to ceiling
+// $roles_up_to = function ($maxRole) use ($role_level) {
+//     $maxRole = strtolower($maxRole);
+//     if (!isset($role_level[$maxRole])) $maxRole = 'viewer';
+//     $max = $role_level[$maxRole];
+//     $out = [];
+//     foreach ($role_level as $r => $lvl) {
+//         if ($lvl <= $max) $out[] = $r;
+//     }
+//     return $out;
+// };
+
+// $is_admin = (strtolower($getUserRole) === 'admin');
+
+// // Current user's allowed roles (admin gets all, others get up to their level)
+// $allowed_roles = $roles_up_to($getUserRole);
+
+// // Build placeholders for role IN (...)
+// $role_placeholders = implode(',', array_fill(0, count($allowed_roles), '%s'));
+// $params = array_map('strtolower', $allowed_roles);
+
+// // Base SQL with JOIN to fetch account_role
+// $sql = "
+//     SELECT
+//         i.id,
+//         i.user_id,
+//         i.account,
+//         i.ipv4,
+//         i.ipv6,
+//         i.delete_status,
+//         i.delete_user_name,
+//         i.delete_user_id,
+//         i.created_at,
+//         u.user_role AS account_role
+//     FROM {$table_agqa_ip_list} AS i
+//     INNER JOIN {$table_agqa_users} AS u
+//         ON u.account = i.account
+//     WHERE LOWER(u.user_role) IN ($role_placeholders)
+// ";
+
+// // Non-admins should NOT see deleted rows
+// if (!$is_admin) {
+//     $sql .= " AND (i.delete_status IS NULL OR i.delete_status <> %s)";
+//     $params[] = 'table-body-disabled';
+// }
+
+// $sql .= "
+//     ORDER BY 
+//         CASE WHEN i.delete_status = 'table-body-disabled' THEN 1 ELSE 0 END,
+//         i.id DESC
+// ";
+
+// // Run
+// // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+// $get_ip_list = $wpdb->get_results($wpdb->prepare($sql, $params));
+
 $getUserRole = get_user_role_simple();
 if ($getUserRole === 'viewer') {
     echo "Permission not allowed";
@@ -60,14 +136,12 @@ $roles_up_to = function ($maxRole) use ($role_level) {
 
 $is_admin = (strtolower($getUserRole) === 'admin');
 
-// Current user's allowed roles (admin gets all, others get up to their level)
+// Current user's allowed roles
 $allowed_roles = $roles_up_to($getUserRole);
-
-// Build placeholders for role IN (...)
 $role_placeholders = implode(',', array_fill(0, count($allowed_roles), '%s'));
 $params = array_map('strtolower', $allowed_roles);
 
-// Base SQL with JOIN to fetch account_role
+// ✅ MAIN SQL – only latest record per *unique (lowercase, trimmed)* account
 $sql = "
     SELECT
         i.id,
@@ -82,11 +156,20 @@ $sql = "
         u.user_role AS account_role
     FROM {$table_agqa_ip_list} AS i
     INNER JOIN {$table_agqa_users} AS u
-        ON u.account = i.account
+        ON TRIM(LOWER(u.account)) = TRIM(LOWER(i.account))
+    INNER JOIN (
+        SELECT 
+            TRIM(LOWER(account)) AS account_key,
+            MAX(id) AS max_id
+        FROM {$table_agqa_ip_list}
+        GROUP BY TRIM(LOWER(account))
+    ) AS latest
+        ON TRIM(LOWER(i.account)) = latest.account_key
+        AND i.id = latest.max_id
     WHERE LOWER(u.user_role) IN ($role_placeholders)
 ";
 
-// Non-admins should NOT see deleted rows
+// Non-admins don’t see deleted rows
 if (!$is_admin) {
     $sql .= " AND (i.delete_status IS NULL OR i.delete_status <> %s)";
     $params[] = 'table-body-disabled';
@@ -98,9 +181,24 @@ $sql .= "
         i.id DESC
 ";
 
-// Run
+// Run query
 // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 $get_ip_list = $wpdb->get_results($wpdb->prepare($sql, $params));
+
+// ✅ Display
+$displayed_accounts = [];
+// if (!empty($get_ip_list)) {
+//     foreach ($get_ip_list as $row) {
+//         // Check if account already displayed (avoid duplicates)
+//         if (!in_array($row->account, $displayed_accounts)) {
+//             $displayed_accounts[] = $row->account;
+//             echo "<p>{$row->account} - {$row->ipv4} ({$row->account_role})</p>";
+//         }
+//     }
+// } else {
+//     echo "<p>No records found.</p>";
+// }
+
 include 'add-ip-form.php';
 
 ?>
@@ -166,103 +264,109 @@ include 'add-ip-form.php';
                         <div class="table-head-col">Actions</div>
                     </div>
                     <div class="custom-table-body">
-                        <?php foreach ($get_ip_list as $ip_value) { ?>
-                            <div class="custom-table-row <?php echo $ip_value->delete_status; ?>">
-                                <div class="table-body-col cuim-ip-user-account">
-                                    <?php echo $ip_value->account; ?>
-                                    <?php echo empty($ip_value->delete_user_name) ? '' : '(deleter | ' . $ip_value->delete_user_name . ')'; ?>
-                                </div>
-                                <div class="table-body-col cuim-ip-user-ipv4">
-                                    <?php echo $ip_value->ipv4 ?>
-                                </div>
-                                <div class="table-body-col cuim-ip-user-ipv6">
-                                    <?php echo $ip_value->ipv6 ?>
-                                </div>
-                                <div class="table-body-col manage-ip-actions">
-                                    <div class="edit-ip-ctn">
-                                        <button class="manage-ip-edit-button"></button>
-                                        <div class="edit-manage-ip-form">
-                                            <div class="edit-manage-ip-form-inner">
-                                                <div class="popup-form-cross-icon manage-ip-cross-icon"></div>
-                                                <div class="popup-form-title">
-                                                    <h2>Edit IP</h2>
-                                                </div>
-                                                <form action="#" class="edit-ip-from-list">
-                                                    <div class="form-field full-width required">
-                                                        <label for="account-name"><span>*</span> Account</label>
-                                                        <input type="hidden" name="ip-edit-id" value="<?php echo $ip_value->id; ?>">
-                                                        <input type="hidden" class="ip-edit-ip4-check" value="<?php echo $ip_value->ipv4; ?>">
-                                                        <input type="hidden" class="ip-edit-ip6-check" value="<?php echo $ip_value->ipv6; ?>">
-                                                        <input type="text" name="account-name" placeholder="Description" value="<?php echo $ip_value->account ?>" required style="pointer-events: none;1">
-                                                    </div>
-                                                    <div class="form-field full-width">
-                                                        <label>IPv4</label>
-                                                        <input type="text" name="ip-ipv4" class="manage-ip-ipv4-field" placeholder="Enter IPv4 (e.g. 10.0.0.5)" value="<?php echo $ip_value->ipv4 ?>">
-                                                        <div class="error-message ip-error ipv4-error"></div>
-                                                    </div>
-                                                    <div class="form-field full-width">
-                                                        <label>IPv6</label>
-                                                        <input type="text" name="ip-ipv6" class="manage-ip-ipv6-field" placeholder="Enter IPv6 (E.G. 2400:3200::1)" value="<?php echo $ip_value->ipv6 ?>">
-                                                        <div class="error-message ip-error ipv6-error"></div>
-                                                    </div>
-                                                    <div class="form-buttons manage-ip-form-buttons d-flex">
-                                                        <button class="cancel-button" type="button">Cancel</button>
-                                                        <div class="cancel-form-confirmation" style="">
-                                                            <div class="cancel-form-confirmation-box">
-                                                                <h2>Cancel</h2>
-                                                                <div class="popup-form-cross-icon"></div>
-                                                                <div class="form-message">Are you sure you want to cancel?</div>
-                                                                <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                                    <button class="no-form-cancel" type="button">No</button>
-                                                                    <button class="yes-cancel cuim-cancel-button-ip" type="button">Yes</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <button class="edit-ip-btn cuim-edit-button-ip" type="submit">Submit</button>
-                                                        <div class="confirm-submit-popup cuim-edit-submit-popup">
-                                                            <div class="confirm-submit-popup-box">
-                                                                <h2>Submit</h2>
-                                                                <div class="popup-form-cross-icon submit-cross-icon"></div>
-                                                                <div class="form-message">Are you sure you want to submit?</div>
-                                                                <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                                    <button class="no-confirm-submit" type="button">No</button>
-                                                                    <button type="submit" value="Yes" class="confirm-submit cuim-confirm-submit-ip">Yes</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="confirm-submit-popup cuim-edit-submit-popup-again">
-                                                            <div class="confirm-submit-popup-box">
-                                                                <h2>Submit</h2>
-                                                                <div class="popup-form-cross-icon submit-cross-icon"></div>
-                                                                <div class="form-message">You have set the same IP, Are you sure you want to submit?</div>
-                                                                <div class="form-buttons submit-manage-ip agqa-popup-form-buttons d-flex">
-                                                                    <button class="no-confirm-submit" type="button">No</button>
-                                                                    <button type="button" value="Yes" class="confirm-submit cuim-submit-again-btn">Yes</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
+                        <?php foreach ($get_ip_list as $ip_value) {
+
+                            if (!in_array($ip_value->account, $displayed_accounts)) {
+
+                                $displayed_accounts[] = $ip_value->account;
+                        ?>
+                                <div class="custom-table-row <?php echo $ip_value->delete_status; ?>">
+                                    <div class="table-body-col cuim-ip-user-account">
+                                        <?php echo $ip_value->account; ?>
+                                        <?php echo empty($ip_value->delete_user_name) ? '' : '(deleter | ' . $ip_value->delete_user_name . ')'; ?>
                                     </div>
-                                    <div class="delete-ip-ctn">
-                                        <button class="delete-user-button"></button>
-                                        <div class="delete-popup">
-                                            <div class="delete-popup-inner">
-                                                <h2>Delete</h2>
-                                                <div class="popup-form-cross-icon"></div>
-                                                <div class="form-message">Are you sure you want to Delete?</div>
-                                                <div class="agqa-popup-form-buttons delete-manage-ip d-flex" id="delete-ip-users">
-                                                    <button class="no-cancel" type="button">No</button>
-                                                    <button type="submit" value="<?php echo $ip_value->account; ?>" class="yes-cancel">Yes</button>
+                                    <div class="table-body-col cuim-ip-user-ipv4">
+                                        <?php echo $ip_value->ipv4 ?>
+                                    </div>
+                                    <div class="table-body-col cuim-ip-user-ipv6">
+                                        <?php echo $ip_value->ipv6 ?>
+                                    </div>
+                                    <div class="table-body-col manage-ip-actions">
+                                        <div class="edit-ip-ctn">
+                                            <button class="manage-ip-edit-button"></button>
+                                            <div class="edit-manage-ip-form">
+                                                <div class="edit-manage-ip-form-inner">
+                                                    <div class="popup-form-cross-icon manage-ip-cross-icon"></div>
+                                                    <div class="popup-form-title">
+                                                        <h2>Edit IP</h2>
+                                                    </div>
+                                                    <form action="#" class="edit-ip-from-list">
+                                                        <div class="form-field full-width required">
+                                                            <label for="account-name"><span>*</span> Account</label>
+                                                            <input type="hidden" name="ip-edit-id" value="<?php echo $ip_value->id; ?>">
+                                                            <input type="hidden" class="ip-edit-ip4-check" value="<?php echo $ip_value->ipv4; ?>">
+                                                            <input type="hidden" class="ip-edit-ip6-check" value="<?php echo $ip_value->ipv6; ?>">
+                                                            <input type="text" name="account-name" placeholder="Description" value="<?php echo $ip_value->account ?>" required style="pointer-events: none;1">
+                                                        </div>
+                                                        <div class="form-field full-width">
+                                                            <label>IPv4</label>
+                                                            <input type="text" name="ip-ipv4" class="manage-ip-ipv4-field" placeholder="Enter IPv4 (e.g. 10.0.0.5)" value="<?php echo $ip_value->ipv4 ?>">
+                                                            <div class="error-message ip-error ipv4-error"></div>
+                                                        </div>
+                                                        <div class="form-field full-width">
+                                                            <label>IPv6</label>
+                                                            <input type="text" name="ip-ipv6" class="manage-ip-ipv6-field" placeholder="Enter IPv6 (E.G. 2400:3200::1)" value="<?php echo $ip_value->ipv6 ?>">
+                                                            <div class="error-message ip-error ipv6-error"></div>
+                                                        </div>
+                                                        <div class="form-buttons manage-ip-form-buttons d-flex">
+                                                            <button class="cancel-button" type="button">Cancel</button>
+                                                            <div class="cancel-form-confirmation" style="">
+                                                                <div class="cancel-form-confirmation-box">
+                                                                    <h2>Cancel</h2>
+                                                                    <div class="popup-form-cross-icon"></div>
+                                                                    <div class="form-message">Are you sure you want to cancel?</div>
+                                                                    <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                                                        <button class="no-form-cancel" type="button">No</button>
+                                                                        <button class="yes-cancel cuim-cancel-button-ip" type="button">Yes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <button class="edit-ip-btn cuim-edit-button-ip" type="submit">Submit</button>
+                                                            <div class="confirm-submit-popup cuim-edit-submit-popup">
+                                                                <div class="confirm-submit-popup-box">
+                                                                    <h2>Submit</h2>
+                                                                    <div class="popup-form-cross-icon submit-cross-icon"></div>
+                                                                    <div class="form-message">Are you sure you want to submit?</div>
+                                                                    <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                                                        <button class="no-confirm-submit" type="button">No</button>
+                                                                        <button type="submit" value="Yes" class="confirm-submit cuim-confirm-submit-ip">Yes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="confirm-submit-popup cuim-edit-submit-popup-again">
+                                                                <div class="confirm-submit-popup-box">
+                                                                    <h2>Submit</h2>
+                                                                    <div class="popup-form-cross-icon submit-cross-icon"></div>
+                                                                    <div class="form-message">You have set the same IP, Are you sure you want to submit?</div>
+                                                                    <div class="form-buttons submit-manage-ip agqa-popup-form-buttons d-flex">
+                                                                        <button class="no-confirm-submit" type="button">No</button>
+                                                                        <button type="button" value="Yes" class="confirm-submit cuim-submit-again-btn">Yes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="delete-ip-ctn">
+                                            <button class="delete-user-button"></button>
+                                            <div class="delete-popup">
+                                                <div class="delete-popup-inner">
+                                                    <h2>Delete</h2>
+                                                    <div class="popup-form-cross-icon"></div>
+                                                    <div class="form-message">Are you sure you want to Delete?</div>
+                                                    <div class="agqa-popup-form-buttons delete-manage-ip d-flex" id="delete-ip-users">
+                                                        <button class="no-cancel" type="button">No</button>
+                                                        <button type="submit" value="<?php echo $ip_value->account; ?>" class="yes-cancel">Yes</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        <?php } ?>
+                        <?php }
+                        } ?>
                     </div>
                 </div>
             </div>
