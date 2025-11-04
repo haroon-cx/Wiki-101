@@ -316,15 +316,17 @@ function merged_sale_api_ui_shortcode()
                                     </div>
                                 </div>
                             </div>
-                            <?php if ($getUserRole !== 'viewer') { ?>
                                 <div class="api-card-bottom-buttons">
+                                    <?php if ($getUserRole !== 'viewer') { ?>
                                     <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/sale/') . '?edit=' . $item->id) . '&' . $sale_back_button; ?>"
                                         class="api-edit-button api-card-button">
                                         <img src="<?php echo AGQA_URL ?>assets/images/edit-icon.svg" alt="Edit Icon"> Edit
                                     </a>
+                                    <?php } ?>
                                     <button class="api-report-button api-card-button">
                                         <img src="<?php echo AGQA_URL ?>assets/images/alert-icon.svg" alt="Alert Icon"> Report
                                     </button>
+                                    <?php if ($getUserRole !== 'viewer') { ?>
                                     <div class="api-card-approval-history">
                                         <div class="approval-history-head">
                                             <span class="approval-duration">2025/07/22 14:35</span>
@@ -379,8 +381,8 @@ function merged_sale_api_ui_shortcode()
                                             </div>
                                         </div>
                                     </div>
+                                    <?php }  ?>
                                 </div>
-                            <?php } ?>
                         </div>
                     </div>
 

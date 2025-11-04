@@ -309,6 +309,7 @@ function report_system_shortcode()
                                                 ?>
                                             </div>
                                             <?php if ($report_value->status === 'Pending Response') { ?>
+                                                <?php if($getUserRole !== 'viewer') { ?>
                                                 <div class="table-body-col report-action">
                                                     <button class="respond-button pending-response-button"></button>
                                                     <div class="respond-popup">
@@ -474,6 +475,7 @@ function report_system_shortcode()
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <?php } ?>
                                             <?php } else { ?>
                                                 <!-- 2nd popup -->
                                                 <div class="table-body-col report-action">

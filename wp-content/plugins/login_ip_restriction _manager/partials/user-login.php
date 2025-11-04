@@ -211,8 +211,8 @@ $remembered_password = isset($_COOKIE['remembered_passowrd']) ? $_COOKIE['rememb
                         <div class="user-login-flow-form-field user-login-flow-password">
                             <div class="toggle-password"></div>
                             <input type="password" name="user-login-flow-password" id="user-login-flow-password" placeholder="Please enter your password" value="<?php echo $remembered_password; ?>">
-                            <div class="error-message cuim-user-login-error"></div>
                         </div>
+                        <div class="error-message cuim-user-login-error"></div>
 
                         <div class="user-login-flow-form-field user-login-flow-form-bottom">
                             <div class="user-login-flow-remamber-me">

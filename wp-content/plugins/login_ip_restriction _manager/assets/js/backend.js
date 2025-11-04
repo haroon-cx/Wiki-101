@@ -1811,8 +1811,6 @@ jQuery(document).ready(function ($) {
         nonce: nonce,
       },
       success: function (response) {
-        // alert(response);
-        // Check if the response contains success
         if (response.success) {
           // If successful, show a success message
 
@@ -1822,9 +1820,10 @@ jQuery(document).ready(function ($) {
           if (
             response.data.code == "Please check your username and password."
           ) {
-            jQuery(".cuim-user-login-error").html(
-              "Login failed." + "<br>" + response.data.code
+            jQuery("#user-login-flow-password").after(
+              "<div class='error-message cuim-user-login-error'>Login failed.<br>" + response.data.code + "</div>"
             );
+
           } else {
             const $successMsg = $(
               `<div class="submitted-unsuccessfully">${response.data.code}</div>`
@@ -2170,7 +2169,7 @@ jQuery(document).ready(function ($) {
       var itemsPerPages = 15;
       var totalItemss = $(".custom-table-row:visible").length; // Count only visible items after filtering
       var totalPages = Math.ceil(totalItemss / itemsPerPages);
-     
+
 
       $(".custom-table-row").removeAttr("data-page"); // Remove the data-page attribute
       // Reinitialize pagination
