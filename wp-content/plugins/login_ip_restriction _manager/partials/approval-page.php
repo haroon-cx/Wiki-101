@@ -138,7 +138,7 @@ curl_close($curl);
 
                             // Convert to the 'Asia/Kolkata' time zone (Indian Standard Time)
                             $date->setTimezone(new DateTimeZone($dataTimezone));
-
+                            $date->modify('-1 hour');
                             // Output the time in 'Y/m/d H:i' format
                             echo $date->format('Y/m/d H:i');
                             ?>

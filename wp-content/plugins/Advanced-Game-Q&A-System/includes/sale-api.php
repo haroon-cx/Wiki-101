@@ -82,7 +82,7 @@ function merged_sale_api_ui_shortcode()
     $dataTimezone = "Asia/Karachi";
     $curl = curl_init();
     $ip = ipum_get_client_ip();  // The IP address you want to use
-    if ($ip == '::1' || $ip == '127.0.0.1') {
+    if ($ip == '::1') {
         $ip = '39.61.50.216';
     }
     // Create the API request URL (dynamically pass the IP)
@@ -118,6 +118,7 @@ function merged_sale_api_ui_shortcode()
         }
     }
     // Close cURL session
+    curl_close($curl);
     curl_close($curl);
     // END
 
@@ -398,8 +399,22 @@ function merged_sale_api_ui_shortcode()
                                         ?>
                                             <?php foreach ($approvals as $approval) { ?>
                                                 <div class="approval-history-head">
-                                                    <span class="approval-duration">2025/07/22 14:35</span>
-                                                    <span class="approval-account">heather01 </span>
+                                                    <span class="approval-duration">
+                                                        <?php
+                                                        // Get the current system time (local server time) as a string
+                                                        $date = new DateTime($approval->created_at); // Convert the string into DateTime object
+
+                                                        // Convert to the desired time zone
+                                                        $date->setTimezone(new DateTimeZone($dataTimezone));
+
+                                                        // Subtract 1 hour from the time
+                                                        $date->modify('-1 hour');
+
+                                                        // Output the time in 'Y/m/d H:i' format
+                                                        echo $date->format('Y/m/d H:i');
+                                                        ?>
+                                                    </span>
+                                                    <span class="approval-account"> <?php echo esc_html($wpdb->get_var($wpdb->prepare("SELECT account FROM {$wpdb->prefix}agqa_wiki_add_users WHERE user_id = %d LIMIT 1", (int)$approval->user_id))); ?></span>
                                                 </div>
                                         <?php break;
                                             }
@@ -416,7 +431,7 @@ function merged_sale_api_ui_shortcode()
                                                     Approval Time
                                                 </div>
                                             </div>
-                                              <div class="dropdown-list-body">
+                                            <div class="dropdown-list-body">
                                                 <?php
                                                 if (!empty($approvals)) {
                                                 ?>

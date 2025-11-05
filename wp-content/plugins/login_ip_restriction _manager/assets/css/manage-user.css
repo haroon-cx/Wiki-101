@@ -306,7 +306,7 @@ tr {
 
 .manage-user-table .table-head-col:nth-child(5),
 .manage-user-table .table-body-col:nth-child(5) {
-    min-width: 17.867%;
+    width: 17.867%;
 }
 
 .table-head-col:nth-child(4),
