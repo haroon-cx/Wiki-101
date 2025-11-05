@@ -78,12 +78,12 @@ $getUserRole = get_user_role_simple();
                                 <ul>
                                     <?php if ($getUserRole !== 'contributor') { ?>
                                         <?php if ($getUserRole !== 'manager') { ?>
-                                            <li data-value="Admin">Admin</li>
-                                            <li data-value="Manager">Manager</li>
+                                            <li data-value="admin">Admin</li>
+                                            <li data-value="manager">Manager</li>
                                         <?php } ?>
-                                        <li data-value="Contributor">Contributor</li>
+                                        <li data-value="contributor">Contributor</li>
                                     <?php } ?>
-                                    <li data-value="Viewer">Viewer</li>
+                                    <li data-value="viewer">Viewer</li>
                                 </ul>
                             </div>
                             <input type="hidden" name= "user-role" id="issue_type" required=""

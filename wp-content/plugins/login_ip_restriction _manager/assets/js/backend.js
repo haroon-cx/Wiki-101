@@ -875,6 +875,7 @@ jQuery(document).ready(function ($) {
   jQuery("#toggle-confirm-password").on("click", function () {
     var $confirmPasswordField = jQuery("#confirm-password-field");
     var currentType = $confirmPasswordField.attr("type");
+    alert(currentType);
     jQuery(this).toggleClass("show-pass");
     // Toggle password visibility
     if (currentType === "password") {
