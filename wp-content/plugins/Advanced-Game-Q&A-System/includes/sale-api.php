@@ -74,6 +74,53 @@ function merged_sale_api_ui_shortcode()
         $sale_back_button = 'back=' . $revenue_id;
     }
 
+
+    $table_approval_name = $wpdb->prefix . 'agqa_approval_review_page';
+
+    /** curl time */
+
+    $dataTimezone = "Asia/Karachi";
+    $curl = curl_init();
+    $ip = ipum_get_client_ip();  // The IP address you want to use
+    if ($ip == '::1' || $ip == '127.0.0.1') {
+        $ip = '39.61.50.216';
+    }
+    // Create the API request URL (dynamically pass the IP)
+    $url = "https://get.geojs.io/v1/ip/geo/{$ip}.json";
+
+    // Set cURL options
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $url, // Use the dynamically generated URL
+        CURLOPT_RETURNTRANSFER => true, // Return the response as a string
+        CURLOPT_ENCODING => '', // Handle all encodings
+        CURLOPT_MAXREDIRS => 10, // Maximum redirects
+        CURLOPT_TIMEOUT => 30, // Timeout in seconds
+        CURLOPT_FOLLOWLOCATION => true, // Follow redirects
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, // HTTP version
+        CURLOPT_CUSTOMREQUEST => 'GET', // Custom request method (GET)
+    ));
+
+    // Execute cURL request and get the response
+    $response = curl_exec($curl);
+
+    if (curl_errno($curl)) {
+        echo 'cURL Error: ' . curl_error($curl); // Handle any errors
+    } else {
+        // Decode the JSON response
+        $data = json_decode($response, true);
+        // print_r($data);
+
+        // Check if the response contains the needed data and output it
+        if (isset($data['timezone'])) {
+            $dataTimezone = $data['timezone'];
+        } else {
+            echo "Error: Required data not found in the response.";
+        }
+    }
+    // Close cURL session
+    curl_close($curl);
+    // END
+
     ob_start();
     if ($add_review_sale_id) {
         include 'add_review_sale_api.php';
@@ -316,22 +363,47 @@ function merged_sale_api_ui_shortcode()
                                     </div>
                                 </div>
                             </div>
-                                <div class="api-card-bottom-buttons">
-                                    <?php if ($getUserRole !== 'viewer') { ?>
+                            <div class="api-card-bottom-buttons">
+                                <?php if ($getUserRole !== 'viewer') { ?>
                                     <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/sale/') . '?edit=' . $item->id) . '&' . $sale_back_button; ?>"
                                         class="api-edit-button api-card-button">
                                         <img src="<?php echo AGQA_URL ?>assets/images/edit-icon.svg" alt="Edit Icon"> Edit
                                     </a>
-                                    <?php } ?>
-                                    <button class="api-report-button api-card-button">
-                                        <img src="<?php echo AGQA_URL ?>assets/images/alert-icon.svg" alt="Alert Icon"> Report
-                                    </button>
-                                    <?php if ($getUserRole !== 'viewer') { ?>
+                                <?php } ?>
+                                <button class="api-report-button api-card-button">
+                                    <img src="<?php echo AGQA_URL ?>assets/images/alert-icon.svg" alt="Alert Icon"> Report
+                                </button>
+                                <?php if ($getUserRole !== 'viewer') { ?>
                                     <div class="api-card-approval-history">
-                                        <div class="approval-history-head">
-                                            <span class="approval-duration">2025/07/22 14:35</span>
-                                            <span class="approval-account">heather01 </span>
-                                        </div>
+                                        <?php
+
+
+                                        $api_id = (int) $item->id; // you said: use $item->id as (api_id)
+
+                                        // Get the row from approval table that matches this api_id
+                                        $approvals = $wpdb->get_results(
+                                            $wpdb->prepare("
+                                                        SELECT *
+                                                        FROM $table_approval_name
+                                                        WHERE api_id = %d
+                                                        AND LOWER(TRIM(status)) = %s
+                                                        AND LOWER(TRIM(api_status)) = %s
+                                                        ORDER BY id DESC
+                                                        LIMIT 3
+                                                    ", $api_id, 'approved', 'sale')
+                                        );
+                                        ?>
+                                        <?php
+                                        if (!empty($approvals)) {
+                                        ?>
+                                            <?php foreach ($approvals as $approval) { ?>
+                                                <div class="approval-history-head">
+                                                    <span class="approval-duration">2025/07/22 14:35</span>
+                                                    <span class="approval-account">heather01 </span>
+                                                </div>
+                                        <?php break;
+                                            }
+                                        } ?>
                                         <div class="dropdown-lists">
                                             <div class="dropdown-list-head">
                                                 <div class="dropdown-list-head-item">
@@ -344,45 +416,30 @@ function merged_sale_api_ui_shortcode()
                                                     Approval Time
                                                 </div>
                                             </div>
-                                            <div class="dropdown-list-body">
-                                                <div class="dropdown-list-row">
-                                                    <div class="dropdown-list-head-item">
-                                                        2025/07/22
-                                                    </div>
-                                                    <div class="dropdown-list-head-item">
-                                                        Heather01
-                                                    </div>
-                                                    <div class="dropdown-list-head-item">
-                                                        2025/07/25
-                                                    </div>
-                                                </div>
-                                                <div class="dropdown-list-row">
-                                                    <div class="dropdown-list-head-item">
-                                                        2025/07/22
-                                                    </div>
-                                                    <div class="dropdown-list-head-item">
-                                                        Heather01
-                                                    </div>
-                                                    <div class="dropdown-list-head-item">
-                                                        2025/07/25
-                                                    </div>
-                                                </div>
-                                                <div class="dropdown-list-row">
-                                                    <div class="dropdown-list-head-item">
-                                                        2025/07/22
-                                                    </div>
-                                                    <div class="dropdown-list-head-item">
-                                                        Heather01
-                                                    </div>
-                                                    <div class="dropdown-list-head-item">
-                                                        2025/07/25
-                                                    </div>
-                                                </div>
+                                              <div class="dropdown-list-body">
+                                                <?php
+                                                if (!empty($approvals)) {
+                                                ?>
+                                                    <?php foreach ($approvals as $approval) { ?>
+                                                        <div class="dropdown-list-row">
+                                                            <div class="dropdown-list-head-item">
+                                                                <?php echo date('d/m/Y', strtotime($approval->created_at)) ?>
+
+                                                            </div>
+                                                            <div class="dropdown-list-head-item">
+                                                                <?php echo esc_html($wpdb->get_var($wpdb->prepare("SELECT account FROM {$wpdb->prefix}agqa_wiki_add_users WHERE user_id = %d LIMIT 1", (int)$approval->user_id))); ?>
+                                                            </div>
+                                                            <div class="dropdown-list-head-item">
+                                                                <?php echo date('d/m/Y', strtotime($approval->url_update_date)); ?>
+                                                            </div>
+                                                        </div>
+                                                    <?php } ?>
+                                                <?php } ?>
                                             </div>
                                         </div>
                                     </div>
-                                    <?php }  ?>
-                                </div>
+                                <?php }  ?>
+                            </div>
                         </div>
                     </div>
 

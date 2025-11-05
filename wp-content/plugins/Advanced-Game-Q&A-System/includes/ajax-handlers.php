@@ -1919,6 +1919,7 @@ function handle_approved_sales_review_data()
         "{$wpdb->prefix}agqa_approval_review_page",
         array(
             'status' => 'approved', // Set status to approved
+            'url_update_date' => current_time('mysql'),
         ),
         array('id' => $review_id) // Update the specific review ID
     );

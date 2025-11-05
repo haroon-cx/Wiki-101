@@ -79,7 +79,6 @@ function merged_api_ui_shortcode()
     $dataTimezone = "Asia/Karachi";
     $curl = curl_init();
     $ip = ipum_get_client_ip();  // The IP address you want to use
-    echo $ip;
     if ($ip == '::1' || $ip == '127.0.0.1') {
         $ip = '39.61.50.216';
     }
@@ -437,24 +436,6 @@ function merged_api_ui_shortcode()
                                                 </div>
                                             </div>
                                             <div class="dropdown-list-body">
-                                                <?php
-
-
-                                                $api_id = (int) $item->id; // you said: use $item->id as (api_id)
-
-                                                // Get the row from approval table that matches this api_id
-                                                $approvals = $wpdb->get_results(
-                                                    $wpdb->prepare("
-                                                        SELECT *
-                                                        FROM $table_approval_name
-                                                        WHERE api_id = %d
-                                                        AND LOWER(TRIM(status)) = %s
-                                                        AND LOWER(TRIM(api_status)) = %s
-                                                        ORDER BY id DESC
-                                                        LIMIT 3
-                                                    ", $api_id, 'approved', 'revnue')
-                                                );
-                                                ?>
                                                 <?php
                                                 if (!empty($approvals)) {
                                                 ?>
