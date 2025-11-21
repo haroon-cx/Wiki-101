@@ -28,7 +28,7 @@ $rows_type_game = $wpdb->get_results("
     </div>
     <div class="api-form-ctn">
         <div class="api-form-wrapper" id="UN">
-            <form autocomplete="off" id="add-revnue-form" class="custom-form" novalidate="novalidate"
+            <form autocomplete="off" id="add-revnue-form" class="custom-form api-check-value-reve-cost-price" novalidate="novalidate"
                 data-inited-validation="1">
 
                 <!-- NEW Game Type Input -->

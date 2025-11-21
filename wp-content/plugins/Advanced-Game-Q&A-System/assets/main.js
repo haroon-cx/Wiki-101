@@ -140,7 +140,7 @@ jQuery(document).ready(function ($) {
   /*  Append Dropdown Icon Script (Usama)  */
 
   const $menuItems = $(
-    ".sidebar .widget ul#menu-main-menu .menu-item-has-children"
+      ".sidebar .widget ul#menu-main-menu .menu-item-has-children"
   );
 
   // Auto-open if it has current item
@@ -153,14 +153,14 @@ jQuery(document).ready(function ($) {
 
   // Hover functionality (desktop)
   $menuItems.hover(
-    function () {
-      const $li = $(this);
-      if (!$li.hasClass("active")) openMenu($li);
-    },
-    function () {
-      const $li = $(this);
-      if (!$li.data("persistent")) closeMenu($li); // Don't close if marked persistent
-    }
+      function () {
+        const $li = $(this);
+        if (!$li.hasClass("active")) openMenu($li);
+      },
+      function () {
+        const $li = $(this);
+        if (!$li.data("persistent")) closeMenu($li); // Don't close if marked persistent
+      }
   );
 
   // Click toggle (mobile or desktop)
@@ -183,11 +183,11 @@ jQuery(document).ready(function ($) {
     if (animate) {
       $submenu.stop(true, true).slideDown(300);
       $submenu
-        .children("li")
-        .css("opacity", 0)
-        .each(function (i) {
-          $(this).delay(200).animate({ opacity: 1 }, 300);
-        });
+          .children("li")
+          .css("opacity", 0)
+          .each(function (i) {
+            $(this).delay(200).animate({ opacity: 1 }, 300);
+          });
     } else {
       $submenu.show().children("li").css("opacity", 1);
     }
@@ -195,10 +195,10 @@ jQuery(document).ready(function ($) {
 
   function closeMenu($li) {
     $li
-      .removeClass("active")
-      .children(".sub-menu")
-      .stop(true, true)
-      .slideUp(300);
+        .removeClass("active")
+        .children(".sub-menu")
+        .stop(true, true)
+        .slideUp(300);
   }
 
   function setupMenuBehavior() {
@@ -214,12 +214,12 @@ jQuery(document).ready(function ($) {
     if (isDesktop) {
       // Desktop: Hover behavior
       $menuItems
-        .on("mouseenter", function () {
-          openMenu($(this));
-        })
-        .on("mouseleave", function () {
-          closeMenu($(this));
-        });
+          .on("mouseenter", function () {
+            openMenu($(this));
+          })
+          .on("mouseleave", function () {
+            closeMenu($(this));
+          });
     } else {
       // Mobile: Click toggle behavior
       $menuItems.on("click", function (e) {
@@ -279,7 +279,7 @@ jQuery(document).ready(function ($) {
   });
 
   $(".widget_nav_menu .menu-item-has-children").append(
-    '<span class="submenu-toggle"></span>'
+      '<span class="submenu-toggle"></span>'
   );
 
   // Close popup
@@ -334,7 +334,7 @@ jQuery(document).ready(function ($) {
 
   // Open popup
   $(
-    ".agqa-popup-form-ctn .add-category-button,.api-report-button,.report-button"
+      ".agqa-popup-form-ctn .add-category-button,.api-report-button,.report-button"
   ).on("click", function (e) {
     e.stopPropagation();
     $(".agqa-popup-form").addClass("active");
@@ -378,19 +378,19 @@ jQuery(document).ready(function ($) {
 
     // Send AJAX request to increment the like count in the database
     $.post(
-      "/wp-admin/admin-ajax.php",
-      {
-        action: "agqa_like_answer",
-        answer_id: answerId,
-        nonce: agqa_ajax.nonce,
-      },
-      function (data) {
-        if (data.success) {
-          // Like is successfully incremented in the database, no need to update frontend count
-          console.log("Like added");
-        }
-      },
-      "json"
+        "/wp-admin/admin-ajax.php",
+        {
+          action: "agqa_like_answer",
+          answer_id: answerId,
+          nonce: agqa_ajax.nonce,
+        },
+        function (data) {
+          if (data.success) {
+            // Like is successfully incremented in the database, no need to update frontend count
+            console.log("Like added");
+          }
+        },
+        "json"
     );
   });
 
@@ -459,19 +459,19 @@ jQuery(document).ready(function ($) {
 
     // Send AJAX request to increment the dislike count in the database
     $.post(
-      "/wp-admin/admin-ajax.php",
-      {
-        action: "agqa_dislike_answer",
-        answer_id: answerId,
-        nonce: agqa_ajax.nonce,
-      },
-      function (data) {
-        if (data.success) {
-          // Dislike is successfully incremented in the database
-          console.log("Dislike added");
-        }
-      },
-      "json"
+        "/wp-admin/admin-ajax.php",
+        {
+          action: "agqa_dislike_answer",
+          answer_id: answerId,
+          nonce: agqa_ajax.nonce,
+        },
+        function (data) {
+          if (data.success) {
+            // Dislike is successfully incremented in the database
+            console.log("Dislike added");
+          }
+        },
+        "json"
     );
   });
 
@@ -481,7 +481,7 @@ jQuery(document).ready(function ($) {
 
     // ✅ Support both `data-text` (preferred) and `data` (fallback)
     const textToCopy =
-      $(this).data("text") || $(this).attr("data") || $(this).text().trim();
+        $(this).data("text") || $(this).attr("data") || $(this).text().trim();
 
     if (!textToCopy) {
       alert("No text to copy.");
@@ -536,10 +536,10 @@ jQuery(document).ready(function ($) {
 
   // ✅ Close popups on overlay or close button
   $(".popup-close, .popup-overlay, .agqa-popup-close, .agqa-popup-overlay").on(
-    "click",
-    function () {
-      $(".agqa-popup").fadeOut();
-    }
+      "click",
+      function () {
+        $(".agqa-popup").fadeOut();
+      }
   );
 
   // ✅ Show/hide "Other" field for dislike form
@@ -560,16 +560,16 @@ jQuery(document).ready(function ($) {
 
     // Update in DB
     $.post(
-      agqa_ajax.ajax_url,
-      {
-        action: "agqa_dislike_answer",
-        answer_id: answerId,
-        nonce: agqa_ajax.nonce,
-      },
-      function (data) {
-        if (data.success) console.log("Dislike recorded");
-      },
-      "json"
+        agqa_ajax.ajax_url,
+        {
+          action: "agqa_dislike_answer",
+          answer_id: answerId,
+          nonce: agqa_ajax.nonce,
+        },
+        function (data) {
+          if (data.success) console.log("Dislike recorded");
+        },
+        "json"
     );
 
     openPopup("dislike", answerId);
@@ -622,36 +622,36 @@ jQuery(document).ready(function ($) {
     };
 
     $.post(
-      agqa_ajax.ajax_url,
-      data,
-      function (resp) {
-        if (resp.success) {
-          alert(resp.data.message);
-          $("#agqa-dislike-popup").fadeOut();
-          $("#agqa-dislike-form")[0].reset();
-        } else {
-          alert(resp.data.message || "Failed");
-        }
-      },
-      "json"
+        agqa_ajax.ajax_url,
+        data,
+        function (resp) {
+          if (resp.success) {
+            alert(resp.data.message);
+            $("#agqa-dislike-popup").fadeOut();
+            $("#agqa-dislike-form")[0].reset();
+          } else {
+            alert(resp.data.message || "Failed");
+          }
+        },
+        "json"
     );
   });
   $(".custom-checkbox").removeClass("checkbox_label");
   const nonce = agqa_ajax.nonce;
   function fetchCategories() {
     $.post(
-      agqa_ajax.ajax_url,
-      { action: "agqa_get_categories", nonce },
-      function (res) {
-        if (res.success) {
-          const catSelect = $("#agqa-admin-cat-select")
-            .empty()
-            .append('<option value="">Select Category</option>');
-          res.data.forEach((c) => {
-            catSelect.append(`<option value="${c.id}">${c.name}</option>`);
-          });
+        agqa_ajax.ajax_url,
+        { action: "agqa_get_categories", nonce },
+        function (res) {
+          if (res.success) {
+            const catSelect = $("#agqa-admin-cat-select")
+                .empty()
+                .append('<option value="">Select Category</option>');
+            res.data.forEach((c) => {
+              catSelect.append(`<option value="${c.id}">${c.name}</option>`);
+            });
+          }
         }
-      }
     );
   }
 
@@ -665,17 +665,17 @@ jQuery(document).ready(function ($) {
 
   function fetchPosts() {
     $.post(
-      agqa_ajax.ajax_url,
-      { action: "agqa_get_posts", nonce },
-      function (res) {
-        if (res.success) {
-          const list = $("#agqa-post-list").empty();
-          const postSelect = $("#agqa-admin-post-select")
-            .empty()
-            .append('<option value="">Select Post</option>');
-          res.data.forEach((p) => {
-            const truncatedContent = truncateWords(p.content, 20);
-            const box = $(`<div class="agqa-post-box">
+        agqa_ajax.ajax_url,
+        { action: "agqa_get_posts", nonce },
+        function (res) {
+          if (res.success) {
+            const list = $("#agqa-post-list").empty();
+            const postSelect = $("#agqa-admin-post-select")
+                .empty()
+                .append('<option value="">Select Post</option>');
+            res.data.forEach((p) => {
+              const truncatedContent = truncateWords(p.content, 20);
+              const box = $(`<div class="agqa-post-box">
                        <div class="agqa-post-title">
                        <h4>${p.title}</h4>
                         <p>${truncatedContent}</p>
@@ -684,66 +684,66 @@ jQuery(document).ready(function ($) {
                         <img src="${p.image_url}" alt="">
                         </div>
                     </div>`);
-            box.click(() => {
-              window.location.href = `/post/?id=${p.id}`;
+              box.click(() => {
+                window.location.href = `/post/?id=${p.id}`;
+              });
+              list.append(box);
+              postSelect.append(`<option value="${p.id}">${p.title}</option>`);
             });
-            list.append(box);
-            postSelect.append(`<option value="${p.id}">${p.title}</option>`);
-          });
+          }
         }
-      }
     );
   }
 
   function fetchComplaints() {
     if (!agqa_ajax.is_admin) return;
     $.post(
-      agqa_ajax.ajax_url,
-      { action: "agqa_get_complaints", nonce },
-      function (res) {
-        const wrap = $("#agqa-admin-complaints").empty();
-        if (res.success) {
-          res.data.forEach((c) => {
-            const card = $(`<div class="agqa-complaint-box">
+        agqa_ajax.ajax_url,
+        { action: "agqa_get_complaints", nonce },
+        function (res) {
+          const wrap = $("#agqa-admin-complaints").empty();
+          if (res.success) {
+            res.data.forEach((c) => {
+              const card = $(`<div class="agqa-complaint-box">
                         <p><strong>Answer:</strong> ${c.answer_text}</p>
                         <p><strong>Reason:</strong> ${c.reason}</p>
                         <textarea placeholder="Admin Note"></textarea>
                         <button class="approve-btn">✅ Approve</button>
                         <button class="reject-btn">❌ Reject</button>
                     </div>`);
-            card
-              .find(".approve-btn")
-              .click(() =>
-                moderateComplaint(c.id, "approved", card.find("textarea").val())
-              );
-            card
-              .find(".reject-btn")
-              .click(() =>
-                moderateComplaint(c.id, "rejected", card.find("textarea").val())
-              );
-            wrap.append(card);
-          });
+              card
+                  .find(".approve-btn")
+                  .click(() =>
+                      moderateComplaint(c.id, "approved", card.find("textarea").val())
+                  );
+              card
+                  .find(".reject-btn")
+                  .click(() =>
+                      moderateComplaint(c.id, "rejected", card.find("textarea").val())
+                  );
+              wrap.append(card);
+            });
+          }
         }
-      }
     );
   }
 
   function moderateComplaint(id, decision, note) {
     $.post(
-      agqa_ajax.ajax_url,
-      {
-        action: "agqa_moderate_complaint",
-        complaint_id: id,
-        decision,
-        note,
-        nonce,
-      },
-      function (res) {
-        if (res.success) {
-          alert("Complaint processed");
-          fetchComplaints();
+        agqa_ajax.ajax_url,
+        {
+          action: "agqa_moderate_complaint",
+          complaint_id: id,
+          decision,
+          note,
+          nonce,
+        },
+        function (res) {
+          if (res.success) {
+            alert("Complaint processed");
+            fetchComplaints();
+          }
         }
-      }
     );
   }
 
@@ -768,29 +768,29 @@ jQuery(document).ready(function ($) {
     }
 
     agqaSearchXHR = $.post(
-      agqa_ajax.ajax_url,
-      {
-        action: "agqa_search_all",
-        term: term,
-        nonce: agqa_ajax.nonce,
-      },
-      function (res) {
-        const box = $("#agqa-search-results").empty();
-        if (res.success && res.data.length > 0) {
-          res.data.forEach((row) => {
-            box.append(`<div class="agqa-search-result" data-question-id="${row.question_id
+        agqa_ajax.ajax_url,
+        {
+          action: "agqa_search_all",
+          term: term,
+          nonce: agqa_ajax.nonce,
+        },
+        function (res) {
+          const box = $("#agqa-search-results").empty();
+          if (res.success && res.data.length > 0) {
+            res.data.forEach((row) => {
+              box.append(`<div class="agqa-search-result" data-question-id="${row.question_id
               }">
                     <strong>${row.type.toUpperCase()}</strong> in <em>${row.post_title
               }</em>:<br>
                     ${row.content}
                 </div>`);
-          });
-        } else {
-          box.append(
-            '<div class="agqa-search-no-results">No results found.</div>'
-          );
+            });
+          } else {
+            box.append(
+                '<div class="agqa-search-no-results">No results found.</div>'
+            );
+          }
         }
-      }
     ).always(function () {
       agqaSearchXHR = null;
     });
@@ -807,14 +807,14 @@ jQuery(document).ready(function ($) {
     const question_id = $("#agqa-answer-form").data("question-id");
     const content = $("#agqa-answer-text").val();
     $.post(
-      agqa_ajax.ajax_url,
-      { action: "agqa_submit_answer", question_id, content, nonce },
-      function (res) {
-        if (res.success) {
-          $("#agqa-answer-text").val("");
-          loadAnswers(question_id);
+        agqa_ajax.ajax_url,
+        { action: "agqa_submit_answer", question_id, content, nonce },
+        function (res) {
+          if (res.success) {
+            $("#agqa-answer-text").val("");
+            loadAnswers(question_id);
+          }
         }
-      }
     );
   });
 
@@ -823,22 +823,22 @@ jQuery(document).ready(function ($) {
     const reason = $("input[name='complaint_reason']:checked").val();
     const note = $('textarea[name="note"]').val();
     $.post(
-      agqa_ajax.ajax_url,
-      {
-        action: "agqa_submit_complaint",
-        answer_id,
-        reason,
-        note,
-        nonce,
-      },
-      function (res) {
-        if (res.success) {
-          alert("Complaint submitted");
-          $("#agqa-complaint-reason").val("");
-        } else {
-          alert("Error in submission");
+        agqa_ajax.ajax_url,
+        {
+          action: "agqa_submit_complaint",
+          answer_id,
+          reason,
+          note,
+          nonce,
+        },
+        function (res) {
+          if (res.success) {
+            alert("Complaint submitted");
+            $("#agqa-complaint-reason").val("");
+          } else {
+            alert("Error in submission");
+          }
         }
-      }
     );
   });
 
@@ -862,34 +862,34 @@ jQuery(document).ready(function ($) {
 
     // Make the AJAX request to submit the complaint
     $.post(
-      agqa_ajax.ajax_url,
-      {
-        action: "agqa_submit_question_complaint",
-        question_id: question_id,
-        reason: reason,
-        note: note,
-        nonce: agqa_ajax.nonce,
-      },
-      function (res) {
-        if (res.success) {
-          alert("Complaint submitted successfully");
-          $("#report-question-popup-" + question_id).hide();
-        } else {
-          alert("Error in submission");
+        agqa_ajax.ajax_url,
+        {
+          action: "agqa_submit_question_complaint",
+          question_id: question_id,
+          reason: reason,
+          note: note,
+          nonce: agqa_ajax.nonce,
+        },
+        function (res) {
+          if (res.success) {
+            alert("Complaint submitted successfully");
+            $("#report-question-popup-" + question_id).hide();
+          } else {
+            alert("Error in submission");
+          }
         }
-      }
     );
   });
 
   $("#agqa-admin-add-cat").click(function () {
     const name = $("#agqa-admin-cat-name").val();
     $.post(
-      agqa_ajax.ajax_url,
-      { action: "agqa_add_category", name, nonce },
-      function () {
-        $("#agqa-admin-cat-name").val("");
-        fetchCategories();
-      }
+        agqa_ajax.ajax_url,
+        { action: "agqa_add_category", name, nonce },
+        function () {
+          $("#agqa-admin-cat-name").val("");
+          fetchCategories();
+        }
     );
   });
 
@@ -906,25 +906,25 @@ jQuery(document).ready(function ($) {
     }
 
     $.post(
-      agqa_ajax.ajax_url,
-      {
-        action: "agqa_add_post",
-        category_id,
-        title,
-        content,
-        image_url,
-        nonce,
-      },
-      function (res) {
-        if (res.data.status === "success") {
-          alert(res.data.message);
-          $("div#agqa-add-game-modal").hide();
+        agqa_ajax.ajax_url,
+        {
+          action: "agqa_add_post",
+          category_id,
+          title,
+          content,
+          image_url,
+          nonce,
+        },
+        function (res) {
+          if (res.data.status === "success") {
+            alert(res.data.message);
+            $("div#agqa-add-game-modal").hide();
+          }
+          $(
+              "#agqa-admin-post-title, #agqa-admin-post-content, #agqa-admin-post-image"
+          ).val("");
+          fetchPosts();
         }
-        $(
-          "#agqa-admin-post-title, #agqa-admin-post-content, #agqa-admin-post-image"
-        ).val("");
-        fetchPosts();
-      }
     );
   });
 
@@ -932,11 +932,11 @@ jQuery(document).ready(function ($) {
     const post_id = $("#agqa-admin-post-select").val();
     const question = $("#agqa-admin-question").val();
     $.post(
-      agqa_ajax.ajax_url,
-      { action: "agqa_add_question", post_id, question, nonce },
-      function () {
-        $("#agqa-admin-question").val("");
-      }
+        agqa_ajax.ajax_url,
+        { action: "agqa_add_question", post_id, question, nonce },
+        function () {
+          $("#agqa-admin-question").val("");
+        }
     );
   });
 
@@ -982,23 +982,23 @@ jQuery(document).ready(function ($) {
     const game_id = urlParams.get("id");
 
     $.post(
-      agqa_ajax.ajax_url,
-      {
-        action: "agqa_edit_game_full",
-        nonce: agqa_ajax.nonce,
-        game_id: game_id,
-        new_title: title,
-        new_image: image,
-        new_description: description,
-      },
-      function (res) {
-        if (res.success) {
-          alert("✅ Game updated successfully!");
-          location.reload();
-        } else {
-          alert("❌ Failed to update game. Please try again.");
+        agqa_ajax.ajax_url,
+        {
+          action: "agqa_edit_game_full",
+          nonce: agqa_ajax.nonce,
+          game_id: game_id,
+          new_title: title,
+          new_image: image,
+          new_description: description,
+        },
+        function (res) {
+          if (res.success) {
+            alert("✅ Game updated successfully!");
+            location.reload();
+          } else {
+            alert("❌ Failed to update game. Please try again.");
+          }
         }
-      }
     );
   });
 
@@ -1011,23 +1011,23 @@ jQuery(document).ready(function ($) {
     const game_id = urlParams.get("id");
 
     jQuery.post(
-      agqa_ajax.ajax_url,
-      {
-        action: "agqa_toggle_game_visibility",
-        nonce: agqa_ajax.nonce,
-        game_id: game_id,
-        status: status,
-      },
-      function (res) {
-        if (res.success) {
-          alert(
-            "Game is now " + (status === "hide" ? "hidden" : "visible") + "."
-          );
-          location.reload(); // Refresh page to show updated content
-        } else {
-          alert("Failed to update visibility.");
+        agqa_ajax.ajax_url,
+        {
+          action: "agqa_toggle_game_visibility",
+          nonce: agqa_ajax.nonce,
+          game_id: game_id,
+          status: status,
+        },
+        function (res) {
+          if (res.success) {
+            alert(
+                "Game is now " + (status === "hide" ? "hidden" : "visible") + "."
+            );
+            location.reload(); // Refresh page to show updated content
+          } else {
+            alert("Failed to update visibility.");
+          }
         }
-      }
     );
   }
 
@@ -1037,21 +1037,21 @@ jQuery(document).ready(function ($) {
     const gameId = select.data("game-id");
 
     jQuery.post(
-      agqa_ajax.ajax_url,
-      {
-        action: "agqa_update_status",
-        nonce: agqa_ajax.nonce,
-        game_id: gameId,
-        status: newStatus,
-      },
-      function (res) {
-        if (res.success) {
-          alert("Status updated successfully!");
-          window.location.href = `/post/?id=${gameId}`;
-        } else {
-          alert("Failed to update status.");
+        agqa_ajax.ajax_url,
+        {
+          action: "agqa_update_status",
+          nonce: agqa_ajax.nonce,
+          game_id: gameId,
+          status: newStatus,
+        },
+        function (res) {
+          if (res.success) {
+            alert("Status updated successfully!");
+            window.location.href = `/post/?id=${gameId}`;
+          } else {
+            alert("Failed to update status.");
+          }
         }
-      }
     );
   });
 
@@ -1076,21 +1076,21 @@ jQuery(document).ready(function ($) {
     }
 
     jQuery.post(
-      agqa_ajax.ajax_url,
-      {
-        action: "agqa_edit_question",
-        nonce: agqa_ajax.nonce,
-        question_id: questionId,
-        new_question: newQuestion,
-      },
-      function (res) {
-        if (res.success) {
-          alert("Question updated successfully.");
-          location.reload();
-        } else {
-          alert("Failed to update question.");
+        agqa_ajax.ajax_url,
+        {
+          action: "agqa_edit_question",
+          nonce: agqa_ajax.nonce,
+          question_id: questionId,
+          new_question: newQuestion,
+        },
+        function (res) {
+          if (res.success) {
+            alert("Question updated successfully.");
+            location.reload();
+          } else {
+            alert("Failed to update question.");
+          }
         }
-      }
     );
   });
 
@@ -1114,21 +1114,21 @@ jQuery(document).ready(function ($) {
 
     // AJAX call to update status
     jQuery.post(
-      agqa_ajax.ajax_url,
-      {
-        action: "agqa_update_question_status",
-        nonce: agqa_ajax.nonce,
-        question_id: questionId,
-        status: status,
-      },
-      function (res) {
-        if (res.success) {
-          alert(`Status updated to ${status}`);
-          location.reload();
-        } else {
-          alert("Failed to update status");
+        agqa_ajax.ajax_url,
+        {
+          action: "agqa_update_question_status",
+          nonce: agqa_ajax.nonce,
+          question_id: questionId,
+          status: status,
+        },
+        function (res) {
+          if (res.success) {
+            alert(`Status updated to ${status}`);
+            location.reload();
+          } else {
+            alert("Failed to update status");
+          }
         }
-      }
     );
 
     jQuery(this).parent().hide();
@@ -1141,21 +1141,21 @@ jQuery(document).ready(function ($) {
     const action = currentTitle.includes("hide") ? "hide" : "show";
 
     $.post(
-      agqa_ajax.ajax_url,
-      {
-        action: "agqa_toggle_question_visibility",
-        nonce: agqa_ajax.nonce,
-        question_id: questionId,
-        status: action,
-      },
-      function (res) {
-        if (res.success) {
-          alert(`Question is now ${action === "hide" ? "hidden" : "visible"}.`);
-          location.reload();
-        } else {
-          alert("Failed to update visibility.");
+        agqa_ajax.ajax_url,
+        {
+          action: "agqa_toggle_question_visibility",
+          nonce: agqa_ajax.nonce,
+          question_id: questionId,
+          status: action,
+        },
+        function (res) {
+          if (res.success) {
+            alert(`Question is now ${action === "hide" ? "hidden" : "visible"}.`);
+            location.reload();
+          } else {
+            alert("Failed to update visibility.");
+          }
         }
-      }
     );
   });
 
@@ -1181,21 +1181,21 @@ jQuery(document).ready(function ($) {
     }
 
     $.post(
-      agqa_ajax.ajax_url,
-      {
-        action: "agqa_dropdown_action",
-        nonce: agqa_ajax.nonce,
-        answer_id: answerId,
-        dropdown_action: action,
-      },
-      function (res) {
-        if (res.success) {
-          alert('Action "' + action + '" completed successfully!');
-          location.reload();
-        } else {
-          alert("Action failed: " + (res.data || "Unknown error"));
+        agqa_ajax.ajax_url,
+        {
+          action: "agqa_dropdown_action",
+          nonce: agqa_ajax.nonce,
+          answer_id: answerId,
+          dropdown_action: action,
+        },
+        function (res) {
+          if (res.success) {
+            alert('Action "' + action + '" completed successfully!');
+            location.reload();
+          } else {
+            alert("Action failed: " + (res.data || "Unknown error"));
+          }
         }
-      }
     );
   });
 
@@ -1276,7 +1276,7 @@ jQuery(document).ready(function ($) {
       },
       error: function (xhr) {
         $("#ddmu-response").html(
-          "<p>Something went wrong. Please try again.</p>"
+            "<p>Something went wrong. Please try again.</p>"
         );
       },
     });
@@ -1302,7 +1302,7 @@ jQuery(document).ready(function ($) {
             // alert("Game provider added successfully!");
             // alert("Provider data updated!");
             const $successMsg = $(
-              '<div class="submitted-successfully">Game provider added successfully!</div>'
+                '<div class="submitted-successfully">Game provider added successfully!</div>'
             );
             $form.append($successMsg);
 
@@ -1313,7 +1313,7 @@ jQuery(document).ready(function ($) {
               });
             }, 3000);
             jQuery(".agqa-popup-form-inner .popup-form-cross-icon").trigger(
-              "click"
+                "click"
             );
             location.reload(); // Page reload after success message
           } else {
@@ -1322,7 +1322,7 @@ jQuery(document).ready(function ($) {
             $(".file-preview span").text("");
 
             const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response}</div>`
+                `<div class="submitted-unsuccessfully">${response}</div>`
             );
             $form.append($successMsg);
 
@@ -1359,7 +1359,7 @@ jQuery(document).ready(function ($) {
           if (response.includes("Success")) {
             // alert("Game provider added successfully!");
             const $successMsg = $(
-              '<div class="submitted-successfully">Game provider added successfully!</div>'
+                '<div class="submitted-successfully">Game provider added successfully!</div>'
             );
             $form.append($successMsg);
 
@@ -1370,7 +1370,7 @@ jQuery(document).ready(function ($) {
               });
             }, 3000);
             jQuery(".agqa-popup-form-inner .popup-form-cross-icon").trigger(
-              "click"
+                "click"
             );
             location.reload(); // Page reload after success message
           } else {
@@ -1378,7 +1378,7 @@ jQuery(document).ready(function ($) {
             $(".file-preview span").text("");
 
             const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response}</div>`
+                `<div class="submitted-unsuccessfully">${response}</div>`
             );
             $form.append($successMsg);
 
@@ -1422,7 +1422,7 @@ jQuery(document).ready(function ($) {
     if ($websiteInput.length) {
       const value = $websiteInput.val().trim();
       const $fieldWrapper = $websiteInput.closest(
-        ".form-field, .agqa-popup-form-field"
+          ".form-field, .agqa-popup-form-field"
       );
 
       if (/\s/.test(value)) {
@@ -1430,7 +1430,7 @@ jQuery(document).ready(function ($) {
         $websiteInput.addClass("error-field");
         if ($fieldWrapper.find(".error-message").length === 0) {
           $fieldWrapper.append(
-            `<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`
+              `<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`
           );
         }
       } else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
@@ -1438,7 +1438,7 @@ jQuery(document).ready(function ($) {
         $websiteInput.addClass("error-field");
         if ($fieldWrapper.find(".error-message").length === 0) {
           $fieldWrapper.append(
-            `<div class="error-message">Please enter a valid domain(e.g. .com, .net).</div>`
+              `<div class="error-message">Please enter a valid domain(e.g. .com, .net).</div>`
           );
         }
       }
@@ -1458,7 +1458,7 @@ jQuery(document).ready(function ($) {
     // console.log(formDataImage);
     // alert(response);
     const $successMsg = $(
-      `<div class="submit-warning">Please Waiting...</div>`
+        `<div class="submit-warning">Please Waiting...</div>`
     );
     $form.append($successMsg);
 
@@ -1502,7 +1502,7 @@ jQuery(document).ready(function ($) {
       error: function (xhr) {
         alert(xhr);
         $("#ddmu-response").html(
-          "<p>Something went wrong. Please try again.</p>"
+            "<p>Something went wrong. Please try again.</p>"
         );
       },
     });
@@ -1540,7 +1540,7 @@ jQuery(document).ready(function ($) {
           if (response.includes("Success")) {
             // alert("Provider data updated!");
             const $successMsg = $(
-              '<div class="submitted-successfully">Provider data updated!</div>'
+                '<div class="submitted-successfully">Provider data updated!</div>'
             );
             $form.append($successMsg);
 
@@ -1562,12 +1562,12 @@ jQuery(document).ready(function ($) {
             btn.click();
 
             btn.dispatchEvent(
-              new MouseEvent("click", { bubbles: true, cancelable: true })
+                new MouseEvent("click", { bubbles: true, cancelable: true })
             );
           } else {
             // alert(response);
             const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response}</div>`
+                `<div class="submitted-unsuccessfully">${response}</div>`
             );
             $form.append($successMsg);
 
@@ -1609,7 +1609,7 @@ jQuery(document).ready(function ($) {
           if (response.includes("Success")) {
             // alert("Provider data updated!");
             const $successMsg = $(
-              '<div class="submitted-successfully">Provider data updated!</div>'
+                '<div class="submitted-successfully">Provider data updated!</div>'
             );
             $form.append($successMsg);
 
@@ -1631,12 +1631,12 @@ jQuery(document).ready(function ($) {
             btn.click();
 
             btn.dispatchEvent(
-              new MouseEvent("click", { bubbles: true, cancelable: true })
+                new MouseEvent("click", { bubbles: true, cancelable: true })
             );
           } else {
             // alert(response);
             const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response}</div>`
+                `<div class="submitted-unsuccessfully">${response}</div>`
             );
             $form.append($successMsg);
 
@@ -1683,14 +1683,14 @@ jQuery(document).ready(function ($) {
     if ($websiteInput.length) {
       const value = $websiteInput.val().trim();
       const $fieldWrapper = $websiteInput.closest(
-        ".form-field, .agqa-popup-form-field"
+          ".form-field, .agqa-popup-form-field"
       );
       if (/\s/.test(value)) {
         isValid = false;
         $websiteInput.addClass("error-field");
         if ($fieldWrapper.find(".error-message").length === 0) {
           $fieldWrapper.append(
-            `<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`
+              `<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`
           );
         }
       } else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
@@ -1698,7 +1698,7 @@ jQuery(document).ready(function ($) {
         $websiteInput.addClass("error-field");
         if ($fieldWrapper.find(".error-message").length === 0) {
           $fieldWrapper.append(
-            `<div class="error-message">Please enter a valid domain(e.g. .com, .net).</div>`
+              `<div class="error-message">Please enter a valid domain(e.g. .com, .net).</div>`
           );
         }
       }
@@ -1718,7 +1718,7 @@ jQuery(document).ready(function ($) {
     // console.log(formDataImage);
     // alert(response);
     const $successMsg = $(
-      `<div class="submit-warning">Please Waiting...</div>`
+        `<div class="submit-warning">Please Waiting...</div>`
     );
     $form.append($successMsg);
 
@@ -1760,7 +1760,7 @@ jQuery(document).ready(function ($) {
       },
       error: function (xhr) {
         $("#ddmu-response").html(
-          "<p>Something went wrong. Please try again.</p>"
+            "<p>Something went wrong. Please try again.</p>"
         );
       },
     });
@@ -1772,8 +1772,8 @@ jQuery(document).ready(function ($) {
       var formData = $form.serialize();
       formData += "&imageurls=" + encodeURIComponent(imageUrls);
       formData +=
-        "&provider-name=" +
-        $(".agqa-main-game-type .custom-dropdown-selected-value").text();
+          "&provider-name=" +
+          $(".agqa-main-game-type .custom-dropdown-selected-value").text();
       // alert(formData);
       // return;
       var nonce = agqa_ajax.nonce;
@@ -1790,7 +1790,7 @@ jQuery(document).ready(function ($) {
           if (response.includes("Success")) {
             // alert("Provider data updated!");
             const $successMsg = $(
-              '<div class="submitted-successfully">Provider data updated!</div>'
+                '<div class="submitted-successfully">Provider data updated!</div>'
             );
             $form.append($successMsg);
 
@@ -1812,12 +1812,12 @@ jQuery(document).ready(function ($) {
             btn.click();
 
             btn.dispatchEvent(
-              new MouseEvent("click", { bubbles: true, cancelable: true })
+                new MouseEvent("click", { bubbles: true, cancelable: true })
             );
           } else {
             // alert(response);
             const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response}</div>`
+                `<div class="submitted-unsuccessfully">${response}</div>`
             );
             $form.append($successMsg);
 
@@ -1843,8 +1843,8 @@ jQuery(document).ready(function ($) {
       var formData = $form.serialize();
       formData += "&imageurls=" + encodeURIComponent(imageUrls);
       formData +=
-        "&provider-name=" +
-        $(".agqa-main-game-type .custom-dropdown-selected-value").text();
+          "&provider-name=" +
+          $(".agqa-main-game-type .custom-dropdown-selected-value").text();
       // console.log(formData);
       var nonce = agqa_ajax.nonce;
       $.ajax({
@@ -1860,7 +1860,7 @@ jQuery(document).ready(function ($) {
           if (response.includes("Success")) {
             // alert("Provider data updated!");
             const $successMsg = $(
-              '<div class="submitted-successfully">Provider data updated!</div>'
+                '<div class="submitted-successfully">Provider data updated!</div>'
             );
             $form.append($successMsg);
             // Hide after 3 seconds
@@ -1879,12 +1879,12 @@ jQuery(document).ready(function ($) {
             $btn.trigger("click");
             btn.click();
             btn.dispatchEvent(
-              new MouseEvent("click", { bubbles: true, cancelable: true })
+                new MouseEvent("click", { bubbles: true, cancelable: true })
             );
           } else {
             // alert(response);
             const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response}</div>`
+                `<div class="submitted-unsuccessfully">${response}</div>`
             );
             $form.append($successMsg);
             // Hide after 3 seconds
@@ -1935,8 +1935,8 @@ jQuery(document).ready(function ($) {
           $(this).show(); // Show the disabled element
           $(".section-found").hide();
         } else if (
-          selectedFilter != "Enabled" &&
-          selectedFilter != "Disabled"
+            selectedFilter != "Enabled" &&
+            selectedFilter != "Disabled"
         ) {
           // If no filter is selected, show all that match revenueId
           $(this).show();
@@ -2119,12 +2119,12 @@ jQuery(document).ready(function ($) {
       $(".section").each(function () {
         var hasVisibleCard = false;
         $(this)
-          .find(".provider-card")
-          .each(function () {
-            if ($(this).css("display") !== "none") {
-              hasVisibleCard = true;
-            }
-          });
+            .find(".provider-card")
+            .each(function () {
+              if ($(this).css("display") !== "none") {
+                hasVisibleCard = true;
+              }
+            });
 
         // Hide the section if there are no visible provider cards
         if (!hasVisibleCard) {
@@ -2140,12 +2140,12 @@ jQuery(document).ready(function ($) {
 
         // Check if any of the sections inside the main section are visible
         $(this)
-          .find(".section")
-          .each(function () {
-            if ($(this).css("display") !== "none") {
-              hasVisibleSection = true; // Set flag to true if the section is visible
-            }
-          });
+            .find(".section")
+            .each(function () {
+              if ($(this).css("display") !== "none") {
+                hasVisibleSection = true; // Set flag to true if the section is visible
+              }
+            });
 
         // Hide the main section if none of its sections are visible
         if (!hasVisibleSection) {
@@ -2198,8 +2198,8 @@ jQuery(document).ready(function ($) {
 
       // Check visibility of cards and sections within the active section
       var anyVisibleProviderCardsInActiveSection = activeSection
-        .find(".provider-card")
-        .is(":visible");
+          .find(".provider-card")
+          .is(":visible");
 
       // Show or hide the "No results found" message based on the visibility of provider cards in the active section
       if (!anyVisibleProviderCardsInActiveSection) {
@@ -2212,12 +2212,12 @@ jQuery(document).ready(function ($) {
       activeSection.find(".section").each(function () {
         var hasVisibleCard = false;
         $(this)
-          .find(".provider-card")
-          .each(function () {
-            if ($(this).css("display") !== "none") {
-              hasVisibleCard = true;
-            }
-          });
+            .find(".provider-card")
+            .each(function () {
+              if ($(this).css("display") !== "none") {
+                hasVisibleCard = true;
+              }
+            });
 
         // Hide the section if there are no visible provider cards
         if (!hasVisibleCard) {
@@ -2232,12 +2232,12 @@ jQuery(document).ready(function ($) {
         var hasVisibleSection = false;
 
         $(this)
-          .find(".section")
-          .each(function () {
-            if ($(this).css("display") !== "none") {
-              hasVisibleSection = true;
-            }
-          });
+            .find(".section")
+            .each(function () {
+              if ($(this).css("display") !== "none") {
+                hasVisibleSection = true;
+              }
+            });
 
         // Hide the main section if none of its sections are visible
         if (!hasVisibleSection) {
@@ -2283,7 +2283,7 @@ jQuery(document).ready(function ($) {
         // console.log(response.data);
         // alert("Provider data updated!");
         const $successMsg = $(
-          `<div class="submitted-successfully">${response.data}</div>`
+            `<div class="submitted-successfully">${response.data}</div>`
         );
 
         $form.append($successMsg);
@@ -2326,7 +2326,7 @@ jQuery(document).ready(function ($) {
         // console.log(response.data);
         // alert("Provider data updated!");
         const $successMsg = $(
-          `<div class="submitted-successfully">${response.data}</div>`
+            `<div class="submitted-successfully">${response.data}</div>`
         );
 
         $form.append($successMsg);
@@ -2347,7 +2347,7 @@ jQuery(document).ready(function ($) {
   });
 
   /**
-   * reject popup 
+   * reject popup
    */
 
   jQuery('#faq-reject-btn').on("click", function (e) {
@@ -2386,7 +2386,7 @@ jQuery(document).ready(function ($) {
         if (response.includes("Success")) {
           // alert("Provider data updated!");
           const $successMsg = $(
-            '<div class="submitted-successfully">Provider data updated!</div>'
+              '<div class="submitted-successfully">Provider data updated!</div>'
           );
           $form.append($successMsg);
 
@@ -2408,12 +2408,12 @@ jQuery(document).ready(function ($) {
           btn.click();
 
           btn.dispatchEvent(
-            new MouseEvent("click", { bubbles: true, cancelable: true })
+              new MouseEvent("click", { bubbles: true, cancelable: true })
           );
         } else {
           // alert(response);
           const $successMsg = $(
-            `<div class="submitted-unsuccessfully">${response}</div>`
+              `<div class="submitted-unsuccessfully">${response}</div>`
           );
           $form.append($successMsg);
 
@@ -2463,7 +2463,7 @@ jQuery(document).ready(function ($) {
         if (response.includes("Success")) {
           // alert("Provider data updated!");
           const $successMsg = $(
-            '<div class="submitted-successfully">Provider data updated!</div>'
+              '<div class="submitted-successfully">Provider data updated!</div>'
           );
           $form.append($successMsg);
 
@@ -2485,12 +2485,12 @@ jQuery(document).ready(function ($) {
           btn.click();
 
           btn.dispatchEvent(
-            new MouseEvent("click", { bubbles: true, cancelable: true })
+              new MouseEvent("click", { bubbles: true, cancelable: true })
           );
         } else {
           // alert(response);
           const $successMsg = $(
-            `<div class="submitted-unsuccessfully">${response}</div>`
+              `<div class="submitted-unsuccessfully">${response}</div>`
           );
           $form.append($successMsg);
 
@@ -2540,7 +2540,7 @@ jQuery(document).ready(function ($) {
         if (response.includes("Success")) {
           // alert("Provider data updated!");
           const $successMsg = $(
-            '<div class="submitted-successfully">Provider data updated!</div>'
+              '<div class="submitted-successfully">Provider data updated!</div>'
           );
           $form.append($successMsg);
 
@@ -2562,12 +2562,12 @@ jQuery(document).ready(function ($) {
           btn.click();
 
           btn.dispatchEvent(
-            new MouseEvent("click", { bubbles: true, cancelable: true })
+              new MouseEvent("click", { bubbles: true, cancelable: true })
           );
         } else {
           // alert(response);
           const $successMsg = $(
-            `<div class="submitted-unsuccessfully">${response}</div>`
+              `<div class="submitted-unsuccessfully">${response}</div>`
           );
           $form.append($successMsg);
 
@@ -2617,7 +2617,7 @@ jQuery(document).ready(function ($) {
         if (response.includes("Success")) {
           // alert("Provider data updated!");
           const $successMsg = $(
-            '<div class="submitted-successfully">Provider data updated!</div>'
+              '<div class="submitted-successfully">Provider data updated!</div>'
           );
           $form.append($successMsg);
 
@@ -2639,12 +2639,12 @@ jQuery(document).ready(function ($) {
           btn.click();
 
           btn.dispatchEvent(
-            new MouseEvent("click", { bubbles: true, cancelable: true })
+              new MouseEvent("click", { bubbles: true, cancelable: true })
           );
         } else {
           // alert(response);
           const $successMsg = $(
-            `<div class="submitted-unsuccessfully">${response}</div>`
+              `<div class="submitted-unsuccessfully">${response}</div>`
           );
           $form.append($successMsg);
 
@@ -2672,4 +2672,45 @@ jQuery(document).ready(function ($) {
     // alert('kuch bhi');
     jQuery('.reject-submit-popup').removeClass('active');
   });
+
+  function validrevenePrices() {
+    let selling = parseFloat($('.api-check-value-reve-cost-price input#selling-price').val()) || 0;
+    let cost = parseFloat($('.api-check-value-reve-cost-price input#api-cost').val()) || 0;
+    $('.api-check-value-reve-cost-price #api-cost').next('.error-message').remove();
+    if (cost > selling) {
+      $('#confirm-submit-popup-button').prop('disabled', true);
+      // Show your provided error message div
+      $('#api-cost').after(`
+                <div class="error-message">API Cost (%) cannot be greater than Selling Price</div>
+            `);
+    } else {
+      $('#confirm-submit-popup-button').prop('disabled', false);
+      $(".error-message")
+    }
+  }
+
+  // Run logic only when user leaves the input (blur event)
+  $('.api-check-value-reve-cost-price input#selling-price, .api-check-value-reve-cost-price input#api-cost').on('blur', validrevenePrices);
+
+
+
+  function validsalePrices() {
+    let selling = parseFloat($('.api-check-value-sale-min-price input#selling-price').val()) || 0;
+    let cost = parseFloat($('.api-check-value-sale-min-price input#api-cost').val()) || 0;
+    $('.api-check-value-sale-min-price input#selling-price').next('.error-message').remove();
+    if (cost < selling) {
+      $('#confirm-submit-popup-button').prop('disabled', true);
+      // Show your provided error message div
+      $('input#selling-price').after(`
+                <div class="error-message">API Min. Resale  less then to Max. Revenue </div>
+            `);
+    } else {
+      $('#confirm-submit-popup-button').prop('disabled', false);
+      $(".error-message")
+    }
+  }
+
+  // Run logic only when user leaves the input (blur event)
+  $('.api-check-value-sale-min-price input#selling-price, .api-check-value-sale-min-price input#api-cost').on('blur', validsalePrices);
+
 });

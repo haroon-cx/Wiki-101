@@ -36,7 +36,7 @@ jQuery(document).ready(function ($) {
           // If successful, show a success message
           jQuery("div#confirm-submit-popup").removeClass("active");
           const $successMsg = $(
-            `<div class="submitted-successfully">${response.data.message}</div>`
+              `<div class="submitted-successfully">${response.data.message}</div>`
           );
           $form.append($successMsg);
           // Hide after 3 seconds
@@ -55,13 +55,13 @@ jQuery(document).ready(function ($) {
             $btn.trigger("click");
             btn.click();
             btn.dispatchEvent(
-              new MouseEvent("click", { bubbles: true, cancelable: true })
+                new MouseEvent("click", { bubbles: true, cancelable: true })
             );
           }, 3000);
         } else {
           jQuery("div#confirm-submit-popup").removeClass("active");
           const $successMsg = $(
-            `<div class="submitted-unsuccessfully">${response.data.message}</div>`
+              `<div class="submitted-unsuccessfully">${response.data.message}</div>`
           );
           $form.append($successMsg);
           // Hide after 3 seconds
@@ -103,7 +103,7 @@ jQuery(document).ready(function ($) {
         if (response.success) {
           // If successful, show a success message
           const $successMsg = $(
-            '<div class="submitted-successfully">Edit Successful</div>'
+              '<div class="submitted-successfully">Edit Successful</div>'
           );
           $form.append($successMsg);
 
@@ -125,14 +125,14 @@ jQuery(document).ready(function ($) {
           $btn.trigger("click");
           btn.click();
           btn.dispatchEvent(
-            new MouseEvent("click", { bubbles: true, cancelable: true })
+              new MouseEvent("click", { bubbles: true, cancelable: true })
           );
         } else {
           // If the response is not successful, show an error message
           const $errorMsg = $(
-            '<div class="submitted-unsuccessfully">' +
-            response.data.message +
-            "</div>"
+              '<div class="submitted-unsuccessfully">' +
+              response.data.message +
+              "</div>"
           );
           $form.append($errorMsg);
 
@@ -178,8 +178,8 @@ jQuery(document).ready(function ($) {
       if (countdown === 0) {
         clearInterval(countdownInterval);
         jQuery("#reset-link-pending-user")
-          .removeClass("reset-link-disabled")
-          .text("Reset link");
+            .removeClass("reset-link-disabled")
+            .text("Reset link");
       }
     }, 1000); // Update every second (1000 ms)
 
@@ -199,11 +199,11 @@ jQuery(document).ready(function ($) {
         if (response.success) {
           // If successful, show a success message
           const $successMsg = $(
-            '<div class="submitted-successfully">' +
-            "Resend Verification Email Successful<br>" +
-            "Verification email has been resent to your<br>" +
-            "Registered email address. Please check your inbox." +
-            "</div>"
+              '<div class="submitted-successfully">' +
+              "Resend Verification Email Successful<br>" +
+              "Verification email has been resent to your<br>" +
+              "Registered email address. Please check your inbox." +
+              "</div>"
           );
 
           $form.append($successMsg);
@@ -250,8 +250,8 @@ jQuery(document).ready(function ($) {
       if (countdown === 0) {
         clearInterval(countdownInterval);
         $this
-          .removeClass("resend-password-disabled")
-          .text("Generate New Password");
+            .removeClass("resend-password-disabled")
+            .text("Generate New Password");
 
         // Perform the AJAX request once the countdown finishes
       }
@@ -268,21 +268,21 @@ jQuery(document).ready(function ($) {
         // alert(response);
         if (response.success) {
           const $successMsg = $(
-            '<div class="submitted-successfully created-successfully">Reset Password Successful<br>Reset link sent. Please check your account email. You can request another one in 60 seconds. </div>'
+              '<div class="submitted-successfully created-successfully">Reset Password Successful<br>Reset link sent. Please check your account email. You can request another one in 60 seconds. </div>'
           );
           $("body").append($successMsg);
           setTimeout(
-            () => $successMsg.fadeOut(400, () => $successMsg.remove()),
-            3000
+              () => $successMsg.fadeOut(400, () => $successMsg.remove()),
+              3000
           );
         } else {
           const $errorMsg = $(
-            `<div class="submitted-unsuccessfully">${response.data.message}</div>`
+              `<div class="submitted-unsuccessfully">${response.data.message}</div>`
           );
           $("body").append($errorMsg);
           setTimeout(
-            () => $errorMsg.fadeOut(400, () => $errorMsg.remove()),
-            3000
+              () => $errorMsg.fadeOut(400, () => $errorMsg.remove()),
+              3000
           );
         }
       },
@@ -302,8 +302,8 @@ jQuery(document).ready(function ($) {
     var selectedStat = $("input#filter-select-states").val().toLowerCase(); // Get selected state
     var selectedRole = $("input#filter-select-roles").val().toLowerCase(); // Get selected role
     var selectedCompany = $("input#filter-select-companies")
-      .val()
-      .toLowerCase(); // Get selected company
+        .val()
+        .toLowerCase(); // Get selected company
     var dateRange = $("#daterange").val(); // Get selected date range from inputa
 
     // If date range is selected, parse the start and end dates as strings
@@ -317,11 +317,11 @@ jQuery(document).ready(function ($) {
     var resultsFound = false; // Flag to track if any result is found
 
     if (
-      !searchTerm &&
-      !selectedStat &&
-      !selectedRole &&
-      !selectedCompany &&
-      !dateRange
+        !searchTerm &&
+        !selectedStat &&
+        !selectedRole &&
+        !selectedCompany &&
+        !dateRange
     ) {
       $(".section-found").hide(); // Hide the 'nothing found' message
       $(".custom-table-ctn").show(); // Hide the 'nothing found' message
@@ -341,9 +341,9 @@ jQuery(document).ready(function ($) {
           // var pageNumber = "sajid";
           jQuery(this).attr("data-page", pageNumber);
           jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-            .addClass("active")
-            .siblings()
-            .removeClass("active");
+              .addClass("active")
+              .siblings()
+              .removeClass("active");
           jQuery(".custom-table-row").hide();
           jQuery('.custom-table-row[data-page="' + "1" + '"]').show();
         });
@@ -388,10 +388,10 @@ jQuery(document).ready(function ($) {
 
       // Apply filters based on exact match for state, role, company, and search term
       var isStateMatch =
-        selectedStat === "" || rowCategory.trim() === selectedStat; // Exact match for state
+          selectedStat === "" || rowCategory.trim() === selectedStat; // Exact match for state
       var isRoleMatch = selectedRole === "" || rowRole === selectedRole; // Exact match for role
       var isCompanyMatch =
-        selectedCompany === "" || rowCompany === selectedCompany; // Exact match for company
+          selectedCompany === "" || rowCompany === selectedCompany; // Exact match for company
       var isSearchMatch = rowText.includes(searchTerm); // Check if the search term is found anywhere in the row content
 
       // alert(rowDateText);
@@ -410,11 +410,11 @@ jQuery(document).ready(function ($) {
       // alert(isDateMatch);
       // Apply filter only if the row matches the selected state exactly
       if (
-        isStateMatch &&
-        isRoleMatch &&
-        isCompanyMatch &&
-        isSearchMatch &&
-        isDateMatch
+          isStateMatch &&
+          isRoleMatch &&
+          isCompanyMatch &&
+          isSearchMatch &&
+          isDateMatch
       ) {
         $(this).show(); // Show the row if it matches the filters
         resultsFound = true; // Mark that at least one result is found
@@ -448,9 +448,9 @@ jQuery(document).ready(function ($) {
         jQuery(this).attr("data-page", pageNumber);
         jQuery(this).addClass("active");
         jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-          .addClass("active")
-          .siblings()
-          .removeClass("active");
+            .addClass("active")
+            .siblings()
+            .removeClass("active");
         if (pageNumber === 1) {
           $(this).show(); // Show items that belong to the current page
         } else {
@@ -459,26 +459,26 @@ jQuery(document).ready(function ($) {
       });
       jQuery(".pagination-ctn ul li.page-item").show();
       jQuery(".pagination-ctn ul li.page-item")
-        .not(".prev, .next")
-        .each(function () {
-          var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
-          if (pageNumbers === totalPages && totalPages !== 0) {
-            // Remove all <li> items that come after this one
-            jQuery(this).nextAll().not(".next").hide();
+          .not(".prev, .next")
+          .each(function () {
+            var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+            if (pageNumbers === totalPages && totalPages !== 0) {
+              // Remove all <li> items that come after this one
+              jQuery(this).nextAll().not(".next").hide();
 
-            // Check the <li> just before the Next button
-            var prevLi = jQuery(
-              ".pagination-ctn ul li.page-item.active"
-            ).next();
+              // Check the <li> just before the Next button
+              var prevLi = jQuery(
+                  ".pagination-ctn ul li.page-item.active"
+              ).next();
 
-            // If the next page is hidden or .next button is visible, disable the next button
-            if (prevLi.is(":hidden")) {
-              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
-            } else {
-              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+              // If the next page is hidden or .next button is visible, disable the next button
+              if (prevLi.is(":hidden")) {
+                jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+              } else {
+                jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+              }
             }
-          }
-        });
+          });
     }, 100); // Delay of 500 milliseconds
   });
   /**
@@ -500,7 +500,7 @@ jQuery(document).ready(function ($) {
     // Create error container once
     if ($errorMessage.length === 0) {
       $errorMessage = $(
-        '<div id="error-message" class="cuim-validation-error" />'
+          '<div id="error-message" class="cuim-validation-error" />'
       ).insertAfter($input);
     }
 
@@ -550,7 +550,7 @@ jQuery(document).ready(function ($) {
     // Create error container once
     if ($errorMessage.length === 0) {
       $errorMessage = $(
-        '<div id="error-message" class="cuim-validation-error" />'
+          '<div id="error-message" class="cuim-validation-error" />'
       ).insertAfter($input);
     }
 
@@ -574,7 +574,7 @@ jQuery(document).ready(function ($) {
       // Check if input contains at least one number and one letter
       $input.addClass("error-field-input");
       $errorMessage.text(
-        "Password must contain at least one number and one letter."
+          "Password must contain at least one number and one letter."
       );
     } else {
       // Valid
@@ -596,7 +596,7 @@ jQuery(document).ready(function ($) {
         $input.addClass("error-field");
         jQuery("button#save-profile-btn").prop("disabled", true);
         jQuery(".cuim-confrim-pasword-error").text(
-          `The confirmation password must match the new password.`
+            `The confirmation password must match the new password.`
         );
       }
     }
@@ -607,29 +607,29 @@ jQuery(document).ready(function ($) {
    */
 
   $('input[type="search"].cuim-manage-user-search-validation-254').on(
-    "input",
-    function () {
-      const maxLengthInputSearchs = 254;
+      "input",
+      function () {
+        const maxLengthInputSearchs = 254;
 
-      // alert('dd');
+        // alert('dd');
 
-      var $input = $("input#manage-user-search");
-      $input.removeAttr("maxlength"); // Remove any HTML maxlength attribute
-      var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
-      var $input = $input.closest(".form-field"); // Find the parent .form-field of the current input
+        var $input = $("input#manage-user-search");
+        $input.removeAttr("maxlength"); // Remove any HTML maxlength attribute
+        var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
+        var $input = $input.closest(".form-field"); // Find the parent .form-field of the current input
 
-      // Check if input exceeds maxLength
-      if ($input.val().length > maxLengthInputSearchs) {
-        $input.val($input.val().substring(0, maxLengthInputSearchs)); // Truncate the value to maxLength
-        $input.addClass("error-field-input"); // Add 'error' class to the parent .form-field
-        // Append error message if it doesn't already exist
-        if ($errorMessage.length === 0) {
-          $(
-            '<div id="error-message" class="cuim-validation-error">Max 254 characters allowed.</div>'
-          ).insertAfter($input); // Insert the error message after the input
+        // Check if input exceeds maxLength
+        if ($input.val().length > maxLengthInputSearchs) {
+          $input.val($input.val().substring(0, maxLengthInputSearchs)); // Truncate the value to maxLength
+          $input.addClass("error-field-input"); // Add 'error' class to the parent .form-field
+          // Append error message if it doesn't already exist
+          if ($errorMessage.length === 0) {
+            $(
+                '<div id="error-message" class="cuim-validation-error">Max 254 characters allowed.</div>'
+            ).insertAfter($input); // Insert the error message after the input
+          }
         }
       }
-    }
   );
 
   $(".cuim-manage-user-validation-254").on("input", function () {
@@ -649,7 +649,7 @@ jQuery(document).ready(function ($) {
       // Append error message if it doesn't already exist
       if ($errorMessage.length === 0) {
         $(
-          '<div id="error-message" class="cuim-validation-error">Max 254 characters allowed.</div>'
+            '<div id="error-message" class="cuim-validation-error">Max 254 characters allowed.</div>'
         ).insertAfter($input); // Insert the error message after the input
       }
     } else {
@@ -663,7 +663,7 @@ jQuery(document).ready(function ($) {
 
   // Prevent spaces from being typed into the input field
   $(
-    ".cuim-manage-user-validation-254, .cuim-manage-user-search-validation-254"
+      ".cuim-manage-user-validation-254, .cuim-manage-user-search-validation-254"
   ).on("keypress", function (e) {
     var keyCode = e.keyCode || e.which;
 
@@ -680,7 +680,7 @@ jQuery(document).ready(function ($) {
           toggleSubmitButton();
         }, 300);
         $(
-          '<div id="error-message" class="cuim-validation-error">Spaces are not allowed.</div>'
+            '<div id="error-message" class="cuim-validation-error">Spaces are not allowed.</div>'
         ).insertAfter($input); // Insert the error message
         $input.addClass("error-field-input");
       }
@@ -708,7 +708,7 @@ jQuery(document).ready(function ($) {
       if ($errorMessage.length === 0) {
         jQuery("#save-custom-field").prop("disabled", true);
         $(
-          '<div id="error-message" class="cuim-validation-error">Symbols are not allowed.</div>'
+            '<div id="error-message" class="cuim-validation-error">Symbols are not allowed.</div>'
         ).insertAfter($input); // Insert the error message after the input
       }
     } else if ($input.val().length > maxLengthInputUserCustom) {
@@ -718,7 +718,7 @@ jQuery(document).ready(function ($) {
       // Append error message if it doesn't already exist
       if ($errorMessage.length === 0) {
         $(
-          '<div id="error-message" class="cuim-validation-error">Max 50 characters allowed.</div>'
+            '<div id="error-message" class="cuim-validation-error">Max 50 characters allowed.</div>'
         ).insertAfter($input); // Insert the error message after the input
       }
     } else {
@@ -759,7 +759,7 @@ jQuery(document).ready(function ($) {
         if (response.success) {
           $("div#custom-faq-field-popup").removeClass("active");
           const $successMsg = $(
-            `<div class="submitted-successfully">The user successfully deleted.</div>`
+              `<div class="submitted-successfully">The user successfully deleted.</div>`
           );
           jQuery(".custom-table-body").append($successMsg);
           window.location.href = "/manage-user/";
@@ -773,7 +773,7 @@ jQuery(document).ready(function ($) {
           // Add the 'table-body-disabled' class to the table row with the matching username-data
           var username = formData.split("=")[1]; // Get the username from formData
           $(".custom-table-row[username-data='" + username + "']").addClass(
-            "table-body-disabled"
+              "table-body-disabled"
           );
         } else {
           alert(response);
@@ -811,7 +811,7 @@ jQuery(document).ready(function ($) {
         if (response.includes("Success")) {
           $(".agqa-delete-popup-faq").removeClass("active");
           const $successMsg = $(
-            `<div class="submitted-successfully">The user successfully deleted.</div>`
+              `<div class="submitted-successfully">The user successfully deleted.</div>`
           );
           jQuery(".custom-table-body").append($successMsg);
           window.location.href = "/manage-ip-whitelist/";
@@ -825,7 +825,7 @@ jQuery(document).ready(function ($) {
           // Add the 'table-body-disabled' class to the table row with the matching username-data
           var username = formData.split("=")[1]; // Get the username from formData
           $(".custom-table-row[username-data='" + username + "']").addClass(
-            "table-body-disabled"
+              "table-body-disabled"
           );
         } else {
           alert(response);
@@ -845,12 +845,12 @@ jQuery(document).ready(function ($) {
   $(".toggle-password").on("click", function (e) {
     e.preventDefault();
     var passwordField = $(this).siblings(
-      'input[type="password"], input[type="text"]'
+        'input[type="password"], input[type="text"]'
     ); // Get the password input inside the same .password-field container
 
     // Toggle password visibility
     var fieldType =
-      passwordField.attr("type") === "password" ? "text" : "password";
+        passwordField.attr("type") === "password" ? "text" : "password";
     passwordField.attr("type", fieldType); // Toggle the password visibility
 
     // Toggle the button class and icon
@@ -875,7 +875,6 @@ jQuery(document).ready(function ($) {
   jQuery("#toggle-confirm-password").on("click", function () {
     var $confirmPasswordField = jQuery("#confirm-password-field");
     var currentType = $confirmPasswordField.attr("type");
-    alert(currentType);
     jQuery(this).toggleClass("show-pass");
     // Toggle password visibility
     if (currentType === "password") {
@@ -947,7 +946,7 @@ jQuery(document).ready(function ($) {
           jQuery(".reset-password-popup").removeClass("active");
 
           const $successMsg = $(
-            `<div class="submitted-successfully">${response.data.message}</div>`
+              `<div class="submitted-successfully">${response.data.message}</div>`
           );
           jQuery(".cuim-profile-form-wrapper").append($successMsg);
           // Hide after 3 seconds
@@ -960,7 +959,7 @@ jQuery(document).ready(function ($) {
         } else {
           jQuery("div#confirm-submit-popup").removeClass("active");
           const $successMsg = $(
-            `<div class="submitted-unsuccessfully">${response.data.message}</div>`
+              `<div class="submitted-unsuccessfully">${response.data.message}</div>`
           );
           $form.append($successMsg);
           // Hide after 3 seconds
@@ -1011,16 +1010,16 @@ jQuery(document).ready(function ($) {
     // Convert blob: URL to data URL (base64)
     function blobUrlToDataURL(blobUrl) {
       return fetch(blobUrl)
-        .then((res) => res.blob())
-        .then(
-          (blob) =>
-            new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onloadend = () => resolve(reader.result); // => data:image/png;base64,...
-              reader.onerror = reject;
-              reader.readAsDataURL(blob);
-            })
-        );
+          .then((res) => res.blob())
+          .then(
+              (blob) =>
+                  new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result); // => data:image/png;base64,...
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                  })
+          );
     }
 
     var isValid = true;
@@ -1052,18 +1051,18 @@ jQuery(document).ready(function ($) {
 
             jQuery(".reset-password-popup").removeClass("active");
             jQuery(".cuim-profile-box img").attr(
-              "src",
-              response.data.image_url
+                "src",
+                response.data.image_url
             );
             var getchangeName = jQuery(
-              "form#cuim-update-user-profile #user-name"
+                "form#cuim-update-user-profile #user-name"
             ).val();
             jQuery(".cuim-profile-dropdown-head .cuim-user-name").text(
-              getchangeName
+                getchangeName
             );
 
             const $successMsg = $(
-              `<div class="submitted-successfully">${response.data.message}</div>`
+                `<div class="submitted-successfully">${response.data.message}</div>`
             );
             jQuery(".cuim-profile-form-wrapper").append($successMsg);
             // Hide after 3 seconds
@@ -1074,7 +1073,7 @@ jQuery(document).ready(function ($) {
           } else {
             jQuery("div#confirm-submit-popup").removeClass("active");
             const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response.data.message}</div>`
+                `<div class="submitted-unsuccessfully">${response.data.message}</div>`
             );
             $form.append($successMsg);
             // Hide after 3 seconds
@@ -1098,10 +1097,10 @@ jQuery(document).ready(function ($) {
     } else if (typeof blobUrl === "string" && blobUrl.indexOf("blob:") === 0) {
       // Convert blob: -> data:
       blobUrlToDataURL(blobUrl)
-        .then(useAjax)
-        .catch(() => {
-          alert("Failed to read the image blob.");
-        });
+          .then(useAjax)
+          .catch(() => {
+            alert("Failed to read the image blob.");
+          });
     } else {
       // Fallback (maybe a normal https URL)
       useAjax(blobUrl);
@@ -1123,7 +1122,7 @@ jQuery(document).ready(function ($) {
     // Create error container once
     if ($errorMessage.length === 0) {
       $errorMessage = $(
-        '<div id="error-message" class="cuim-validation-error" />'
+          '<div id="error-message" class="cuim-validation-error" />'
       ).insertAfter($input);
     }
 
@@ -1174,8 +1173,8 @@ jQuery(document).ready(function ($) {
     jQuery("form#cuim-update-user-profile #user-name").val(getName);
 
     jQuery("#cuim-profile-reset-password input")
-      .val("")
-      .removeClass("error-field-input");
+        .val("")
+        .removeClass("error-field-input");
     jQuery("#cuim-profile-reset-password div#error-message").text("");
   });
 
@@ -1364,24 +1363,24 @@ jQuery(document).ready(function ($) {
   // IPv6 Validation
   function isValidIPv6(ip) {
     const ipv6Pattern = new RegExp(
-      "^(" +
-      "([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:)|" + // full form
-      "([0-9A-Fa-f]{1,4}:){1,7}:|" + // :: at end
-      "([0-9A-Fa-f]{1,4}:){1,6}:[0-9A-Fa-f]{1,4}|" + // :: in middle
-      "([0-9A-Fa-f]{1,4}:){1,5}(:[0-9A-Fa-f]{1,4}){1,2}|" +
-      "([0-9A-Fa-f]{1,4}:){1,4}(:[0-9A-Fa-f]{1,4}){1,3}|" +
-      "([0-9A-Fa-f]{1,4}:){1,3}(:[0-9A-Fa-f]{1,4}){1,4}|" +
-      "([0-9A-Fa-f]{1,4}:){1,2}(:[0-9A-Fa-f]{1,4}){1,5}|" +
-      "[0-9A-Fa-f]{1,4}:((:[0-9A-Fa-f]{1,4}){1,6})|" +
-      ":((:[0-9A-Fa-f]{1,4}){1,7}|:)|" + // starts with ::
-      "fe80:(:[0-9A-Fa-f]{0,4}){0,4}%[0-9a-zA-Z]{1,}|" + // link-local
-      "::(ffff(:0{1,4}){0,1}:){0,1}" +
-      "((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9]).){3,3}" +
-      "(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])|" + // IPv4-mapped IPv6
-      "([0-9A-Fa-f]{1,4}:){1,4}:" +
-      "((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9]).){3,3}" +
-      "(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])" +
-      ")$"
+        "^(" +
+        "([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:)|" + // full form
+        "([0-9A-Fa-f]{1,4}:){1,7}:|" + // :: at end
+        "([0-9A-Fa-f]{1,4}:){1,6}:[0-9A-Fa-f]{1,4}|" + // :: in middle
+        "([0-9A-Fa-f]{1,4}:){1,5}(:[0-9A-Fa-f]{1,4}){1,2}|" +
+        "([0-9A-Fa-f]{1,4}:){1,4}(:[0-9A-Fa-f]{1,4}){1,3}|" +
+        "([0-9A-Fa-f]{1,4}:){1,3}(:[0-9A-Fa-f]{1,4}){1,4}|" +
+        "([0-9A-Fa-f]{1,4}:){1,2}(:[0-9A-Fa-f]{1,4}){1,5}|" +
+        "[0-9A-Fa-f]{1,4}:((:[0-9A-Fa-f]{1,4}){1,6})|" +
+        ":((:[0-9A-Fa-f]{1,4}){1,7}|:)|" + // starts with ::
+        "fe80:(:[0-9A-Fa-f]{0,4}){0,4}%[0-9a-zA-Z]{1,}|" + // link-local
+        "::(ffff(:0{1,4}){0,1}:){0,1}" +
+        "((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9]).){3,3}" +
+        "(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])|" + // IPv4-mapped IPv6
+        "([0-9A-Fa-f]{1,4}:){1,4}:" +
+        "((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9]).){3,3}" +
+        "(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])" +
+        ")$"
     );
     return ipv6Pattern.test(ip.trim());
   }
@@ -1397,14 +1396,14 @@ jQuery(document).ready(function ($) {
 
     // Check if there are any error messages displayed
     const noErrorsInUI =
-      $(".error-message.ipv4-error").text().trim() === "" &&
-      $(".error-message.ipv6-error").text().trim() === "";
+        $(".error-message.ipv4-error").text().trim() === "" &&
+        $(".error-message.ipv6-error").text().trim() === "";
 
     // Enable buttons if both IPs are valid, or one is valid and the other is empty
     const enable =
-      (ipv4Valid && ipv6Valid) ||
-      (ipv4Valid && ipv6Val === "") ||
-      (ipv6Valid && ipv4Val === "");
+        (ipv4Valid && ipv6Valid) ||
+        (ipv4Valid && ipv6Val === "") ||
+        (ipv6Valid && ipv4Val === "");
 
     $(".cuim-edit-button-ip, button#add-ip-btn").prop("disabled", !enable);
   }
@@ -1553,7 +1552,7 @@ jQuery(document).ready(function ($) {
     $(".cuim-edit-submit-popup-again").removeClass("active");
     $(".edit-manage-ip-form").removeClass("active");
     const $successMsg = $(
-      `<div class="submitted-successfully">Successfully Updated</div>`
+        `<div class="submitted-successfully">Successfully Updated</div>`
     );
     jQuery(".add-manage-ip-form").append($successMsg);
     // Hide after 3 seconds
@@ -1626,9 +1625,9 @@ jQuery(document).ready(function ($) {
     event.preventDefault(); // Prevent form submission
     var getDataLi = jQuery(this).data("value");
     jQuery("." + getDataLi)
-      .show()
-      .siblings(".cuim-ipv-selected")
-      .hide();
+        .show()
+        .siblings(".cuim-ipv-selected")
+        .hide();
   });
 
   $("#cuim-ip-serch-filters").on("click", function (event) {
@@ -1660,9 +1659,9 @@ jQuery(document).ready(function ($) {
           // var pageNumber = "sajid";
           jQuery(this).attr("data-page", pageNumber);
           jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-            .addClass("active")
-            .siblings()
-            .removeClass("active");
+              .addClass("active")
+              .siblings()
+              .removeClass("active");
 
           jQuery(".custom-table-row").hide();
           jQuery('.custom-table-row[data-page="' + "1" + '"]').show();
@@ -1680,24 +1679,24 @@ jQuery(document).ready(function ($) {
 
     $(".custom-table-row").each(function () {
       var IPaccountsearchText = $(this)
-        .find(".cuim-ip-user-account")
-        .text()
-        .toLowerCase();
+          .find(".cuim-ip-user-account")
+          .text()
+          .toLowerCase();
       // alert(IPaccountsearchText);
       var IPSerchipv4Text = $(this)
-        .find(".table-body-col.cuim-ip-user-ipv4")
-        .text()
-        .toLowerCase();
+          .find(".table-body-col.cuim-ip-user-ipv4")
+          .text()
+          .toLowerCase();
       var IPSerchipv6Text = $(this)
-        .find(".table-body-col.cuim-ip-user-ipv6")
-        .text()
-        .toLowerCase();
+          .find(".table-body-col.cuim-ip-user-ipv6")
+          .text()
+          .toLowerCase();
       // Apply filters based on exact match for state, role, company, and search term
       var isIPAccountMatch = IPaccountsearchText.includes(IPaccountText); // Check if the search term is found anywhere in the row content
       var IsIPSerchipv4Match =
-        IPTextipv4 === "" || IPSerchipv4Text.trim() === IPTextipv4.trim();
+          IPTextipv4 === "" || IPSerchipv4Text.trim() === IPTextipv4.trim();
       var IsIPSerchipv6Match =
-        IPTextipv6 === "" || IPSerchipv6Text.trim() === IPTextipv6.trim();
+          IPTextipv6 === "" || IPSerchipv6Text.trim() === IPTextipv6.trim();
 
       if (isIPAccountMatch && IsIPSerchipv4Match && IsIPSerchipv6Match) {
         $(this).show(); // Show the row if it matches the filters
@@ -1732,9 +1731,9 @@ jQuery(document).ready(function ($) {
         jQuery(this).attr("data-page", pageNumber);
         jQuery(this).addClass("active");
         jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-          .addClass("active")
-          .siblings()
-          .removeClass("active");
+            .addClass("active")
+            .siblings()
+            .removeClass("active");
         if (pageNumber === 1) {
           $(this).show(); // Show items that belong to the current page
         } else {
@@ -1743,46 +1742,46 @@ jQuery(document).ready(function ($) {
       });
       jQuery(".pagination-ctn ul li.page-item").show();
       jQuery(".pagination-ctn ul li.page-item")
-        .not(".prev, .next")
-        .each(function () {
-          var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
-          if (pageNumbers === totalPages && totalPages !== 0) {
-            // Remove all <li> items that come after this one
-            jQuery(this).nextAll().not(".next").hide();
+          .not(".prev, .next")
+          .each(function () {
+            var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+            if (pageNumbers === totalPages && totalPages !== 0) {
+              // Remove all <li> items that come after this one
+              jQuery(this).nextAll().not(".next").hide();
 
-            // Check the <li> just before the Next button
-            var prevLi = jQuery(
-              ".pagination-ctn ul li.page-item.active"
-            ).next();
+              // Check the <li> just before the Next button
+              var prevLi = jQuery(
+                  ".pagination-ctn ul li.page-item.active"
+              ).next();
 
-            // If the next page is hidden or .next button is visible, disable the next button
-            if (prevLi.is(":hidden")) {
-              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
-            } else {
-              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+              // If the next page is hidden or .next button is visible, disable the next button
+              if (prevLi.is(":hidden")) {
+                jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+              } else {
+                jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+              }
             }
-          }
-        });
+          });
     }, 100); // Delay of 500 milliseconds
   });
 
   jQuery(".cuim-cancel-button-ip").on("click", function () {
     var check_ipv4 = $(this)
-      .closest(".edit-ip-from-list")
-      .find(".ip-edit-ip4-check")
-      .val(); // Assuming the ID for the IPv4 field is 'ipv4'
+        .closest(".edit-ip-from-list")
+        .find(".ip-edit-ip4-check")
+        .val(); // Assuming the ID for the IPv4 field is 'ipv4'
     var check_ipv6 = $(this)
-      .closest(".edit-ip-from-list")
-      .find(".ip-edit-ip6-check")
-      .val(); // Assuming the ID for the IPv6 field is 'ipv6'
+        .closest(".edit-ip-from-list")
+        .find(".ip-edit-ip6-check")
+        .val(); // Assuming the ID for the IPv6 field is 'ipv6'
     jQuery(this)
-      .closest(".edit-ip-from-list")
-      .find(".manage-ip-ipv4-field")
-      .val(check_ipv4);
+        .closest(".edit-ip-from-list")
+        .find(".manage-ip-ipv4-field")
+        .val(check_ipv4);
     jQuery(this)
-      .closest(".edit-ip-from-list")
-      .find(".manage-ip-ipv6-field")
-      .val(check_ipv6);
+        .closest(".edit-ip-from-list")
+        .find(".manage-ip-ipv6-field")
+        .val(check_ipv6);
   });
 
   jQuery(".cuim-cancel-btn-ip-add").on("click", function (e) {
@@ -1819,15 +1818,15 @@ jQuery(document).ready(function ($) {
           $form.append($successMsg);
         } else {
           if (
-            response.data.code == "Please check your username and password."
+              response.data.code == "Please check your username and password."
           ) {
             jQuery("#user-login-flow-password").after(
-              "<div class='error-message cuim-user-login-error'>Login failed.<br>" + response.data.code + "</div>"
+                "<div class='error-message cuim-user-login-error'>Login failed.<br>" + response.data.code + "</div>"
             );
 
           } else {
             const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response.data.code}</div>`
+                `<div class="submitted-unsuccessfully">${response.data.code}</div>`
             );
             $form.append($successMsg);
             // Hide after 3 seconds
@@ -1875,14 +1874,14 @@ jQuery(document).ready(function ($) {
           $form.append($successMsg);
         } else {
           if (
-            response.data.code == "Please check your username and password."
+              response.data.code == "Please check your username and password."
           ) {
             jQuery(".cuim-user-login-error").html(
-              "Login failed." + "<br>" + response.data.message
+                "Login failed." + "<br>" + response.data.message
             );
           } else {
             const $successMsg = $(
-              `<div class="submitted-unsuccessfully">${response.data.message}</div>`
+                `<div class="submitted-unsuccessfully">${response.data.message}</div>`
             );
             $form.append($successMsg);
             // Hide after 3 seconds
@@ -1904,18 +1903,18 @@ jQuery(document).ready(function ($) {
     var maxLength = 254; // Maximum length for email
     var $input = $(this);
     var $errorMessage = $input
-      .closest(".user-login-flow-form-field")
-      .next(".error-message");
+        .closest(".user-login-flow-form-field")
+        .next(".error-message");
 
     // Check if the input length exceeds the max length
     if ($input.val().length > maxLength) {
       // Truncate the value and display an error message
       $input.val($input.val().substring(0, maxLength));
       $errorMessage
-        .text(
-          "Maximum length for email address is 254 characters. Please shorten your input."
-        )
-        .show();
+          .text(
+              "Maximum length for email address is 254 characters. Please shorten your input."
+          )
+          .show();
     } else {
       // Hide the error message if length is within the limit
       $errorMessage.text("").hide();
@@ -1967,9 +1966,9 @@ jQuery(document).ready(function ($) {
           // var pageNumber = "sajid";
           jQuery(this).attr("data-page", pageNumber);
           jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-            .addClass("active")
-            .siblings()
-            .removeClass("active");
+              .addClass("active")
+              .siblings()
+              .removeClass("active");
 
           jQuery(".custom-table-row").hide();
           jQuery('.custom-table-row[data-page="' + "1" + '"]').show();
@@ -1987,16 +1986,16 @@ jQuery(document).ready(function ($) {
 
     $(".custom-table-row").each(function () {
       var IPaccountsearchText = $(this)
-        .find(".login-record-account")
-        .text()
-        .toLowerCase();
+          .find(".login-record-account")
+          .text()
+          .toLowerCase();
 
       // var rowDateText = $(this).find(".table-body-col-date").text().trim(); // Get the date from the row (e.g., "2025/09/17")
       var rowDateText = $(this).find(".table-body-col-date").text().trim(); // "2025/10/20 19:50"
 
       // Option 1: split (handles multiple spaces too)
       var dateOnly = rowDateText.split(/\s+/)[0]; // "2025/10/20"
-      var formatted = `${dateOnly}`;           // "(2025/10/20 )"
+      var formatted = `${rowDateText}`;           // "(2025/10/20 )"
       var isIPAccountMatch = IPaccountsearchText.includes(loginRecordText);
       var isDateMatch = true;
       if (startDate && endDate) {
@@ -2041,9 +2040,9 @@ jQuery(document).ready(function ($) {
         jQuery(this).attr("data-page", pageNumber);
         jQuery(this).addClass("active");
         jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-          .addClass("active")
-          .siblings()
-          .removeClass("active");
+            .addClass("active")
+            .siblings()
+            .removeClass("active");
         if (pageNumber === 1) {
           $(this).show(); // Show items that belong to the current page
         } else {
@@ -2052,26 +2051,26 @@ jQuery(document).ready(function ($) {
       });
       jQuery(".pagination-ctn ul li.page-item").show();
       jQuery(".pagination-ctn ul li.page-item")
-        .not(".prev, .next")
-        .each(function () {
-          var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
-          if (pageNumbers === totalPages && totalPages !== 0) {
-            // Remove all <li> items that come after this one
-            jQuery(this).nextAll().not(".next").hide();
+          .not(".prev, .next")
+          .each(function () {
+            var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+            if (pageNumbers === totalPages && totalPages !== 0) {
+              // Remove all <li> items that come after this one
+              jQuery(this).nextAll().not(".next").hide();
 
-            // Check the <li> just before the Next button
-            var prevLi = jQuery(
-              ".pagination-ctn ul li.page-item.active"
-            ).next();
+              // Check the <li> just before the Next button
+              var prevLi = jQuery(
+                  ".pagination-ctn ul li.page-item.active"
+              ).next();
 
-            // If the next page is hidden or .next button is visible, disable the next button
-            if (prevLi.is(":hidden")) {
-              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
-            } else {
-              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+              // If the next page is hidden or .next button is visible, disable the next button
+              if (prevLi.is(":hidden")) {
+                jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+              } else {
+                jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+              }
             }
-          }
-        });
+          });
     }, 500); // Delay of 500 milliseconds
   });
 
@@ -2111,9 +2110,9 @@ jQuery(document).ready(function ($) {
           // var pageNumber = "sajid";
           jQuery(this).attr("data-page", pageNumber);
           jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-            .addClass("active")
-            .siblings()
-            .removeClass("active");
+              .addClass("active")
+              .siblings()
+              .removeClass("active");
 
           jQuery(".custom-table-row").hide();
           jQuery('.custom-table-row[data-page="' + "1" + '"]').show();
@@ -2131,19 +2130,19 @@ jQuery(document).ready(function ($) {
 
     $(".custom-table-row").each(function () {
       var IPaccountsearchText = $(this)
-        .find(".cuim-type-name-approval")
-        .text()
-        .toLowerCase();
-     var matchStatus = $(this)
-  .find('.table-row-status span')
-  .attr('class')        // span ki class le raha hai
-  .toLowerCase();
-      // alert(matchStatus);
+          .find(".cuim-type-name-approval")
+          .text()
+          .toLowerCase();
+      var matchStatus = $(this)
+          .find(".table-row-status span")
+          .text()
+          .toLowerCase();
+      // alert(IPaccountsearchText);
 
       var isIPAccountMatch = reportType === "all" ||
-        reportType === "" || IPaccountsearchText.trim() === reportType;
+          reportType === "" || IPaccountsearchText.trim() === reportType;
       var isMatchStatus = statusApproval === "all" ||
-        statusApproval === "" || matchStatus.trim() === statusApproval;
+          statusApproval === "" || matchStatus.trim() === statusApproval;
 
 
       if (isIPAccountMatch && isMatchStatus) {
@@ -2180,9 +2179,9 @@ jQuery(document).ready(function ($) {
         jQuery(this).attr("data-page", pageNumber);
         jQuery(this).addClass("active");
         jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-          .addClass("active")
-          .siblings()
-          .removeClass("active");
+            .addClass("active")
+            .siblings()
+            .removeClass("active");
         if (pageNumber === 1) {
           $(this).show(); // Show items that belong to the current page
         } else {
@@ -2191,26 +2190,26 @@ jQuery(document).ready(function ($) {
       });
       jQuery(".pagination-ctn ul li.page-item").show();
       jQuery(".pagination-ctn ul li.page-item")
-        .not(".prev, .next")
-        .each(function () {
-          var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
-          if (pageNumbers === totalPages && totalPages !== 0) {
-            // Remove all <li> items that come after this one
-            jQuery(this).nextAll().not(".next").hide();
+          .not(".prev, .next")
+          .each(function () {
+            var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+            if (pageNumbers === totalPages && totalPages !== 0) {
+              // Remove all <li> items that come after this one
+              jQuery(this).nextAll().not(".next").hide();
 
-            // Check the <li> just before the Next button
-            var prevLi = jQuery(
-              ".pagination-ctn ul li.page-item.active"
-            ).next();
+              // Check the <li> just before the Next button
+              var prevLi = jQuery(
+                  ".pagination-ctn ul li.page-item.active"
+              ).next();
 
-            // If the next page is hidden or .next button is visible, disable the next button
-            if (prevLi.is(":hidden")) {
-              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
-            } else {
-              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+              // If the next page is hidden or .next button is visible, disable the next button
+              if (prevLi.is(":hidden")) {
+                jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+              } else {
+                jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+              }
             }
-          }
-        });
+          });
     }, 500); // Delay of 500 milliseconds
   });
 });

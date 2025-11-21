@@ -55,7 +55,7 @@ $rows_cat_names = $wpdb->get_results("
     </div>
     <div class="api-form-ctn">
         <div class="api-form-wrapper" id="UN">
-            <form autocomplete="off" id="edit-revnue-form" class="custom-form" novalidate="novalidate"
+            <form autocomplete="off" id="edit-revnue-form" class="custom-form api-check-value-sale-min-price" novalidate="novalidate"
                 data-inited-validation="1">
                 <div class="form-field required">
                     <input type="hidden" name="business-model" value="sale">

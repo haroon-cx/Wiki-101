@@ -99,6 +99,30 @@ curl_close($curl);
     .table-body-col:nth-child(3) {
         width: 31.7%;
     }
+    select:not(.esg-sorting-select):not([class*="trx_addons_attrib_"]):not([size]) {
+        visibility: visible !important;
+        width: 88% !important;
+        margin: 0 10px;
+    }
+
+    .hourselect,
+    .minuteselect {
+        background-color: #6e6e6e !important;
+        border: none !important;
+        width: 30%;
+        margin: unset;
+
+    }
+
+    .daterangepicker select {
+        background: #747474 url('<?php echo URIP_URL; ?>assets/image/arrow-down-icon.svg') no-repeat right 21px center / 13px !important;
+    }
+    .daterangepicker .calendar-time {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
 
     @media (max-width: 1760px) {
         .login-records-table {
@@ -250,25 +274,25 @@ curl_close($curl);
             }
         });
 
-        setTimeout(function() {
-            // Clear the date range input field
-            jQuery('input[name="daterange"]').val("");
-        }, 2000); // 3000 milliseconds = 3 seconds
-
-        var startOfMonth = moment().startOf('month');
-        var endOfMonth = moment().endOf('month');
-
         jQuery('input[name="daterange"]').daterangepicker({
             opens: 'right',
+            timePicker: true,
+            timePicker24Hour: true,
             locale: {
-                format: 'YYYY/MM/DD'
+                format: 'YYYY/MM/DD HH:mm'
             },
-            startDate: startOfMonth,
-            endDate: endOfMonth,
-            minDate: startOfMonth, // prevent picking before this month
-            maxDate: endOfMonth, // prevent picking after this month
-            autoUpdateInput: true // ensures the input shows the default range
+            startDate: moment().startOf('month').startOf('day'),
+            endDate: moment().endOf('month').endOf('day'),
+            minDate: moment().startOf('month').startOf('day'),
+            maxDate: moment().endOf('month').endOf('day'),
+            autoUpdateInput: false // page load par input empty rahega
         });
+
+// jab user range select kare
+        jQuery('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+            jQuery(this).val(picker.startDate.format('YYYY/MM/DD HH:mm') + ' - ' + picker.endDate.format('YYYY/MM/DD HH:mm'));
+        });
+
 
 
         // Handle the cancel or clear action
