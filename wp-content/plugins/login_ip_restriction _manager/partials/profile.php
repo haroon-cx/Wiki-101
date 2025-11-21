@@ -8,7 +8,7 @@ function cui_pm_add_logout_button_footer()
     if (is_user_logged_in()) {
 
 ?>
-        <header class="header">
+        <header class="header header_cuim_fixed">
             <div class="header-wrapper">
                 <?php
                 // Get saved viewer mode flag for current user

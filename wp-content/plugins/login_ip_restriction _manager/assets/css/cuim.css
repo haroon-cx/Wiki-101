@@ -37,7 +37,11 @@ body {
 
 .header {
     background-color: #1D1C25;
-    position: relative;
+    position: sticky !important;
+    top: 0 !important;
+    left: 0;
+    width: 100%;
+    z-index: 999999999999;
 }
 
 .header-wrapper {
@@ -704,6 +708,9 @@ div#cuim-edit-fields input {
     border: 1px solid #747474;
     border-radius: 8px;
 }
+
+
+
 
 .sidebar>.sidebar_inner {
     /* background:  */

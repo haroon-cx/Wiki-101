@@ -2134,11 +2134,11 @@ jQuery(document).ready(function ($) {
         .find(".cuim-type-name-approval")
         .text()
         .toLowerCase();
-      var matchStatus = $(this)
-        .find(".table-row-status span")
-        .text()
-        .toLowerCase();
-      // alert(IPaccountsearchText);
+     var matchStatus = $(this)
+  .find('.table-row-status span')
+  .attr('class')        // span ki class le raha hai
+  .toLowerCase();
+      // alert(matchStatus);
 
       var isIPAccountMatch = reportType === "all" ||
         reportType === "" || IPaccountsearchText.trim() === reportType;

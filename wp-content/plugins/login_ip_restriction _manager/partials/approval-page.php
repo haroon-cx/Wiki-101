@@ -130,7 +130,7 @@ curl_close($curl);
                     <div class="custom-table-row">
                         <div class="table-body-col cuim-type-name-approval"><?php echo $value_approval->type_name; ?></div>
                         <div class="table-body-col"><?php echo $value_approval->question; ?></div>
-                        <div class="table-body-col table-row-status <?php echo strtolower($value_approval->status); ?>"><span><?php echo $value_approval->status; ?></span></div>
+                        <div class="table-body-col table-row-status <?php echo strtolower($value_approval->status); ?>"><span class="<?php echo $value_approval->status; ?>"><?php echo $value_approval->status; ?></span></div>
                         <div class="table-body-col">
                             <?php
                             // Get the current system time (local server time) as a string

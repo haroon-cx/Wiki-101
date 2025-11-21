@@ -704,4 +704,6 @@ jQuery(function ($) {
   $(".notification-button").on("click", function () {
     $(".notification-popup").toggleClass("active");
   });
+
+
 });
