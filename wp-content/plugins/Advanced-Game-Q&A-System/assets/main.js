@@ -1433,15 +1433,15 @@ jQuery(document).ready(function ($) {
               `<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`
           );
         }
-      } else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
-        isValid = false;
-        $websiteInput.addClass("error-field");
-        if ($fieldWrapper.find(".error-message").length === 0) {
-          $fieldWrapper.append(
-              `<div class="error-message">Please enter a valid domain(e.g. .com, .net).</div>`
-          );
-        }
-      }
+       } //else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
+      //   isValid = false;
+      //   $websiteInput.addClass("error-field");
+      //   if ($fieldWrapper.find(".error-message").length === 0) {
+      //     $fieldWrapper.append(
+      //         `<div class="error-message">Please enter a valid domain(e.g. .com, .net).</div>`
+      //     );
+      //   }
+      // }
     }
     if (!isValid) {
       return;
@@ -1693,15 +1693,15 @@ jQuery(document).ready(function ($) {
               `<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`
           );
         }
-      } else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
-        isValid = false;
-        $websiteInput.addClass("error-field");
-        if ($fieldWrapper.find(".error-message").length === 0) {
-          $fieldWrapper.append(
-              `<div class="error-message">Please enter a valid domain(e.g. .com, .net).</div>`
-          );
-        }
-      }
+      } //else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
+      //   isValid = false;
+      //   $websiteInput.addClass("error-field");
+      //   if ($fieldWrapper.find(".error-message").length === 0) {
+      //     $fieldWrapper.append(
+      //         `<div class="error-message">Please enter a valid domain(e.g. .com, .net).</div>`
+      //     );
+      //   }
+      // }
     }
     if (!isValid) {
       return;
@@ -2673,44 +2673,288 @@ jQuery(document).ready(function ($) {
     jQuery('.reject-submit-popup').removeClass('active');
   });
 
-  function validrevenePrices() {
-    let selling = parseFloat($('.api-check-value-reve-cost-price input#selling-price').val()) || 0;
-    let cost = parseFloat($('.api-check-value-reve-cost-price input#api-cost').val()) || 0;
-    $('.api-check-value-reve-cost-price #api-cost').next('.error-message').remove();
+  // function validrevenePrices() {
+  //   let selling = parseFloat($('.api-check-value-reve-cost-price input#selling-price').val()) || 0;
+  //   let cost = parseFloat($('.api-check-value-reve-cost-price input#api-cost').val()) || 0;
+  //   $('.api-check-value-reve-cost-price #api-cost').next('.error-message').remove();
+  //   if (cost > selling) {
+  //     $('#confirm-submit-popup-button').prop('disabled', true);
+  //     // Show your provided error message div
+  //     $('#api-cost').after(`
+  //               <div class="error-message">API Cost (%) cannot be greater than Selling Price</div>
+  //           `);
+  //   } else {
+  //     $('#confirm-submit-popup-button').prop('disabled', false);
+  //     $(".error-message")
+  //   }
+  // }
+
+  // // Run logic only when user leaves the input (blur event)
+  // $('.api-check-value-reve-cost-price input#selling-price, .api-check-value-reve-cost-price input#api-cost').on('blur', validrevenePrices);
+
+function validrevenePrices() {
+    let selling = parseFloat($('.api-check-value-reve-cost-price #selling-price').val()) || 0;
+    let cost = parseFloat($('.api-check-value-reve-cost-price #api-cost').val()) || 0;
+
+    // Remove only the specific error for this field
+    $('#api-cost').next('.error-message').remove();
+
     if (cost > selling) {
-      $('#confirm-submit-popup-button').prop('disabled', true);
-      // Show your provided error message div
-      $('#api-cost').after(`
-                <div class="error-message">API Cost (%) cannot be greater than Selling Price</div>
+
+        // Disable submit button
+        $('#confirm-submit-popup-button').prop('disabled', true);
+
+        // Add error ONLY if not already present
+        if ($('#api-cost').next('.error-message').length === 0) {
+            $('#api-cost').after(`
+                <div class="error-message">
+                    API Cost cannot be greater than the Selling Price (%). Please check your input.
+                </div>
             `);
+        }
+
     } else {
-      $('#confirm-submit-popup-button').prop('disabled', false);
-      $(".error-message")
+        // Enable button + remove only this field's error
+        $('#api-cost').next('.error-message').remove();
+        $('#confirm-submit-popup-button').prop('disabled', false);
     }
-  }
+}
 
-  // Run logic only when user leaves the input (blur event)
-  $('.api-check-value-reve-cost-price input#selling-price, .api-check-value-reve-cost-price input#api-cost').on('blur', validrevenePrices);
+// Safe event binding (Elementor supported)
+$(document).on('blur', '.api-check-value-reve-cost-price #selling-price, .api-check-value-reve-cost-price #api-cost', validrevenePrices);
 
+  // function validsalePrices() {
+  //   let selling = parseFloat($('.api-check-value-sale-min-price input#selling-price').val()) || 0;
+  //   let cost = parseFloat($('.api-check-value-sale-min-price input#api-cost').val()) || 0;
+  //   $('.api-check-value-sale-min-price input#selling-price').next('.error-message').remove();
+  //   if (cost > selling) {
+  //     $('#confirm-submit-popup-button').prop('disabled', true);
+  //     // Show your provided error message div
+  //     $('input#api-cost').after(`
+  //               <div class="error-message">Max. Revenue Share (%) cannot be greater than the Min. Resale (%). Please check your input.</div>
+  //           `);
+  //   } else {
+  //     $('#confirm-submit-popup-button').prop('disabled', false);
+  //     $(".error-message")
+  //   }
+  // }
 
-
+  // // Run logic only when user leaves the input (blur event)
+  // $('.api-check-value-sale-min-price input#selling-price, .api-check-value-sale-min-price input#api-cost').on('blur', validsalePrices);
   function validsalePrices() {
-    let selling = parseFloat($('.api-check-value-sale-min-price input#selling-price').val()) || 0;
-    let cost = parseFloat($('.api-check-value-sale-min-price input#api-cost').val()) || 0;
-    $('.api-check-value-sale-min-price input#selling-price').next('.error-message').remove();
-    if (cost < selling) {
-      $('#confirm-submit-popup-button').prop('disabled', true);
-      // Show your provided error message div
-      $('input#selling-price').after(`
-                <div class="error-message">API Min. Resale  less then to Max. Revenue </div>
-            `);
+      let selling = parseFloat($('.api-check-value-sale-min-price #selling-price').val()) || 0;
+      let cost = parseFloat($('.api-check-value-sale-min-price #api-cost').val()) || 0;
+
+      // remove error only from selling and cost inputs, not globally
+      $('#api-cost').next('.error-message').remove();
+
+      if (cost > selling) {
+          
+          // Disable button
+          $('#confirm-submit-popup-button').prop('disabled', true);
+
+          // Add error ONLY if not already added
+          if ($('#api-cost').next('.error-message').length === 0) {
+              $('#api-cost').after(`
+                  <div class="error-message">
+                      Max. Revenue Share (%) cannot be greater than the Min. Resale (%). Please check your input.
+                  </div>
+              `);
+          }
+
+      } else {
+          // Remove error + enable button
+          $('#api-cost').next('.error-message').remove();
+          $('#confirm-submit-popup-button').prop('disabled', false);
+      }
+  }
+
+// Trigger only once per blur
+  $(document).on('blur', '.api-check-value-sale-min-price #selling-price, .api-check-value-sale-min-price #api-cost', validsalePrices);
+
+
+
+  $(".menu-item-has-children").on("mouseenter", function () {
+        let dropdown = $(this).find(".sub-menu").first();
+        if (!dropdown.length) return;
+
+        dropdown.css("display", "block"); // Ensure it is visible
+
+        let rect = dropdown[0].getBoundingClientRect();
+        let screenHeight = $(window).height();
+
+        // If the dropdown goes below the bottom of the screen
+        if (rect.bottom > screenHeight) {
+            let scrollAmount = rect.bottom - screenHeight + 20;
+            $("html, body").animate({ scrollTop: $(window).scrollTop() + scrollAmount }, 300);
+        }
+    });
+
+    $(".menu-item-has-children").on("mouseleave", function () {
+        let dropdown = $(this).find(".sub-menu").first();
+        dropdown.css("display", "none");
+    });
+
+
+// Scroll Event on Small Screen
+
+
+  var MOBILE_BREAKPOINT = 768;
+  var EXTRA_PADDING = 20; // pixels from bottom
+
+  // helper: find nearest scrollable ancestor or window
+  function getScrollableAncestor($el) {
+    var $parent = $el.parent();
+    while ($parent.length && $parent[0] !== document.documentElement) {
+      var overflowY = $parent.css('overflow-y');
+      if (overflowY === 'auto' || overflowY === 'scroll') return $parent;
+      $parent = $parent.parent();
+    }
+    return $(window);
+  }
+
+  // scroll logic: ensure dropdown bottom is visible
+  function ensureVisible($dropdown) {
+    if (!$dropdown.length) return;
+    var rect = $dropdown[0].getBoundingClientRect();
+    var screenHeight = window.innerHeight || $(window).height();
+    var $scrollable = getScrollableAncestor($dropdown);
+
+    if ($scrollable[0] === window || $scrollable[0] === document) {
+      if (rect.bottom > screenHeight) {
+        var scrollAmount = Math.ceil(rect.bottom - screenHeight + EXTRA_PADDING);
+        $('html, body').stop(true, true).animate({ scrollTop: $(window).scrollTop() + scrollAmount }, 300);
+        return true;
+      }
     } else {
-      $('#confirm-submit-popup-button').prop('disabled', false);
-      $(".error-message")
+      var containerRect = $scrollable[0].getBoundingClientRect();
+      if (rect.bottom > containerRect.bottom) {
+        var scrollAmount = Math.ceil(rect.bottom - containerRect.bottom + 12);
+        $scrollable.stop(true, true).animate({ scrollTop: $scrollable.scrollTop() + scrollAmount }, 300);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // observe style/class changes to submenu (fallback if show/hide controlled via class)
+  function observeAndScroll($dropdown) {
+    if (!$dropdown.length) return;
+    // avoid creating multiple observers per dropdown
+    if ($dropdown.data('observer-attached')) return;
+    var node = $dropdown[0];
+    try {
+      var obs = new MutationObserver(function (mutations) {
+        // after any mutation, check visibility then scroll if needed
+        setTimeout(function () {
+          // visible check: offsetParent or computed display/visibility/opacity
+          var visible = node.offsetParent !== null && $(node).is(':visible') && $(node).css('visibility') !== 'hidden' && $(node).css('opacity') !== '0';
+          if (visible) {
+            ensureVisible($dropdown);
+          }
+        }, 8);
+      });
+      obs.observe(node, { attributes: true, attributeFilter: ['style', 'class'], childList: false, subtree: false });
+      $dropdown.data('observer-attached', true);
+      // store observer so we could disconnect later if needed
+      $dropdown.data('observer-instance', obs);
+    } catch (e) {
+      // MutationObserver not supported — ignore
+      // console.log('MutationObserver not supported');
     }
   }
 
-  // Run logic only when user leaves the input (blur event)
-  $('.api-check-value-sale-min-price input#selling-price, .api-check-value-sale-min-price input#api-cost').on('blur', validsalePrices);
+  // unified "open" function: makes submenu visible if necessary and ensures it's in view
+  function openSubmenu($li) {
+    var $dropdown = $li.find('.sub-menu').first();
+    if (!$dropdown.length) return;
+    // If the theme opens via class, toggle class; otherwise, show inline
+    // We will not forcibly remove classes — just attempt to measure after small delay
+    // If the dropdown is hidden by display:none, temporarily show it invisibly to measure:
+    var wasHidden = $dropdown.css('display') === 'none';
+    if (wasHidden) $dropdown.css({ visibility: 'hidden', display: 'block' });
+
+    // small delay for CSS to apply/render
+    setTimeout(function () {
+      ensureVisible($dropdown);
+      if (wasHidden) $dropdown.css({ display: 'none', visibility: '' });
+    }, 12);
+
+    // attach observer fallback
+    observeAndScroll($dropdown);
+  }
+
+  // close logic (for click toggle mobile)
+  function closeSubmenu($li) {
+    // If theme uses classes to open/close, we avoid forcibly hiding
+    // Nothing else needed here; click handler toggles class
+  }
+
+  // Event handlers
+  // Use delegated handlers to survive dynamic DOM changes
+  $(document)
+    .on('mouseenter', '.menu-item-has-children', function (e) {
+      if ($(window).width() <= MOBILE_BREAKPOINT) return; // on mobile ignore hover
+      // Desktop: open submenu then scroll
+      openSubmenu($(this));
+    })
+    .on('touchstart', '.menu-item-has-children > a', function (e) {
+      // On touch devices, first tap should open (if link is '#'), second tap follows the link.
+      var $li = $(this).closest('.menu-item-has-children');
+      // if window width small, we let click handler manage; else we attempt to open and prevent default if submenu exists
+      if ($li.length) {
+        var $dropdown = $li.find('.sub-menu').first();
+        if ($dropdown.length) {
+          // If submenu is not visible, prevent default navigation and open
+          var visible = $dropdown.is(':visible') && $dropdown.css('display') !== 'none';
+          if (!visible) {
+            e.preventDefault();
+            // let the theme toggle happen (if theme toggles on :hover via class, it may not on touch)
+            // we still call openSubmenu to scroll after a tiny delay
+            setTimeout(function () {
+              openSubmenu($li);
+            }, 10);
+          }
+        }
+      }
+    })
+    .on('click', '.menu-item-has-children > a', function (e) {
+      // On small screens, convert to click-to-toggle (recommended)
+      if ($(window).width() > MOBILE_BREAKPOINT) return; // only for mobile
+      var $a = $(this);
+      var $li = $a.closest('.menu-item-has-children');
+      if (!$li.length) return;
+      var $dropdown = $li.find('.sub-menu').first();
+      if (!$dropdown.length) return;
+      e.preventDefault(); // prevent navigation for parent links that are just containers
+
+      // toggle an "open" class — adapt to your theme's class if it uses something else
+      $li.toggleClass('open');
+
+      // if opened, ensure visible
+      if ($li.hasClass('open')) {
+        // if dropdown is made visible by CSS via .open class, wait a tick then scroll
+        setTimeout(function () {
+          openSubmenu($li);
+        }, 30);
+      } else {
+        closeSubmenu($li);
+      }
+    });
+
+  // Optional: on window resize, clear observers and let them reattach when opened again
+  $(window).on('resize', function () {
+    $('.sub-menu').each(function () {
+      var $d = $(this);
+      var obs = $d.data('observer-instance');
+      if (obs && typeof obs.disconnect === 'function') {
+        obs.disconnect();
+      }
+      $d.removeData('observer-instance').removeData('observer-attached');
+    });
+  });
+
+  // Debug helper: if nothing works, log which submenu would be targeted (remove in production)
+  // console.log('Menu scroll helper loaded');
 
 });

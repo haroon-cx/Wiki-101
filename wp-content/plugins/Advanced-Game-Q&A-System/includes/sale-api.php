@@ -209,7 +209,7 @@ function merged_sale_api_ui_shortcode()
                                 <div class="api-price-api-cost">
                                     <div class="api-price-section">
                                         <div class="label-with-icon">
-                                            <span class="label">Min. Revenue Share (%)</span>
+                                            <span class="label">Min. Resale (%)</span>
                                             <button class="copy-detail"><img src="<?php echo AGQA_URL ?>assets/images/copy-icon.svg"
                                                     alt="Copy Icon"></button>
                                         </div>
@@ -218,7 +218,7 @@ function merged_sale_api_ui_shortcode()
 
                                     </div>
                                     <div class="api-price-section">
-                                        <span class="label">Max. Resale (%)</span>
+                                        <span class="label">Max. Revenue Share (%)</span>
                                         <h2 class="large-text"><?php echo esc_html(number_format($item->max_resale_share, 0)); ?>%
                                         </h2>
                                     </div>
