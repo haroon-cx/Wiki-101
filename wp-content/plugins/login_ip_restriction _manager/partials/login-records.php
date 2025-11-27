@@ -1,4 +1,6 @@
 <?php
+$month_start = date('Y/m/d 00:00', strtotime('first day of this month'));
+$month_end   = date('Y/m/d 23:59', strtotime('last day of this month'));
 $getUserRole = get_user_role_simple();
 if ($getUserRole == 'viewer') {
     echo "Permission not allowed";
@@ -157,7 +159,7 @@ curl_close($curl);
             <div class="login-records-filter-date">
                 <div class="filter-select date-field">
                     <input type="text" name="daterange" class="select-date-picker" value="" id="daterange"
-                        placeholder="YYYY/MM/DD 00:00 - YYYY/MM/DD 00:00">
+                        placeholder="<?php echo $month_start . ' - ' . $month_end; ?>">
                     <span class="calendar-icon"></span>
                 </div>
             </div>
