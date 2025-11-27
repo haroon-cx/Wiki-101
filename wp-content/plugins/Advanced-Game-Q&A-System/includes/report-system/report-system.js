@@ -255,7 +255,7 @@ jQuery(document).ready(function ($) {
           // console.log(response.data.answer); // Ensure the answer is present
           $(".respond-detail-textarea").text(response.data.answer); // Set the value
         } else {
-          alert("Answer not found.");
+          // alert("Answer not found.");
         }
       },
       error: function () {
@@ -272,9 +272,12 @@ jQuery(document).ready(function ($) {
 
     const $form = $(this);
     var formData = $form.serialize();
-
+    // alert(jQuery(this).find('.respond-detail-textarea').val());
+    
+    // return;
+    var getTextValue = jQuery(this).find('.respond-detail-textarea').val();
     var getStatus = jQuery("[name='respond-status-type']").val();
-    if (getStatus == "Pending Response") {
+    if (getStatus == "Pending Response" && getTextValue == '') {
       // alert(getStatus);
       jQuery("div#confirm-submit-popup").removeClass("active");
       jQuery(".respond-popup").removeClass("active");

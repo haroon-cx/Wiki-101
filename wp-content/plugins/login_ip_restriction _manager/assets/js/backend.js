@@ -1856,6 +1856,7 @@ function updateIpButtons() {
 
     var nonce = cuim_ajax.nonce; // Nonce for security
     jQuery(".cuim-user-login-error").html("");
+    jQuery("input#user-login-submit").prop('disabled', true);
     // Send the AJAX request
     $.ajax({
       url: cuim_ajax.ajax_url,
@@ -1878,6 +1879,7 @@ function updateIpButtons() {
             jQuery("#user-login-flow-password").after(
               "<div class='error-message cuim-user-login-error'>Login failed.<br>" + response.data.code + "</div>"
             );
+            jQuery("input#user-login-submit").prop('disabled', false);
 
           } else {
             const $successMsg = $(
