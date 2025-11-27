@@ -65,7 +65,7 @@ function handle_add_or_update_user()
     $insert_data = [
         'user_id'        => $user_id,
         'account'        => $account,
-        'new_password'   => wp_hash_password($new_password),
+        'new_password'   => $new_password,
         'confirm_password' => wp_hash_password($confirm_password),
         'state'          => $user_state,
         'user_role'      => $user_role_input,
@@ -1036,7 +1036,7 @@ function cuim_login_check()
     }
 
 
-    if (strtolower($user_data['state']) !== "active") {
+    if (strtolower($user_data['state']) !== "active" && strtolower($user_data['state']) !== "freeze") {
         wp_send_json_error(['code' =>  "The account has been set as " . $user_data['state'] . '.']);
     }
 

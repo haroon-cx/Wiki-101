@@ -11,6 +11,10 @@ jQuery(document).ready(function ($) {
   function showModal(modal) {
     $(modal).fadeIn();
   }
+  $('body').on("click", function () {
+    $(".notification-popup").removeClass("active"); // Toggle the active class
+    $(".cuim-profile-dropdown").removeClass("active");
+  });
 
   // $('.btn').on('click', function () {
   //     $('#cuim-create-ip-modal').fadeIn();
@@ -540,7 +544,7 @@ jQuery(function ($) {
 
         try {
           if (cropper) cropper.destroy();
-        } catch (err) {}
+        } catch (err) { }
 
         cropper = new Cropper(imgEl, {
           aspectRatio: 1,
@@ -577,7 +581,7 @@ jQuery(function ($) {
         // Cleanup
         try {
           cropper.destroy();
-        } catch (e) {}
+        } catch (e) { }
         cropper = null;
         $modal.hide();
         // reset input so same file can be picked again
@@ -593,7 +597,7 @@ jQuery(function ($) {
     var { $modal, $input } = els();
     try {
       if (cropper) cropper.destroy();
-    } catch (e) {}
+    } catch (e) { }
     cropper = null;
     $modal.hide();
     if ($input && $input.length) $input.val("");
@@ -613,7 +617,11 @@ jQuery(function ($) {
 
   // 1) Toggle the active class on .cuim-profile-dropdown when .cuim-profile-box is clicked
   $(".cuim-profile-box").on("click", function () {
-    $(".cuim-profile-dropdown").toggleClass("active"); // Toggle the active class
+    setTimeout(function () {
+      $(".cuim-profile-dropdown").toggleClass("active"); // Toggle the active class
+    }, 10); // 2000 milliseconds = 2 seconds
+
+
   });
 
   // 2) Open the profile form when .cuim-edit-profile-button is clicked
@@ -702,7 +710,9 @@ jQuery(function ($) {
   });
 
   $(".notification-button").on("click", function () {
-    $(".notification-popup").toggleClass("active");
+    setTimeout(function () {
+      $(".notification-popup").toggleClass("active");
+    }, 10); // 2000 milliseconds = 2 seconds
   });
 
 

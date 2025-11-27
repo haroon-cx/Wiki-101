@@ -1,7 +1,4 @@
 <?php
-
-
-
 add_action('wp_body_open', 'cui_pm_add_logout_button_footer');
 function cui_pm_add_logout_button_footer()
 {
@@ -139,7 +136,18 @@ function cui_pm_add_logout_button_footer()
             $user_style_css = 'style="display:none;"';
             $user_exist = true;
         }
+        foreach ($user_login_data as $key => $get_user_pass) {
+            // Check if the user's current password matches the old password
+            if (wp_check_password($get_user_pass->new_password, $user->user_pass, $user_id)) {
+                // If password matches, update the password
+                $user_active_class = 'active';
+
+                $user_style_css = 'style="display:none;"';
+                $user_exist = true;
+            }
+        }
     }
+
     ?>
 
     <div class="cuim-profile-form-wrapper <?php echo $user_active_class; ?>">
@@ -359,8 +367,7 @@ function cui_pm_add_logout_button_footer()
 
                 // 👉 Optional redirect after delay
                 window.location.href = newUrl;
-                setTimeout(function() {
-                }, 1000);
+                setTimeout(function() {}, 1000);
             });
         });
     </script>

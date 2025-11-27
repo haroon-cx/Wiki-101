@@ -270,7 +270,7 @@ include 'add-ip-form.php';
 
                                 $displayed_accounts[] = $ip_value->account;
                         ?>
-                                <div class="custom-table-row <?php echo $ip_value->delete_status; ?>">
+                                <div class="custom-table-row <?php echo $ip_value->delete_status; ?>" id="ip-row-<?php echo $ip_value->id; ?>">
                                     <div class="table-body-col cuim-ip-user-account">
                                         <?php echo $ip_value->account; ?>
                                         <?php echo empty($ip_value->delete_user_name) ? '' : '(deleter | ' . $ip_value->delete_user_name . ')'; ?>
@@ -309,7 +309,7 @@ include 'add-ip-form.php';
                                                             <div class="error-message ip-error ipv6-error"></div>
                                                         </div>
                                                         <div class="form-buttons manage-ip-form-buttons d-flex">
-                                                            <button class="cancel-button" type="button">Cancel</button>
+                                                            <button class="cuim-ip-cancel-btn" type="button">Cancel</button>
                                                             <div class="cancel-form-confirmation" style="">
                                                                 <div class="cancel-form-confirmation-box">
                                                                     <h2>Cancel</h2>
