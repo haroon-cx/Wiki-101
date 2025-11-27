@@ -1019,9 +1019,9 @@ function cuim_login_check()
     $ipv6_match = !empty($stored['ipv6']) && $stored['ipv6'] === $cuimClientIp['ipv6'];
 
 
-    // if (!$ipv4_match && !$ipv6_match) {
-    //     wp_send_json_error(['code' => 'Your IP do not exists.']);
-    // }
+    if (!$ipv4_match && !$ipv6_match) {
+        wp_send_json_error(['code' => 'Your IP do not exists.']);
+    }
 
     // Query the custom table for the user state
     global $wpdb;
