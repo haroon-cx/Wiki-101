@@ -10,7 +10,7 @@
             <h2>Add New IP</h2>
         </div>
         <form action="#" id="add-ip-from" autocomplete="off" data-inited-validation="1">
-            <div class="form-field full-width">
+            <div class="form-field full-width cuim-main-add-ip-account">
                 <label for="manage-ip-account-field">Account</label>
                 <input type="text" name="account-name" id="manage-ip-account-field" placeholder="Description" required>
             </div>
@@ -26,7 +26,7 @@
                 <div class="error-message ip-error ipv6-error"></div>
             </div>
             <div id="add-ip-form-buttons" class="form-buttons manage-ip-form-buttons d-flex">
-                <button class="cancel-button" type="button">Cancel</button>
+                <button class="cuim-ip-cancel-btn" type="button">Cancel</button>
                 <div class="cancel-form-confirmation">
                     <div class="cancel-form-confirmation-box">
                         <h2>Cancel</h2>

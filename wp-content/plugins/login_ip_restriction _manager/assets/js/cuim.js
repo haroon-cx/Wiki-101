@@ -616,12 +616,37 @@ jQuery(function ($) {
   */
 
   // 1) Toggle the active class on .cuim-profile-dropdown when .cuim-profile-box is clicked
-  $(".cuim-profile-box").on("click", function () {
-    setTimeout(function () {
-      $(".cuim-profile-dropdown").toggleClass("active"); // Toggle the active class
-    }, 10); // 2000 milliseconds = 2 seconds
+  // $(".cuim-profile-box").on("click", function () {
+  //   setTimeout(function () {
+  //     $(".cuim-profile-dropdown").toggleClass("active"); // Toggle the active class
+  //   }, 10); // 2000 milliseconds = 2 seconds
 
 
+  // });
+  // Profile popup logic
+  $(".cuim-profile-box").on("click", function (e) {
+    // Prevent click event from propagating to body or other elements
+    e.stopPropagation();
+
+    // Close the notification popup if it is open
+    $(".notification-popup").removeClass("active");
+
+    // Check if the profile dropdown is already active
+    if ($(".cuim-profile-dropdown").hasClass("active")) {
+      // If it's already active (open), remove the 'active' class to close the dropdown
+      $(".cuim-profile-dropdown").removeClass("active");
+    } else {
+      // If it's not active, add the 'active' class to open the dropdown
+      $(".cuim-profile-dropdown").addClass("active");
+    }
+  });
+
+  // Close the profile dropdown when clicking anywhere outside of the profile box
+  $(document).on("click", function (e) {
+    if (!$(e.target).closest(".cuim-profile-box").length) {
+      // Only close if the click is outside the profile box
+      $(".cuim-profile-dropdown").removeClass("active");
+    }
   });
 
   // 2) Open the profile form when .cuim-edit-profile-button is clicked
@@ -709,10 +734,34 @@ jQuery(function ($) {
     $(".edit-manage-ip-form").removeClass("active");
   });
 
-  $(".notification-button").on("click", function () {
-    setTimeout(function () {
-      $(".notification-popup").toggleClass("active");
-    }, 10); // 2000 milliseconds = 2 seconds
+  // $(".notification-button").on("click", function () {
+  //   setTimeout(function () {
+  //     $(".notification-popup").toggleClass("active");
+  //   }, 10); // 2000 milliseconds = 2 seconds
+  // });
+  $(".notification-button").on("click", function (e) {
+    // Prevent click event from propagating to body or other elements
+    e.stopPropagation();
+
+    // Close the profile popup if it is open
+    $(".cuim-profile-dropdown").removeClass("active");
+
+    // Check if the notification popup is already active
+    if ($(".notification-popup").hasClass("active")) {
+      // If it's already active (open), remove the 'active' class to close the popup
+      $(".notification-popup").removeClass("active");
+    } else {
+      // If it's not active, add the 'active' class to open the popup
+      $(".notification-popup").addClass("active");
+    }
+  });
+
+  // Close the notification popup when clicking anywhere outside of the notification button
+  $(document).on("click", function (e) {
+    if (!$(e.target).closest(".notification-button").length) {
+      // Only close if the click is outside the notification button
+      $(".notification-popup").removeClass("active");
+    }
   });
 
 
