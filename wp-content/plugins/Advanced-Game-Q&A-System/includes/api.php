@@ -148,7 +148,8 @@ function merged_api_ui_shortcode()
                 <div class="filter-container api-filter">
                     <div class="filter-area">
                         <?php if (isset($_GET['revenue'])) { ?>
-                            <a href="/revenue/" class="back-button">View All</a>
+                            <a href="/game-categories/" class="back-button">
+                             <img decoding="async" src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg" alt="Arrow Left Icon">View All</a>
                         <?php } ?>
                         <?php if (empty($_GET['revenue'])) { ?>
                             <form id="filter-form">

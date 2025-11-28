@@ -1842,6 +1842,7 @@ jQuery(document).ready(function ($) {
       .find(".manage-ip-ipv6-field")
       .val(check_ipv6);
     jQuery(".ip-error").text('');
+    jQuery('.cuim-edit-button-ip').prop('disabled', false);
   });
 
 
@@ -1893,7 +1894,7 @@ jQuery(document).ready(function ($) {
     if (jQuery(".manage-ip-ipv6-field").next(".error-message").length === 0) {
       jQuery(".manage-ip-ipv6-field").after('<div class="error-message ip-error ipv6-error"></div>');
     }
-
+    jQuery('#add-ip-btn').prop('disabled', false);
 
   });
 
