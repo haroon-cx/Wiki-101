@@ -327,7 +327,7 @@ ob_start(); // Start output buffering
 
 
                             ?>
-                                <div class="custom-table-row <?php echo $user_data->delete_status; ?>"
+                                <div class="custom-table-row active <?php echo $user_data->delete_status; ?>"
                                     username-data="<?php echo $user_data->account; ?>">
                                     <div class="table-body-col table-body-col-text">
                                         <?php echo $user_data->account; ?>

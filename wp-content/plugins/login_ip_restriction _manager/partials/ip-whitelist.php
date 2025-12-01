@@ -270,7 +270,7 @@ include 'add-ip-form.php';
 
                                 $displayed_accounts[] = $ip_value->account;
                         ?>
-                                <div class="custom-table-row <?php echo $ip_value->delete_status; ?>" id="ip-row-<?php echo $ip_value->id; ?>">
+                                <div class="custom-table-row active <?php echo $ip_value->delete_status; ?>" id="ip-row-<?php echo $ip_value->id; ?>">
                                     <div class="table-body-col cuim-ip-user-account">
                                         <?php echo $ip_value->account; ?>
                                         <?php echo empty($ip_value->delete_user_name) ? '' : '(deleter | ' . $ip_value->delete_user_name . ')'; ?>
@@ -403,7 +403,7 @@ include 'add-ip-form.php';
 
         jQuery(".manage-ip-template #pagination-demo").twbsPagination({
             totalPages: totalPages,
-            visiblePages: 3,
+            visiblePages: totalPages,
             onPageClick: function(event, page) {
                 // Hide all rows first
                 jQuery(".manage-ip-template .custom-table-row").hide();
@@ -436,6 +436,104 @@ include 'add-ip-form.php';
                         }
                     }
                 });
+                // ========= NEW CODE: 1 hamesha show + center dots =========
+                // Agar koi active page hi nahi to dots ka scene hi nahi
+                if (!totalActivePages) {
+                    return;
+                }
+
+
+                var $pager = jQuery(".pagination-ctn ul");
+
+                // Pichle custom dots hata do (refresh ke liye)
+                $pager.find("li.page-item.cust-ellipsis").remove();
+
+                // Sirf number waale page items (prev/next/first/last ko hata ke)
+                var $numItems = $pager.find("li.page-item").not(".prev, .next, .first, .last");
+
+                // Pehle sab numeric pages ko hide kar dete hain
+                $numItems.each(function() {
+                    var n = parseInt(jQuery(this).text(), 10);
+                    if (isNaN(n)) return;
+
+                    // Sirf unhi numbers ke sath kaam jahan n <= totalActivePages
+                    if (n > totalActivePages) {
+                        jQuery(this).hide();
+                    }
+                });
+
+                // Ab decide karte hain kaun se page dikhane hain
+                var sideRange = 1; // current ke 1-1 neighbour
+
+                $numItems.each(function() {
+                    var n = parseInt(jQuery(this).text(), 10);
+                    if (isNaN(n) || n > totalActivePages) return;
+
+                    // hamesha show:
+                    // 1, lastActivePage, current, current-1, current+1
+                    if (
+                        n === 1 ||
+                        n === totalActivePages ||
+                        n === page ||
+                        n === page - sideRange ||
+                        n === page + sideRange
+                    ) {
+                        jQuery(this).show();
+                    } else {
+                        jQuery(this).hide();
+                    }
+                });
+
+                // 1st page <li> aur lastActivePage <li> pakdo
+                var $page1 = $numItems.filter(function() {
+                    return parseInt(jQuery(this).text(), 10) === 1;
+                });
+                var $lastPage = $numItems.filter(function() {
+                    return parseInt(jQuery(this).text(), 10) === totalActivePages;
+                });
+
+                // Ensure page 1 visible
+                if ($page1.length) {
+                    $page1.show();
+                }
+
+                // Dots after 1 (agar 1 ke baad direct 2 na ho visible mein)
+                if ($page1.length && $page1.is(":visible")) {
+                    var $after1 = $page1.nextAll("li.page-item")
+                        .not(".prev,.next,.first,.last")
+                        .filter(":visible")
+                        .first();
+
+                    if ($after1.length) {
+                        var nAfter = parseInt($after1.text(), 10);
+                        if (!isNaN(nAfter) && nAfter > 2) {
+                            jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                .insertAfter($page1);
+                        }
+                    }
+                }
+
+                // Ensure last active page visible
+                if ($lastPage.length) {
+                    $lastPage.show();
+                }
+
+                // Dots before lastActivePage (agar us se pehle vala visible number lastActivePage - 1 na ho)
+                if ($lastPage.length && $lastPage.is(":visible")) {
+                    var $beforeLast = $lastPage.prevAll("li.page-item")
+                        .not(".prev,.next,.first,.last")
+                        .filter(":visible")
+                        .first();
+
+                    if ($beforeLast.length) {
+                        var nBefore = parseInt($beforeLast.text(), 10);
+                        if (!isNaN(nBefore) && nBefore < (totalActivePages - 1)) {
+                            jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                .insertBefore($lastPage);
+                        }
+                    }
+                }
+                // ========= NEW DOTS CODE END =========
             },
         });
 

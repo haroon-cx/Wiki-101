@@ -101,6 +101,7 @@ curl_close($curl);
     .table-body-col:nth-child(3) {
         width: 31.7%;
     }
+
     select:not(.esg-sorting-select):not([class*="trx_addons_attrib_"]):not([size]) {
         visibility: visible !important;
         width: 88% !important;
@@ -119,6 +120,7 @@ curl_close($curl);
     .daterangepicker select {
         background: #747474 url('<?php echo URIP_URL; ?>assets/image/arrow-down-icon.svg') no-repeat right 21px center / 13px !important;
     }
+
     .daterangepicker .calendar-time {
         display: flex;
         justify-content: center;
@@ -176,7 +178,7 @@ curl_close($curl);
                 </div>
                 <div class="custom-table-body">
                     <?php foreach ($get_login_records_list as  $records_value) { ?>
-                        <div class="custom-table-row">
+                        <div class="custom-table-row active">
                             <div class="table-body-col login-record-account"><?php echo $records_value->account; ?></div>
                             <div class="table-body-col table-body-col-date">
                                 <?php
@@ -227,7 +229,7 @@ curl_close($curl);
 
         jQuery(".login-records-template #pagination-demo").twbsPagination({
             totalPages: totalPages,
-            visiblePages: 3,
+            visiblePages: totalPages,
             onPageClick: function(event, page) {
                 // Hide all rows first
                 jQuery(".login-records-template .custom-table-row").hide();
@@ -260,6 +262,104 @@ curl_close($curl);
                         }
                     }
                 });
+                // ========= NEW CODE: 1 hamesha show + center dots =========
+                // Agar koi active page hi nahi to dots ka scene hi nahi
+                if (!totalActivePages) {
+                    return;
+                }
+
+
+                var $pager = jQuery(".pagination-ctn ul");
+
+                // Pichle custom dots hata do (refresh ke liye)
+                $pager.find("li.page-item.cust-ellipsis").remove();
+
+                // Sirf number waale page items (prev/next/first/last ko hata ke)
+                var $numItems = $pager.find("li.page-item").not(".prev, .next, .first, .last");
+
+                // Pehle sab numeric pages ko hide kar dete hain
+                $numItems.each(function() {
+                    var n = parseInt(jQuery(this).text(), 10);
+                    if (isNaN(n)) return;
+
+                    // Sirf unhi numbers ke sath kaam jahan n <= totalActivePages
+                    if (n > totalActivePages) {
+                        jQuery(this).hide();
+                    }
+                });
+
+                // Ab decide karte hain kaun se page dikhane hain
+                var sideRange = 1; // current ke 1-1 neighbour
+
+                $numItems.each(function() {
+                    var n = parseInt(jQuery(this).text(), 10);
+                    if (isNaN(n) || n > totalActivePages) return;
+
+                    // hamesha show:
+                    // 1, lastActivePage, current, current-1, current+1
+                    if (
+                        n === 1 ||
+                        n === totalActivePages ||
+                        n === page ||
+                        n === page - sideRange ||
+                        n === page + sideRange
+                    ) {
+                        jQuery(this).show();
+                    } else {
+                        jQuery(this).hide();
+                    }
+                });
+
+                // 1st page <li> aur lastActivePage <li> pakdo
+                var $page1 = $numItems.filter(function() {
+                    return parseInt(jQuery(this).text(), 10) === 1;
+                });
+                var $lastPage = $numItems.filter(function() {
+                    return parseInt(jQuery(this).text(), 10) === totalActivePages;
+                });
+
+                // Ensure page 1 visible
+                if ($page1.length) {
+                    $page1.show();
+                }
+
+                // Dots after 1 (agar 1 ke baad direct 2 na ho visible mein)
+                if ($page1.length && $page1.is(":visible")) {
+                    var $after1 = $page1.nextAll("li.page-item")
+                        .not(".prev,.next,.first,.last")
+                        .filter(":visible")
+                        .first();
+
+                    if ($after1.length) {
+                        var nAfter = parseInt($after1.text(), 10);
+                        if (!isNaN(nAfter) && nAfter > 2) {
+                            jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                .insertAfter($page1);
+                        }
+                    }
+                }
+
+                // Ensure last active page visible
+                if ($lastPage.length) {
+                    $lastPage.show();
+                }
+
+                // Dots before lastActivePage (agar us se pehle vala visible number lastActivePage - 1 na ho)
+                if ($lastPage.length && $lastPage.is(":visible")) {
+                    var $beforeLast = $lastPage.prevAll("li.page-item")
+                        .not(".prev,.next,.first,.last")
+                        .filter(":visible")
+                        .first();
+
+                    if ($beforeLast.length) {
+                        var nBefore = parseInt($beforeLast.text(), 10);
+                        if (!isNaN(nBefore) && nBefore < (totalActivePages - 1)) {
+                            jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                .insertBefore($lastPage);
+                        }
+                    }
+                }
+                // ========= NEW DOTS CODE END =========
             },
         });
 
@@ -290,7 +390,7 @@ curl_close($curl);
             autoUpdateInput: false // page load par input empty rahega
         });
 
-// jab user range select kare
+        // jab user range select kare
         jQuery('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
             jQuery(this).val(picker.startDate.format('YYYY/MM/DD HH:mm') + ' - ' + picker.endDate.format('YYYY/MM/DD HH:mm'));
         });
@@ -304,22 +404,122 @@ curl_close($curl);
                 jQuery(this).val(""); // Reset the input field to empty when the user cancels or clears the date range
             }
         );
-    <?php if($add_username !== ''){ ?>    
-         setTimeout(function() {
-            var $btn = jQuery('#agqa-login-records-filters');
-            const btn = $btn.get(0);
-            // Create and dispatch mouse events
-            ['mousedown', 'mouseup', 'click'].forEach(eventType => {
-                btn.dispatchEvent(
-                    new MouseEvent(eventType, {
-                        view: window,
-                        bubbles: true,
-                        cancelable: true
-                    })
-                );
+        <?php if ($add_username !== '') { ?>
+            setTimeout(function() {
+                var $btn = jQuery('#agqa-login-records-filters');
+                const btn = $btn.get(0);
+                // Create and dispatch mouse events
+                ['mousedown', 'mouseup', 'click'].forEach(eventType => {
+                    btn.dispatchEvent(
+                        new MouseEvent(eventType, {
+                            view: window,
+                            bubbles: true,
+                            cancelable: true
+                        })
+                    );
+                });
+
+            }, 2000);
+
+        <?php } ?>
+        setTimeout(function() {
+            applyCustomDots(totalPages);
+        }, 200);
+
+        function applyCustomDots(totalPages) {
+            var $pager = jQuery(".pagination-ctn ul");
+
+            // Agar 1 hi page hai to dots ka koi faida nahi
+            if (!totalPages || totalPages <= 1) {
+                $pager.find("li.page-item.cust-ellipsis").remove();
+                return;
+            }
+
+            // Purane wale custom dots hata do
+            $pager.find("li.page-item.cust-ellipsis").remove();
+
+            // Sirf number wali li (prev / next ko hata ke)
+            var $numItems = $pager.find("li.page-item").not(".prev, .next");
+
+            // Current active page nikaalo (jo tum nth-child(3) se active kar rahe ho)
+            var current = parseInt($pager.find("li.page-item.active").text(), 10);
+            if (isNaN(current) || current < 1) current = 1;
+            if (current > totalPages) current = totalPages;
+
+            // Pehle sab numeric pages ko base state mein hide karo / > totalPages hide
+            $numItems.each(function() {
+                var n = parseInt(jQuery(this).text(), 10);
+                if (isNaN(n)) return;
+
+                if (n > totalPages) {
+                    jQuery(this).hide();
+                } else {
+                    jQuery(this).hide(); // baad mein select karke show karenge
+                }
             });
 
-        }, 2000);
-    <?php } ?>
+            var sideRange = 1; // current ke aas paas 1-1 page
+
+            // 1, last, current, current-1, current+1 show karo
+            $numItems.each(function() {
+                var n = parseInt(jQuery(this).text(), 10);
+                if (isNaN(n) || n > totalPages) return;
+
+                if (
+                    n === 1 ||
+                    n === totalPages ||
+                    n === current ||
+                    n === current - sideRange ||
+                    n === current + sideRange
+                ) {
+                    jQuery(this).show();
+                }
+            });
+
+            // 1st page li aur last page li find karo
+            var $page1 = $numItems.filter(function() {
+                return parseInt(jQuery(this).text(), 10) === 1;
+            });
+            var $lastPage = $numItems.filter(function() {
+                return parseInt(jQuery(this).text(), 10) === totalPages;
+            });
+
+            if ($page1.length) $page1.show();
+            if ($lastPage.length) $lastPage.show();
+
+            // 1 ke baad dots (agar gap ho)
+            if ($page1.length && $page1.is(":visible")) {
+                var $after1 = $page1.nextAll("li.page-item")
+                    .not(".prev,.next")
+                    .filter(":visible")
+                    .first();
+
+                if ($after1.length) {
+                    var nAfter = parseInt($after1.text(), 10);
+                    if (!isNaN(nAfter) && nAfter > 2) {
+                        jQuery(
+                            '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                        ).insertAfter($page1);
+                    }
+                }
+            }
+
+            // last se pehle dots (agar gap ho)
+            if ($lastPage.length && $lastPage.is(":visible")) {
+                var $beforeLast = $lastPage.prevAll("li.page-item")
+                    .not(".prev,.next")
+                    .filter(":visible")
+                    .first();
+
+                if ($beforeLast.length) {
+                    var nBefore = parseInt($beforeLast.text(), 10);
+                    if (!isNaN(nBefore) && nBefore < totalPages - 1) {
+                        jQuery(
+                            '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                        ).insertBefore($lastPage);
+                    }
+                }
+            }
+        }
     });
 </script>

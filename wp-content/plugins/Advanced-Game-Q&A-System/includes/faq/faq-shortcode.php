@@ -202,7 +202,7 @@ function custom_faq_shortcode()
                         $unlike_count = $unlikes_data;
                     ?>
 
-                        <div class="faq-accordion" data-id="<?php echo $faq_value->id ?>">
+                        <div class="faq-accordion active" data-id="<?php echo $faq_value->id ?>">
                             <div class="agqa-deleter-status">
                                 <?php echo empty($faq_value->delete_user_name) ? '' : 'Deleter | ' . $faq_value->delete_user_name . " " .
                                     date('Y/m/d', strtotime($faq_value->delete_user_date)); ?>

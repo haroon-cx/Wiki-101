@@ -281,404 +281,404 @@ function report_system_shortcode()
                             $create_time = strtotime($report_value->create_time);
                             if ($create_time && (time() - $create_time) <= 365 * 24 * 60 * 60 || strtolower($user_role) == "admin") {  // 365 days in seconds
                             ?>
-                                <div class="custom-table-row">
-                                    <div class="table-body report-row">
-                                        <div class="report-row-head">
-                                            <div class="table-body-col"><?php echo $count; ?></div>
-                                            <div class="table-body-col agqa-report-type-search-text">
-                                                <?php echo $report_value->report_type; ?>
-                                            </div>
-                                            <div class="table-body-col report-status-response">
-                                                <span
-                                                    class="<?php echo str_replace(' ', '-', strtolower($report_value->status)); ?><?php if ($report_value->status == 'Responded') echo '-status'; ?>">
-                                                    <?php echo $report_value->status; ?>
-                                                </span>
-                                            </div>
-                                            <div class=" table-body-col"><?php echo $report_value->reporter ?>
-                                            </div>
-                                            <div class="table-body-col">
-                                                <?php echo date('Y/m/d', strtotime($report_value->create_time)); ?>
-                                            </div>
-                                            <div class="table-body-col">
-                                                <?php
-                                                if ($report_value->reply_time == "--") {
-                                                    echo $report_value->reply_time;
-                                                } else {
-                                                    echo date('Y/m/d', strtotime($report_value->reply_time));
-                                                }
-                                                ?>
-                                            </div>
-                                            <?php if ($report_value->status === 'Pending Response') { ?>
-                                                <?php if($getUserRole !== 'viewer') { ?>
-                                                <div class="table-body-col report-action">
-                                                    <button class="respond-button pending-response-button"></button>
-                                                    <div class="respond-popup">
-                                                        <div class="respond-popup-inner">
-                                                            <div class="popup-form-cross-icon report-form-cancel-icon"></div>
-                                                            <form class="agqa-report-system-form" autocomplete="off"
-                                                                data-inited-validation="1" novalidate="novalidate">
-                                                                <div class="respond-form-title">
-                                                                    <h2>Respond</h2>
-                                                                </div>
-                                                                <div class="form-input-fields">
-                                                                    <div class="form-field required">
-                                                                        <label for="respond-report-type"><span>* </span>Report
-                                                                            Type</label>
-                                                                        <div class="custom-select-dropdown">
-                                                                            <div class="custom-select-dropdown-title"
-                                                                                style="pointer-events: none;">
-                                                                                <span
-                                                                                    class="custom-dropdown-default-value"><?php echo $report_value->report_type; ?></span>
-                                                                                <span class="custom-dropdown-selected-value"></span>
-                                                                            </div>
-                                                                            <!-- <input type="hidden" name="respond-report-type" required> -->
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-field required">
-                                                                        <label for="respond-status-type"><span>* </span>Status</label>
-                                                                        <div class="custom-select-dropdown">
-                                                                            <div class="custom-select-dropdown-title">
-                                                                                <span class="custom-dropdown-default-value">Pending
-                                                                                    Response
-                                                                                </span>
-                                                                                <span class="custom-dropdown-selected-value"></span>
-                                                                            </div>
-                                                                            <div class="custom-select-dropdown-lists">
-                                                                                <ul>
-                                                                                    <li data-value="Pending Response">
-                                                                                        Pending Response
-                                                                                    </li>
-                                                                                    <li data-value="No response needed">
-                                                                                        No
-                                                                                        response
-                                                                                        needed
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                            <input type="hidden"
-                                                                                name="respond-status-type"
-                                                                                value="Pending Response" required>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-field">
-                                                                        <label for="respond-disabled-textarea ag">Issue
-                                                                            Detail</label>
-                                                                        <textarea name="respond-disabled-textarea"
-                                                                            class="respond-disabled-textarea"
-                                                                            disabled><?php echo $report_value->issue_detail; ?></textarea>
-                                                                    </div>
-                                                                    <div class="uploaded-images">
-                                                                        <span class="upload-image-label">Upload Attachments</span>
-                                                                        <div class="uploaded-images-inner">
-                                                                            <?php
-                                                                            $reportUrl = $report_value->upload_attachments;
-                                                                            $reportUrl = explode(",", $reportUrl);
-                                                                            if (empty($reportUrl) || count($reportUrl) == 0 || (count($reportUrl) == 1 && $reportUrl[0] == '')) {
-                                                                                echo '<div class="agqa-no-attachments"> No attachments</div>';
-                                                                            } else {
-                                                                                foreach ($reportUrl as $url) {
-                                                                            ?>
-
-                                                                                    <div class="uploaded-image">
-                                                                                        <img src="<?php echo $url; ?>"
-                                                                                            alt=" Report Image"
-                                                                                            class="stretchable">
-                                                                                        <div class="stretch-image-icon"></div>
-                                                                                    </div>
-                                                                            <?php }
-                                                                            } ?>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- Hidden overlay for stretched image -->
-                                                                    <div id="stretch-overlay" class="stretch-overlay">
-                                                                        <div class="stretch-container">
-                                                                            <div class="zoom-close-icon"></div>
-                                                                            <img class="stretched-img" src=""
-                                                                                alt="Stretched Image">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-field">
-                                                                        <label for="respond-answer">Answer</label>
-                                                                        <div class="custom-select-dropdown">
-                                                                            <div class="custom-select-dropdown-title">
-                                                                                <span class="custom-dropdown-default-value">Import
-                                                                                    Answer From FAQ</span>
-                                                                                <span class="custom-dropdown-selected-value"></span>
-                                                                            </div>
-                                                                            <div class="custom-select-dropdown-lists">
-                                                                                <ul>
-                                                                                    <?php foreach ($faq_data as $faq_value) { ?>
-                                                                                        <li class="faq-item"
-                                                                                            data-faq-id="<?php echo esc_attr($faq_value->id); ?>">
-                                                                                            <?php echo esc_html($faq_value->question); ?>
-                                                                                        </li>
-                                                                                    <?php } ?>
-                                                                                </ul>
-                                                                            </div>
-                                                                            <!-- <input type="hidden" name="respond-answer"
-                                                                                class="respond-answer"> -->
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-field">
-                                                                        <textarea name="respond-detail-textarea" maxlength="1000"
-                                                                            class="respond-detail-textarea"
-                                                                            placeholder="Please Enter"></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-buttons d-flex agqa-respond-buttons">
-                                                                    <div id=""
-                                                                        class="cancel-form-confirmation report-cancel-popup-confirmation">
-                                                                        <div class="cancel-form-confirmation-box">
-                                                                            <h2>Cancel</h2>
-                                                                            <div class="popup-form-cross-icon"></div>
-                                                                            <div class="form-message">Are you sure you
-                                                                                want
-                                                                                to cancel?
-                                                                            </div>
-                                                                            <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                                                <button class="no-form-cancel"
-                                                                                    type="button">No
-                                                                                </button>
-                                                                                <a href="#"
-                                                                                    class="back-button agqa-report-cancel-btn">Yes</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div id="confirm-submit-popup"
-                                                                        class="confirm-submit-popup">
-                                                                        <div class="confirm-submit-popup-box">
-                                                                            <h2>Submit</h2>
-                                                                            <div class="popup-form-cross-icon report-cancel-icon"></div>
-                                                                            <div class="form-message">Are you sure you
-                                                                                want
-                                                                                to submit?
-                                                                            </div>
-                                                                            <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                                                <button class="no-confirm-submit"
-                                                                                    type="button">No
-                                                                                </button>
-                                                                                <input type="submit" value="Yes"
-                                                                                    id="confirm-submit">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <a href="#"
-                                                                        class="back-button report-cancel-button cancel-confirmation-button">Cancel</a>
-                                                                    <!-- <button type="submit">Submit</button> -->
-                                                                    <button type="button" class="respond-popup-button">
-                                                                        Submit
-                                                                    </button>
-                                                                </div>
-                                                                <input type="hidden" name="id"
-                                                                    value="<?php echo $report_value->id; ?>">
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <?php } ?>
-                                            <?php } else { ?>
-                                                <!-- 2nd popup -->
-                                                <div class="table-body-col report-action">
-                                                    <button class="respond-button responded-button"></button>
-                                                    <div class="respond-popup">
-                                                        <div class="respond-popup-inner">
-                                                            <div class="popup-form-cross-icon report-form-cancel-icon"></div>
-                                                            <form class="respond-form-2" autocomplete="off"
-                                                                data-inited-validation="1"
-                                                                novalidate="novalidate">
-                                                                <div class="respond-form-title">
-                                                                    <h2>Respond</h2>
-                                                                </div>
-                                                                <div class="form-input-fields">
-                                                                    <div class="form-field disabled-field">
-                                                                        <label for="respond-report-type">Report
-                                                                            Type</label>
-                                                                        <div class="custom-select-dropdown">
-                                                                            <div class="custom-select-dropdown-title">
-                                                                                <span
-                                                                                    class="custom-dropdown-default-value"><?php echo $report_value->report_type; ?></span>
-                                                                                <span class="custom-dropdown-selected-value"></span>
-                                                                            </div>
-                                                                            <div class="custom-select-dropdown-lists">
-                                                                                <ul>
-                                                                                    <li>All</li>
-                                                                                    <li>Functional issue / Operation not
-                                                                                        working as
-                                                                                        expected
-                                                                                    </li>
-                                                                                    <li>UI display issue</li>
-                                                                                    <li>Incorrect data display</li>
-                                                                                    <li>System error message</li>
-                                                                                    <li>Process interruption / Unable to
-                                                                                        complete
-                                                                                        operation
-                                                                                    </li>
-                                                                                    <li>Performance issue / System lag
-                                                                                    </li>
-                                                                                    <li>Permission or account-related
-                                                                                        issue
-                                                                                    </li>
-                                                                                    <li>Notification / Email / Task
-                                                                                        trigger
-                                                                                        issue
-                                                                                    </li>
-                                                                                    <li>Text / Language error</li>
-                                                                                    <li>Other (please specify)</li>
-                                                                                </ul>
-                                                                            </div>
-                                                                            <!-- <input type="hidden" name="respond-report-type"> -->
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-field disabled-field">
-                                                                        <label for="respond-status-type">Status</label>
-                                                                        <div class="custom-select-dropdown">
-                                                                            <div class="custom-select-dropdown-title">
-                                                                                <span
-                                                                                    class="custom-dropdown-default-value"><?php echo $report_value->status; ?></span>
-                                                                                <span class="custom-dropdown-selected-value"></span>
-                                                                            </div>
-                                                                            <div class="custom-select-dropdown-lists">
-                                                                                <ul>
-                                                                                    <li data-value="Pending Response">
-                                                                                        Pending Response
-                                                                                    </li>
-                                                                                    <li data-value="No response needed">
-                                                                                        No
-                                                                                        response
-                                                                                        needed
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                            <input type="hidden"
-                                                                                name="respond-status-type">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-field">
-                                                                        <label for="respond-disabled-textarea">Issue
-                                                                            Detail</label>
-                                                                        <textarea name="respond-disabled-textarea"
-                                                                            class="respond-disabled-textarea"
-                                                                            placeholder="Please Enter"
-                                                                            disabled><?php echo $report_value->issue_detail; ?></textarea>
-                                                                    </div>
-                                                                    <div class="uploaded-images">
-                                                                        <span class="upload-image-label">Upload Attachments</span>
-                                                                        <div class="uploaded-images-inner">
-                                                                            <?php
-                                                                            $reportUrl = $report_value->upload_attachments;
-                                                                            $reportUrl = explode(",", $reportUrl);
-                                                                            if (empty($reportUrl) || count($reportUrl) == 0 || (count($reportUrl) == 1 && $reportUrl[0] == '')) {
-                                                                                echo '<div class="agqa-no-attachments"> No attachments</div>';
-                                                                            } else {
-                                                                                foreach ($reportUrl as $url) {
-                                                                            ?>
-                                                                                    <div class="uploaded-image">
-                                                                                        <img src="<?php echo $url; ?>"
-                                                                                            alt="Report Image"
-                                                                                            class="stretchable">
-                                                                                        <div class="stretch-image-icon"></div>
-                                                                                    </div>
-                                                                            <?php }
-                                                                            } ?>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- Hidden overlay for stretched image -->
-                                                                    <div id="stretch-overlay" class="stretch-overlay">
-                                                                        <div class="stretch-container">
-                                                                            <div class="zoom-close-icon"></div>
-                                                                            <img class="stretched-img" src=""
-                                                                                alt="Stretched Image">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-field disabled-field">
-                                                                        <label for="respond-answer">Answer</label>
-                                                                        <div class="custom-select-dropdown">
-                                                                            <div class="custom-select-dropdown-title">
-                                                                                <span class="custom-dropdown-default-value">Import
-                                                                                    Answer From FAQ</span>
-                                                                                <!--                                                                            --><?php //foreach ($faq_data as $faq_value) { 
-                                                                                                                                                                    ?>
-                                                                                <!--                                                                                <span class="custom-dropdown-default-value">-->
-                                                                                <!--                                                                                -->
-                                                                                <?php //echo esc_html($faq_value->question); 
-                                                                                ?><!--</span>-->
-                                                                                <!--                                                                            --><?php //} 
-                                                                                                                                                                    ?>
-                                                                                <span class="custom-dropdown-selected-value"></span>
-                                                                            </div>
-                                                                            <div class="custom-select-dropdown-lists">
-                                                                                <ul>
-                                                                                    <?php foreach ($faq_data as $faq_value) { ?>
-                                                                                        <li class="faq-item"
-                                                                                            data-faq-id="<?php echo esc_attr($faq_value->id); ?>">
-                                                                                            <?php echo esc_html($faq_value->question); ?>
-                                                                                        </li>
-                                                                                    <?php } ?>
-                                                                                </ul>
-                                                                            </div>
-                                                                            <!-- <input type="hidden" name="respond-answer"
-                                                                                class="respond-answer"> -->
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-field">
-                                                                        <textarea name="respond-detail-textarea"
-                                                                            class="respond-detail-textarea"
-                                                                            placeholder="--"
-                                                                            disabled><?php echo $report_value->issue_detail_reply ?></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-buttons d-flex agqa-respond-buttons">
-                                                                    <div class="approval-info">
-                                                                        <span class="approval-time">
-
-                                                                            <?php
-                                                                            if ($report_value->reply_time == '--') {
-                                                                            } else {
-                                                                                // Get the current system time (local server time) as a string
-                                                                                $date = new DateTime($report_value->reply_time); // Convert the string into DateTime object
-
-                                                                                // Convert to the 'Asia/Kolkata' time zone (Indian Standard Time)
-                                                                                $date->setTimezone(new DateTimeZone($dataTimezone));
-
-                                                                                // Output the time in 'Y/m/d H:i' format
-                                                                                echo $date->format('Y/m/d H:i');
-                                                                            }
-                                                                            ?>
-                                                                        </span>
-                                                                        <span
-                                                                            class="approavl-account"><?php echo $report_value->answer; ?></span>
-                                                                    </div>
-                                                                    <button class="report-close-button">Close</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            <?php } ?>
+                            <div class="custom-table-row active">
+                                <div class="table-body report-row">
+                                    <div class="report-row-head">
+                                        <div class="table-body-col"><?php echo $count; ?></div>
+                                        <div class="table-body-col agqa-report-type-search-text">
+                                            <?php echo $report_value->report_type; ?>
                                         </div>
-                                        <div class="report-row-body">
-                                            <div class="report-row-body-head">
-                                                <div class="report-row-body-heading">
-                                                    <h2>Issue Detail</h2>
-                                                </div>
-                                                <div class="report-row-body-heading">
-                                                    <h2>Answer</h2>
+                                        <div class="table-body-col report-status-response">
+                                            <span
+                                                class="<?php echo str_replace(' ', '-', strtolower($report_value->status)); ?><?php if ($report_value->status == 'Responded') echo '-status'; ?>">
+                                                <?php echo $report_value->status; ?>
+                                            </span>
+                                        </div>
+                                        <div class=" table-body-col"><?php echo $report_value->reporter ?>
+                                        </div>
+                                        <div class="table-body-col">
+                                            <?php echo date('Y/m/d', strtotime($report_value->create_time)); ?>
+                                        </div>
+                                        <div class="table-body-col">
+                                            <?php
+                                            if ($report_value->reply_time == "--") {
+                                                echo $report_value->reply_time;
+                                            } else {
+                                                echo date('Y/m/d', strtotime($report_value->reply_time));
+                                            }
+                                            ?>
+                                        </div>
+                                        <?php if ($report_value->status === 'Pending Response') { ?>
+                                            <?php if($getUserRole !== 'viewer') { ?>
+                                            <div class="table-body-col report-action">
+                                                <button class="respond-button pending-response-button"></button>
+                                                <div class="respond-popup">
+                                                    <div class="respond-popup-inner">
+                                                        <div class="popup-form-cross-icon report-form-cancel-icon"></div>
+                                                        <form class="agqa-report-system-form" autocomplete="off"
+                                                            data-inited-validation="1" novalidate="novalidate">
+                                                            <div class="respond-form-title">
+                                                                <h2>Respond</h2>
+                                                            </div>
+                                                            <div class="form-input-fields">
+                                                                <div class="form-field required">
+                                                                    <label for="respond-report-type"><span>* </span>Report
+                                                                        Type</label>
+                                                                    <div class="custom-select-dropdown">
+                                                                        <div class="custom-select-dropdown-title"
+                                                                            style="pointer-events: none;">
+                                                                            <span
+                                                                                class="custom-dropdown-default-value"><?php echo $report_value->report_type; ?></span>
+                                                                            <span class="custom-dropdown-selected-value"></span>
+                                                                        </div>
+                                                                        <!-- <input type="hidden" name="respond-report-type" required> -->
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-field required">
+                                                                    <label for="respond-status-type"><span>* </span>Status</label>
+                                                                    <div class="custom-select-dropdown">
+                                                                        <div class="custom-select-dropdown-title">
+                                                                            <span class="custom-dropdown-default-value">Pending
+                                                                                Response
+                                                                            </span>
+                                                                            <span class="custom-dropdown-selected-value"></span>
+                                                                        </div>
+                                                                        <div class="custom-select-dropdown-lists">
+                                                                            <ul>
+                                                                                <li data-value="Pending Response">
+                                                                                    Pending Response
+                                                                                </li>
+                                                                                <li data-value="No response needed">
+                                                                                    No
+                                                                                    response
+                                                                                    needed
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <input type="hidden"
+                                                                            name="respond-status-type"
+                                                                            value="Pending Response" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-field">
+                                                                    <label for="respond-disabled-textarea ag">Issue
+                                                                        Detail</label>
+                                                                    <textarea name="respond-disabled-textarea"
+                                                                        class="respond-disabled-textarea"
+                                                                        disabled><?php echo $report_value->issue_detail; ?></textarea>
+                                                                </div>
+                                                                <div class="uploaded-images">
+                                                                    <span class="upload-image-label">Upload Attachments</span>
+                                                                    <div class="uploaded-images-inner">
+                                                                        <?php
+                                                                        $reportUrl = $report_value->upload_attachments;
+                                                                        $reportUrl = explode(",", $reportUrl);
+                                                                        if (empty($reportUrl) || count($reportUrl) == 0 || (count($reportUrl) == 1 && $reportUrl[0] == '')) {
+                                                                            echo '<div class="agqa-no-attachments"> No attachments</div>';
+                                                                        } else {
+                                                                            foreach ($reportUrl as $url) {
+                                                                        ?>
+
+                                                                                <div class="uploaded-image">
+                                                                                    <img src="<?php echo $url; ?>"
+                                                                                        alt=" Report Image"
+                                                                                        class="stretchable">
+                                                                                    <div class="stretch-image-icon"></div>
+                                                                                </div>
+                                                                        <?php }
+                                                                        } ?>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Hidden overlay for stretched image -->
+                                                                <div id="stretch-overlay" class="stretch-overlay">
+                                                                    <div class="stretch-container">
+                                                                        <div class="zoom-close-icon"></div>
+                                                                        <img class="stretched-img" src=""
+                                                                            alt="Stretched Image">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-field">
+                                                                    <label for="respond-answer">Answer</label>
+                                                                    <div class="custom-select-dropdown">
+                                                                        <div class="custom-select-dropdown-title">
+                                                                            <span class="custom-dropdown-default-value">Import
+                                                                                Answer From FAQ</span>
+                                                                            <span class="custom-dropdown-selected-value"></span>
+                                                                        </div>
+                                                                        <div class="custom-select-dropdown-lists">
+                                                                            <ul>
+                                                                                <?php foreach ($faq_data as $faq_value) { ?>
+                                                                                    <li class="faq-item"
+                                                                                        data-faq-id="<?php echo esc_attr($faq_value->id); ?>">
+                                                                                        <?php echo esc_html($faq_value->question); ?>
+                                                                                    </li>
+                                                                                <?php } ?>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <!-- <input type="hidden" name="respond-answer"
+                                                                            class="respond-answer"> -->
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-field">
+                                                                    <textarea name="respond-detail-textarea" maxlength="1000"
+                                                                        class="respond-detail-textarea"
+                                                                        placeholder="Please Enter"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-buttons d-flex agqa-respond-buttons">
+                                                                <div id=""
+                                                                    class="cancel-form-confirmation report-cancel-popup-confirmation">
+                                                                    <div class="cancel-form-confirmation-box">
+                                                                        <h2>Cancel</h2>
+                                                                        <div class="popup-form-cross-icon"></div>
+                                                                        <div class="form-message">Are you sure you
+                                                                            want
+                                                                            to cancel?
+                                                                        </div>
+                                                                        <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                                                            <button class="no-form-cancel"
+                                                                                type="button">No
+                                                                            </button>
+                                                                            <a href="#"
+                                                                                class="back-button agqa-report-cancel-btn">Yes</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="confirm-submit-popup"
+                                                                    class="confirm-submit-popup">
+                                                                    <div class="confirm-submit-popup-box">
+                                                                        <h2>Submit</h2>
+                                                                        <div class="popup-form-cross-icon report-cancel-icon"></div>
+                                                                        <div class="form-message">Are you sure you
+                                                                            want
+                                                                            to submit?
+                                                                        </div>
+                                                                        <div class="form-buttons agqa-popup-form-buttons d-flex">
+                                                                            <button class="no-confirm-submit"
+                                                                                type="button">No
+                                                                            </button>
+                                                                            <input type="submit" value="Yes"
+                                                                                id="confirm-submit">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <a href="#"
+                                                                    class="back-button report-cancel-button cancel-confirmation-button">Cancel</a>
+                                                                <!-- <button type="submit">Submit</button> -->
+                                                                <button type="button" class="respond-popup-button">
+                                                                    Submit
+                                                                </button>
+                                                            </div>
+                                                            <input type="hidden" name="id"
+                                                                value="<?php echo $report_value->id; ?>">
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="report-row-body-bottom">
-                                                <div class="report-row-body-detail">
-                                                    <div class="report-row-body-text agqa-report-search-box">
-                                                        <p><?php echo $report_value->issue_detail; ?>
-                                                        </p>
+                                            <?php } ?>
+                                        <?php } else { ?>
+                                            <!-- 2nd popup -->
+                                            <div class="table-body-col report-action">
+                                                <button class="respond-button responded-button"></button>
+                                                <div class="respond-popup">
+                                                    <div class="respond-popup-inner">
+                                                        <div class="popup-form-cross-icon report-form-cancel-icon"></div>
+                                                        <form class="respond-form-2" autocomplete="off"
+                                                            data-inited-validation="1"
+                                                            novalidate="novalidate">
+                                                            <div class="respond-form-title">
+                                                                <h2>Respond</h2>
+                                                            </div>
+                                                            <div class="form-input-fields">
+                                                                <div class="form-field disabled-field">
+                                                                    <label for="respond-report-type">Report
+                                                                        Type</label>
+                                                                    <div class="custom-select-dropdown">
+                                                                        <div class="custom-select-dropdown-title">
+                                                                            <span
+                                                                                class="custom-dropdown-default-value"><?php echo $report_value->report_type; ?></span>
+                                                                            <span class="custom-dropdown-selected-value"></span>
+                                                                        </div>
+                                                                        <div class="custom-select-dropdown-lists">
+                                                                            <ul>
+                                                                                <li>All</li>
+                                                                                <li>Functional issue / Operation not
+                                                                                    working as
+                                                                                    expected
+                                                                                </li>
+                                                                                <li>UI display issue</li>
+                                                                                <li>Incorrect data display</li>
+                                                                                <li>System error message</li>
+                                                                                <li>Process interruption / Unable to
+                                                                                    complete
+                                                                                    operation
+                                                                                </li>
+                                                                                <li>Performance issue / System lag
+                                                                                </li>
+                                                                                <li>Permission or account-related
+                                                                                    issue
+                                                                                </li>
+                                                                                <li>Notification / Email / Task
+                                                                                    trigger
+                                                                                    issue
+                                                                                </li>
+                                                                                <li>Text / Language error</li>
+                                                                                <li>Other (please specify)</li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <!-- <input type="hidden" name="respond-report-type"> -->
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-field disabled-field">
+                                                                    <label for="respond-status-type">Status</label>
+                                                                    <div class="custom-select-dropdown">
+                                                                        <div class="custom-select-dropdown-title">
+                                                                            <span
+                                                                                class="custom-dropdown-default-value"><?php echo $report_value->status; ?></span>
+                                                                            <span class="custom-dropdown-selected-value"></span>
+                                                                        </div>
+                                                                        <div class="custom-select-dropdown-lists">
+                                                                            <ul>
+                                                                                <li data-value="Pending Response">
+                                                                                    Pending Response
+                                                                                </li>
+                                                                                <li data-value="No response needed">
+                                                                                    No
+                                                                                    response
+                                                                                    needed
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <input type="hidden"
+                                                                            name="respond-status-type">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-field">
+                                                                    <label for="respond-disabled-textarea">Issue
+                                                                        Detail</label>
+                                                                    <textarea name="respond-disabled-textarea"
+                                                                        class="respond-disabled-textarea"
+                                                                        placeholder="Please Enter"
+                                                                        disabled><?php echo $report_value->issue_detail; ?></textarea>
+                                                                </div>
+                                                                <div class="uploaded-images">
+                                                                    <span class="upload-image-label">Upload Attachments</span>
+                                                                    <div class="uploaded-images-inner">
+                                                                        <?php
+                                                                        $reportUrl = $report_value->upload_attachments;
+                                                                        $reportUrl = explode(",", $reportUrl);
+                                                                        if (empty($reportUrl) || count($reportUrl) == 0 || (count($reportUrl) == 1 && $reportUrl[0] == '')) {
+                                                                            echo '<div class="agqa-no-attachments"> No attachments</div>';
+                                                                        } else {
+                                                                            foreach ($reportUrl as $url) {
+                                                                        ?>
+                                                                                <div class="uploaded-image">
+                                                                                    <img src="<?php echo $url; ?>"
+                                                                                        alt="Report Image"
+                                                                                        class="stretchable">
+                                                                                    <div class="stretch-image-icon"></div>
+                                                                                </div>
+                                                                        <?php }
+                                                                        } ?>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Hidden overlay for stretched image -->
+                                                                <div id="stretch-overlay" class="stretch-overlay">
+                                                                    <div class="stretch-container">
+                                                                        <div class="zoom-close-icon"></div>
+                                                                        <img class="stretched-img" src=""
+                                                                            alt="Stretched Image">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-field disabled-field">
+                                                                    <label for="respond-answer">Answer</label>
+                                                                    <div class="custom-select-dropdown">
+                                                                        <div class="custom-select-dropdown-title">
+                                                                            <span class="custom-dropdown-default-value">Import
+                                                                                Answer From FAQ</span>
+                                                                            <!--                                                                            --><?php //foreach ($faq_data as $faq_value) { 
+                                                                                                                                                                ?>
+                                                                            <!--                                                                                <span class="custom-dropdown-default-value">-->
+                                                                            <!--                                                                                -->
+                                                                            <?php //echo esc_html($faq_value->question); 
+                                                                            ?><!--</span>-->
+                                                                            <!--                                                                            --><?php //} 
+                                                                                                                                                                ?>
+                                                                            <span class="custom-dropdown-selected-value"></span>
+                                                                        </div>
+                                                                        <div class="custom-select-dropdown-lists">
+                                                                            <ul>
+                                                                                <?php foreach ($faq_data as $faq_value) { ?>
+                                                                                    <li class="faq-item"
+                                                                                        data-faq-id="<?php echo esc_attr($faq_value->id); ?>">
+                                                                                        <?php echo esc_html($faq_value->question); ?>
+                                                                                    </li>
+                                                                                <?php } ?>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <!-- <input type="hidden" name="respond-answer"
+                                                                            class="respond-answer"> -->
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-field">
+                                                                    <textarea name="respond-detail-textarea"
+                                                                        class="respond-detail-textarea"
+                                                                        placeholder="--"
+                                                                        disabled><?php echo $report_value->issue_detail_reply ?></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-buttons d-flex agqa-respond-buttons">
+                                                                <div class="approval-info">
+                                                                    <span class="approval-time">
+
+                                                                        <?php
+                                                                        if ($report_value->reply_time == '--') {
+                                                                        } else {
+                                                                            // Get the current system time (local server time) as a string
+                                                                            $date = new DateTime($report_value->reply_time); // Convert the string into DateTime object
+
+                                                                            // Convert to the 'Asia/Kolkata' time zone (Indian Standard Time)
+                                                                            $date->setTimezone(new DateTimeZone($dataTimezone));
+
+                                                                            // Output the time in 'Y/m/d H:i' format
+                                                                            echo $date->format('Y/m/d H:i');
+                                                                        }
+                                                                        ?>
+                                                                    </span>
+                                                                    <span
+                                                                        class="approavl-account"><?php echo $report_value->answer; ?></span>
+                                                                </div>
+                                                                <button class="report-close-button">Close</button>
+                                                            </div>
+                                                        </form>
                                                     </div>
-                                                    <div class="report-row-body-text agqa-report-search-box">
-                                                        <p><?php echo $report_value->issue_detail_reply; ?></p>
-                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="report-row-body">
+                                        <div class="report-row-body-head">
+                                            <div class="report-row-body-heading">
+                                                <h2>Issue Detail</h2>
+                                            </div>
+                                            <div class="report-row-body-heading">
+                                                <h2>Answer</h2>
+                                            </div>
+                                        </div>
+                                        <div class="report-row-body-bottom">
+                                            <div class="report-row-body-detail">
+                                                <div class="report-row-body-text agqa-report-search-box">
+                                                    <p><?php echo $report_value->issue_detail; ?>
+                                                    </p>
+                                                </div>
+                                                <div class="report-row-body-text agqa-report-search-box">
+                                                    <p><?php echo $report_value->issue_detail_reply; ?></p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             <?php $count++;
                             } ?>
                         <?php } ?>
