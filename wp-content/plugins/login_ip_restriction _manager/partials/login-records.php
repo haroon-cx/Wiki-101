@@ -230,6 +230,7 @@ curl_close($curl);
         jQuery(".login-records-template #pagination-demo").twbsPagination({
             totalPages: totalPages,
             visiblePages: totalPages,
+            initiateStartPageClick: false,
             onPageClick: function(event, page) {
                 // Hide all rows first
                 jQuery(".login-records-template .custom-table-row").hide();
@@ -242,9 +243,9 @@ curl_close($curl);
                 var totalActivePages = Math.ceil(totalActiveItems / itemsPerPage);
 
                 // Show/hide pagination links based on the active pages
-                jQuery(".login-records-template .pagination-ctn ul li.page-item").nextAll().not(".next").show();
+                jQuery(".pagination-ctn ul li.page-item").nextAll().not(".next").show();
 
-                jQuery(".login-records-template .pagination-ctn ul li.page-item").not(".prev, .next").each(function() {
+                jQuery(".pagination-ctn ul li.page-item").not(".prev, .next").each(function() {
                     var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
 
                     if (pageNumberss === totalActivePages && totalActivePages !== 0) {
@@ -252,13 +253,14 @@ curl_close($curl);
                         jQuery(this).nextAll().not(".next").hide();
 
                         // Check if the "Next" button should be disabled
-                        var prevLi = jQuery(".login-records-template .pagination-ctn ul li.page-item.active").next();
+                    var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
+                        var $nextBtn = jQuery(".pagination-ctn ul li.next");
 
-                        // Disable or enable the "Next" button based on the visibility of the next page
-                        if (prevLi.is(":hidden")) {
-                            jQuery(".login-records-template .pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+                        // Disable if: no next item, next is hidden, or next IS the .next button (last page)
+                        if (!prevLi.length || prevLi.is(":hidden") || prevLi.hasClass("next")) {
+                            $nextBtn.addClass("disabled");
                         } else {
-                            jQuery(".login-records-template .pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+                            $nextBtn.removeClass("disabled");
                         }
                     }
                 });
@@ -424,7 +426,7 @@ curl_close($curl);
         <?php } ?>
         setTimeout(function() {
             applyCustomDots(totalPages);
-        }, 200);
+        }, 500);
 
         function applyCustomDots(totalPages) {
             var $pager = jQuery(".pagination-ctn ul");

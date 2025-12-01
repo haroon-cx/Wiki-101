@@ -2252,6 +2252,7 @@ jQuery(document).ready(function ($) {
     var startDate = dateArray[0] || ""; // Start date string in "YYYY/MM/DD" format
     var endDate = dateArray[1] || ""; // End date string in "YYYY/MM/DD" format
     var resultsFound = false; // Flag to track if any result is found
+    jQuery('.custom-table-row').removeClass('active');
 
     if (!loginRecordText && !dateRange) {
       $(".section-found").hide();
@@ -2377,15 +2378,105 @@ jQuery(document).ready(function ($) {
             }
           }
         });
-        applyCustomDots(totalPages);
+        applyCustomDotsLoginRecords(totalPages);
     }, 500); // Delay of 500 milliseconds
   });
+ function applyCustomDotsLoginRecords(totalPages) {
+            var $pager = jQuery(".pagination-ctn ul");
 
+            // Agar 1 hi page hai to dots ka koi faida nahi
+            if (!totalPages || totalPages <= 1) {
+                $pager.find("li.page-item.cust-ellipsis").remove();
+                return;
+            }
 
+            // Purane wale custom dots hata do
+            $pager.find("li.page-item.cust-ellipsis").remove();
 
-  /**
-   * Approval Page Filter
-   */
+            // Sirf number wali li (prev / next ko hata ke)
+            var $numItems = $pager.find("li.page-item").not(".prev, .next");
+
+            // Current active page nikaalo (jo tum nth-child(3) se active kar rahe ho)
+            var current = parseInt($pager.find("li.page-item.active").text(), 10);
+            if (isNaN(current) || current < 1) current = 1;
+            if (current > totalPages) current = totalPages;
+
+            // Pehle sab numeric pages ko base state mein hide karo / > totalPages hide
+            $numItems.each(function () {
+                var n = parseInt(jQuery(this).text(), 10);
+                if (isNaN(n)) return;
+
+                if (n > totalPages) {
+                    jQuery(this).hide();
+                } else {
+                    jQuery(this).hide(); // baad mein select karke show karenge
+                }
+            });
+
+            var sideRange = 1; // current ke aas paas 1-1 page
+
+            // 1, last, current, current-1, current+1 show karo
+            $numItems.each(function () {
+                var n = parseInt(jQuery(this).text(), 10);
+                if (isNaN(n) || n > totalPages) return;
+
+                if (
+                    n === 1 ||
+                    n === totalPages ||
+                    n === current ||
+                    n === current - sideRange ||
+                    n === current + sideRange
+                ) {
+                    jQuery(this).show();
+                }
+            });
+
+            // 1st page li aur last page li find karo
+            var $page1 = $numItems.filter(function () {
+                return parseInt(jQuery(this).text(), 10) === 1;
+            });
+            var $lastPage = $numItems.filter(function () {
+                return parseInt(jQuery(this).text(), 10) === totalPages;
+            });
+
+            if ($page1.length) $page1.show();
+            if ($lastPage.length) $lastPage.show();
+
+            // 1 ke baad dots (agar gap ho)
+            if ($page1.length && $page1.is(":visible")) {
+                var $after1 = $page1.nextAll("li.page-item")
+                    .not(".prev,.next")
+                    .filter(":visible")
+                    .first();
+
+                if ($after1.length) {
+                    var nAfter = parseInt($after1.text(), 10);
+                    if (!isNaN(nAfter) && nAfter > 2) {
+                        jQuery(
+                            '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                        ).insertAfter($page1);
+                    }
+                }
+            }
+
+            // last se pehle dots (agar gap ho)
+            if ($lastPage.length && $lastPage.is(":visible")) {
+                var $beforeLast = $lastPage.prevAll("li.page-item")
+                    .not(".prev,.next")
+                    .filter(":visible")
+                    .first();
+
+                if ($beforeLast.length) {
+                    var nBefore = parseInt($beforeLast.text(), 10);
+                    if (!isNaN(nBefore) && nBefore < totalPages - 1) {
+                        jQuery(
+                            '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                        ).insertBefore($lastPage);
+                    }
+                }
+            }
+        }
+
 
   /**
    * Approval Page Filter
