@@ -362,7 +362,7 @@ jQuery(document).ready(function ($) {
 
     // Check if either is empty
     $(".agqa-faq-cat-filter").removeClass("faq-cat-active");
-    jQuery(".faq-accordion").removeClass("active");
+    
 
     // highlighted
     var query = searchTerm;
@@ -398,6 +398,8 @@ jQuery(document).ready(function ($) {
       $(".section-found").hide(); // Hide the 'nothing found' message
       $(".faq-accordion").show(); // Show the FAQ item
       $("#pagination-demo").show(); // Show the FAQ item
+      // jQuery(".faq-accordion").addClass("active");
+      
 
       $(document).find(".faq-accordion-head").removeClass("active"); // Add active class to the head
       $(document).find(".faq-accordion-body").slideUp(); // Slide down the body
@@ -421,9 +423,10 @@ jQuery(document).ready(function ($) {
       });
       jQuery(".pagination-ctn ul li.page-item").show();
       jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+      applyCustomDots(totalPages);
       return; // Return early if either is empty
     }
-
+    jQuery(".faq-accordion").removeClass("active");
     // Initially hide pagination and "Nothing Found" message
     $(".section-found").hide(); // Hide "Nothing Found" message
     $("div#pagination-demo").hide(); // Hide pagination
@@ -515,7 +518,7 @@ jQuery(document).ready(function ($) {
             var prevLi = jQuery(
               ".pagination-ctn ul li.page-item.active"
             ).next();
-
+            jQuery(".pagination-ctn ul li.prev").addClass("disabled"); // Disable Next button
             // If the next page is hidden or .next button is visible, disable the next button
             if (prevLi.is(":hidden")) {
               jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button

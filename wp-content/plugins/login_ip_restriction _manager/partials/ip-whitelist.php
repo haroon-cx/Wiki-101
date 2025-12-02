@@ -404,6 +404,7 @@ include 'add-ip-form.php';
         jQuery(".manage-ip-template #pagination-demo").twbsPagination({
             totalPages: totalPages,
             visiblePages: totalPages,
+            initiateStartPageClick: false,
             onPageClick: function(event, page) {
                 // Hide all rows first
                 jQuery(".manage-ip-template .custom-table-row").hide();
@@ -426,13 +427,14 @@ include 'add-ip-form.php';
                         jQuery(this).nextAll().not(".next").hide();
 
                         // Check if the "Next" button should be disabled
-                        var prevLi = jQuery(".manage-ip-template .pagination-ctn ul li.page-item.active").next();
+                        var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
+                        var $nextBtn = jQuery(".pagination-ctn ul li.next");
 
-                        // Disable or enable the "Next" button based on the visibility of the next page
-                        if (prevLi.is(":hidden")) {
-                            jQuery(".manage-ip-template .pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+                        // Disable if: no next item, next is hidden, or next IS the .next button (last page)
+                        if (!prevLi.length || prevLi.is(":hidden") || prevLi.hasClass("next")) {
+                            $nextBtn.addClass("disabled");
                         } else {
-                            jQuery(".manage-ip-template .pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+                            $nextBtn.removeClass("disabled");
                         }
                     }
                 });
@@ -549,5 +551,104 @@ include 'add-ip-form.php';
                 jQuery(this).hide();
             }
         });
+        setTimeout(function() {
+            applyCustomDots(totalPages);
+        }, 500);
+
+        function applyCustomDots(totalPages) {
+            var $pager = jQuery(".pagination-ctn ul");
+
+            // Agar 1 hi page hai to dots ka koi faida nahi
+            if (!totalPages || totalPages <= 1) {
+                $pager.find("li.page-item.cust-ellipsis").remove();
+                return;
+            }
+
+            // Purane wale custom dots hata do
+            $pager.find("li.page-item.cust-ellipsis").remove();
+
+            // Sirf number wali li (prev / next ko hata ke)
+            var $numItems = $pager.find("li.page-item").not(".prev, .next");
+
+            // Current active page nikaalo (jo tum nth-child(3) se active kar rahe ho)
+            var current = parseInt($pager.find("li.page-item.active").text(), 10);
+            if (isNaN(current) || current < 1) current = 1;
+            if (current > totalPages) current = totalPages;
+
+            // Pehle sab numeric pages ko base state mein hide karo / > totalPages hide
+            $numItems.each(function() {
+                var n = parseInt(jQuery(this).text(), 10);
+                if (isNaN(n)) return;
+
+                if (n > totalPages) {
+                    jQuery(this).hide();
+                } else {
+                    jQuery(this).hide(); // baad mein select karke show karenge
+                }
+            });
+
+            var sideRange = 1; // current ke aas paas 1-1 page
+
+            // 1, last, current, current-1, current+1 show karo
+            $numItems.each(function() {
+                var n = parseInt(jQuery(this).text(), 10);
+                if (isNaN(n) || n > totalPages) return;
+
+                if (
+                    n === 1 ||
+                    n === totalPages ||
+                    n === current ||
+                    n === current - sideRange ||
+                    n === current + sideRange
+                ) {
+                    jQuery(this).show();
+                }
+            });
+
+            // 1st page li aur last page li find karo
+            var $page1 = $numItems.filter(function() {
+                return parseInt(jQuery(this).text(), 10) === 1;
+            });
+            var $lastPage = $numItems.filter(function() {
+                return parseInt(jQuery(this).text(), 10) === totalPages;
+            });
+
+            if ($page1.length) $page1.show();
+            if ($lastPage.length) $lastPage.show();
+
+            // 1 ke baad dots (agar gap ho)
+            if ($page1.length && $page1.is(":visible")) {
+                var $after1 = $page1.nextAll("li.page-item")
+                    .not(".prev,.next")
+                    .filter(":visible")
+                    .first();
+
+                if ($after1.length) {
+                    var nAfter = parseInt($after1.text(), 10);
+                    if (!isNaN(nAfter) && nAfter > 2) {
+                        jQuery(
+                            '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                        ).insertAfter($page1);
+                    }
+                }
+            }
+
+            // last se pehle dots (agar gap ho)
+            if ($lastPage.length && $lastPage.is(":visible")) {
+                var $beforeLast = $lastPage.prevAll("li.page-item")
+                    .not(".prev,.next")
+                    .filter(":visible")
+                    .first();
+
+                if ($beforeLast.length) {
+                    var nBefore = parseInt($beforeLast.text(), 10);
+                    if (!isNaN(nBefore) && nBefore < totalPages - 1) {
+                        jQuery(
+                            '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                        ).insertBefore($lastPage);
+                    }
+                }
+            }
+        }
     });
 </script>

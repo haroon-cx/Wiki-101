@@ -514,288 +514,289 @@ ob_start(); // Start output buffering
                 }
             );
             // ==========================
-  // 6. Pagination
-  // ==========================
+            // 6. Pagination
+            // ==========================
 
-  var itemsPerPage = 15;
-  var totalItems = jQuery(".manage-user-template .custom-table-row").length;
-  var totalPages = Math.ceil(totalItems / itemsPerPage);
+            var itemsPerPage = 15;
+            var totalItems = jQuery(".manage-user-template .custom-table-row").length;
+            var totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  // If no rows exist, disable pagination and return
-  if (totalItems === 0) {
-    jQuery(".manage-user-template #pagination-demo").hide(); // Hide pagination if no items
-    return;
-  }
-
-  jQuery(".manage-user-template #pagination-demo").twbsPagination({
-    totalPages: totalPages,
-    visiblePages: totalPages,
-    initiateStartPageClick: false,
-    onPageClick: function (event, page) {
-      // Hide all rows first
-      jQuery(".manage-user-template .custom-table-row").hide();
-
-      // Show the rows for the current page
-      jQuery(
-        '.manage-user-template .custom-table-row[data-page="' + page + '"]'
-      ).show();
-
-      // Calculate the active items on the current page
-      var totalActiveItems = jQuery(".manage-user-template .custom-table-row.active").length;
-      var totalActivePages = Math.ceil(totalActiveItems / itemsPerPage);
-
-      // Show/hide pagination links based on the active pages
-      jQuery(".pagination-ctn ul li.page-item")
-        .nextAll()
-        .not(".next")
-        .show();
-
-      jQuery(".pagination-ctn ul li.page-item")
-        .not(".prev, .next")
-        .each(function () {
-          var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
-
-          if (pageNumberss === totalActivePages && totalActivePages !== 0) {
-            // Hide all <li> items that come after the last active page
-            jQuery(this).nextAll().not(".next").hide();
-
-            // Check if the "Next" button should be disabled
-            // var prevLi = jQuery(
-            //   ".manage-user-template .pagination-ctn ul li.page-item.active"
-            // ).next();
-
-            // // Disable or enable the "Next" button based on the visibility of the next page
-            // if (prevLi.is(":hidden")) {
-            //   jQuery(
-            //     ".manage-user-template .pagination-ctn ul li.next"
-            //   ).addClass("disabled"); // Disable Next button
-            // } else {
-            //   jQuery(
-            //     ".manage-user-template .pagination-ctn ul li.next"
-            //   ).removeClass("disabled"); // Enable Next button
-            // }
-            var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
-            var $nextBtn = jQuery(".pagination-ctn ul li.next");
-
-            // Disable if: no next item, next is hidden, or next IS the .next button (last page)
-            if (!prevLi.length || prevLi.is(":hidden") || prevLi.hasClass("next")) {
-              $nextBtn.addClass("disabled");
-            } else {
-              $nextBtn.removeClass("disabled");
+            // If no rows exist, disable pagination and return
+            if (totalItems === 0) {
+                jQuery(".manage-user-template #pagination-demo").hide(); // Hide pagination if no items
+                return;
             }
-          }
-        });
-      // ========= NEW CODE: 1 hamesha show + center dots =========
-      // Agar koi active page hi nahi to dots ka scene hi nahi
-      if (!totalActivePages) {
-        return;
-      }
+
+            jQuery(".manage-user-template #pagination-demo").twbsPagination({
+                totalPages: totalPages,
+                visiblePages: totalPages,
+                initiateStartPageClick: false,
+                onPageClick: function(event, page) {
+                    // Hide all rows first
+                    jQuery(".manage-user-template .custom-table-row").hide();
+
+                    // Show the rows for the current page
+                    jQuery(
+                        '.manage-user-template .custom-table-row[data-page="' + page + '"]'
+                    ).show();
+
+                    // Calculate the active items on the current page
+                    var totalActiveItems = jQuery(".manage-user-template .custom-table-row.active").length;
+                    var totalActivePages = Math.ceil(totalActiveItems / itemsPerPage);
+
+                    // Show/hide pagination links based on the active pages
+                    jQuery(".pagination-ctn ul li.page-item")
+                        .nextAll()
+                        .not(".next")
+                        .show();
+
+                    jQuery(".pagination-ctn ul li.page-item")
+                        .not(".prev, .next")
+                        .each(function() {
+                            var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
+
+                            if (pageNumberss === totalActivePages && totalActivePages !== 0) {
+                                // Hide all <li> items that come after the last active page
+                                jQuery(this).nextAll().not(".next").hide();
+
+                                // Check if the "Next" button should be disabled
+                                // var prevLi = jQuery(
+                                //   ".manage-user-template .pagination-ctn ul li.page-item.active"
+                                // ).next();
+
+                                // // Disable or enable the "Next" button based on the visibility of the next page
+                                // if (prevLi.is(":hidden")) {
+                                //   jQuery(
+                                //     ".manage-user-template .pagination-ctn ul li.next"
+                                //   ).addClass("disabled"); // Disable Next button
+                                // } else {
+                                //   jQuery(
+                                //     ".manage-user-template .pagination-ctn ul li.next"
+                                //   ).removeClass("disabled"); // Enable Next button
+                                // }
+                                var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
+                                var $nextBtn = jQuery(".pagination-ctn ul li.next");
+
+                                // Disable if: no next item, next is hidden, or next IS the .next button (last page)
+                                if (!prevLi.length || prevLi.is(":hidden") || prevLi.hasClass("next")) {
+                                    $nextBtn.addClass("disabled");
+                                } else {
+                                    $nextBtn.removeClass("disabled");
+                                }
+                            }
+                        });
+                    // ========= NEW CODE: 1 hamesha show + center dots =========
+                    // Agar koi active page hi nahi to dots ka scene hi nahi
+                    if (!totalActivePages) {
+                        return;
+                    }
 
 
-      var $pager = jQuery(".pagination-ctn ul");
+                    var $pager = jQuery(".pagination-ctn ul");
 
-      // Pichle custom dots hata do (refresh ke liye)
-      $pager.find("li.page-item.cust-ellipsis").remove();
+                    // Pichle custom dots hata do (refresh ke liye)
+                    $pager.find("li.page-item.cust-ellipsis").remove();
 
-      // Sirf number waale page items (prev/next/first/last ko hata ke)
-      var $numItems = $pager.find("li.page-item").not(".prev, .next, .first, .last");
+                    // Sirf number waale page items (prev/next/first/last ko hata ke)
+                    var $numItems = $pager.find("li.page-item").not(".prev, .next, .first, .last");
 
-      // Pehle sab numeric pages ko hide kar dete hain
-      $numItems.each(function () {
-        var n = parseInt(jQuery(this).text(), 10);
-        if (isNaN(n)) return;
+                    // Pehle sab numeric pages ko hide kar dete hain
+                    $numItems.each(function() {
+                        var n = parseInt(jQuery(this).text(), 10);
+                        if (isNaN(n)) return;
 
-        // Sirf unhi numbers ke sath kaam jahan n <= totalActivePages
-        if (n > totalActivePages) {
-          jQuery(this).hide();
-        }
-      });
+                        // Sirf unhi numbers ke sath kaam jahan n <= totalActivePages
+                        if (n > totalActivePages) {
+                            jQuery(this).hide();
+                        }
+                    });
 
-      // Ab decide karte hain kaun se page dikhane hain
-      var sideRange = 1; // current ke 1-1 neighbour
+                    // Ab decide karte hain kaun se page dikhane hain
+                    var sideRange = 1; // current ke 1-1 neighbour
 
-      $numItems.each(function () {
-        var n = parseInt(jQuery(this).text(), 10);
-        if (isNaN(n) || n > totalActivePages) return;
+                    $numItems.each(function() {
+                        var n = parseInt(jQuery(this).text(), 10);
+                        if (isNaN(n) || n > totalActivePages) return;
 
-        // hamesha show:
-        // 1, lastActivePage, current, current-1, current+1
-        if (
-          n === 1 ||
-          n === totalActivePages ||
-          n === page ||
-          n === page - sideRange ||
-          n === page + sideRange
-        ) {
-          jQuery(this).show();
-        } else {
-          jQuery(this).hide();
-        }
-      });
+                        // hamesha show:
+                        // 1, lastActivePage, current, current-1, current+1
+                        if (
+                            n === 1 ||
+                            n === totalActivePages ||
+                            n === page ||
+                            n === page - sideRange ||
+                            n === page + sideRange
+                        ) {
+                            jQuery(this).show();
+                        } else {
+                            jQuery(this).hide();
+                        }
+                    });
 
-      // 1st page <li> aur lastActivePage <li> pakdo
-      var $page1 = $numItems.filter(function () {
-        return parseInt(jQuery(this).text(), 10) === 1;
-      });
-      var $lastPage = $numItems.filter(function () {
-        return parseInt(jQuery(this).text(), 10) === totalActivePages;
-      });
+                    // 1st page <li> aur lastActivePage <li> pakdo
+                    var $page1 = $numItems.filter(function() {
+                        return parseInt(jQuery(this).text(), 10) === 1;
+                    });
+                    var $lastPage = $numItems.filter(function() {
+                        return parseInt(jQuery(this).text(), 10) === totalActivePages;
+                    });
 
-      // Ensure page 1 visible
-      if ($page1.length) {
-        $page1.show();
-      }
+                    // Ensure page 1 visible
+                    if ($page1.length) {
+                        $page1.show();
+                    }
 
-      // Dots after 1 (agar 1 ke baad direct 2 na ho visible mein)
-      if ($page1.length && $page1.is(":visible")) {
-        var $after1 = $page1.nextAll("li.page-item")
-          .not(".prev,.next,.first,.last")
-          .filter(":visible")
-          .first();
+                    // Dots after 1 (agar 1 ke baad direct 2 na ho visible mein)
+                    if ($page1.length && $page1.is(":visible")) {
+                        var $after1 = $page1.nextAll("li.page-item")
+                            .not(".prev,.next,.first,.last")
+                            .filter(":visible")
+                            .first();
 
-        if ($after1.length) {
-          var nAfter = parseInt($after1.text(), 10);
-          if (!isNaN(nAfter) && nAfter > 2) {
-            jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
-              .insertAfter($page1);
-          }
-        }
-      }
+                        if ($after1.length) {
+                            var nAfter = parseInt($after1.text(), 10);
+                            if (!isNaN(nAfter) && nAfter > 2) {
+                                jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                    .insertAfter($page1);
+                            }
+                        }
+                    }
 
-      // Ensure last active page visible
-      if ($lastPage.length) {
-        $lastPage.show();
-      }
+                    // Ensure last active page visible
+                    if ($lastPage.length) {
+                        $lastPage.show();
+                    }
 
-      // Dots before lastActivePage (agar us se pehle vala visible number lastActivePage - 1 na ho)
-      if ($lastPage.length && $lastPage.is(":visible")) {
-        var $beforeLast = $lastPage.prevAll("li.page-item")
-          .not(".prev,.next,.first,.last")
-          .filter(":visible")
-          .first();
+                    // Dots before lastActivePage (agar us se pehle vala visible number lastActivePage - 1 na ho)
+                    if ($lastPage.length && $lastPage.is(":visible")) {
+                        var $beforeLast = $lastPage.prevAll("li.page-item")
+                            .not(".prev,.next,.first,.last")
+                            .filter(":visible")
+                            .first();
 
-        if ($beforeLast.length) {
-          var nBefore = parseInt($beforeLast.text(), 10);
-          if (!isNaN(nBefore) && nBefore < (totalActivePages - 1)) {
-            jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
-              .insertBefore($lastPage);
-          }
-        }
-      }
-      // ========= NEW DOTS CODE END =========
-    },
-  });
+                        if ($beforeLast.length) {
+                            var nBefore = parseInt($beforeLast.text(), 10);
+                            if (!isNaN(nBefore) && nBefore < (totalActivePages - 1)) {
+                                jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                    .insertBefore($lastPage);
+                            }
+                        }
+                    }
+                    // ========= NEW DOTS CODE END =========
+                },
+            });
 
-  // Loop through each row and assign a page number based on its index
-  jQuery(".manage-user-template .custom-table-row").each(function (index) {
-    var page = Math.floor(index / itemsPerPage) + 1;
-    jQuery(this).attr("data-page", page); // Assign page data attribute
+            // Loop through each row and assign a page number based on its index
+            jQuery(".manage-user-template .custom-table-row").each(function(index) {
+                var page = Math.floor(index / itemsPerPage) + 1;
+                jQuery(this).attr("data-page", page); // Assign page data attribute
 
-    // Initially show or hide based on the page
-    if (page === 1) {
-      jQuery(this).show();
-    } else {
-      jQuery(this).hide();
-    }
-  });
-            setTimeout(function(){
-                    applyCustomDots(totalPages);
+                // Initially show or hide based on the page
+                if (page === 1) {
+                    jQuery(this).show();
+                } else {
+                    jQuery(this).hide();
+                }
+            });
+            setTimeout(function() {
+                applyCustomDots(totalPages);
             }, 500);
-    function applyCustomDots(totalPages) {
-      var $pager = jQuery(".pagination-ctn ul");
 
-      // Agar 1 hi page hai to dots ka koi faida nahi
-      if (!totalPages || totalPages <= 1) {
-        $pager.find("li.page-item.cust-ellipsis").remove();
-        return;
-      }
+            function applyCustomDots(totalPages) {
+                var $pager = jQuery(".pagination-ctn ul");
 
-      // Purane wale custom dots hata do
-      $pager.find("li.page-item.cust-ellipsis").remove();
+                // Agar 1 hi page hai to dots ka koi faida nahi
+                if (!totalPages || totalPages <= 1) {
+                    $pager.find("li.page-item.cust-ellipsis").remove();
+                    return;
+                }
 
-      // Sirf number wali li (prev / next ko hata ke)
-      var $numItems = $pager.find("li.page-item").not(".prev, .next");
+                // Purane wale custom dots hata do
+                $pager.find("li.page-item.cust-ellipsis").remove();
 
-      // Current active page nikaalo (jo tum nth-child(3) se active kar rahe ho)
-      var current = parseInt($pager.find("li.page-item.active").text(), 10);
-      if (isNaN(current) || current < 1) current = 1;
-      if (current > totalPages) current = totalPages;
+                // Sirf number wali li (prev / next ko hata ke)
+                var $numItems = $pager.find("li.page-item").not(".prev, .next");
 
-      // Pehle sab numeric pages ko base state mein hide karo / > totalPages hide
-      $numItems.each(function () {
-        var n = parseInt(jQuery(this).text(), 10);
-        if (isNaN(n)) return;
+                // Current active page nikaalo (jo tum nth-child(3) se active kar rahe ho)
+                var current = parseInt($pager.find("li.page-item.active").text(), 10);
+                if (isNaN(current) || current < 1) current = 1;
+                if (current > totalPages) current = totalPages;
 
-        if (n > totalPages) {
-          jQuery(this).hide();
-        } else {
-          jQuery(this).hide(); // baad mein select karke show karenge
-        }
-      });
+                // Pehle sab numeric pages ko base state mein hide karo / > totalPages hide
+                $numItems.each(function() {
+                    var n = parseInt(jQuery(this).text(), 10);
+                    if (isNaN(n)) return;
 
-      var sideRange = 1; // current ke aas paas 1-1 page
+                    if (n > totalPages) {
+                        jQuery(this).hide();
+                    } else {
+                        jQuery(this).hide(); // baad mein select karke show karenge
+                    }
+                });
 
-      // 1, last, current, current-1, current+1 show karo
-      $numItems.each(function () {
-        var n = parseInt(jQuery(this).text(), 10);
-        if (isNaN(n) || n > totalPages) return;
+                var sideRange = 1; // current ke aas paas 1-1 page
 
-        if (
-          n === 1 ||
-          n === totalPages ||
-          n === current ||
-          n === current - sideRange ||
-          n === current + sideRange
-        ) {
-          jQuery(this).show();
-        }
-      });
+                // 1, last, current, current-1, current+1 show karo
+                $numItems.each(function() {
+                    var n = parseInt(jQuery(this).text(), 10);
+                    if (isNaN(n) || n > totalPages) return;
 
-      // 1st page li aur last page li find karo
-      var $page1 = $numItems.filter(function () {
-        return parseInt(jQuery(this).text(), 10) === 1;
-      });
-      var $lastPage = $numItems.filter(function () {
-        return parseInt(jQuery(this).text(), 10) === totalPages;
-      });
+                    if (
+                        n === 1 ||
+                        n === totalPages ||
+                        n === current ||
+                        n === current - sideRange ||
+                        n === current + sideRange
+                    ) {
+                        jQuery(this).show();
+                    }
+                });
 
-      if ($page1.length) $page1.show();
-      if ($lastPage.length) $lastPage.show();
+                // 1st page li aur last page li find karo
+                var $page1 = $numItems.filter(function() {
+                    return parseInt(jQuery(this).text(), 10) === 1;
+                });
+                var $lastPage = $numItems.filter(function() {
+                    return parseInt(jQuery(this).text(), 10) === totalPages;
+                });
 
-      // 1 ke baad dots (agar gap ho)
-      if ($page1.length && $page1.is(":visible")) {
-        var $after1 = $page1.nextAll("li.page-item")
-          .not(".prev,.next")
-          .filter(":visible")
-          .first();
+                if ($page1.length) $page1.show();
+                if ($lastPage.length) $lastPage.show();
 
-        if ($after1.length) {
-          var nAfter = parseInt($after1.text(), 10);
-          if (!isNaN(nAfter) && nAfter > 2) {
-            jQuery(
-              '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
-            ).insertAfter($page1);
-          }
-        }
-      }
+                // 1 ke baad dots (agar gap ho)
+                if ($page1.length && $page1.is(":visible")) {
+                    var $after1 = $page1.nextAll("li.page-item")
+                        .not(".prev,.next")
+                        .filter(":visible")
+                        .first();
 
-      // last se pehle dots (agar gap ho)
-      if ($lastPage.length && $lastPage.is(":visible")) {
-        var $beforeLast = $lastPage.prevAll("li.page-item")
-          .not(".prev,.next")
-          .filter(":visible")
-          .first();
+                    if ($after1.length) {
+                        var nAfter = parseInt($after1.text(), 10);
+                        if (!isNaN(nAfter) && nAfter > 2) {
+                            jQuery(
+                                '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                            ).insertAfter($page1);
+                        }
+                    }
+                }
 
-        if ($beforeLast.length) {
-          var nBefore = parseInt($beforeLast.text(), 10);
-          if (!isNaN(nBefore) && nBefore < totalPages - 1) {
-            jQuery(
-              '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
-            ).insertBefore($lastPage);
-          }
-        }
-      }
-    }
+                // last se pehle dots (agar gap ho)
+                if ($lastPage.length && $lastPage.is(":visible")) {
+                    var $beforeLast = $lastPage.prevAll("li.page-item")
+                        .not(".prev,.next")
+                        .filter(":visible")
+                        .first();
+
+                    if ($beforeLast.length) {
+                        var nBefore = parseInt($beforeLast.text(), 10);
+                        if (!isNaN(nBefore) && nBefore < totalPages - 1) {
+                            jQuery(
+                                '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                            ).insertBefore($lastPage);
+                        }
+                    }
+                }
+            }
         });
     </script>
 

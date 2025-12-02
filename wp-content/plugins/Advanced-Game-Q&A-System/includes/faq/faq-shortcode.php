@@ -130,7 +130,7 @@ function custom_faq_shortcode()
                         <input type="search" name="filter-search" id="filter-search" class="agqa-faq-validation-100"
                             placeholder="description">
                         <div class="filter-select">
-                            <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden">
+                            <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden" value="all">
                             <button class="filter-select-title">
                                 <span class="filter-default-text">All</span>
                                 <span class="filter-selected-text"></span>
@@ -327,6 +327,264 @@ function custom_faq_shortcode()
             </div>
             <!-- Main Content End -->
         </div>
+        <script>
+            jQuery(document).ready(function() {
+
+                // ==========================
+                // 6. Pagination
+                // ==========================
+                var itemsPerPage = 15;
+                var totalItems = jQuery(".faq-accordion").length;
+                var totalPages = Math.ceil(totalItems / itemsPerPage);
+
+
+                jQuery("#pagination-demo").twbsPagination({
+                    totalPages: totalPages,
+                    visiblePages: totalPages,
+                    initiateStartPageClick: false,
+                    onPageClick: function(event, page) {
+                        jQuery(".faq-accordion").hide();
+                        jQuery('.faq-accordion[data-page="' + page + '"]').show();
+                        var totalActiveItems = jQuery(".faq-accordion.active").length;
+                        var totalActivePages = Math.ceil(totalActiveItems / itemsPerPage);
+
+                        // Loop through each page <li> (exclude Prev/Next)
+                        // Loop through each page <li> (exclude Prev/Next)
+                        jQuery('.pagination-ctn ul li.page-item').nextAll().not('.next').show();
+                        jQuery(".pagination-ctn ul li.page-item").not(".prev, .next").each(function() {
+                            var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
+
+                            if (pageNumberss === totalActivePages && totalActivePages !== 0) {
+
+                                // Remove all <li> items that come after this one
+                                jQuery(this).nextAll().not('.next').hide();
+
+                                // Check the <li> just before the Next button
+                                var prevLi = jQuery(".pagination-ctn ul li.page-item.active").next();
+                                var $nextBtn = jQuery(".pagination-ctn ul li.next");
+
+                                // Disable if: no next item, next is hidden, or next IS the .next button (last page)
+                                if (!prevLi.length || prevLi.is(":hidden") || prevLi.hasClass("next")) {
+                                    $nextBtn.addClass("disabled");
+                                } else {
+                                    $nextBtn.removeClass("disabled");
+                                }
+                                // Break the loop since we found the match
+                                // return false;
+                            }
+                        });
+                        // ========= NEW CODE: 1 hamesha show + center dots =========
+                        // Agar koi active page hi nahi to dots ka scene hi nahi
+                        if (!totalActivePages) {
+                            return;
+                        }
+
+
+                        var $pager = jQuery(".pagination-ctn ul");
+
+                        // Pichle custom dots hata do (refresh ke liye)
+                        $pager.find("li.page-item.cust-ellipsis").remove();
+
+                        // Sirf number waale page items (prev/next/first/last ko hata ke)
+                        var $numItems = $pager.find("li.page-item").not(".prev, .next, .first, .last");
+
+                        // Pehle sab numeric pages ko hide kar dete hain
+                        $numItems.each(function() {
+                            var n = parseInt(jQuery(this).text(), 10);
+                            if (isNaN(n)) return;
+
+                            // Sirf unhi numbers ke sath kaam jahan n <= totalActivePages
+                            if (n > totalActivePages) {
+                                jQuery(this).hide();
+                            }
+                        });
+
+                        // Ab decide karte hain kaun se page dikhane hain
+                        var sideRange = 1; // current ke 1-1 neighbour
+
+                        $numItems.each(function() {
+                            var n = parseInt(jQuery(this).text(), 10);
+                            if (isNaN(n) || n > totalActivePages) return;
+
+                            // hamesha show:
+                            // 1, lastActivePage, current, current-1, current+1
+                            if (
+                                n === 1 ||
+                                n === totalActivePages ||
+                                n === page ||
+                                n === page - sideRange ||
+                                n === page + sideRange
+                            ) {
+                                jQuery(this).show();
+                            } else {
+                                jQuery(this).hide();
+                            }
+                        });
+
+                        // 1st page <li> aur lastActivePage <li> pakdo
+                        var $page1 = $numItems.filter(function() {
+                            return parseInt(jQuery(this).text(), 10) === 1;
+                        });
+                        var $lastPage = $numItems.filter(function() {
+                            return parseInt(jQuery(this).text(), 10) === totalActivePages;
+                        });
+
+                        // Ensure page 1 visible
+                        if ($page1.length) {
+                            $page1.show();
+                        }
+
+                        // Dots after 1 (agar 1 ke baad direct 2 na ho visible mein)
+                        if ($page1.length && $page1.is(":visible")) {
+                            var $after1 = $page1.nextAll("li.page-item")
+                                .not(".prev,.next,.first,.last")
+                                .filter(":visible")
+                                .first();
+
+                            if ($after1.length) {
+                                var nAfter = parseInt($after1.text(), 10);
+                                if (!isNaN(nAfter) && nAfter > 2) {
+                                    jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                        .insertAfter($page1);
+                                }
+                            }
+                        }
+
+                        // Ensure last active page visible
+                        if ($lastPage.length) {
+                            $lastPage.show();
+                        }
+
+                        // Dots before lastActivePage (agar us se pehle vala visible number lastActivePage - 1 na ho)
+                        if ($lastPage.length && $lastPage.is(":visible")) {
+                            var $beforeLast = $lastPage.prevAll("li.page-item")
+                                .not(".prev,.next,.first,.last")
+                                .filter(":visible")
+                                .first();
+
+                            if ($beforeLast.length) {
+                                var nBefore = parseInt($beforeLast.text(), 10);
+                                if (!isNaN(nBefore) && nBefore < (totalActivePages - 1)) {
+                                    jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                        .insertBefore($lastPage);
+                                }
+                            }
+                        }
+                        // ========= NEW DOTS CODE END =========
+                    },
+                });
+
+                jQuery(".faq-accordion").each(function(index) {
+                    var page = Math.floor(index / itemsPerPage) + 1;
+                    jQuery(this).attr("data-page", page);
+                    if (page === 1) {
+                        jQuery(this).show();
+                    } else {
+                        jQuery(this).hide();
+                    }
+                });
+                setTimeout(function() {
+                    applyCustomDots(totalPages);
+
+                }, 500);
+
+                function applyCustomDots(totalPages) {
+                    var $pager = jQuery(".pagination-ctn ul");
+
+                    // Agar 1 hi page hai to dots ka koi faida nahi
+                    if (!totalPages || totalPages <= 1) {
+                        $pager.find("li.page-item.cust-ellipsis").remove();
+                        return;
+                    }
+
+                    // Purane wale custom dots hata do
+                    $pager.find("li.page-item.cust-ellipsis").remove();
+
+                    // Sirf number wali li (prev / next ko hata ke)
+                    var $numItems = $pager.find("li.page-item").not(".prev, .next");
+
+                    // Current active page nikaalo (jo tum nth-child(3) se active kar rahe ho)
+                    var current = parseInt($pager.find("li.page-item.active").text(), 10);
+                    if (isNaN(current) || current < 1) current = 1;
+                    if (current > totalPages) current = totalPages;
+
+                    // Pehle sab numeric pages ko base state mein hide karo / > totalPages hide
+                    $numItems.each(function() {
+                        var n = parseInt(jQuery(this).text(), 10);
+                        if (isNaN(n)) return;
+
+                        if (n > totalPages) {
+                            jQuery(this).hide();
+                        } else {
+                            jQuery(this).hide(); // baad mein select karke show karenge
+                        }
+                    });
+
+                    var sideRange = 1; // current ke aas paas 1-1 page
+
+                    // 1, last, current, current-1, current+1 show karo
+                    $numItems.each(function() {
+                        var n = parseInt(jQuery(this).text(), 10);
+                        if (isNaN(n) || n > totalPages) return;
+
+                        if (
+                            n === 1 ||
+                            n === totalPages ||
+                            n === current ||
+                            n === current - sideRange ||
+                            n === current + sideRange
+                        ) {
+                            jQuery(this).show();
+                        }
+                    });
+
+                    // 1st page li aur last page li find karo
+                    var $page1 = $numItems.filter(function() {
+                        return parseInt(jQuery(this).text(), 10) === 1;
+                    });
+                    var $lastPage = $numItems.filter(function() {
+                        return parseInt(jQuery(this).text(), 10) === totalPages;
+                    });
+
+                    if ($page1.length) $page1.show();
+                    if ($lastPage.length) $lastPage.show();
+
+                    // 1 ke baad dots (agar gap ho)
+                    if ($page1.length && $page1.is(":visible")) {
+                        var $after1 = $page1.nextAll("li.page-item")
+                            .not(".prev,.next")
+                            .filter(":visible")
+                            .first();
+
+                        if ($after1.length) {
+                            var nAfter = parseInt($after1.text(), 10);
+                            if (!isNaN(nAfter) && nAfter > 2) {
+                                jQuery(
+                                    '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                                ).insertAfter($page1);
+                            }
+                        }
+                    }
+
+                    // last se pehle dots (agar gap ho)
+                    if ($lastPage.length && $lastPage.is(":visible")) {
+                        var $beforeLast = $lastPage.prevAll("li.page-item")
+                            .not(".prev,.next")
+                            .filter(":visible")
+                            .first();
+
+                        if ($beforeLast.length) {
+                            var nBefore = parseInt($beforeLast.text(), 10);
+                            if (!isNaN(nBefore) && nBefore < totalPages - 1) {
+                                jQuery(
+                                    '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                                ).insertBefore($lastPage);
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
     <?php } ?>
 <?php
     return ob_get_clean();
