@@ -266,6 +266,8 @@ function agqa_edit_faq()
             'verified_answer' => $verified_answer,
             'faq_category' => $faq_category,
             'user_id' => $user_id,
+            'created_at'        => current_time('mysql'), // Set this to current time
+
         ),
         array(
             '%s', // question

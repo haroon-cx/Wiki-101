@@ -105,7 +105,7 @@ $found_user_id = $wpdb->get_var(
             <img src="<?php echo URIP_URL ?>assets/image/notification-icon.svg" alt="Notification Icon">
         </div>
     </div>
-    <div class="notification-popup">
+    <div class="notification-popup <?php echo $disabledActionClassFreeze; ?>">
         <div class="notification-popup-head">
             <?php if ($getUserRole !== 'viewer') { ?>
                 <div class="notification-tags">

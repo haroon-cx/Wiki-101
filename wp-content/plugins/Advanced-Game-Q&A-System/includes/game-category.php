@@ -3,6 +3,7 @@
 function game_categories_shortcode($atts)
 {
     $getUserRole = get_user_role_simple();
+    $get_user_id = get_current_user_id();
     // Define default attributes
     $atts = shortcode_atts(
         array(
@@ -29,7 +30,17 @@ function game_categories_shortcode($atts)
 
     // Fetch categories and types from the database
     global $wpdb;
-
+    $table_agqa_manage_user = $wpdb->prefix . 'agqa_wiki_add_users';
+    // echo $add_username;
+    // Custom state
+    $get_stauts_freez = $wpdb->get_var(
+        $wpdb->prepare("SELECT state FROM {$table_agqa_manage_user} WHERE user_id = %d LIMIT 1", $get_user_id)
+    );
+    if (strtolower($get_stauts_freez) == 'freeze') {
+        $disabledActionClass = 'table-body-disabled-api';
+    } else {
+        $disabledActionClass = '';
+    }
     // Get all categories
     $categories = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}game_category");
 
@@ -145,7 +156,7 @@ function game_categories_shortcode($atts)
             <div class="agqa-popup-form-ctn">
                 <div class="button-bar1">
                     <?php if ($getUserRole !== 'viewer') { ?>
-                        <button class="add-category-button"><img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg" alt="">
+                        <button class="add-category-button <?php echo $disabledActionClass; ?>"><img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg" alt="">
                             Add New Categories</button>
                     <?php } ?>
                     <div class="agqa-popup-form">

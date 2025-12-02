@@ -2,6 +2,7 @@
 function custom_faq_shortcode()
 {
     $getUserRole = get_user_role_simple();
+    $get_user_id = get_current_user_id();
     $add_faq_new  = isset($_GET['add']) ? intval($_GET['add']) : 0;
     $add_faq_edit  = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
     $add_faq_history = isset($_GET['history']) ? intval($_GET['history']) : 0;
@@ -13,6 +14,17 @@ function custom_faq_shortcode()
     global $wpdb;
     $table_agqa_faq = $wpdb->prefix . 'agqa_faq';
     $table_agqa_faq_like = $wpdb->prefix . 'agqa_faq_likes_dislikes';
+    $table_agqa_manage_user = $wpdb->prefix . 'agqa_wiki_add_users';
+    // echo $add_username;
+    // Custom state
+    $get_stauts_freez = $wpdb->get_var(
+        $wpdb->prepare("SELECT state FROM {$table_agqa_manage_user} WHERE user_id = %d LIMIT 1", $get_user_id)
+    );
+    if (strtolower($get_stauts_freez) == 'freeze') {
+        $disabledActionClass = 'table-body-disabled-faq';
+    } else {
+        $disabledActionClass = '';
+    }
 
 
     if ($add_faq_edit == 0 && $add_faq_new == 0) {
@@ -155,7 +167,7 @@ function custom_faq_shortcode()
                 </div>
                 <?php if ($getUserRole !== 'viewer') { ?>
                     <div class="filter-right-area">
-                        <div class="add-button-ctn">
+                        <div class="add-button-ctn <?php echo $disabledActionClass; ?>">
                             <a href="<?php echo esc_url(home_url('faq/') . '?add=1'); ?>" class="add-button">
                                 <img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg" alt="Plus Icon">Add FAQ
                             </a>
@@ -224,7 +236,7 @@ function custom_faq_shortcode()
                                     <?php } ?>
                                 </div>
 
-                                <div class="faq-accordion-bottom">
+                                <div class="faq-accordion-bottom <?php echo $disabledActionClass; ?>">
                                     <button
                                         class="faq-accordion-button like-button <?php echo ($user_action == 'liked') ? 'active' : ''; ?>"
                                         name="action-type">

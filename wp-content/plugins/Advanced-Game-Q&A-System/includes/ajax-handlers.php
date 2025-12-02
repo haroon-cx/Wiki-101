@@ -1745,6 +1745,7 @@ function handle_edit_revnue_form()
         'custom_field_4'               => !empty($data['custom-field-4']) ? sanitize_text_field($data['custom-field-4']) : null,
         'notes'                        => !empty($data['notes-detail']) ? sanitize_textarea_field($data['notes-detail']) : null,
         'contract_filename'            => $image_urls,
+        'created_at'        => current_time('mysql'), // Set this to current time
         'url_update_date'              => !empty($data['url-update-date']) ? sanitize_text_field($data['url-update-date']) : '',
     ];
 
@@ -2005,6 +2006,7 @@ function handle_edit_sales_form()
         'custom_field_4'               => !empty($data['custom-field-4']) ? sanitize_text_field($data['custom-field-4']) : null,
         'notes'                        => !empty($data['notes-detail']) ? sanitize_textarea_field($data['notes-detail']) : null,
         'contract_filename'            => $image_urls,
+        'created_at'        => current_time('mysql'), // Set this to current time
         'url_update_date'              => !empty($data['url-update-date']) ? sanitize_text_field($data['url-update-date']) : '',
     ];
 

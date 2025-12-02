@@ -1,5 +1,6 @@
 <?php
 $getUserRole = get_user_role_simple();
+$get_user_id = get_current_user_id();
 $add_manage_id = isset($_GET['add']) ? intval($_GET['add']) : 0;
 
 $edit_manage_id = isset($_GET['edit']) ? intval($_GET['edit']) : 0;
@@ -8,6 +9,16 @@ $state = isset($_GET['state']) ? sanitize_text_field($_GET['state']) : '';
 global $wpdb;
 $table_agqa_manage_user = $wpdb->prefix . 'agqa_wiki_add_users';
 
+// Custom state
+$get_stauts_freez = $wpdb->get_var(
+    $wpdb->prepare("SELECT state FROM {$table_agqa_manage_user} WHERE user_id = %d LIMIT 1", $get_user_id)
+);
+if (strtolower($get_stauts_freez) == 'freeze') {
+    $disabledActionClass = 'table-body-disabled';
+} else {
+    $disabledActionClass = '';
+}
+// echo $get_stauts_freez;
 // if ($add_manage_id == 0 && $edit_manage_id == 0) {
 //     $add_manage_users_data = $wpdb->get_results("
 //             SELECT
@@ -272,7 +283,7 @@ ob_start(); // Start output buffering
                             id="agqa-user-filters"><span>Search</span></button>
                     </form>
                 </div>
-                <div class="filter-right-area">
+                <div class="filter-right-area <?php echo $disabledActionClass; ?>">
                     <?php if ($getUserRole !== 'viewer') { ?>
                         <div class="add-button-ctn">
                             <a href="<?php echo esc_url(home_url('/manage-user/?add=1')) ?>" class="add-button">
@@ -350,7 +361,7 @@ ob_start(); // Start output buffering
                                         <?php echo str_replace('-', '/', $user_data->created_at); ?>
                                     </div>
                                     <?php if ($getUserRole !== 'viewer') { ?>
-                                        <div class="table-body-col table-body-col-buttons">
+                                        <div class="table-body-col table-body-col-buttons <?php echo $disabledActionClass; ?>">
                                             <div class="login-history-ctn">
                                                 <button class="login-history-icon"></button>
                                                 <div class="login-history-popup">

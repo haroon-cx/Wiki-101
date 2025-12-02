@@ -1019,10 +1019,19 @@ div#cuim-edit-fields input {
 }
 
 .faq-accordion .table-body-disabled .faq-accordion-bottom,
+.table-body-disabled-faq,
+.table-body-disabled-ip,
+.table-body-disabled-api,
+.table-body-disabled-profile,
 .custom-table-body .table-body-disabled div,
+.filter-right-area.table-body-disabled,
+.custom-table-row .table-body-disabled,
 .table-body-disabled .table-body-col div {
   opacity: 0.3;
   pointer-events: none;
+}
+.table-body-disabled-profile{
+  opacity: 0.9 !important;
 }
 .faq-accordion .table-body-disabled div {
   opacity: 0.3;

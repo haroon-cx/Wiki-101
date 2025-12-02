@@ -182,7 +182,8 @@ add_action('admin_init', 'cuim_allow_contributor_uploads');
 
 //     return strtolower($role);
 // }
-function get_user_role_simple() {
+function get_user_role_simple()
+{
     global $wpdb;
 
     $table   = $wpdb->prefix . 'agqa_wiki_add_users';
@@ -196,16 +197,16 @@ function get_user_role_simple() {
     $role = $wpdb->get_var(
         $wpdb->prepare("SELECT user_role FROM {$table} WHERE user_id = %d LIMIT 1", $user_id)
     );
-    
+
     // Custom state
-    $get_stauts = $wpdb->get_var(
-        $wpdb->prepare("SELECT state FROM {$table} WHERE user_id = %d LIMIT 1", $user_id)
-    );
+    // $get_stauts = $wpdb->get_var(
+    //     $wpdb->prepare("SELECT state FROM {$table} WHERE user_id = %d LIMIT 1", $user_id)
+    // );
 
     // Check if the state is 'freeze', if so, return 'viewer'
-    if (strtolower($get_stauts) === 'freeze') {
-        return 'viewer';
-    }
+    // if (strtolower($get_stauts) === 'freeze') {
+    //     return 'viewer';
+    // }
 
     // If the role is empty, get the default role from WP
     if (empty($role)) {

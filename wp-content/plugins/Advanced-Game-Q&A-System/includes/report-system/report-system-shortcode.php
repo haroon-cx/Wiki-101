@@ -4,6 +4,7 @@ function report_system_shortcode()
 {
 
     $getUserRole = get_user_role_simple();
+    $get_user_id = get_current_user_id();
     $add_faq_report = isset($_GET['add']) ? intval($_GET['add']) : 0;
     $add_report_status = isset($_GET['status']) ? $_GET['status'] : '';
     // echo $add_report_status;
@@ -14,6 +15,17 @@ function report_system_shortcode()
     $table_agqa_faq = $wpdb->prefix . 'agqa_faq';
     $table_agqa_report_system = $wpdb->prefix . 'faq_report_system';
     $table_agqa_user = $wpdb->prefix . 'agqa_wiki_add_users';
+    $table_agqa_manage_user = $wpdb->prefix . 'agqa_wiki_add_users';
+    // echo $add_username;
+    // Custom state
+    $get_stauts_freez = $wpdb->get_var(
+        $wpdb->prepare("SELECT state FROM {$table_agqa_manage_user} WHERE user_id = %d LIMIT 1", $get_user_id)
+    );
+    if (strtolower($get_stauts_freez) == 'freeze') {
+        $disabledActionClass = 'table-body-disabled';
+    } else {
+        $disabledActionClass = '';
+    }
 
     if ($add_faq_report == 0) {
 
@@ -311,7 +323,7 @@ function report_system_shortcode()
                                             <?php if ($report_value->status === 'Pending Response') { ?>
                                                 <?php if ($getUserRole !== 'viewer') { ?>
                                                     <div class="table-body-col report-action">
-                                                        <button class="respond-button pending-response-button"></button>
+                                                        <button class="respond-button pending-response-button <?php echo $disabledActionClass; ?>"></button>
                                                         <div class="respond-popup">
                                                             <div class="respond-popup-inner">
                                                                 <div class="popup-form-cross-icon report-form-cancel-icon"></div>

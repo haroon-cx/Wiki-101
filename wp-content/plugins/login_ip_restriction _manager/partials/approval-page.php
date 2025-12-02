@@ -1,13 +1,24 @@
 <?php
 $getUserRole = get_user_role_simple();
+$get_user_id = get_current_user_id();
 if ($getUserRole == 'viewer') {
     echo "Permission not allowed";
     return;
 }
 global $wpdb;
 $table_approval_review = $wpdb->prefix . 'agqa_approval_review_page';
+$table_agqa_manage_user = $wpdb->prefix . 'agqa_wiki_add_users';
 $add_username = isset($_GET['username']) ? $_GET['username'] : '';
 // echo $add_username;
+// Custom state
+$get_stauts_freez = $wpdb->get_var(
+    $wpdb->prepare("SELECT state FROM {$table_agqa_manage_user} WHERE user_id = %d LIMIT 1", $get_user_id)
+);
+if (strtolower($get_stauts_freez) == 'freeze') {
+    $disabledActionClass = 'table-body-disabled';
+} else {
+    $disabledActionClass = '';
+}
 $get_data_approval = $wpdb->get_results("
             SELECT
                 id,
@@ -126,7 +137,7 @@ curl_close($curl);
             <div class="custom-table-body">
                 <?php foreach ($get_data_approval as $value_approval) {
                     // var_dump($value_approval);
-                    ?>
+                ?>
                     <div class="custom-table-row">
                         <div class="table-body-col cuim-type-name-approval"><?php echo $value_approval->type_name; ?></div>
                         <div class="table-body-col"><?php echo $value_approval->question; ?></div>
@@ -138,12 +149,12 @@ curl_close($curl);
 
                             // Convert to the 'Asia/Kolkata' time zone (Indian Standard Time)
                             $date->setTimezone(new DateTimeZone($dataTimezone));
-                            $date->modify('-1 hour');
+                            // $date->modify('-1 hour');
                             // Output the time in 'Y/m/d H:i' format
                             echo $date->format('Y/m/d H:i');
                             ?>
                         </div>
-                        <div class="table-body-col table-body-col-buttons">
+                        <div class="table-body-col table-body-col-buttons <?php echo $disabledActionClass; ?>">
                             <?php
                             if ($value_approval->type_name == 'FAQ Edit' || $value_approval->type_name == 'FAQ Add') {
                                 $cuim_page_value = 'faq/?view=page&edit-review=' . $value_approval->id;
@@ -274,7 +285,7 @@ curl_close($curl);
         var totalItems = jQuery(".custom-table-ctn .custom-table-row").length;
         var totalPages = Math.ceil(totalItems / itemsPerPage);
 
-// If no rows exist, disable pagination and return
+        // If no rows exist, disable pagination and return
         if (totalItems === 0) {
             jQuery("#pagination-demo").hide(); // Hide pagination if no items
             return;
@@ -282,7 +293,7 @@ curl_close($curl);
 
         jQuery("#pagination-demo").twbsPagination({
             totalPages: totalPages,
-            visiblePages: totalPages,         // ⚠️ same as you want
+            visiblePages: totalPages, // ⚠️ same as you want
             initiateStartPageClick: false,
             onPageClick: function(event, page) {
 
@@ -337,7 +348,7 @@ curl_close($curl);
                 var $numItems = $pager.find("li.page-item").not(".prev, .next, .first, .last");
 
                 // Pehle sab numeric pages ko hide kar dete hain
-                $numItems.each(function () {
+                $numItems.each(function() {
                     var n = parseInt(jQuery(this).text(), 10);
                     if (isNaN(n)) return;
 
@@ -350,7 +361,7 @@ curl_close($curl);
                 // Ab decide karte hain kaun se page dikhane hain
                 var sideRange = 1; // current ke 1-1 neighbour
 
-                $numItems.each(function () {
+                $numItems.each(function() {
                     var n = parseInt(jQuery(this).text(), 10);
                     if (isNaN(n) || n > totalActivePages) return;
 
@@ -370,10 +381,10 @@ curl_close($curl);
                 });
 
                 // 1st page <li> aur lastActivePage <li> pakdo
-                var $page1 = $numItems.filter(function () {
+                var $page1 = $numItems.filter(function() {
                     return parseInt(jQuery(this).text(), 10) === 1;
                 });
-                var $lastPage = $numItems.filter(function () {
+                var $lastPage = $numItems.filter(function() {
                     return parseInt(jQuery(this).text(), 10) === totalActivePages;
                 });
 
@@ -422,7 +433,7 @@ curl_close($curl);
             },
         });
 
-// Loop through each row and assign a page number based on its index
+        // Loop through each row and assign a page number based on its index
         jQuery(".custom-table-ctn .custom-table-row").each(function(index) {
             var page = Math.floor(index / itemsPerPage) + 1;
             jQuery(this).attr("data-page", page); // Assign page data attribute
@@ -475,7 +486,7 @@ curl_close($curl);
             if (current > totalPages) current = totalPages;
 
             // Pehle sab numeric pages ko base state mein hide karo / > totalPages hide
-            $numItems.each(function () {
+            $numItems.each(function() {
                 var n = parseInt(jQuery(this).text(), 10);
                 if (isNaN(n)) return;
 
@@ -489,7 +500,7 @@ curl_close($curl);
             var sideRange = 1; // current ke aas paas 1-1 page
 
             // 1, last, current, current-1, current+1 show karo
-            $numItems.each(function () {
+            $numItems.each(function() {
                 var n = parseInt(jQuery(this).text(), 10);
                 if (isNaN(n) || n > totalPages) return;
 
@@ -505,10 +516,10 @@ curl_close($curl);
             });
 
             // 1st page li aur last page li find karo
-            var $page1 = $numItems.filter(function () {
+            var $page1 = $numItems.filter(function() {
                 return parseInt(jQuery(this).text(), 10) === 1;
             });
-            var $lastPage = $numItems.filter(function () {
+            var $lastPage = $numItems.filter(function() {
                 return parseInt(jQuery(this).text(), 10) === totalPages;
             });
 

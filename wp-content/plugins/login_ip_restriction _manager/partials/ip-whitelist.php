@@ -103,6 +103,7 @@
 // $get_ip_list = $wpdb->get_results($wpdb->prepare($sql, $params));
 
 $getUserRole = get_user_role_simple();
+$get_user_id = get_current_user_id();
 if ($getUserRole === 'viewer') {
     echo "Permission not allowed";
     return;
@@ -113,7 +114,17 @@ global $wpdb;
 // Tables
 $table_agqa_ip_list = $wpdb->prefix . 'agqa_wiki_add_ip';
 $table_agqa_users   = $wpdb->prefix . 'agqa_wiki_add_users';
-
+$table_agqa_manage_user = $wpdb->prefix . 'agqa_wiki_add_users';
+// echo $add_username;
+// Custom state
+$get_stauts_freez = $wpdb->get_var(
+    $wpdb->prepare("SELECT state FROM {$table_agqa_manage_user} WHERE user_id = %d LIMIT 1", $get_user_id)
+);
+if (strtolower($get_stauts_freez) == 'freeze') {
+    $disabledActionClass = 'table-body-disabled-ip';
+} else {
+    $disabledActionClass = '';
+}
 // Role hierarchy
 $role_level = [
     'viewer'      => 1,
@@ -247,7 +258,7 @@ include 'add-ip-form.php';
                 </form>
             </div>
             <div class="filter-right-area">
-                <div class="add-button-ctn">
+                <div class="add-button-ctn <?php echo $disabledActionClass; ?>">
                     <a href="#" class="add-button">
                         <img src="<?php echo AGQA_URL ?>assets/images/plus-icon.svg" alt="Plus Icon">Add New IP
                     </a>
@@ -281,7 +292,7 @@ include 'add-ip-form.php';
                                     <div class="table-body-col cuim-ip-user-ipv6">
                                         <?php echo $ip_value->ipv6 ?>
                                     </div>
-                                    <div class="table-body-col manage-ip-actions">
+                                    <div class="table-body-col manage-ip-actions <?php echo $disabledActionClass; ?>">
                                         <div class="edit-ip-ctn">
                                             <button class="manage-ip-edit-button"></button>
                                             <div class="edit-manage-ip-form">

@@ -10,6 +10,19 @@ function cui_pm_add_logout_button_footer()
                 <?php
                 // Get saved viewer mode flag for current user
                 $user_id = get_current_user_id();
+                // Global WPDB object
+                global $wpdb;
+                $table_agqa_manage_user_get_name = $wpdb->prefix . 'agqa_wiki_add_users';
+                // echo $add_username;
+                // Custom state
+                $get_stauts_get_freeze = $wpdb->get_var(
+                    $wpdb->prepare("SELECT state FROM {$table_agqa_manage_user_get_name} WHERE user_id = %d LIMIT 1", $user_id)
+                );
+                if (strtolower($get_stauts_get_freeze) == 'freeze') {
+                    $disabledActionClassFreeze = 'table-body-disabled-profile';
+                } else {
+                    $disabledActionClassFreeze = '';
+                }
                 $viewer_mode = get_user_meta($user_id, 'cuim_viewer_mode', true);
                 $is_on = ($viewer_mode === '1'); // boolean
 
@@ -56,7 +69,7 @@ function cui_pm_add_logout_button_footer()
                                     </div>
                                 </div>
                                 <div class="cuim-profile-button-box">
-                                    <a href="#" class="cuim-edit-profile-button">Edit Profile</a>
+                                    <a href="#" class="cuim-edit-profile-button <?php echo $disabledActionClassFreeze; ?>">Edit Profile</a>
                                     <a href=" <?php echo $logout_url; ?>" class="cuim-logout-button">Log Out</a>
                                 </div>
                             </div>
@@ -93,6 +106,7 @@ function cui_pm_add_logout_button_footer()
 
     // Global WPDB object
     global $wpdb;
+
     // Table name with prefix
     $table_agqa_manage_user = $wpdb->prefix . 'agqa_wiki_add_users';
     if (is_user_logged_in()) {

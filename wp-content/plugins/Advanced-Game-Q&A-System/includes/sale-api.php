@@ -3,6 +3,7 @@
 function merged_sale_api_ui_shortcode()
 {
     $getUserRole = get_user_role_simple();
+    $get_user_id = get_current_user_id();
     $revenue_id = isset($_GET['sale']) ? intval($_GET['sale']) : 0;
     $add_review_sale_id = isset($_GET['review_add_sale_api']) ? intval($_GET['review_add_sale_api']) : 0;
     $edit_review_sale_id = isset($_GET['review_sale_api']) ? intval($_GET['review_sale_api']) : 0;
@@ -11,6 +12,17 @@ function merged_sale_api_ui_shortcode()
     $sale_back_button = '';
 
     global $wpdb;
+    $table_agqa_manage_user = $wpdb->prefix . 'agqa_wiki_add_users';
+    // echo $add_username;
+    // Custom state
+    $get_stauts_freez = $wpdb->get_var(
+        $wpdb->prepare("SELECT state FROM {$table_agqa_manage_user} WHERE user_id = %d LIMIT 1", $get_user_id)
+    );
+    if (strtolower($get_stauts_freez) == 'freeze') {
+        $disabledActionClass = 'table-body-disabled-api';
+    } else {
+        $disabledActionClass = '';
+    }
     $table_sales = $wpdb->prefix . 'agqa_sales';
     $table_category = $wpdb->prefix . 'game_category';
     $table_type = $wpdb->prefix . 'game_type';
@@ -149,7 +161,7 @@ function merged_sale_api_ui_shortcode()
                     <div class="filter-area">
                         <?php if (isset($_GET['sale'])) { ?>
                             <a href="/game-categories/" class="back-button">
-                            <img decoding="async" src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg" alt="Arrow Left Icon">View All</a>
+                                <img decoding="async" src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg" alt="Arrow Left Icon">View All</a>
                         <?php } ?>
                         <?php if (empty($_GET['sale'])) { ?>
                             <form id="filter-form">
@@ -171,7 +183,7 @@ function merged_sale_api_ui_shortcode()
                         <?php } ?>
                     </div>
                     <?php if ($getUserRole !== 'viewer') { ?>
-                        <div class="api-filter-buttons">
+                        <div class="api-filter-buttons <?php echo $disabledActionClass; ?>">
                             <?php if (empty($_GET['sale'])) { ?>
                                 <button class="reorder-button"><img src="<?php echo AGQA_URL ?>assets/images/reorder-icon.svg"
                                         alt="Reorder Icon">
@@ -368,11 +380,11 @@ function merged_sale_api_ui_shortcode()
                             <div class="api-card-bottom-buttons">
                                 <?php if ($getUserRole !== 'viewer') { ?>
                                     <a href="<?php echo esc_url(home_url('/api-revenue-share-lookup/sale/') . '?edit=' . $item->id) . '&' . $sale_back_button; ?>"
-                                        class="api-edit-button api-card-button">
+                                        class="api-edit-button api-card-button <?php echo $disabledActionClass; ?>">
                                         <img src="<?php echo AGQA_URL ?>assets/images/edit-icon.svg" alt="Edit Icon"> Edit
                                     </a>
                                 <?php } ?>
-                                <button class="api-report-button api-card-button">
+                                <button class="api-report-button api-card-button <?php echo $disabledActionClass; ?>">
                                     <img src="<?php echo AGQA_URL ?>assets/images/alert-icon.svg" alt="Alert Icon"> Report
                                 </button>
                                 <?php if ($getUserRole !== 'viewer') { ?>
