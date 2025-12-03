@@ -1211,6 +1211,46 @@ function handle_approval_read_report()
  * faq_user_read_report
  */
 
+// add_action('wp_ajax_handle_faq_user_read_report', 'handle_faq_user_read_report');
+// add_action('wp_ajax_nopriv_handle_faq_user_read_report', 'handle_faq_user_read_report');
+
+// function handle_faq_user_read_report()
+// {
+//     global $wpdb;
+
+//     // Verify nonce
+//     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cuim_nonce')) {
+//         wp_send_json_error(['message' => 'Permission Denied']);
+//     }
+
+//     // Get current user ID
+//     $user_id = get_current_user_id();
+
+//     if (!$user_id) {
+//         wp_send_json_error(['message' => 'User not logged in']);
+//     }
+
+//     // Table name
+//     $table_name = "{$wpdb->prefix}faq_report_system";
+
+//     // Use $wpdb->update for safe updates
+//     $updated = $wpdb->update(
+//         $table_name,
+//         ['user_read_report' => 'read'],     // Set this
+//         ['user_id' => $user_id],            // Where this
+//         ['%s'],                             // Data format for value
+//         ['%d']                              // Data format for where
+//     );
+
+//     if ($updated !== false) {
+//         wp_send_json_success([
+//             'message' => 'User report marked as read.',
+//             'rows_updated' => $updated
+//         ]);
+//     } else {
+//         wp_send_json_error(['message' => 'No matching user record found or update failed.']);
+//     }
+// }
 add_action('wp_ajax_handle_faq_user_read_report', 'handle_faq_user_read_report');
 add_action('wp_ajax_nopriv_handle_faq_user_read_report', 'handle_faq_user_read_report');
 
@@ -1233,22 +1273,48 @@ function handle_faq_user_read_report()
     // Table name
     $table_name = "{$wpdb->prefix}faq_report_system";
 
-    // Use $wpdb->update for safe updates
-    $updated = $wpdb->update(
-        $table_name,
-        ['user_read_report' => 'read'],     // Set this
-        ['user_id' => $user_id],            // Where this
-        ['%s'],                             // Data format for value
-        ['%d']                              // Data format for where
+    // Fetch all reports for the user (ordered by latest report)
+    $reports = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT id, user_id, status, user_read_report, create_time FROM {$table_name} WHERE user_id = %d ORDER BY id DESC",
+            $user_id
+        )
     );
 
-    if ($updated !== false) {
-        wp_send_json_success([
-            'message' => 'User report marked as read.',
-            'rows_updated' => $updated
-        ]);
+    // Check if there are any reports to process
+    if ($reports) {
+        $rows_updated = 0; // Counter for updated rows
+
+        foreach ($reports as $report) {
+            // Check if the status is 'Pending Response', if so, skip updating this report
+            if ($report->status === 'Pending Response') {
+                continue; // Skip this iteration and move to the next report
+            }
+
+            // Update the 'user_read_report' to 'read' only for reports not in 'Pending Response' status
+            $updated = $wpdb->update(
+                $table_name,
+                ['user_read_report' => 'read'],    // Set user_read_report to 'read'
+                ['id' => $report->id],             // Match report by ID
+                ['%s'],                            // Data format for 'user_read_report'
+                ['%d']                             // Data format for 'id'
+            );
+
+            if ($updated !== false) {
+                $rows_updated++; // Increment the counter if the update was successful
+            }
+        }
+
+        if ($rows_updated > 0) {
+            wp_send_json_success([
+                'message' => "{$rows_updated} reports marked as read.",
+                'rows_updated' => $rows_updated
+            ]);
+        } else {
+            wp_send_json_error(['message' => 'No reports were updated.']);
+        }
     } else {
-        wp_send_json_error(['message' => 'No matching user record found or update failed.']);
+        wp_send_json_error(['message' => 'No matching reports found for the user.']);
     }
 }
 

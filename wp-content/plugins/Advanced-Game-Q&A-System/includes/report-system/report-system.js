@@ -45,7 +45,7 @@ jQuery(document).ready(function ($) {
       }, 500); // Delay of 500 milliseconds
       return; // Return early if either is empty
     }
-jQuery(".custom-table-row").removeClass("active");
+    jQuery(".custom-table-row").removeClass("active");
     // Initially hide pagination and "Nothing Found" message
     $(".section-found").hide();
     $(".custom-table-ctn").show();
@@ -247,7 +247,7 @@ jQuery(".custom-table-row").removeClass("active");
   $(".filter-pending-responses").on("click", function (event) {
     event.preventDefault(); // Prevent form submission
     var reportPendingResponse = "pending response";
-
+    jQuery(".custom-table-row").removeClass("active");
     // alert(reportType);
     var resultsFound = false; // Flag to track if any result is found
     $(".section-found").hide();
@@ -287,7 +287,7 @@ jQuery(".custom-table-row").removeClass("active");
 
     setTimeout(function () {
       // Recalculate pagination based on the filtered visible items
-      var itemsPerPages = 15;
+      var itemsPerPages = 10;
       var totalItemss = $(".custom-table-row:visible").length; // Count only visible items after filtering
       var totalPages = Math.ceil(totalItemss / itemsPerPages);
 
@@ -321,6 +321,7 @@ jQuery(".custom-table-row").removeClass("active");
             var prevLi = jQuery(
               ".pagination-ctn ul li.page-item.active"
             ).next();
+               jQuery(".pagination-ctn ul li.prev").addClass("disabled");
 
             // If the next page is hidden or .next button is visible, disable the next button
             if (prevLi.is(":hidden")) {
@@ -464,5 +465,5 @@ jQuery(".custom-table-row").removeClass("active");
     jQuery(".report-cancel-popup-confirmation").addClass("active");
   });
 
-  
+
 });

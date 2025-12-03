@@ -49,16 +49,20 @@ $sql_read_report_user = $wpdb->prepare("
     SELECT
         id,
         user_id,
+        status,
         user_read_report,
         create_time
     FROM {$wpdb->prefix}faq_report_system
     WHERE user_id = %d
+    AND status != 'pending response'  -- Exclude 'pending response' status
+    AND (user_read_report IS NULL OR user_read_report = '')  -- Ensure user_read_report is empty or NULL
     ORDER BY id DESC
     LIMIT 1
 ", $current_user_id);
 
 // Get result
 $last_report = $wpdb->get_row($sql_read_report_user); // get_row returns only one row
+
 
 
 $sql_review_read_user = $wpdb->prepare("
@@ -127,7 +131,7 @@ $found_user_id = $wpdb->get_var(
                     <?php  } ?>
                 </div>
             <?php } ?>
-            <?php if (($last_report && $last_report->user_read_report !== "read")  || $current_user_id !== (int) $found_user_id) { ?>
+            <?php if (($last_report && $last_report->user_read_report !== "read" && strtolower($last_report->status) !== 'pending response') || $current_user_id !== (int) $found_user_id) { ?>
                 <div class="notification-list-heading"><strong>Notification</strong></div>
                 <div class="notification-lists-ctn">
                     <?php if ($last_review_report && $last_review_report->user_read_report !== "read") { ?>
@@ -142,7 +146,7 @@ $found_user_id = $wpdb->get_var(
 
                         </div> -->
                     <?php } ?>
-                    <?php if ($last_report && $last_report->user_read_report !== "read") { ?>
+                    <?php if ($last_report && $last_report->user_read_report !== "read" && strtolower($last_report->status) !== 'pending response') { ?>
                         <div class="notification-list cuim-user-faq-report" style="cursor: pointer;">
                             <span class="notification-list-dot"></span>
                             <div class="notification-list-title">
