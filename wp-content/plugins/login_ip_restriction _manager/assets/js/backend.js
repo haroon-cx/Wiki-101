@@ -1827,6 +1827,13 @@ jQuery(document).ready(function ($) {
         jQuery(".pagination-ctn ul li.page-item").show();
         jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
         jQuery(".pagination-ctn ul li.prev").addClass("disabled"); // Disable Next button
+
+        var beforeNext = jQuery(".pagination-ctn ul li.next").prev("li");
+
+        if (!beforeNext.is(":hidden") && beforeNext.hasClass("active")) {
+          jQuery(".pagination-ctn ul li.next").addClass("disabled");
+        }
+
         applyCustomDots(totalPages);
       }, 500); // Delay of 500 milliseconds
       return; // Return early if either is empty
@@ -1913,12 +1920,18 @@ jQuery(document).ready(function ($) {
             var prevLi = jQuery(
               ".pagination-ctn ul li.page-item.active"
             ).next();
-jQuery(".pagination-ctn ul li.prev").addClass("disabled"); // Disable Next button
+            jQuery(".pagination-ctn ul li.prev").addClass("disabled"); // Disable Next button
             // If the next page is hidden or .next button is visible, disable the next button
             if (prevLi.is(":hidden")) {
               jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
             } else {
               jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+            }
+
+            var beforeNext = jQuery(".pagination-ctn ul li.next").prev("li");
+
+            if (!beforeNext.is(":hidden") && beforeNext.hasClass("active")) {
+              jQuery(".pagination-ctn ul li.next").addClass("disabled");
             }
           }
         });
