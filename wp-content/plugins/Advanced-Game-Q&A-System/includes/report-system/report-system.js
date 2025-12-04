@@ -32,20 +32,25 @@ jQuery(document).ready(function ($) {
           // var pageNumber = "sajid";
           jQuery(this).attr("data-page", pageNumber);
           jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-            .addClass("active")
-            .siblings()
-            .removeClass("active");
+              .addClass("active")
+              .siblings()
+              .removeClass("active");
 
           jQuery(".custom-table-row").hide();
           jQuery('.custom-table-row[data-page="' + "1" + '"]').show();
         });
         jQuery(".pagination-ctn ul li.page-item").show();
         jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+        var beforeNext = jQuery(".pagination-ctn ul li.next").prev("li");
+
+        if (!beforeNext.is(":hidden") && beforeNext.hasClass("active")) {
+          jQuery(".pagination-ctn ul li.next").addClass("disabled");
+        }
         applyCustomDots(totalPages);
       }, 500); // Delay of 500 milliseconds
       return; // Return early if either is empty
     }
-jQuery(".custom-table-row").removeClass("active");
+    jQuery(".custom-table-row").removeClass("active");
     // Initially hide pagination and "Nothing Found" message
     $(".section-found").hide();
     $(".custom-table-ctn").show();
@@ -53,30 +58,30 @@ jQuery(".custom-table-row").removeClass("active");
 
     $(".custom-table-row").each(function () {
       var reportStatusText = $(this)
-        .find(".table-body-col.report-status-response span")
-        .text()
-        .toLowerCase();
+          .find(".table-body-col.report-status-response span")
+          .text()
+          .toLowerCase();
       // alert(reportStatusText);
       var reportTypeSearchText = $(this)
-        .find(".agqa-report-type-search-text")
-        .text()
-        .toLowerCase();
+          .find(".agqa-report-type-search-text")
+          .text()
+          .toLowerCase();
       // alert(reportTypeSearchText);
       var isReportSearch = $(this)
-        .find(".agqa-report-search-box p")
-        .text()
-        .toLowerCase();
+          .find(".agqa-report-search-box p")
+          .text()
+          .toLowerCase();
       // var rowCompany = $(this).find(".table-row-company").text().toLowerCase();
       // var rowDateText = $(this).find(".table-body-col-date").text().trim();
 
       // Apply filters based on exact match for state, role, company, and search term
       var isStateMatch =
-        reportFilterStatus === "" ||
-        reportStatusText.trim() === reportFilterStatus.trim();
+          reportFilterStatus === "" ||
+          reportStatusText.trim() === reportFilterStatus.trim();
       var isReportTypeText =
-        reportType === "all" ||
-        reportType === "" ||
-        reportTypeSearchText.trim() === reportType.trim();
+          reportType === "all" ||
+          reportType === "" ||
+          reportTypeSearchText.trim() === reportType.trim();
       var isSearchMatch = isReportSearch.includes(reportSearch);
 
       if (isStateMatch && isReportTypeText && isSearchMatch) {
@@ -112,9 +117,9 @@ jQuery(".custom-table-row").removeClass("active");
         jQuery(this).attr("data-page", pageNumber);
         jQuery(this).addClass("active");
         jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-          .addClass("active")
-          .siblings()
-          .removeClass("active");
+            .addClass("active")
+            .siblings()
+            .removeClass("active");
         if (pageNumber === 1) {
           $(this).show(); // Show items that belong to the current page
         } else {
@@ -123,26 +128,31 @@ jQuery(".custom-table-row").removeClass("active");
       });
       jQuery(".pagination-ctn ul li.page-item").show();
       jQuery(".pagination-ctn ul li.page-item")
-        .not(".prev, .next")
-        .each(function () {
-          var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
-          if (pageNumbers === totalPages && totalPages !== 0) {
-            // Remove all <li> items that come after this one
-            jQuery(this).nextAll().not(".next").hide();
+          .not(".prev, .next")
+          .each(function () {
+            var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+            if (pageNumbers === totalPages && totalPages !== 0) {
+              // Remove all <li> items that come after this one
+              jQuery(this).nextAll().not(".next").hide();
 
-            // Check the <li> just before the Next button
-            var prevLi = jQuery(
-              ".pagination-ctn ul li.page-item.active"
-            ).next();
-            jQuery(".pagination-ctn ul li.prev").addClass("disabled");
-            // If the next page is hidden or .next button is visible, disable the next button
-            if (prevLi.is(":hidden")) {
-              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
-            } else {
-              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+              // Check the <li> just before the Next button
+              var prevLi = jQuery(
+                  ".pagination-ctn ul li.page-item.active"
+              ).next();
+              jQuery(".pagination-ctn ul li.prev").addClass("disabled");
+              // If the next page is hidden or .next button is visible, disable the next button
+              if (prevLi.is(":hidden")) {
+                jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+              } else {
+                jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+              }
+              var beforeNext = jQuery(".pagination-ctn ul li.next").prev("li");
+
+              if (!beforeNext.is(":hidden") && beforeNext.hasClass("active")) {
+                jQuery(".pagination-ctn ul li.next").addClass("disabled");
+              }
             }
-          }
-        });
+          });
       applyCustomDots(totalPages);
     }, 100); // Delay of 500 milliseconds
   });
@@ -186,11 +196,11 @@ jQuery(".custom-table-row").removeClass("active");
       if (isNaN(n) || n > totalPages) return;
 
       if (
-        n === 1 ||
-        n === totalPages ||
-        n === current ||
-        n === current - sideRange ||
-        n === current + sideRange
+          n === 1 ||
+          n === totalPages ||
+          n === current ||
+          n === current - sideRange ||
+          n === current + sideRange
       ) {
         jQuery(this).show();
       }
@@ -210,15 +220,15 @@ jQuery(".custom-table-row").removeClass("active");
     // 1 ke baad dots (agar gap ho)
     if ($page1.length && $page1.is(":visible")) {
       var $after1 = $page1.nextAll("li.page-item")
-        .not(".prev,.next")
-        .filter(":visible")
-        .first();
+          .not(".prev,.next")
+          .filter(":visible")
+          .first();
 
       if ($after1.length) {
         var nAfter = parseInt($after1.text(), 10);
         if (!isNaN(nAfter) && nAfter > 2) {
           jQuery(
-            '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+              '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
           ).insertAfter($page1);
         }
       }
@@ -227,15 +237,15 @@ jQuery(".custom-table-row").removeClass("active");
     // last se pehle dots (agar gap ho)
     if ($lastPage.length && $lastPage.is(":visible")) {
       var $beforeLast = $lastPage.prevAll("li.page-item")
-        .not(".prev,.next")
-        .filter(":visible")
-        .first();
+          .not(".prev,.next")
+          .filter(":visible")
+          .first();
 
       if ($beforeLast.length) {
         var nBefore = parseInt($beforeLast.text(), 10);
         if (!isNaN(nBefore) && nBefore < totalPages - 1) {
           jQuery(
-            '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+              '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
           ).insertBefore($lastPage);
         }
       }
@@ -257,14 +267,14 @@ jQuery(".custom-table-row").removeClass("active");
     $(".custom-table-row").each(function () {
       // alert(reportStatusText);
       var reportTypeSearchText = $(this)
-        .find(".table-body-col.report-status-response")
-        .text()
-        .toLowerCase();
+          .find(".table-body-col.report-status-response")
+          .text()
+          .toLowerCase();
 
       // Apply filters based on exact match for state, role, company, and search term
       var isReportTypeText =
-        reportPendingResponse === "" ||
-        reportTypeSearchText.trim() === reportPendingResponse.trim();
+          reportPendingResponse === "" ||
+          reportTypeSearchText.trim() === reportPendingResponse.trim();
 
       if (isReportTypeText) {
         $(this).show(); // Show the row if it matches the filters
@@ -299,9 +309,9 @@ jQuery(".custom-table-row").removeClass("active");
         jQuery(this).attr("data-page", pageNumber);
         jQuery(this).addClass("active");
         jQuery(".pagination-ctn ul li.page-item:nth-child(3)")
-          .addClass("active")
-          .siblings()
-          .removeClass("active");
+            .addClass("active")
+            .siblings()
+            .removeClass("active");
         if (pageNumber === 1) {
           $(this).show(); // Show items that belong to the current page
         } else {
@@ -310,26 +320,26 @@ jQuery(".custom-table-row").removeClass("active");
       });
       jQuery(".pagination-ctn ul li.page-item").show();
       jQuery(".pagination-ctn ul li.page-item")
-        .not(".prev, .next")
-        .each(function () {
-          var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
-          if (pageNumbers === totalPages && totalPages !== 0) {
-            // Remove all <li> items that come after this one
-            jQuery(this).nextAll().not(".next").hide();
+          .not(".prev, .next")
+          .each(function () {
+            var pageNumbers = parseInt(jQuery(this).text()); // Get the number of the page
+            if (pageNumbers === totalPages && totalPages !== 0) {
+              // Remove all <li> items that come after this one
+              jQuery(this).nextAll().not(".next").hide();
 
-            // Check the <li> just before the Next button
-            var prevLi = jQuery(
-              ".pagination-ctn ul li.page-item.active"
-            ).next();
+              // Check the <li> just before the Next button
+              var prevLi = jQuery(
+                  ".pagination-ctn ul li.page-item.active"
+              ).next();
 
-            // If the next page is hidden or .next button is visible, disable the next button
-            if (prevLi.is(":hidden")) {
-              jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
-            } else {
-              jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+              // If the next page is hidden or .next button is visible, disable the next button
+              if (prevLi.is(":hidden")) {
+                jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
+              } else {
+                jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
+              }
             }
-          }
-        });
+          });
     }, 100); // Delay of 500 milliseconds
   });
   /**
@@ -398,7 +408,7 @@ jQuery(".custom-table-row").removeClass("active");
           // alert("Successfully Submitted");
           window.location.reload();
           const $successMsg = $(
-            '<div class="submitted-successfully">Responed Done</div>'
+              '<div class="submitted-successfully">Responed Done</div>'
           );
           jQuery(".report-form-table-ctn.custom-table-ctn").append($successMsg);
 
@@ -411,7 +421,7 @@ jQuery(".custom-table-row").removeClass("active");
         } else {
           // alert(response);
           const $successMsg = $(
-            `<div class="report submitted-unsuccessfully">${response}</div>`
+              `<div class="report submitted-unsuccessfully">${response}</div>`
           );
           $form.append($successMsg);
 
@@ -464,5 +474,5 @@ jQuery(".custom-table-row").removeClass("active");
     jQuery(".report-cancel-popup-confirmation").addClass("active");
   });
 
-  
+
 });
