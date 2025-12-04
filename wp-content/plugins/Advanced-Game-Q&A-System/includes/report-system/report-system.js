@@ -41,11 +41,6 @@ jQuery(document).ready(function ($) {
         });
         jQuery(".pagination-ctn ul li.page-item").show();
         jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
-        var beforeNext = jQuery(".pagination-ctn ul li.next").prev("li");
-
-        if (!beforeNext.is(":hidden") && beforeNext.hasClass("active")) {
-          jQuery(".pagination-ctn ul li.next").addClass("disabled");
-        }
         applyCustomDots(totalPages);
       }, 500); // Delay of 500 milliseconds
       return; // Return early if either is empty
@@ -145,11 +140,6 @@ jQuery(document).ready(function ($) {
                 jQuery(".pagination-ctn ul li.next").addClass("disabled"); // Disable Next button
               } else {
                 jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
-              }
-              var beforeNext = jQuery(".pagination-ctn ul li.next").prev("li");
-
-              if (!beforeNext.is(":hidden") && beforeNext.hasClass("active")) {
-                jQuery(".pagination-ctn ul li.next").addClass("disabled");
               }
             }
           });
@@ -257,7 +247,7 @@ jQuery(document).ready(function ($) {
   $(".filter-pending-responses").on("click", function (event) {
     event.preventDefault(); // Prevent form submission
     var reportPendingResponse = "pending response";
-
+    jQuery(".custom-table-row").removeClass("active");
     // alert(reportType);
     var resultsFound = false; // Flag to track if any result is found
     $(".section-found").hide();
@@ -297,7 +287,7 @@ jQuery(document).ready(function ($) {
 
     setTimeout(function () {
       // Recalculate pagination based on the filtered visible items
-      var itemsPerPages = 15;
+      var itemsPerPages = 10;
       var totalItemss = $(".custom-table-row:visible").length; // Count only visible items after filtering
       var totalPages = Math.ceil(totalItemss / itemsPerPages);
 
@@ -331,6 +321,7 @@ jQuery(document).ready(function ($) {
               var prevLi = jQuery(
                   ".pagination-ctn ul li.page-item.active"
               ).next();
+              jQuery(".pagination-ctn ul li.prev").addClass("disabled");
 
               // If the next page is hidden or .next button is visible, disable the next button
               if (prevLi.is(":hidden")) {
