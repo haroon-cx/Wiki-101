@@ -362,7 +362,7 @@ jQuery(document).ready(function ($) {
 
     // Check if either is empty
     $(".agqa-faq-cat-filter").removeClass("faq-cat-active");
-    
+
 
     // highlighted
     var query = searchTerm;
@@ -399,7 +399,7 @@ jQuery(document).ready(function ($) {
       $(".faq-accordion").show(); // Show the FAQ item
       $("#pagination-demo").show(); // Show the FAQ item
       // jQuery(".faq-accordion").addClass("active");
-      
+
 
       $(document).find(".faq-accordion-head").removeClass("active"); // Add active class to the head
       $(document).find(".faq-accordion-body").slideUp(); // Slide down the body
@@ -899,7 +899,11 @@ jQuery(document).ready(function ($) {
         if (response.includes("Success")) {
           // $(".faq-accordion[data-id='" + del + "']").remove();
           $(".agqa-delete-popup-faq").removeClass("active");
-          window.location.href = "/faq/";
+          if (window.location.pathname.startsWith("/zh")) {
+            window.location.href = "/zh/faq/";
+          } else {
+            window.location.href = "/faq/";
+          }
           const $successMsg = $(
             `<div class="submitted-successfully">Successfully Deleted.</div>`
           );

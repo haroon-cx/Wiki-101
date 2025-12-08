@@ -244,8 +244,7 @@ function report_system_shortcode()
                             </ul>
                         </div>
                     </div>
-                    <input type="search" name="filter-search" id="report-filter-search"
-                        class="agqa-report-validation-100"
+                    <input type="search" name="filter-search" id="report-filter-search" class="agqa-report-validation-100"
                         placeholder="Please Enter">
                     <div class="filter-select">
                         <input type="hidden" name="filter-report-states"
@@ -323,7 +322,8 @@ function report_system_shortcode()
                                             <?php if ($report_value->status === 'Pending Response') { ?>
                                                 <?php if ($getUserRole !== 'viewer') { ?>
                                                     <div class="table-body-col report-action">
-                                                        <button class="respond-button pending-response-button <?php echo $disabledActionClass; ?>"></button>
+                                                        <button
+                                                            class="respond-button pending-response-button <?php echo $disabledActionClass; ?>"></button>
                                                         <div class="respond-popup">
                                                             <div class="respond-popup-inner">
                                                                 <div class="popup-form-cross-icon report-form-cancel-icon"></div>
@@ -367,8 +367,7 @@ function report_system_shortcode()
                                                                                         </li>
                                                                                     </ul>
                                                                                 </div>
-                                                                                <input type="hidden"
-                                                                                    name="respond-status-type"
+                                                                                <input type="hidden" name="respond-status-type"
                                                                                     value="Pending Response" required>
                                                                             </div>
                                                                         </div>
@@ -388,16 +387,31 @@ function report_system_shortcode()
                                                                                 if (empty($reportUrl) || count($reportUrl) == 0 || (count($reportUrl) == 1 && $reportUrl[0] == '')) {
                                                                                     echo '<div class="agqa-no-attachments"> No attachments</div>';
                                                                                 } else {
-                                                                                    foreach ($reportUrl as $url) {
+                                                                                    /*                                                                                    foreach ($reportUrl as $url) {
                                                                                 ?>
 
+                                                            <div class="uploaded-image">
+                                                                <img src="<?php echo $url; ?>" alt=" Report Image"
+                                                                    class="stretchable">
+                                                                <div class="stretch-image-icon"></div>
+                                                            </div>
+                                                            <?php } */
+                                                                                    foreach ($reportUrl as $url) {
+                                                                                        $url = trim($url);
+                                                                                        if (!$url) continue;
+
+                                                                                        $upload_dir = wp_get_upload_dir();
+                                                                                        $file_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $url);
+
+                                                                                        if (!file_exists($file_path)) continue; // skip missing files
+                                                                                ?>
                                                                                         <div class="uploaded-image">
-                                                                                            <img src="<?php echo $url; ?>"
-                                                                                                alt=" Report Image"
-                                                                                                class="stretchable">
+                                                                                            <img src="<?php echo esc_url($url); ?>"
+                                                                                                alt="Report Image" class="stretchable">
                                                                                             <div class="stretch-image-icon"></div>
                                                                                         </div>
-                                                                                <?php }
+                                                                                <?php
+                                                                                    }
                                                                                 } ?>
                                                                             </div>
                                                                         </div>
@@ -405,8 +419,7 @@ function report_system_shortcode()
                                                                         <div id="stretch-overlay" class="stretch-overlay">
                                                                             <div class="stretch-container">
                                                                                 <div class="zoom-close-icon"></div>
-                                                                                <img class="stretched-img" src=""
-                                                                                    alt="Stretched Image">
+                                                                                <img class="stretched-img" src="" alt="Stretched Image">
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-field">
@@ -448,16 +461,14 @@ function report_system_shortcode()
                                                                                     to cancel?
                                                                                 </div>
                                                                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                                                    <button class="no-form-cancel"
-                                                                                        type="button">No
+                                                                                    <button class="no-form-cancel" type="button">No
                                                                                     </button>
                                                                                     <a href="#"
                                                                                         class="back-button agqa-report-cancel-btn">Yes</a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div id="confirm-submit-popup"
-                                                                            class="confirm-submit-popup">
+                                                                        <div id="confirm-submit-popup" class="confirm-submit-popup">
                                                                             <div class="confirm-submit-popup-box">
                                                                                 <h2>Submit</h2>
                                                                                 <div class="popup-form-cross-icon report-cancel-icon"></div>
@@ -466,11 +477,9 @@ function report_system_shortcode()
                                                                                     to submit?
                                                                                 </div>
                                                                                 <div class="form-buttons agqa-popup-form-buttons d-flex">
-                                                                                    <button class="no-confirm-submit"
-                                                                                        type="button">No
+                                                                                    <button class="no-confirm-submit" type="button">No
                                                                                     </button>
-                                                                                    <input type="submit" value="Yes"
-                                                                                        id="confirm-submit">
+                                                                                    <input type="submit" value="Yes" id="confirm-submit">
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -481,8 +490,7 @@ function report_system_shortcode()
                                                                             Submit
                                                                         </button>
                                                                     </div>
-                                                                    <input type="hidden" name="id"
-                                                                        value="<?php echo $report_value->id; ?>">
+                                                                    <input type="hidden" name="id" value="<?php echo $report_value->id; ?>">
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -495,8 +503,7 @@ function report_system_shortcode()
                                                     <div class="respond-popup">
                                                         <div class="respond-popup-inner">
                                                             <div class="popup-form-cross-icon report-form-cancel-icon"></div>
-                                                            <form class="respond-form-2" autocomplete="off"
-                                                                data-inited-validation="1"
+                                                            <form class="respond-form-2" autocomplete="off" data-inited-validation="1"
                                                                 novalidate="novalidate">
                                                                 <div class="respond-form-title">
                                                                     <h2>Respond</h2>
@@ -561,16 +568,14 @@ function report_system_shortcode()
                                                                                     </li>
                                                                                 </ul>
                                                                             </div>
-                                                                            <input type="hidden"
-                                                                                name="respond-status-type">
+                                                                            <input type="hidden" name="respond-status-type">
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-field">
                                                                         <label for="respond-disabled-textarea">Issue
                                                                             Detail</label>
                                                                         <textarea name="respond-disabled-textarea"
-                                                                            class="respond-disabled-textarea"
-                                                                            placeholder="Please Enter"
+                                                                            class="respond-disabled-textarea" placeholder="Please Enter"
                                                                             disabled><?php echo $report_value->issue_detail; ?></textarea>
                                                                     </div>
                                                                     <div class="uploaded-images">
@@ -581,13 +586,26 @@ function report_system_shortcode()
                                                                             $reportUrl = explode(",", $reportUrl);
                                                                             if (empty($reportUrl) || count($reportUrl) == 0 || (count($reportUrl) == 1 && $reportUrl[0] == '')) {
                                                                                 echo '<div class="agqa-no-attachments"> No attachments</div>';
-                                                                            } else {
+                                                                            } else {/*
                                                                                 foreach ($reportUrl as $url) {
                                                                             ?>
+                                                            <div class="uploaded-image">
+                                                                <img src="<?php echo $url; ?>" alt="Report Image"
+                                                                    class="stretchable">
+                                                                <div class="stretch-image-icon"></div>
+                                                            </div>
+                                                            <?php } */
+                                                                                foreach ($reportUrl as $url) {
+                                                                                    $url = trim($url);
+                                                                                    if (!$url) continue;
+                                                                                    $upload_dir = wp_get_upload_dir();
+                                                                                    $file_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $url);
+
+                                                                                    if (!file_exists($file_path)) continue; // skip missing files
+                                                                            ?>
                                                                                     <div class="uploaded-image">
-                                                                                        <img src="<?php echo $url; ?>"
-                                                                                            alt="Report Image"
-                                                                                            class="stretchable">
+                                                                                        <img src="<?php echo esc_url($url); ?>"
+                                                                                            alt="Report Image" class="stretchable">
                                                                                         <div class="stretch-image-icon"></div>
                                                                                     </div>
                                                                             <?php }
@@ -598,8 +616,7 @@ function report_system_shortcode()
                                                                     <div id="stretch-overlay" class="stretch-overlay">
                                                                         <div class="stretch-container">
                                                                             <div class="zoom-close-icon"></div>
-                                                                            <img class="stretched-img" src=""
-                                                                                alt="Stretched Image">
+                                                                            <img class="stretched-img" src="" alt="Stretched Image">
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-field disabled-field">
@@ -613,7 +630,8 @@ function report_system_shortcode()
                                                                                 <!--                                                                                <span class="custom-dropdown-default-value">-->
                                                                                 <!--                                                                                -->
                                                                                 <?php //echo esc_html($faq_value->question); 
-                                                                                ?><!--</span>-->
+                                                                                ?>
+                                                                                <!--</span>-->
                                                                                 <!--                                                                            --><?php //} 
                                                                                                                                                                     ?>
                                                                                 <span class="custom-dropdown-selected-value"></span>
@@ -634,8 +652,7 @@ function report_system_shortcode()
                                                                     </div>
                                                                     <div class="form-field">
                                                                         <textarea name="respond-detail-textarea"
-                                                                            class="respond-detail-textarea"
-                                                                            placeholder="--"
+                                                                            class="respond-detail-textarea" placeholder="--"
                                                                             disabled><?php echo $report_value->issue_detail_reply ?></textarea>
                                                                     </div>
                                                                 </div>
@@ -746,7 +763,8 @@ function report_system_shortcode()
                     jQuery(".report-system-template .pagination-ctn ul li.page-item")
                         .not(".prev, .next")
                         .each(function() {
-                            var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
+                            var pageNumberss = parseInt(jQuery(this)
+                                .text()); // Get the number of the page
 
                             if (pageNumberss === totalActivePages && totalActivePages !== 0) {
                                 // Remove all <li> items that come after this one
@@ -838,7 +856,8 @@ function report_system_shortcode()
                         if ($after1.length) {
                             var nAfter = parseInt($after1.text(), 10);
                             if (!isNaN(nAfter) && nAfter > 2) {
-                                jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                jQuery(
+                                        '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
                                     .insertAfter($page1);
                             }
                         }
@@ -859,7 +878,8 @@ function report_system_shortcode()
                         if ($beforeLast.length) {
                             var nBefore = parseInt($beforeLast.text(), 10);
                             if (!isNaN(nBefore) && nBefore < (totalActivePages - 1)) {
-                                jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                jQuery(
+                                        '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
                                     .insertBefore($lastPage);
                             }
                         }

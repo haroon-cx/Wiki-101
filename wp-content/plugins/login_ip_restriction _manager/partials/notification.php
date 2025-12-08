@@ -116,14 +116,16 @@ $found_user_id = $wpdb->get_var(
                     <div class="notification-tag-card">
                         <span class="notification-dot <?php echo $class_active; ?>"></span>
                         <span>Pending Reports</span>
-                        <a href="#" class="notification-count active cuim-response-review-count"><?php echo $pending_response_count; ?></a>
+                        <a href="#"
+                            class="notification-count active cuim-response-review-count"><?php echo $pending_response_count; ?></a>
                     </div>
                     <?php if ($getUserRole !== 'contributor') { ?>
                         <div class="notification-tag-card">
                             <span class="notification-dot <?php echo $class_approval_active; ?>"></span>
                             <span>Pending Review</span>
                             <?php if ($approval_pending_count > 0) { ?>
-                                <a href="#" class="notification-count active cuim-review-pending-count"><?php echo $approval_pending_count; ?></a>
+                                <a href="#"
+                                    class="notification-count active cuim-review-pending-count"><?php echo $approval_pending_count; ?></a>
                             <?php } else { ?>
                                 <a href="#" class="notification-count"><?php echo $approval_pending_count; ?></a>
                             <?php  } ?>
@@ -166,7 +168,8 @@ $found_user_id = $wpdb->get_var(
                                 Please set up your profile
                             </div>
                             <?php if ($add_manage_users_data) { ?>
-                                <div class="notification-list-date"> <?php echo date('Y/m/d', strtotime($add_manage_users_data->created_at)); ?></div>
+                                <div class="notification-list-date">
+                                    <?php echo date('Y/m/d', strtotime($add_manage_users_data->created_at)); ?></div>
                             <?php } else {
 
                                 echo '<div class="notification-list-date">2025/09/01</div>';
@@ -207,7 +210,11 @@ $found_user_id = $wpdb->get_var(
                 },
                 success: function(response) {
                     // If deletion is successful, hide the popup and remove the FAQ from the DOM
-                    window.location.href = "/report-system/?status=pending";
+                    if (window.location.pathname.startsWith("/zh")) {
+                        window.location.href = "/zh/report-system/?status=pending";
+                    } else {
+                        window.location.href = "/report-system/?status=pending";
+                    }
 
                     if (response.includes("Success")) {
                         // $(".faq-accordion[data-id='" + del + "']").remove();
@@ -233,7 +240,11 @@ $found_user_id = $wpdb->get_var(
                 },
                 success: function(response) {
                     // If deletion is successful, hide the popup and remove the FAQ from the DOM
-                    window.location.href = "/approval-page/";
+                    if (window.location.pathname.startsWith("/zh")) {
+                        window.location.href = "/zh/approval-page";
+                    } else {
+                        window.location.href = "/approval-page/";
+                    }
 
                     if (response.includes("Success")) {
                         // $(".faq-accordion[data-id='" + del + "']").remove();
@@ -260,7 +271,11 @@ $found_user_id = $wpdb->get_var(
                 },
                 success: function(response) {
                     // If deletion is successful, hide the popup and remove the FAQ from the DOM
-                    window.location.href = "/report-system/?status=pending";
+                    if (window.location.pathname.startsWith("/zh")) {
+                        window.location.href = "/zh/report-system/";
+                    } else {
+                        window.location.href = "/report-system/";
+                    }
 
                     if (response.includes("Success")) {
                         // $(".faq-accordion[data-id='" + del + "']").remove();

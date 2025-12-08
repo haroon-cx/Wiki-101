@@ -862,7 +862,11 @@ jQuery(document).ready(function ($) {
             `<div class="submitted-successfully">The user successfully deleted.</div>`
           );
           jQuery(".custom-table-body").append($successMsg);
-          window.location.href = "/manage-user/";
+          if (window.location.pathname.startsWith("/zh")) {
+            window.location.href = "/zh/manage-user/";
+          } else {
+            window.location.href = "/manage-user/";
+          }
           // Hide after 3 seconds
           setTimeout(function () {
             $successMsg.fadeOut(400, function () {
@@ -914,7 +918,11 @@ jQuery(document).ready(function ($) {
             `<div class="submitted-successfully">The user successfully deleted.</div>`
           );
           jQuery(".custom-table-body").append($successMsg);
-          window.location.href = "/manage-ip-whitelist/";
+          if (window.location.pathname.startsWith("/zh")) {
+            window.location.href = "/zh/manage-ip-whitelist/";
+          } else {
+            window.location.href = "/manage-ip-whitelist/";
+          }
           // Hide after 3 seconds
           setTimeout(function () {
             $successMsg.fadeOut(400, function () {

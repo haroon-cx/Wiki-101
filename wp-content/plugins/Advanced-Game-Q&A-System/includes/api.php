@@ -162,7 +162,8 @@ function merged_api_ui_shortcode()
                     <div class="filter-area">
                         <?php if (isset($_GET['revenue'])) { ?>
                             <a href="/game-categories/" class="back-button">
-                                <img decoding="async" src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg" alt="Arrow Left Icon">View All</a>
+                                <img decoding="async" src="<?php echo AGQA_URL ?>assets/images/arrow-left.svg"
+                                    alt="Arrow Left Icon">View All</a>
                         <?php } ?>
                         <?php if (empty($_GET['revenue'])) { ?>
                             <form id="filter-form">
@@ -429,13 +430,14 @@ function merged_api_ui_shortcode()
                                                         $date->setTimezone(new DateTimeZone($dataTimezone));
 
                                                         // Subtract 1 hour from the time
-                                                        $date->modify('-1 hour');
+                                                        // $date->modify('-1 hour');
 
                                                         // Output the time in 'Y/m/d H:i' format
                                                         echo $date->format('Y/m/d H:i');
                                                         ?>
                                                     </span>
-                                                    <span class="approval-account"> <?php echo esc_html($wpdb->get_var($wpdb->prepare("SELECT account FROM {$wpdb->prefix}agqa_wiki_add_users WHERE user_id = %d LIMIT 1", (int)$approval->user_id))); ?></span>
+                                                    <span class="approval-account">
+                                                        <?php echo esc_html($wpdb->get_var($wpdb->prepare("SELECT account FROM {$wpdb->prefix}agqa_wiki_add_users WHERE user_id = %d LIMIT 1", (int)$approval->user_id))); ?></span>
                                                 </div>
                                         <?php break;
                                             }

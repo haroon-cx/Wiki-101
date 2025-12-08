@@ -402,7 +402,8 @@ ob_start(); // Start output buffering
                                                                                         ?>
 
                                                                                     </span>
-                                                                                    <span class="user-ip"><?php echo $ip_data->login_ip; ?></span>
+                                                                                    <span
+                                                                                        class="user-ip"><?php echo $ip_data->login_ip; ?></span>
                                                                                 </div>
                                                                         <?php
                                                                             }
@@ -416,7 +417,8 @@ ob_start(); // Start output buffering
                                                         </div>
                                                         <div class="history-record-buttons d-flex">
                                                             <button class="close-button">close</button>
-                                                            <a href="<?php echo home_url('/login-records/?username=' . $user_data->account);  ?>" class="button">Go to Login History</a>
+                                                            <a href="<?php echo home_url('/login-records/?username=' . $user_data->account);  ?>"
+                                                                class="button">Go to Login History</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -456,8 +458,8 @@ ob_start(); // Start output buffering
                                             </div>
                                             <?php if ($getUserRole !== 'contributor' && $getUserRole !== 'manager') { ?>
                                                 <div class="delete-user-ctn">
-                                                    <button class="delete-user-button"></button>
-                                                    <div id="custom-faq-field-popup">
+                                                    <button class="delete-user-button "></button>
+                                                    <div id="custom-faq-field-popup" class="delete-popup">
                                                         <div id="custom-faq-field-popup-inner">
                                                             <h2>Delete</h2>
                                                             <div class="popup-form-cross-icon"></div>
@@ -521,7 +523,8 @@ ob_start(); // Start output buffering
             jQuery('input[name="daterange"]').on(
                 "cancel.daterangepicker",
                 function(ev, picker) {
-                    jQuery(this).val(""); // Reset the input field to empty when the user cancels or clears the date range
+                    jQuery(this).val(
+                        ""); // Reset the input field to empty when the user cancels or clears the date range
                 }
             );
             // ==========================
@@ -564,7 +567,8 @@ ob_start(); // Start output buffering
                     jQuery(".pagination-ctn ul li.page-item")
                         .not(".prev, .next")
                         .each(function() {
-                            var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
+                            var pageNumberss = parseInt(jQuery(this)
+                                .text()); // Get the number of the page
 
                             if (pageNumberss === totalActivePages && totalActivePages !== 0) {
                                 // Hide all <li> items that come after the last active page
@@ -667,7 +671,9 @@ ob_start(); // Start output buffering
                         if ($after1.length) {
                             var nAfter = parseInt($after1.text(), 10);
                             if (!isNaN(nAfter) && nAfter > 2) {
-                                jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                jQuery(
+                                        '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                                    )
                                     .insertAfter($page1);
                             }
                         }
@@ -688,7 +694,9 @@ ob_start(); // Start output buffering
                         if ($beforeLast.length) {
                             var nBefore = parseInt($beforeLast.text(), 10);
                             if (!isNaN(nBefore) && nBefore < (totalActivePages - 1)) {
-                                jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                jQuery(
+                                        '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                                    )
                                     .insertBefore($lastPage);
                             }
                         }
