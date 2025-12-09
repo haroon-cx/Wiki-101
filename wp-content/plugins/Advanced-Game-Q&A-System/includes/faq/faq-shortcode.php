@@ -149,16 +149,30 @@ function custom_faq_shortcode()
                             </button>
                             <div class="filter-select-list agqa-faq-cat-filter">
                                 <ul>
-                                    <li>All</li>
-                                    <li>Account & Access Management</li>
-                                    <li>System Features & Workflow</li>
-                                    <li>Reports & Data Queries</li>
-                                    <li>Errors & Troubleshooting</li>
-                                    <li>Notifications & Alerts</li>
-                                    <li>Performance & Compatibility</li>
-                                    <li>System Settings & Customization</li>
-                                    <li>Customer Support & Contact</li>
-                                    <li>Other</li>
+                                    <?php
+                                    if (strpos($_SERVER['REQUEST_URI'], '/zh/') !== false) { ?>
+                                        <li data-value="all">全部</li>
+                                        <li data-value="Account & Access Management">帳號與存取管理</li>
+                                        <li data-value="System Features & Workflow">系統功能與操作流程</li>
+                                        <li data-value="Reports & Data Queries">報表與資料查詢</li>
+                                        <li data-value="Errors & Troubleshooting">錯誤與問題排查</li>
+                                        <li data-value="Notifications & Alerts">通知與警示</li>
+                                        <li data-value="Performance & Compatibility">效能與相容性</li>
+                                        <li data-value="System Settings & Customization">系統設定與自訂化</li>
+                                        <li data-value="Customer Support & Contact">客服支援與聯絡</li>
+                                        <li data-value="Other">其他</li>
+                                    <?php } else { ?>
+                                        <li data-value="all">All</li>
+                                        <li data-value="Account & Access Management">Account & Access Management</li>
+                                        <li data-value="System Features & Workflow">System Features & Workflow</li>
+                                        <li data-value="Reports & Data Queries">Reports & Data Queries</li>
+                                        <li data-value="Errors & Troubleshooting">Errors & Troubleshooting</li>
+                                        <li data-value="Notifications & Alerts">Notifications & Alerts</li>
+                                        <li data-value="Performance & Compatibility">Performance & Compatibility</li>
+                                        <li data-value="System Settings & Customization">System Settings & Customization</li>
+                                        <li data-value="Customer Support & Contact">Customer Support & Contact</li>
+                                        <li data-value="Other">Other</li>
+                                    <?php } ?>
                                 </ul>
                             </div>
                         </div>

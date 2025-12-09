@@ -144,9 +144,16 @@ function game_categories_shortcode($atts)
                         </button>
                         <div class="filter-select-list">
                             <ul>
-                                <li>All</li>
-                                <li>New Game Categories</li>
-                                <li>API Not Filled in</li>
+                                <?php
+                                if (strpos($_SERVER['REQUEST_URI'], '/zh/') !== false) { ?>
+                                    <li data-value="all">全部</li>
+                                    <li data-value="New Game Categories">新遊戲商</li>
+                                    <li data-value="API Not Filled in">未設定API資料</li>
+                                <?php } else { ?>
+                                    <li data-value="all">All</li>
+                                    <li data-value="New Game Categories">New Game Categories</li>
+                                    <li data-value="API Not Filled in">API Not Filled in</li>
+                                <?php } ?>
                             </ul>
                         </div>
                     </div>

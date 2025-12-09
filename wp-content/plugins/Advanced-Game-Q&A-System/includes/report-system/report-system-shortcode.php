@@ -194,6 +194,7 @@ function report_system_shortcode()
     ob_start(); // Start output buffering
 ?>
     <div class="report-system-template">
+
         <div id="page-content">
             <!-- Content will be dynamically updated based on pagination -->
         </div>
@@ -211,36 +212,71 @@ function report_system_shortcode()
                             <span class="filter-selected-text report-filter-selected-text"></span>
                         </button>
                         <div class="filter-select-list agqa-report-cat-filter">
+
                             <ul>
-                                <li data-value="all">All</li>
-                                <li data-value="Functional issue / Operation not working as expected">
-                                    Functional issue / Operation not working as expected
-                                </li>
-                                <li data-value="UI display issue">
-                                    UI display issue
-                                </li>
-                                <li data-value="Incorrect data display">
-                                    Incorrect data display
-                                </li>
-                                <li data-value="ystem error message">
-                                    System error message
-                                </li>
-                                <li data-value="Process interruption / Unable to complete operation">
-                                    Process interruption / Unable to complete operation
-                                </li>
-                                <li data-value="Performance issue / System lag">Performance issue / System lag</li>
-                                <li data-value="Permission or account-related issue">
-                                    Permission or account-related issue
-                                </li>
-                                <li data-value="Notification / Email / Task trigger issue">
-                                    Notification / Email / Task trigger issue
-                                </li>
-                                <li data-value="Text / Language error">
-                                    Text / Language error
-                                </li>
-                                <li data-value="Other">
-                                    Other
-                                </li>
+                                <?php
+                                if (strpos($_SERVER['REQUEST_URI'], '/zh/') !== false) { ?>
+                                    <li data-value="all">全部</li>
+                                    <li data-value="Functional issue / Operation not working as expected">
+                                        功能問題／操作未如預期
+                                    </li>
+                                    <li data-value="UI display issue">
+                                        介面顯示問題
+                                    </li>
+                                    <li data-value="Incorrect data display">
+                                        資料顯示錯誤
+                                    </li>
+                                    <li data-value="System error message">
+                                        系統錯誤訊息
+                                    </li>
+                                    <li data-value="Process interruption / Unable to complete operation">
+                                        流程中斷／無法完成操作
+                                    </li>
+                                    <li data-value="Performance issue / System lag">效能問題／系統延遲</li>
+                                    <li data-value="Permission or account-related issue">
+                                        權限或帳號相關問題
+                                    </li>
+                                    <li data-value="Notification / Email / Task trigger issue">
+                                        通知／電子郵件／任務觸發問題
+                                    </li>
+                                    <li data-value="Text / Language error">
+                                        文字／語言錯誤
+                                    </li>
+                                    <li data-value="Other">
+                                        其他
+                                    </li>
+                                <?php } else { ?>
+                                    <li data-value="all">All</li>
+                                    <li data-value="Functional issue / Operation not working as expected">
+                                        Functional issue / Operation not working as expected
+                                    </li>
+                                    <li data-value="UI display issue">
+                                        UI display issue
+                                    </li>
+                                    <li data-value="Incorrect data display">
+                                        Incorrect data display
+                                    </li>
+                                    <li data-value="System error message">
+                                        System error message
+                                    </li>
+                                    <li data-value="Process interruption / Unable to complete operation">
+                                        Process interruption / Unable to complete operation
+                                    </li>
+                                    <li data-value="Performance issue / System lag">Performance issue / System lag</li>
+                                    <li data-value="Permission or account-related issue">
+                                        Permission or account-related issue
+                                    </li>
+                                    <li data-value="Notification / Email / Task trigger issue">
+                                        Notification / Email / Task trigger issue
+                                    </li>
+                                    <li data-value="Text / Language error">
+                                        Text / Language error
+                                    </li>
+                                    <li data-value="Other">
+                                        Other
+                                    </li>
+                                <?php } ?>
+
                             </ul>
                         </div>
                     </div>
@@ -255,9 +291,16 @@ function report_system_shortcode()
                         </button>
                         <div class="filter-select-list agqa-report-cat-filter">
                             <ul>
-                                <li data-value="Pending Response">Pending Response</li>
-                                <li data-value="Responded">Responded</li>
-                                <li data-value="No response Needed">No response Needed</li>
+                                <?php
+                                if (strpos($_SERVER['REQUEST_URI'], '/zh/') !== false) { ?>
+                                    <li data-value="Pending Response">未回覆</li>
+                                    <li data-value="Responded">已回覆</li>
+                                    <li data-value="No response Needed">不需回覆</li>
+                                <?php } else { ?>
+                                    <li data-value="Pending Response">Pending Response</li>
+                                    <li data-value="Responded">Responded</li>
+                                    <li data-value="No response Needed">No response Needed</li>
+                                <?php } ?>
                             </ul>
                         </div>
                     </div>
@@ -376,7 +419,7 @@ function report_system_shortcode()
                                                                                 Detail</label>
                                                                             <textarea name="respond-disabled-textarea"
                                                                                 class="respond-disabled-textarea"
-                                                                                disabled><?php echo $report_value->issue_detail; ?></textarea>
+                                                                                disabled><?php echo str_replace("\\", "", $report_value->issue_detail); ?></textarea>
                                                                         </div>
                                                                         <div class="uploaded-images">
                                                                             <span class="upload-image-label">Upload Attachments</span>
@@ -697,11 +740,11 @@ function report_system_shortcode()
                                             <div class="report-row-body-bottom">
                                                 <div class="report-row-body-detail">
                                                     <div class="report-row-body-text agqa-report-search-box">
-                                                        <p><?php echo $report_value->issue_detail; ?>
+                                                        <p><?php echo str_replace("\\", "", $report_value->issue_detail); ?>
                                                         </p>
                                                     </div>
                                                     <div class="report-row-body-text agqa-report-search-box">
-                                                        <p><?php echo $report_value->issue_detail_reply; ?></p>
+                                                        <p><?php echo str_replace("\\", "", $report_value->issue_detail_reply); ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -857,7 +900,8 @@ function report_system_shortcode()
                             var nAfter = parseInt($after1.text(), 10);
                             if (!isNaN(nAfter) && nAfter > 2) {
                                 jQuery(
-                                        '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                        '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                                    )
                                     .insertAfter($page1);
                             }
                         }
@@ -879,7 +923,8 @@ function report_system_shortcode()
                             var nBefore = parseInt($beforeLast.text(), 10);
                             if (!isNaN(nBefore) && nBefore < (totalActivePages - 1)) {
                                 jQuery(
-                                        '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                                        '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                                    )
                                     .insertBefore($lastPage);
                             }
                         }

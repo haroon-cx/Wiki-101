@@ -222,10 +222,18 @@ ob_start(); // Start output buffering
                             </button>
                             <div class="filter-select-list">
                                 <ul>
-                                    <li data-value="Active">Active</li>
-                                    <li data-value="Inactive">Inactive</li>
-                                    <li data-value="Freeze">Freeze</li>
-                                    <li data-value="Pending">Pending</li>
+                                    <?php
+                                    if (strpos($_SERVER['REQUEST_URI'], '/zh/') !== false) { ?>
+                                        <li data-value="Active">啟用</li>
+                                        <li data-value="Inactive">停用</li>
+                                        <li data-value="Freeze">凍結</li>
+                                        <li data-value="Pending">待審核</li>
+                                    <?php } else { ?>
+                                        <li data-value="Active">Active</li>
+                                        <li data-value="Inactive">Inactive</li>
+                                        <li data-value="Freeze">Freeze</li>
+                                        <li data-value="Pending">Pending</li>
+                                    <?php } ?>
                                 </ul>
                             </div>
                         </div>
@@ -238,10 +246,18 @@ ob_start(); // Start output buffering
                             </button>
                             <div class="filter-select-list">
                                 <ul>
-                                    <li data-value="Admin">Admin</li>
-                                    <li data-value="Manager">Manager</li>
-                                    <li data-value="Contributor">Contributor</li>
-                                    <li data-value="Viewer">Viewer</li>
+                                    <?php
+                                    if (strpos($_SERVER['REQUEST_URI'], '/zh/') !== false) { ?>
+                                        <li data-value="Admin">最高管理員</li>
+                                        <li data-value="Manager">一般管理員</li>
+                                        <li data-value="Contributor">編輯人員</li>
+                                        <li data-value="Viewer">檢視人員</li>
+                                    <?php } else { ?>
+                                        <li data-value="Admin">Admin</li>
+                                        <li data-value="Manager">Manager</li>
+                                        <li data-value="Contributor">Contributor</li>
+                                        <li data-value="Viewer">Viewer</li>
+                                    <?php } ?>
                                 </ul>
                             </div>
                         </div>

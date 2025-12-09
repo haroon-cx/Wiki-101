@@ -69,7 +69,8 @@ function cui_pm_add_logout_button_footer()
                                     </div>
                                 </div>
                                 <div class="cuim-profile-button-box">
-                                    <a href="#" class="cuim-edit-profile-button <?php echo $disabledActionClassFreeze; ?>">Edit Profile</a>
+                                    <a href="#" class="cuim-edit-profile-button <?php echo $disabledActionClassFreeze; ?>">Edit
+                                        Profile</a>
                                     <a href=" <?php echo $logout_url; ?>" class="cuim-logout-button">Log Out</a>
                                 </div>
                             </div>

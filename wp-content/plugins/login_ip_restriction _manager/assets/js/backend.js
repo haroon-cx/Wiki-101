@@ -606,7 +606,11 @@ jQuery(document).ready(function ($) {
     const specialChars = /[^a-zA-Z0-9 ]/;
     if (specialChars.test(value)) {
       $input.addClass("error-field-input");
-      $errorMessage.text("only A–Z, a–z, and 0–9 are allowed.");
+      if (window.location.pathname.startsWith("/zh")) {
+        $errorMessage.text("僅允許使用 A–Z、a–z 和 0–9。");
+      } else {
+        $errorMessage.text("only A–Z, a–z, and 0–9 are allowed.");
+      }
       return; // Stop further processing if special characters are found
     }
 
@@ -615,13 +619,20 @@ jQuery(document).ready(function ($) {
       $input.removeClass("error-field-input");
       $errorMessage.text("");
     } else if (len < minLength) {
-      $input.addClass("error-field-input");
-      $errorMessage.text(`Minimum ${minLength} characters required.`);
+      if (window.location.pathname.startsWith("/zh")) {
+        $errorMessage.text(`至少需要 ${minLength} 個字符。`);
+      } else {
+        $errorMessage.text(`Minimum ${minLength} characters required.`);
+      }
     } else if (len > maxLength) {
       // Truncate to max and show message
       $input.val(value.substring(0, maxLength));
       $input.addClass("error-field-input");
-      $errorMessage.text(`Maximum ${maxLength} characters allowed.`);
+      if (window.location.pathname.startsWith("/zh")) {
+        $errorMessage.text(`最多允許 ${maxLength} 個字符。`);
+      } else {
+        $errorMessage.text(`Maximum ${maxLength} characters allowed.`);
+      }
     } else {
       // Valid
       $input.removeClass("error-field-input");
@@ -666,18 +677,28 @@ jQuery(document).ready(function ($) {
       $errorMessage.text("");
     } else if (len < minLength) {
       $input.addClass("error-field-input");
-      $errorMessage.text(`Minimum ${minLength} characters required.`);
+      if (window.location.pathname.startsWith("/zh")) {
+        $errorMessage.text(`至少需要 ${minLength} 個字符。`);
+      } else {
+        $errorMessage.text(`Minimum ${minLength} characters required.`);
+      }
     } else if (len > maxLength) {
       // Truncate to max and show message
       $input.val(value.substring(0, maxLength));
       $input.addClass("error-field-input");
-      $errorMessage.text(`Maximum ${maxLength} characters allowed.`);
+      if (window.location.pathname.startsWith("/zh")) {
+        $errorMessage.text(`最多允許 ${maxLength} 個字符。`);
+      } else {
+        $errorMessage.text(`Maximum ${maxLength} characters allowed.`);
+      }
     } else if (!hasNumber || !hasLetter) {
       // Check if input contains at least one number and one letter
       $input.addClass("error-field-input");
-      $errorMessage.text(
-        "Password must contain at least one number and one letter."
-      );
+      if (window.location.pathname.startsWith("/zh")) {
+        $errorMessage.text("密碼必須至少包含一個數字和一個字母。");
+      } else {
+        $errorMessage.text("Password must contain at least one number and one letter.");
+      }
     } else {
       // Valid
       $input.removeClass("error-field-input");
@@ -693,13 +714,15 @@ jQuery(document).ready(function ($) {
         $input.removeClass("error-field");
         jQuery("button#save-profile-btn").prop("disabled", false);
         jQuery(".cuim-confrim-pasword-error").text(``);
-        // Hide error message if passwords match
       } else if (newPassword !== "" && confirmPassword !== "") {
         $input.addClass("error-field");
         jQuery("button#save-profile-btn").prop("disabled", true);
-        jQuery(".cuim-confrim-pasword-error").text(
-          `The confirmation password must match the new password.`
-        );
+
+        if (window.location.pathname.startsWith("/zh")) {
+          jQuery(".cuim-confrim-pasword-error").text("確認密碼必須與新密碼一致");
+        } else {
+          jQuery(".cuim-confrim-pasword-error").text("The confirmation password must match the new password.");
+        }
       }
     }
   });
@@ -1239,16 +1262,24 @@ jQuery(document).ready(function ($) {
     const hasNumbers = /\d/; // Regex to check for numbers
 
     if (specialChars.test(value)) {
-      $input.addClass("error-field-input");
-      $errorMessage.text("User name cannot contain special characters.");
+      if (window.location.pathname.startsWith("/zh")) {
+        $input.addClass("error-field-input");
+        $errorMessage.text("使用者名稱不可包含特殊字元。");
+      } else {
+        $errorMessage.text("User name cannot contain special characters.");
+      }
       jQuery("#save-update-user-profile").prop("disabled", true);
       return; // Stop further processing if special characters are found
     }
 
     // Check if the username contains numbers (digits)
     if (hasNumbers.test(value)) {
-      $input.addClass("error-field-input");
-      $errorMessage.text("User name can only contain English letters.");
+      if (window.location.pathname.startsWith("/zh")) {
+        $input.addClass("error-field-input");
+        $errorMessage.text("使用者名稱僅能包含英文字母。");
+      } else {
+        $errorMessage.text("User name cannot contain special characters.");
+      }
       jQuery("#save-update-user-profile").prop("disabled", true);
       return; // Stop further processing if numeric characters are found
     }
@@ -1259,12 +1290,20 @@ jQuery(document).ready(function ($) {
       $errorMessage.text("");
     } else if (len < minLength) {
       $input.addClass("error-field-input");
-      $errorMessage.text(`Minimum ${minLength} characters required.`);
+      if (window.location.pathname.startsWith("/zh")) {
+        $errorMessage.text(`至少需要 ${minLength} 個字符。`);
+      } else {
+        $errorMessage.text(`Minimum ${minLength} characters required.`);
+      }
     } else if (len > maxLength) {
       // Truncate to max and show message
       $input.val(value.substring(0, maxLength));
       $input.addClass("error-field-input");
-      $errorMessage.text(`Maximum ${maxLength} characters allowed.`);
+      if (window.location.pathname.startsWith("/zh")) {
+        $errorMessage.text(`最多允許 ${maxLength} 個字符。`);
+      } else {
+        $errorMessage.text(`Maximum ${maxLength} characters allowed.`);
+      }
     } else {
       // Valid
       $input.removeClass("error-field-input");
@@ -1314,8 +1353,12 @@ jQuery(document).ready(function ($) {
     $(".account-error").text("");
     var account = $("#manage-ip-account-field").val(); // Assuming the ID for the account field is 'account'
     if (account === "") {
+      var textTranslate = 'is required';
+      if (window.location.pathname.startsWith("/zh")) {
+        textTranslate = '';
+      }
       isValid = false;
-      $(".account-error").text("Account is required");
+      $(".account-error").text("Account " + textTranslate + ".");
       $(".manage-ip-account-field").addClass("error-field");
     }
 

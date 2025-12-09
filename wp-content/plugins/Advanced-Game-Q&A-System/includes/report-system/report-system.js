@@ -408,9 +408,11 @@ jQuery(document).ready(function ($) {
           jQuery(".respond-popup").removeClass("active");
           // alert("Successfully Submitted");
           window.location.reload();
-          const $successMsg = $(
-            '<div class="submitted-successfully">Responed Done</div>'
-          );
+          const successText = window.location.pathname.startsWith("/zh")
+            ? "保存成功。"
+            : "Saved successfully.";
+
+          const $successMsg = $(`<div class="submitted-successfully">${successText}</div>`);
           jQuery(".report-form-table-ctn.custom-table-ctn").append($successMsg);
 
           // Hide after 3 seconds

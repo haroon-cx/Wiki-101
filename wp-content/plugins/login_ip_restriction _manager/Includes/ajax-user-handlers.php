@@ -706,9 +706,9 @@ function handle_cuim_user_change_password()
     $new_password = isset($data['new-password']) ? sanitize_text_field($data['new-password']) : '';
     $confirm_password = isset($data['confirm-password']) ? sanitize_text_field($data['confirm-password']) : '';
 
-if ($new_password !== $confirm_password) {
-    wp_send_json_error(['message' => 'The new password and confirmation password do not match.']);
-}
+    if ($new_password !== $confirm_password) {
+        wp_send_json_error(['message' => 'The new password and confirmation password do not match.']);
+    }
 
     // Get the user object to verify old password
     $user = get_user_by('ID', $user_id);

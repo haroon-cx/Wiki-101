@@ -608,7 +608,11 @@ jQuery(function ($) {
 
     // Spec: JPG only, ≤ 2 MB
     if (file.size > 2 * 1024 * 1024) {
-      alert("Max size 2 MB");
+      if (window.location.pathname.startsWith("/zh")) {
+        alert("圖片大小上限為 2 MB");
+      } else {
+        alert("Max size 2 MB");
+      }
       this.value = "";
       return;
     }
@@ -619,7 +623,11 @@ jQuery(function ($) {
       file.name.toLowerCase().endsWith(".jpg") ||
       file.name.toLowerCase().endsWith(".jpeg");
     if (!isJpg) {
-      alert("Only JPG images are allowed");
+      if (window.location.pathname.startsWith("/zh")) {
+        alert("僅允許上傳 JPG 圖片");
+      } else {
+        alert("Only JPG images are allowed");
+      }
       this.value = "";
       return;
     }
@@ -641,7 +649,11 @@ jQuery(function ($) {
       var tempImg = new Image();
       tempImg.onload = function () {
         if (tempImg.width > 128 || tempImg.height > 128) {
-          alert("Image dimensions cannot exceed 128 × 128 pixels.");
+          if (window.location.pathname.startsWith("/zh")) {
+            alert("圖片尺寸不可超過 128 × 128 px。");
+          } else {
+            alert("Image dimensions cannot exceed 128 × 128 pixels.");
+          }
           $("#upload-file-button").val(""); // Reset file input
           return;
         }

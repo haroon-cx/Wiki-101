@@ -96,16 +96,26 @@ curl_close($curl);
                 </button>
                 <div class="filter-select-list">
                     <ul>
-                        <li>All</li>
-                        <li data-value="API Add">API Add</li>
-                        <li data-value="API Edit">API Edit</li>
-                        <li data-value="FAQ Add">FAQ Add</li>
-                        <li data-value="FAQ Edit">FAQ Edit</li>
+                        <?php
+                        if (strpos($_SERVER['REQUEST_URI'], '/zh/') !== false) { ?>
+                            <li data-value="all">全部</li>
+                            <li data-value="API Add">API 新增</li>
+                            <li data-value="API Edit">API 編輯</li>
+                            <li data-value="FAQ Add">FAQ 新增</li>
+                            <li data-value="FAQ Edit">FAQ 編輯</li>
+                        <?php } else { ?>
+                            <li data-value="all">>All</li>
+                            <li data-value="API Add">API Add</li>
+                            <li data-value="API Edit">API Edit</li>
+                            <li data-value="FAQ Add">FAQ Add</li>
+                            <li data-value="FAQ Edit">FAQ Edit</li>
+                        <?php } ?>
                     </ul>
                 </div>
             </div>
             <div class="filter-select">
-                <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden cuim-status" value="pending">
+                <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden cuim-status"
+                    value="pending">
                 <button class="filter-select-title select-states">
                     <span class="filter-default-text">Pending</span>
                     <!-- <span class="filter-default-text">Select A Status</span> -->
@@ -113,14 +123,23 @@ curl_close($curl);
                 </button>
                 <div class="filter-select-list">
                     <ul>
-                        <li>All</li>
-                        <li data-value="Pending">Pending</li>
-                        <li data-value="Approved">Approved</li>
-                        <li data-value="Rejected">Rejected</li>
+                        <?php
+                        if (strpos($_SERVER['REQUEST_URI'], '/zh/') !== false) { ?>
+                            <li data-value="all">全部</li>
+                            <li data-value="Pending">待審核</li>
+                            <li data-value="Approved">已通過</li>
+                            <li data-value="Rejected">已拒絕</li>
+                        <?php } else { ?>
+                            <li data-value="all">>All</li>
+                            <li data-value="Pending">Pending</li>
+                            <li data-value="Approved">Approved</li>
+                            <li data-value="Rejected">Rejected</li>
+                        <?php } ?>
                     </ul>
                 </div>
             </div>
-            <button type="submit" class="filter-select-button" id="agqa-approval-page-filter"><span>Search</span></button>
+            <button type="submit" class="filter-select-button"
+                id="agqa-approval-page-filter"><span>Search</span></button>
         </form>
     </div>
 </div>
@@ -141,7 +160,10 @@ curl_close($curl);
                     <div class="custom-table-row">
                         <div class="table-body-col cuim-type-name-approval"><?php echo $value_approval->type_name; ?></div>
                         <div class="table-body-col"><?php echo $value_approval->question; ?></div>
-                        <div class="table-body-col table-row-status <?php echo strtolower($value_approval->status); ?>"><span class="<?php echo $value_approval->status; ?>"><?php echo $value_approval->status; ?></span></div>
+                        <div class="table-body-col table-row-status <?php echo strtolower($value_approval->status); ?>">
+                            <span
+                                class="<?php echo $value_approval->status; ?>"><?php echo $value_approval->status; ?></span>
+                        </div>
                         <div class="table-body-col">
                             <?php
                             // Get the current system time (local server time) as a string
@@ -312,7 +334,8 @@ curl_close($curl);
                 jQuery(".pagination-ctn ul li.page-item").nextAll().not(".next").show();
 
                 jQuery(".pagination-ctn ul li.page-item").not(".prev, .next").each(function() {
-                    var pageNumberss = parseInt(jQuery(this).text()); // Get the number of the page
+                    var pageNumberss = parseInt(jQuery(this)
+                        .text()); // Get the number of the page
 
                     if (pageNumberss === totalActivePages && totalActivePages !== 0) {
                         // Hide all <li> items that come after the last active page
@@ -403,7 +426,9 @@ curl_close($curl);
                     if ($after1.length) {
                         var nAfter = parseInt($after1.text(), 10);
                         if (!isNaN(nAfter) && nAfter > 2) {
-                            jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                            jQuery(
+                                    '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                                )
                                 .insertAfter($page1);
                         }
                     }
@@ -424,7 +449,9 @@ curl_close($curl);
                     if ($beforeLast.length) {
                         var nBefore = parseInt($beforeLast.text(), 10);
                         if (!isNaN(nBefore) && nBefore < (totalActivePages - 1)) {
-                            jQuery('<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>')
+                            jQuery(
+                                    '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+                                )
                                 .insertBefore($lastPage);
                         }
                     }

@@ -32,11 +32,11 @@ jQuery(document).ready(function ($) {
     // Handle dropdown item click
     $dropdownList.on("click", "li", function (e) {
       e.stopPropagation();
-      const selectedVal = $(this).text().trim();
-
+      const selectedVal = $(this).data('value').trim();
+      const selectedTextVal = $(this).text().trim();
       $selectedLabel
         .html(
-          `<span>${selectedVal}</span><span class="agqa-cross-icon"></span>`
+          `<span>${selectedTextVal}</span><span class="agqa-cross-icon"></span>`
         )
         .css({ display: "flex", alignItems: "center", gap: "8px" })
         .show();
@@ -317,6 +317,10 @@ jQuery(document).ready(function ($) {
           }
           // alert(labelText)
           if ($fieldWrapper.find(".error-message").length === 0) {
+            var textTranslate = 'is required';
+            if (window.location.pathname.startsWith("/zh")) {
+              textTranslate = '';
+            }
             if (labelText == "What problem did you encounter?") {
               $fieldWrapper.append(
                 `<div class="error-message">Please select a report type</div>`
@@ -335,12 +339,13 @@ jQuery(document).ready(function ($) {
               );
             } else if (labelText == "Details") {
               $fieldWrapper.append(
-                `<div class="error-message">Content is required.</div>`
+                '<div class="error-message">Content ' + textTranslate + '.</div>'
               );
             } else {
               $fieldWrapper.append(
-                `<div class="error-message">${labelText} is required</div>`
+                `<div class="error-message">${labelText} ${textTranslate}</div>`
               );
+
             }
           }
         }
@@ -366,8 +371,12 @@ jQuery(document).ready(function ($) {
             .trim();
 
           if ($fieldWrapper.find(".error-message").length === 0) {
+            var textTranslate = 'is required';
+            if (window.location.pathname.startsWith("/zh")) {
+              textTranslate = '';
+            }
             $fieldWrapper.append(
-              `<div class="error-message">${labelText} is required</div>`
+              `<div class="error-message">${labelText} ${textTranslate}</div>`
             );
           }
         }
@@ -396,6 +405,7 @@ jQuery(document).ready(function ($) {
             .trim();
 
           if ($field.is(":hidden") && $field.hasClass("selected-values")) {
+
             // Custom select hidden input
             $fieldWrapper
               .find(".agqa-popup-form-button")
@@ -407,6 +417,10 @@ jQuery(document).ready(function ($) {
           }
           // alert(labelText)
           if ($fieldWrapper.find(".error-message").length === 0) {
+            var textTranslate = 'is required';
+            if (window.location.pathname.startsWith("/zh")) {
+              textTranslate = '';
+            }
             if (labelText == "What problem did you encounter?") {
               $fieldWrapper.append(
                 `<div class="error-message">Please select a report type</div>`
@@ -425,12 +439,13 @@ jQuery(document).ready(function ($) {
               );
             } else if (labelText == "Details") {
               $fieldWrapper.append(
-                `<div class="error-message">Content is required.</div>`
+                `<div class="error-message">Content  ' + textTranslate + '.</div>`
               );
             } else {
               $fieldWrapper.append(
-                `<div class="error-message">${labelText} is required</div>`
+                `<div class="error-message">${labelText} ${textTranslate}</div>`
               );
+
             }
           }
         }
@@ -699,14 +714,12 @@ jQuery(document).ready(function ($) {
       // Create new field
       const newField = $(`
             <div class="form-field custom-field-item">
-                <input type="hidden" name="custom-label-${
-                  count + 1
-                }" value="${value}">
+                <input type="hidden" name="custom-label-${count + 1
+        }" value="${value}">
                 <label>${value}</label>
                 <div class="custom-append-field">
-                    <input type="text" name="custom-field-${
-                      count + 1
-                    }" placeholder="${value}">
+                    <input type="text" name="custom-field-${count + 1
+        }" placeholder="${value}">
                     <button type="button" class="edit-field-btn"></button>
                     <button type="button" class="remove-field-btn"></button>
                 </div>
@@ -1980,8 +1993,8 @@ jQuery(document).ready(function ($) {
         if ($errorMessage.length === 0) {
           $(
             '<div id="error-message">Max ' +
-              maxLength +
-              " characters allowed.</div>"
+            maxLength +
+            " characters allowed.</div>"
           ).insertAfter($input); // Insert the error message after the input
         }
       }

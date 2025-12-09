@@ -175,8 +175,14 @@ function merged_api_ui_shortcode()
                                     </button>
                                     <div class="filter-select-list">
                                         <ul>
-                                            <li>Disabled</li>
-                                            <li>Enabled</li>
+                                            <?php
+                                            if (strpos($_SERVER['REQUEST_URI'], '/zh/') !== false) { ?>
+                                                <li data-value="Disabled">停用</li>
+                                                <li data-value="Enabled">啟用</li>
+                                            <?php } else { ?>
+                                                <li data-value="Disabled">Disabled</li>
+                                                <li data-value="Enabled">Enabled</li>
+                                            <?php } ?>
                                         </ul>
                                     </div>
                                 </div>
