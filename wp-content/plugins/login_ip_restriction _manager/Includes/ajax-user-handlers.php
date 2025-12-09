@@ -32,16 +32,32 @@ function handle_add_or_update_user()
 
     // Basic validation
     if ($new_password !== $confirm_password) {
-        wp_send_json_error(['message' => 'Passwords does not match.']);
+        $message = (isset($_POST['lang']) && $_POST['lang'] === 'zh')
+            ? '兩次輸入的密碼不一致。'
+            : 'Passwords do not match.';
+
+        wp_send_json_error(['message' => $message]);
     }
     if (!is_email($email)) {
-        wp_send_json_error(['message' => 'Invalid email address.']);
+        $message = (isset($_POST['lang']) && $_POST['lang'] === 'zh')
+            ? '電子郵箱地址無效。'
+            : 'Invalid email address.';
+
+        wp_send_json_error(['message' => $message]);
     }
     if (username_exists($account)) {
-        wp_send_json_error(['message' => 'This username is already taken.']);
+        wp_send_json_error([
+            'message' => (isset($_POST['lang']) && $_POST['lang'] === 'zh')
+                ? '此用戶名已被使用。'
+                : 'This username is already taken.'
+        ]);
     }
     if (email_exists($email)) {
-        wp_send_json_error(['message' => 'Email already exists.']);
+        wp_send_json_error([
+            'message' => (isset($_POST['lang']) && $_POST['lang'] === 'zh')
+                ? '此電子郵箱已被註冊。'
+                : 'Email already exists.'
+        ]);
     }
 
     // Map role
@@ -123,9 +139,18 @@ function handle_add_or_update_user()
     }
 
     // All good
-    wp_send_json_success([
-        'message' => 'User Account Created Successfully.<br>A verification email has been sent to your registered email address.Please check your inbox.'
-    ]);
+    // Language detect karo jo frontend se bheja gaya hai
+    $current_lang = isset($_POST['lang']) && $_POST['lang'] === 'zh' ? 'zh' : 'en';
+
+    if ($current_lang === 'zh') {
+        wp_send_json_success([
+            'message' => '用戶帳戶創建成功。<br>驗證郵件已發送到您的註冊郵箱，請檢查收件箱。'
+        ]);
+    } else {
+        wp_send_json_success([
+            'message' => 'User Account Created Successfully.<br>A verification email has been sent to your registered email address. Please check your inbox.'
+        ]);
+    }
 }
 
 // Map the selected form role to WP role
@@ -751,8 +776,17 @@ function handle_cuim_user_change_password()
     }
 
     // Return success message
-    wp_send_json_success(['message' => 'Password reset successful.']);
-    echo json_encode($response);
+    $lang = (isset($_POST['lang']) && $_POST['lang'] === 'zh') ? 'zh' : 'en';
+
+    $message = ($lang === 'zh')
+        ? '密碼重設成功'
+        : 'Password reset successful.';
+
+    wp_send_json_success(['message' => $message]);
+
+    // echo json_encode($response);  → Yeh line hata do bhai!
+    // wp_send_json_success() already JSON output deta hai + script stop kar deta hai
+    // Double echo karne se error aata hai
 }
 
 /** 

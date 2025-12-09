@@ -319,7 +319,7 @@ jQuery(document).ready(function ($) {
           if ($fieldWrapper.find(".error-message").length === 0) {
             var textTranslate = 'is required';
             if (window.location.pathname.startsWith("/zh")) {
-              textTranslate = '';
+              textTranslate = '為必填項目';
             }
             if (labelText == "What problem did you encounter?") {
               $fieldWrapper.append(
@@ -343,7 +343,7 @@ jQuery(document).ready(function ($) {
               );
             } else {
               $fieldWrapper.append(
-                `<div class="error-message">${labelText} ${textTranslate}</div>`
+                `<div class="error-message">${labelText}${textTranslate}</div>`
               );
 
             }
@@ -373,10 +373,10 @@ jQuery(document).ready(function ($) {
           if ($fieldWrapper.find(".error-message").length === 0) {
             var textTranslate = 'is required';
             if (window.location.pathname.startsWith("/zh")) {
-              textTranslate = '';
+              textTranslate = '為必填項目';
             }
             $fieldWrapper.append(
-              `<div class="error-message">${labelText} ${textTranslate}</div>`
+              `<div class="error-message">${labelText}${textTranslate}</div>`
             );
           }
         }
@@ -419,7 +419,7 @@ jQuery(document).ready(function ($) {
           if ($fieldWrapper.find(".error-message").length === 0) {
             var textTranslate = 'is required';
             if (window.location.pathname.startsWith("/zh")) {
-              textTranslate = '';
+              textTranslate = '為必填項目';
             }
             if (labelText == "What problem did you encounter?") {
               $fieldWrapper.append(
@@ -443,7 +443,7 @@ jQuery(document).ready(function ($) {
               );
             } else {
               $fieldWrapper.append(
-                `<div class="error-message">${labelText} ${textTranslate}</div>`
+                `<div class="error-message">${labelText}${textTranslate}</div>`
               );
 
             }
@@ -1960,7 +1960,7 @@ jQuery(document).ready(function ($) {
   });
 
   $(
-    'input[type="text"], input[type="search"], .faq-template #filter-search'
+    'input[type="search"], .faq-template #filter-search'
   ).on("input", function () {
     var maxLength = 200; // Default limit for most selectors
     var $input = $(this);
@@ -2101,9 +2101,16 @@ jQuery(document).ready(function ($) {
       $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
       // Append error message if it doesn't already exist
       if ($errorMessage.length === 0) {
-        $(
-          '<div id="error-message">Max 200 characters allowed.</div>'
-        ).insertAfter($input); // Insert the error message after the input
+        if (window.location.pathname.startsWith("/zh")) {
+          $(
+            '<div id="error-message">最多只能輸入 200 個字符</div>'
+          ).insertAfter($input);
+        } else {
+          $(
+            '<div id="error-message">Max 200 characters allowed.</div>'
+          ).insertAfter($input); // Insert the error message after the input
+        }
+
       }
     } else {
       $formField.removeClass("error-field-input"); // Remove 'error' class if input is valid
@@ -2127,9 +2134,12 @@ jQuery(document).ready(function ($) {
       $formField.addClass("error-field-input"); // Add 'error' class to the parent .form-field
       // Append error message if it doesn't already exist
       if ($errorMessage.length === 0) {
-        $(
-          '<div id="error-message">Max 100 characters allowed.</div>'
-        ).insertAfter($input); // Insert the error message after the input
+        const maxCharText = window.location.pathname.startsWith("/zh")
+          ? "最多只能輸入 100 個字符。"
+          : "Max 100 characters allowed.";
+
+        $('<div id="error-message">' + maxCharText + '</div>')
+          .insertAfter($input);
       }
     } else {
       $formField.removeClass("error-field-input"); // Remove 'error' class if input is valid

@@ -40,9 +40,12 @@ jQuery(document).ready(function ($) {
       },
       success: function (response) {
         if (response.includes("Success")) {
-          const $successMsg = $(
-            '<div class="submitted-successfully">Successfully Submitted</div>'
-          );
+          const successText = window.location.pathname.startsWith("/zh")
+            ? "提交成功"
+            : "Successfully Submitted";
+
+          const $successMsg = $(`<div class="submitted-successfully">${successText}</div>`);
+
           $form.append($successMsg);
 
           // Hide after 3 seconds

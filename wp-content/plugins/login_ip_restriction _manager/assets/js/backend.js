@@ -25,6 +25,7 @@ jQuery(document).ready(function ($) {
       type: "POST",
       data: {
         action: "add_or_update_user",
+        lang: window.location.pathname.startsWith("/zh") ? "zh" : "en",
         form_data: formData, // Pass the form data to the server
         nonce: nonce,
       },
@@ -102,9 +103,11 @@ jQuery(document).ready(function ($) {
         // Check if the response contains success
         if (response.success) {
           // If successful, show a success message
-          const $successMsg = $(
-            '<div class="submitted-successfully">Edit Successful</div>'
-          );
+          const successText = window.location.pathname.startsWith("/zh")
+            ? "編輯成功"
+            : "Edit Successful";
+
+          const $successMsg = $(`<div class="submitted-successfully">${successText}</div>`);
           $form.append($successMsg);
 
           // Hide after 3 seconds
@@ -196,17 +199,27 @@ jQuery(document).ready(function ($) {
         // alert(response);
 
         // Check if the response contains success
-        if (response.success) {
-          // If successful, show a success message
-          const $successMsg = $(
-            '<div class="submitted-successfully">' +
-            "Resend Verification Email Successful<br>" +
-            "Verification email has been resent to your<br>" +
-            "Registered email address. Please check your inbox." +
-            "</div>"
-          );
 
+        if (response.success) {
+          // English Version (clean & natural)
+          const englishMsg = "submitted-successfully" + "<br>Resend Verification Email Successful<br>" +
+            "Verification email has been resent to your<br>" +
+            "Registered email address. Please check your inbox.";
+
+          // Chinese Traditional Version (bilkul native feel)
+          const chineseMsg = "提交-成功" + "重新發送驗證郵件成功<br>" +
+            "驗證電子郵件已重新傳送至您的<br>" +
+            "註冊的電子郵件地址。請檢查您的收件匣。";
+
+          // Auto detect language
+          const finalMessage = window.location.pathname.startsWith("/zh")
+            ? chineseMsg
+            : englishMsg;
+
+          // Show the message
+          const $successMsg = $(`<div class="submitted-successfully">${finalMessage}</div>`);
           $form.append($successMsg);
+
           // Hide after 3 seconds
           setTimeout(function () {
             $successMsg.fadeOut(400, function () {
@@ -267,14 +280,23 @@ jQuery(document).ready(function ($) {
       success: function (response) {
         // alert(response);
         if (response.success) {
-          const $successMsg = $(
-            '<div class="submitted-successfully created-successfully">Reset Password Successful<br>Reset link sent. Please check your account email. You can request another one in 60 seconds. </div>'
-          );
+          const isChinese = window.location.pathname.startsWith("/zh");
+
+          const successText = isChinese
+            ? "密碼重設成功！<br>重設連結已發送到您的郵箱。<br>請查收郵件（60 秒內不可重複發送）。"
+            : "Reset Password Successful<br>Reset link sent. Please check your account email.<br>You can request another one in 60 seconds.";
+
+          const $successMsg = $(`
+        <div class="submitted-successfully created-successfully">
+            ${successText}
+        </div>
+    `);
+
           $("body").append($successMsg);
-          setTimeout(
-            () => $successMsg.fadeOut(400, () => $successMsg.remove()),
-            3000
-          );
+
+          setTimeout(() => {
+            $successMsg.fadeOut(400, () => $successMsg.remove());
+          }, 3000);
         } else {
           const $errorMsg = $(
             `<div class="submitted-unsuccessfully">${response.data.message}</div>`
@@ -813,47 +835,90 @@ jQuery(document).ready(function ($) {
    * custom field validation
    */
 
+  // $(".cuim-manage-user-validation-50").on("input", function () {
+  //   var maxLengthInputUserCustom = 50;
+  //   var $input = $(this);
+  //   var $errorMessage = $input.next("#error-message");
+  //   var $input = $input.closest(".form-field");
+  //   // Check if input contains special characters (anything that's not a letter, number, or space)
+  //   var specialChars = /[^a-zA-Z0-9 ]/;
+
+  //   jQuery("#save-custom-field").prop("disabled", false);
+
+  //   // Check for special characters
+  //   if (specialChars.test($input.val())) {
+  //     $input.addClass("error-field-input"); // Add 'error' class to the parent .form-field
+  //     // Append error message if it doesn't already exist
+  //     alert('dfdfdf');
+  //     if ($errorMessage.length === 0) {
+  //       jQuery("#save-custom-field").prop("disabled", true);
+  //       $(
+  //         '<div id="error-message" class="cuim-validation-error">Symbols are not allowed.</div>'
+  //       ).insertAfter($input); // Insert the error message after the input
+  //     }
+  //   } else if ($input.val().length > maxLengthInputUserCustom) {
+  //     // If input exceeds max length, truncate it and show error
+  //     $input.val($input.val().substring(0, maxLengthInputUserCustom)); // Truncate the value to maxLength
+  //     $input.addClass("error-field-input"); // Add 'error' class to the parent .form-field
+  //     // Append error message if it doesn't already exist
+  //     if ($errorMessage.length === 0) {
+  //       alert('dfdf')
+  //       $(
+  //         '<div id="error-message" class="cuim-validation-error">Max 50 characters allowed.</div>'
+  //       ).insertAfter($input); // Insert the error message after the input
+  //     }
+  //   } else {
+  //     // Valid input
+  //     $input.removeClass("error-field-input"); // Remove 'error' class if input is valid
+  //     // Remove the error message if input length is valid
+  //     if ($errorMessage.length > 0) {
+  //       $errorMessage.remove();
+  //     }
+  //   }
+  // });
   $(".cuim-manage-user-validation-50").on("input", function () {
     var maxLengthInputUserCustom = 50;
+    var $inputField = $(this);                                // ← Actual input field
+    var $parent = $inputField.closest(".form-field");         // ← Parent div for styling
+    var $errorMessage = $inputField.next("#error-message");   // ← Error message after input
 
-    var $input = $(this);
-    var $errorMessage = $input.next("#error-message");
-    var $input = $input.closest(".form-field");
-    // Check if input contains special characters (anything that's not a letter, number, or space)
+    var value = $inputField.val();  // ← Yeh sahi value milegi ab
     var specialChars = /[^a-zA-Z0-9 ]/;
 
+    // Default: button enable
     jQuery("#save-custom-field").prop("disabled", false);
 
-    // Check for special characters
-    if (specialChars.test($input.val())) {
-      $input.addClass("error-field-input"); // Add 'error' class to the parent .form-field
-      // Append error message if it doesn't already exist
-      if ($errorMessage.length === 0) {
-        jQuery("#save-custom-field").prop("disabled", true);
-        $(
-          '<div id="error-message" class="cuim-validation-error">Symbols are not allowed.</div>'
-        ).insertAfter($input); // Insert the error message after the input
-      }
-    } else if ($input.val().length > maxLengthInputUserCustom) {
-      // If input exceeds max length, truncate it and show error
-      $input.val($input.val().substring(0, maxLengthInputUserCustom)); // Truncate the value to maxLength
-      $input.addClass("error-field-input"); // Add 'error' class to the parent .form-field
-      // Append error message if it doesn't already exist
-      if ($errorMessage.length === 0) {
-        $(
-          '<div id="error-message" class="cuim-validation-error">Max 50 characters allowed.</div>'
-        ).insertAfter($input); // Insert the error message after the input
-      }
-    } else {
-      // Valid input
-      $input.removeClass("error-field-input"); // Remove 'error' class if input is valid
-      // Remove the error message if input length is valid
-      if ($errorMessage.length > 0) {
-        $errorMessage.remove();
-      }
+    // Remove old error message first
+    if ($errorMessage.length > 0) {
+      $errorMessage.remove();
+    }
+
+    // 1. Special characters check
+    if (specialChars.test(value)) {
+      $parent.addClass("error-field-input");
+      jQuery("#save-custom-field").prop("disabled", true);
+
+      $('<div id="error-message" class="cuim-validation-error">' +
+        (window.location.pathname.startsWith("/zh") ? "不允許使用符號。" : "Symbols are not allowed.") +
+        '</div>').insertAfter($inputField);
+
+    }
+    // 2. Max length check
+    else if (value.length > maxLengthInputUserCustom) {
+      $inputField.val(value.substring(0, maxLengthInputUserCustom)); // Truncate
+      $parent.addClass("error-field-input");
+      jQuery("#save-custom-field").prop("disabled", true);
+
+      $('<div id="error-message" class="cuim-validation-error">' +
+        (window.location.pathname.startsWith("/zh") ? "最多只能輸入 50 個字符。" : "Max 50 characters allowed.") +
+        '</div>').insertAfter($inputField);
+    }
+    // 3. Valid input
+    else {
+      $parent.removeClass("error-field-input");
+      jQuery("#save-custom-field").prop("disabled", false);
     }
   });
-
   /**
    * delete script
    */
@@ -881,9 +946,13 @@ jQuery(document).ready(function ($) {
 
         if (response.success) {
           $("div#custom-faq-field-popup").removeClass("active");
-          const $successMsg = $(
-            `<div class="submitted-successfully">The user successfully deleted.</div>`
-          );
+
+          const deleteSuccessMsg = window.location.pathname.startsWith("/zh")
+            ? "用戶已成功刪除"
+            : "The user successfully deleted.";
+
+          const $successMsg = $(`<div class="submitted-successfully">${deleteSuccessMsg}</div>`);
+
           jQuery(".custom-table-body").append($successMsg);
           if (window.location.pathname.startsWith("/zh")) {
             window.location.href = "/zh/manage-user/";
@@ -1065,6 +1134,7 @@ jQuery(document).ready(function ($) {
       type: "POST",
       data: {
         action: "cuim_user_change_password",
+        lang: window.location.pathname.startsWith("/zh") ? "zh" : "en",
         form_data: formData, // Pass the form data to the server
         nonce: nonce,
       },
@@ -1355,7 +1425,7 @@ jQuery(document).ready(function ($) {
     if (account === "") {
       var textTranslate = 'is required';
       if (window.location.pathname.startsWith("/zh")) {
-        textTranslate = '';
+        textTranslate = '是必須的';
       }
       isValid = false;
       $(".account-error").text("Account " + textTranslate + ".");
@@ -2285,7 +2355,9 @@ jQuery(document).ready(function ($) {
       $input.val($input.val().substring(0, maxLength));
       $errorMessage
         .text(
-          "Maximum length for email address is 254 characters. Please shorten your input."
+          window.location.pathname.startsWith("/zh")
+            ? "電子郵箱地址最多只能輸入 254 個字符，請縮短您的輸入。"
+            : "Maximum length for email address is 254 characters. Please shorten your input."
         )
         .show();
     } else {
