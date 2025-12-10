@@ -1,687 +1,688 @@
 #manage-user-search {
-    text-transform: capitalize;
-    min-width: 409px;
+  text-transform: capitalize;
+  min-width: 409px;
 }
 
-
 .manage-user-template .agqa-cross-icon {
-    display: none;
+  display: none;
 }
 
 .manage-user-template .filter-selected-text {
-    background-color: transparent;
-    padding: 0;
-    pointer-events: none;
+  background-color: transparent;
+  padding: 0;
+  pointer-events: none;
 }
 
 .filter-container button.filter-select-title.select-states {
-    background-image: url(../image/select-states-icon.svg);
-    background-size: 22px;
+  background-image: url(../image/select-states-icon.svg);
+  background-size: 22px;
 }
 
 .filter-container button.filter-select-title.select-roles {
-    background-image: url(../image/select-role-icon.svg);
-    background-size: 20px;
+  background-image: url(../image/select-role-icon.svg);
+  background-size: 20px;
 }
 
 .filter-container button.filter-select-title.select-companies {
-    background-image: url(../image/company-icon.svg);
-    background-size: 20px;
+  background-image: url(../image/company-icon.svg);
+  background-size: 20px;
 }
 
 .date-field {
-    position: relative;
-    border-radius: 16px;
-    max-width: 311px;
+  position: relative;
+  border-radius: 16px;
+  max-width: 311px;
 }
 
 .select-date-picker {
-    margin-bottom: 0;
-    background-image: none;
+  margin-bottom: 0;
+  background-image: none;
 }
 
 form .select-date-picker,
 input[type="date"],
 form input[type="date"] {
-    padding-left: 65px !important;
+  padding-left: 65px !important;
 }
 
 .date-field .select-date-picker {
-    background-color: transparent !important;
-    border: none !important;
-    height: 100%;
-    padding: 12px 54px 12px 65px;
-    box-sizing: border-box;
-    font-size: 16px;
-    /* Add font size if necessary */
+  background-color: transparent !important;
+  border: none !important;
+  height: 100%;
+  padding: 12px 54px 12px 65px;
+  box-sizing: border-box;
+  font-size: 16px;
+  /* Add font size if necessary */
 }
 
 .drp-calendar.left thead tr:nth-child(1) th:last-child,
 .drp-calendar.right thead tr:nth-child(1) th:first-child {
-    display: none;
+  display: none;
 }
 
 .select-date-picker {
-    color: #747474;
-    font-size: 14px;
-    /* Placeholder font size */
+  color: #747474;
+  font-size: 14px;
+  /* Placeholder font size */
 }
 
 .date-field input[type="date"]::-webkit-input-placeholder,
 .select-date-picker::-webkit-input-placeholder {
-    color: #747474 !important;
+  color: #747474 !important;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: auto;
-    height: auto;
-    color: transparent;
-    background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  color: transparent;
+  background: transparent;
 }
 
 input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-clear-button {
-    z-index: -10;
+  z-index: -10;
 }
 
 input[type="date"]::-webkit-input-placeholder {
-    z-index: 99;
+  z-index: 99;
 }
 
 input[type="date"],
 .calendar-icon {
-    background-image: url(../image/calender-icon.png);
-    background-size: 19px;
-    background-repeat: no-repeat;
-    background-position: center;
+  background-image: url(../image/calender-icon.png);
+  background-size: 19px;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .calendar-icon {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 25px;
-    z-index: 1;
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    margin-block: auto;
-    pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 25px;
+  z-index: 1;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-block: auto;
+  pointer-events: none;
 }
 
 .manage-user-template .filter-right-area {
-    max-width: 25%;
+  max-width: 25%;
 }
 
 .filter-right-area .add-button {
-    width: max-content;
+  width: max-content;
 }
 
 .manage-user-template .filter-container {
-    align-items: flex-start;
+  align-items: flex-start;
 }
 
 input[type="date"]::placeholder {
-    color: #747474 !important;
+  color: #747474 !important;
 }
 
 .manage-user-template .filter-area form {
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .custom-table-ctn,
 table {
-    color: white;
-    border: 1px solid #747474;
-    border-radius: 8px;
+  color: white;
+  border: 1px solid #747474;
+  border-radius: 8px;
 }
 
 .custom-table-head,
 thead {
-    padding: 4px 18px;
-    font-size: 20px;
-    display: flex;
+  padding: 4px 18px;
+  font-size: 20px;
+  display: flex;
 }
 
 .table-head-col,
 thead th,
 .table-body-col,
 tbody td {
-    padding: 10px;
+  padding: 10px;
 }
 
 .table-head-col,
 thead th,
 td,
 .table-body-col {
-    min-width: 9.017%;
-    box-sizing: border-box;
+  min-width: 9.017%;
+  box-sizing: border-box;
 }
 
 .table-head-col:last-child {
-    text-align: center;
+  text-align: center;
 }
 
 .custom-table-row,
 tr {
-    background-color: #1D1C25;
-    display: flex;
-    align-items: center;
-    border-radius: 8px;
+  background-color: #1d1c25;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
 }
 
 .custom-table-row:nth-child(n + 2) {
-    margin-top: 24px;
+  margin-top: 24px;
 }
 
 .custom-table-body {
-    padding: 24px 18px;
-    border-top: .5px solid #747474;
+  padding: 24px 18px;
+  border-top: 0.5px solid #747474;
 }
 
 .table-body-col-mail a {
-    color: white;
+  color: white;
 }
 
 .table-body-col-userId a {
-    color: #45AFFF;
+  color: #45afff;
 }
 
 .table-body-col-buttons #custom-faq-field-popup-inner .no-cancel:hover {
-    color: white;
+  color: white;
 }
 
 .table-body-col-buttons #custom-faq-field-popup-inner .no-cancel:hover,
 .table-body-col-buttons #custom-faq-field-popup-inner #yes-cancel:hover {
-    background-color: rgb(98, 68, 145) !important;
+  background-color: rgb(98, 68, 145) !important;
 }
 
 .table-body-col-buttons #custom-faq-field-popup-inner #yes-cancel {
-    background-color: #7644CE !important;
+  background-color: #7644ce !important;
 }
 
 .table-body-col-buttons button:hover {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
 
 .table-body-col-buttons button,
 .table-body-col-buttons button:hover {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
 
 .table-body-col-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
 .table-body-col-buttons button,
 .table-body-col-buttons .approval-view-button,
 .table-body-col-buttons .approval-edit-button,
 .table-body-col-buttons a.manage-user-edit-button {
-    padding: 0 !important;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-repeat: no-repeat;
-    background-position: center;
+  padding: 0 !important;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .login-history-icon,
 .approval-view-button {
-    background-image: url(../image/login-history-icon.svg);
-    background-size: 18px;
+  background-image: url(../image/login-history-icon.svg);
+  background-size: 18px;
 }
 
 .manage-user-edit-button,
 .approval-edit-button {
-    background-image: url(../image/edit-icon.svg);
+  background-image: url(../image/edit-icon.svg);
 }
 
 .delete-user-button {
-    background-image: url(../image/delete-icon.svg);
-    background-size: 16px;
+  background-image: url(../image/delete-icon.svg);
+  background-size: 16px;
 }
 
 .table-row-status span {
-    margin-inline: auto;
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 16px;
-    font-size: 12px;
+  margin-inline: auto;
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
 }
 
 .table-row-status.active span,
 .approved span {
-    background-color: #52C41A;
+  background-color: #52c41a;
 }
 
 .table-row-status.inactive span {
-    background-color: #FF4D4F;
+  background-color: #ff4d4f;
 }
 
 .table-row-status.freeze span {
-    background-color: #1677FF;
+  background-color: #1677ff;
 }
 
 .table-row-status.pending span {
-    background-color: #D46B08;
+  background-color: #d46b08;
 }
 
 .table-head-col:nth-child(1),
 .table-body-col:nth-child(1),
 .table-head-col:nth-child(6),
 .table-body-col:nth-child(6) {
-    min-width: 13.525%;
+  min-width: 13.525%;
 }
 
 .manage-user-table .table-head-col:nth-child(1),
 .manage-user-table .table-body-col:nth-child(1) {
-    min-width: 20.615%;
+  min-width: 20.615%;
 }
 
 .manage-user-table .table-head-col:nth-child(2),
 .manage-user-table .table-body-col:nth-child(2) {
-    text-align: center;
+  text-align: center;
 }
 
 .manage-user-table .table-head-col:nth-child(2),
 .manage-user-table .table-body-col:nth-child(2),
 .manage-user-table .table-head-col:nth-child(3),
 .manage-user-table .table-body-col:nth-child(3) {
-    min-width: 8.246%;
+  min-width: 8.246%;
 }
 
 .manage-user-table .table-head-col:nth-child(4),
 .manage-user-table .table-body-col:nth-child(4) {
-    min-width: 13.744%;
+  min-width: 13.744%;
 }
 
 .manage-user-table .table-head-col:nth-child(5),
 .manage-user-table .table-body-col:nth-child(5) {
-    width: 17.867%;
+  width: 17.867%;
 }
 
 .table-head-col:nth-child(4),
 .table-body-col:nth-child(4) {
-    min-width: 15.05%;
+  min-width: 15.05%;
 }
 
 .table-head-col:nth-child(5),
 .table-body-col:nth-child(5) {
-    min-width: 18.5%;
+  min-width: 18.5%;
 }
 
 .manage-user-table .table-head-col:nth-child(6),
 .manage-user-table .table-body-col:nth-child(6) {
-    min-width: 11%;
+  min-width: 11%;
 }
 
 .manage-user-table .table-head-col:nth-child(7),
 .manage-user-table .table-body-col:nth-child(7) {
-    min-width: 11.022%;
+  min-width: 11.022%;
 }
 
 .manage-user-table .table-head-col:nth-child(8),
 .manage-user-table .table-body-col:nth-child(8) {
-    min-width: 8.22%;
+  min-width: 8.22%;
 }
 
 .table-head-col:nth-child(7),
 .table-body-col:nth-child(7) {
-    min-width: 12.022%;
-    text-align: center;
+  min-width: 12.022%;
+  text-align: center;
 }
 
 .popup-head {
-    display: flex;
-    align-items: flex-end;
-    gap: 16px;
-    margin-bottom: 16px;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .popup-head h2 {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .userName {
-    color: #747474;
-    position: relative;
-    top: -3px;
+  color: #747474;
+  position: relative;
+  top: -3px;
 }
 
 .user-history-records {
-    position: relative;
-    border-radius: 8px;
-    color: white;
+  position: relative;
+  border-radius: 8px;
+  color: white;
 }
 
 .user-history-records-inner,
 .user-history-record-lists {
-    height: 42.745vh;
+  height: 42.745vh;
 }
 
 .user-history-records-inner {
-    overflow-y: auto;
+  overflow-y: auto;
 }
 
 .user-history-record-list,
 .user-history-record-head {
-    display: flex;
+  display: flex;
 }
 
 .user-history-record-head {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    margin-inline: auto;
-    height: 58px;
-    width: calc(100% - 36px);
-    box-sizing: border-box;
-    border-bottom: .5px solid #747474;
-    box-sizing: border-box;
-    align-items: center;
-    background-color: #515157;
-    border-radius: 8px 8px 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  height: 58px;
+  width: calc(100% - 36px);
+  box-sizing: border-box;
+  border-bottom: 0.5px solid #747474;
+  box-sizing: border-box;
+  align-items: center;
+  background-color: #515157;
+  border-radius: 8px 8px 0 0;
 }
 
 .user-history-record-head span {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    font-size: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
 }
 
 .user-history-record-head {
-    padding: 4px 18px;
-    border-radius: 8px 8px 0 0;
+  padding: 4px 18px;
+  border-radius: 8px 8px 0 0;
 }
 
 .user-history-record-lists {
-    border-radius: 0 0 8px 8px;
-    margin-right: 4px;
+  border-radius: 0 0 8px 8px;
+  margin-right: 4px;
 }
 
 .user-history-record-lists-inner {
-    padding-top: 58px;
-    background-color: #515157;
-    border-radius: 8px;
+  padding-top: 58px;
+  background-color: #515157;
+  border-radius: 8px;
 }
 
 .user-history-records span {
-    padding: 10px;
-    box-sizing: border-box;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .user-history-record-lists span {
-    display: inline-block;
+  display: inline-block;
 }
 
 .login-history-popup-inner {
-    padding: 16px 0 27px;
+  padding: 16px 0 27px;
 }
 
 .popup-head,
 .history-record-buttons {
-    padding-inline: 18px;
+  padding-inline: 18px;
 }
 
 .user-history-records-inner {
-    margin-inline: 18px 4px;
+  margin-inline: 18px 4px;
 }
 
 .user-history-record-head::before,
 .user-history-record-head::after,
 .user-history-records-inner::before,
 .user-history-records-inner::after {
-    content: "";
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background-image: url(../image/corner-shape.svg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-image: url(../image/corner-shape.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 .user-history-record-head::before {
-    top: 0;
-    left: 0;
-    transform: rotate(90deg);
+  top: 0;
+  left: 0;
+  transform: rotate(90deg);
 }
 
 .user-history-record-head::after {
-    top: 0;
-    right: 0;
-    transform: rotate(180deg);
+  top: 0;
+  right: 0;
+  transform: rotate(180deg);
 }
 
 .user-history-records-inner::before {
-    bottom: 0;
-    left: 18px;
+  bottom: 0;
+  left: 18px;
 }
 
 .user-history-records-inner::after {
-    bottom: 0;
-    right: 18px;
-    transform: rotate(270deg);
+  bottom: 0;
+  right: 18px;
+  transform: rotate(270deg);
 }
 
 .user-ip-title,
 .user-ip {
-    width: 44%;
+  width: 44%;
 }
 
 .user-login-time-title,
 .user-login-time {
-    width: 40%;
+  width: 40%;
 }
 
 .user-number-title,
 .user-number {
-    width: 80px;
+  width: 80px;
 }
 
 .user-history-record-list {
-    padding-inline: 18px;
-    font-size: 16px;
+  padding-inline: 18px;
+  font-size: 16px;
 }
 
 .login-history-popup-inner .close-button:hover {
-    border-color: rgb(98, 68, 145);
-    color: #fff;
+  border-color: rgb(98, 68, 145);
+  color: #fff;
 }
 
 .login-history-popup-inner .button {
-    background-color: #7644CE !important;
-    color: white;
+  background-color: #7644ce !important;
+  color: white;
 }
 
 .login-history-popup-inner .history-record-buttons .close-button:hover,
 .login-history-popup-inner .button:hover {
-    background-color: rgb(98, 68, 145) !important;
+  background-color: rgb(98, 68, 145) !important;
 }
 
 .table-body-col-buttons #custom-faq-field-popup-inner button {
-    height: auto;
+  height: auto;
 }
 
 .filter-search-field {
-    position: relative;
+  position: relative;
 }
 
 input:disabled::placeholder,
 .manage-user-form-ctn select:disabled,
 .manage-user-form-ctn input:disabled {
-    color: #1D1C25 !important;
-    cursor: not-allowed !important;
+  color: #1d1c25 !important;
+  cursor: not-allowed !important;
 }
 
 .manage-user-form-ctn #add-custom-field-btn {
-    justify-content: center;
-    width: 100%;
+  justify-content: center;
+  width: 100%;
 }
 
 .toggle-password {
-    position: absolute;
-    right: 13px;
-    top: 40px;
-    padding: 0 !important;
-    background-color: transparent !important;
-    width: 24px;
-    height: 24px !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url(../image/password-hide-icon.svg);
-    background-repeat: no-repeat;
-    background-size: 22px;
-    background-position: center;
-    box-sizing: border-box;
-    transition: background-image .2s linear;
-    cursor: pointer;
-    border-radius: 50%;
+  position: absolute;
+  right: 13px;
+  top: 40px;
+  padding: 0 !important;
+  background-color: transparent !important;
+  width: 24px;
+  height: 24px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../image/password-hide-icon.svg);
+  background-repeat: no-repeat;
+  background-size: 22px;
+  background-position: center;
+  box-sizing: border-box;
+  transition: background-image 0.2s linear;
+  cursor: pointer;
+  border-radius: 50%;
 }
 
 .toggle-password.show-pass {
-    background-image: url(../image/password-show-icon.svg);
-    background-size: 22px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  background-image: url(../image/password-show-icon.svg);
+  background-size: 22px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.toggle-password+input[type="password"] {
-    padding-right: 60px !important;
+.toggle-password + input[type="password"] {
+  padding-right: 60px !important;
 }
 
 .generate-password-button {
-    cursor: pointer;
-    color: white;
-    box-sizing: border-box;
-    border-radius: 10px;
-    justify-content: center;
-    transition: all .3s ease-in-out;
+  cursor: pointer;
+  color: white;
+  box-sizing: border-box;
+  border-radius: 10px;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
 }
 
 .generate-password-button:hover {
-    background-color: #624491;
-    border-color: #624491;
+  background-color: #624491;
+  border-color: #624491;
 }
 
 .reset-link {
-    position: absolute;
-    top: 34px;
-    right: 12px;
-    width: max-content;
+  position: absolute;
+  top: 34px;
+  right: 12px;
+  width: max-content;
 }
 
 .reset-link a {
-    position: relative;
-    display: inline-block;
-    border-radius: 42px;
-    background-color: rgba(234, 221, 255, .16);
-    padding: 6px 12px 6px 43px;
-    color: white;
+  position: relative;
+  display: inline-block;
+  border-radius: 42px;
+  background-color: rgba(234, 221, 255, 0.16);
+  padding: 6px 12px 6px 43px;
+  color: white;
 }
 
 .reset-link a::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-    left: 14px;
-    width: 20px;
-    height: 20px;
-    background-image: url(../image/white-email-icon.svg);
-    background-repeat: no-repeat;
-    background-size: 20px;
-    background-position: center;
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  left: 14px;
+  width: 20px;
+  height: 20px;
+  background-image: url(../image/white-email-icon.svg);
+  background-repeat: no-repeat;
+  background-size: 20px;
+  background-position: center;
 }
 
 .reset-link a.reset-link-disabled,
 .reset-link a.reset-link-disabled:hover {
-    color: #A8A8A8;
-    background-color: rgba(234, 221, 255, .16);
-    cursor: not-allowed;
+  color: #a8a8a8;
+  background-color: rgba(234, 221, 255, 0.16);
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .reset-link a.reset-link-disabled::before,
 .reset-link a.reset-link-disabled:hover::before {
-    filter: brightness(0) saturate(100%) invert(59%) sepia(42%) saturate(0%) hue-rotate(257deg) brightness(103%) contrast(98%);
+  filter: brightness(0) saturate(100%) invert(59%) sepia(42%) saturate(0%)
+    hue-rotate(257deg) brightness(103%) contrast(98%);
 }
 
 .reset-link a:hover {
-    color: white;
-    background-color: rgba(234, 221, 255, .30);
+  color: white;
+  background-color: rgba(234, 221, 255, 0.3);
 }
 
 .daterangepicker,
 .daterangepicker .calendar-table {
-    background-color: #1D1C25 !important;
+  background-color: #1d1c25 !important;
 }
 
 .daterangepicker .calendar-table {
-    border: none !important;
+  border: none !important;
 }
 
 .daterangepicker {
-    border-radius: 16px !important;
-    border: 1px solid #747474 !important;
-    padding: 8px !important;
-    margin-top: 10px;
+  border-radius: 16px !important;
+  border: 1px solid #747474 !important;
+  padding: 8px !important;
+  margin-top: 10px;
 }
 
 .daterangepicker:before,
 .daterangepicker:after {
-    display: none !important;
+  display: none !important;
 }
 
 .drp-selected {
-    display: none !important;
+  display: none !important;
 }
 
 .calendar-table {
-    font-family: "Poppins", sans-serif !important;
+  font-family: "Poppins", sans-serif !important;
 }
 
 .table-condensed {
-    padding: 12px 12px 7px 12px !important;
+  padding: 12px 12px 7px 12px !important;
 }
 
 .calendar-table thead,
 thead {
-    flex-wrap: wrap;
-    justify-content: center;
-    width: min-content;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: min-content;
 }
 
 .calendar-table thead {
-    padding: 0;
+  padding: 0;
 }
 
 .calendar-table thead tr {
-    width: max-content;
-    justify-content: center;
+  width: max-content;
+  justify-content: center;
 }
 
 .calendar-table th {
-    font-size: 14px !important;
+  font-size: 14px !important;
 }
 
 .calendar-table th,
 .calendar-table td {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all .15s linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s linear;
 }
 
 /* .calendar-table thead tr:nth-child(1) th:last-child,
@@ -691,25 +692,25 @@ thead {
 
 .daterangepicker .calendar-table .next span,
 .daterangepicker .calendar-table .prev span {
-    color: #fff;
-    border-color: #ffffff !important;
+  color: #fff;
+  border-color: #ffffff !important;
 }
 
 .calendar-table tr {
-    margin-bottom: 5px;
-    column-gap: 5px;
-    background-color: transparent;
+  margin-bottom: 5px;
+  column-gap: 5px;
+  background-color: transparent;
 }
 
 .daterangepicker .calendar-table th,
 .daterangepicker .calendar-table td {
-    height: 32px;
-    background-color: #404040 !important;
-    font-weight: 600 !important;
+  height: 32px;
+  background-color: #404040 !important;
+  font-weight: 600 !important;
 }
 
 .daterangepicker td.in-range {
-    color: white !important;
+  color: white !important;
 }
 
 .daterangepicker .calendar-table th:hover,
@@ -718,75 +719,75 @@ thead {
 .daterangepicker .calendar-table td.start-date,
 .daterangepicker .calendar-table td.in-range,
 .daterangepicker .calendar-table td.end-date {
-    background-color: #6e6e6e !important;
+  background-color: #6e6e6e !important;
 }
 
 .daterangepicker .calendar-table td.off {
-    background-color: #2f2f2f !important;
+  background-color: #2f2f2f !important;
 }
 
 .daterangepicker .calendar-table th,
 .daterangepicker .calendar-table td {
-    border-radius: 4px !important;
+  border-radius: 4px !important;
 }
 
 .calendar-table tr:nth-child(2) th {
-    font-size: 12px !important;
+  font-size: 12px !important;
 }
 
 .daterangepicker .drp-buttons {
-    border-top: none !important;
+  border-top: none !important;
 }
 
 .daterangepicker .drp-calendar {
-    max-width: 300px !important;
-    width: max-content;
+  max-width: 300px !important;
+  width: max-content;
 }
 
 .daterangepicker .drp-buttons .btn {
-    padding: 9px 24px !important;
-    line-height: 1.5;
-    font-size: 20px !important;
-    font-weight: 400 !important;
-    color: white;
+  padding: 9px 24px !important;
+  line-height: 1.5;
+  font-size: 20px !important;
+  font-weight: 400 !important;
+  color: white;
 }
 
 .drp-buttons {
-    display: flex !important;
-    justify-content: flex-end;
-    gap: 16px;
+  display: flex !important;
+  justify-content: flex-end;
+  gap: 16px;
 }
 
 .daterangepicker .drp-buttons .btn {
-    margin-left: 0 !important;
+  margin-left: 0 !important;
 }
 
 #manage-user-search,
 input#filter-search {
-    text-transform: initial;
+  text-transform: initial;
 }
 
 .search-no-found-text h2 {
-    margin-bottom: 0;
-    text-transform: capitalize;
+  margin-bottom: 0;
+  text-transform: capitalize;
 }
 
 .successfull-message-ctn-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 50vh;
-    max-width: 804px;
-    text-align: center;
-    margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  max-width: 804px;
+  text-align: center;
+  margin-inline: auto;
 }
 
 .successfull-message-icon {
-    line-height: .65;
-    max-width: 297px;
+  line-height: 0.65;
+  max-width: 297px;
 }
 
 .footer_wrap {
-    display: none;
+  display: none;
 }

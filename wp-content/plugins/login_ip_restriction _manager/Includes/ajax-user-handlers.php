@@ -60,6 +60,21 @@ function handle_add_or_update_user()
         ]);
     }
 
+    if (strlen($email) > 100 || substr_count($email, '@') !== 1) {
+        wp_send_json_error([
+            'message' => (isset($_POST['lang']) && $_POST['lang'] === 'zh')
+                ? '檢測到無效的電子郵箱地址。'
+                : 'Invalid or fake email address.'
+        ]);
+    }
+    // list($local, $domain) = explode('@', $email);
+    // if (strlen($local) < 1 || strlen($domain) < 4 || !str_contains($domain, '.')) {
+    //     wp_send_json_error([
+    //         'message' => (isset($_POST['lang']) && $_POST['lang'] === 'zh')
+    //             ? '電子郵箱格式錯誤。'
+    //             : 'Invalid email format.'
+    //     ]);
+    // }
     // Map role
     $wp_role = map_user_role($user_role_input);
 
@@ -72,6 +87,8 @@ function handle_add_or_update_user()
         'role'         => $wp_role,
     ];
     $user_id = wp_insert_user($wp_user_data);
+    // var_dump($user_id);
+    // wp_die();
 
     if (is_wp_error($user_id)) {
         wp_send_json_error(['message' => $user_id->get_error_message()]);
@@ -144,7 +161,7 @@ function handle_add_or_update_user()
 
     if ($current_lang === 'zh') {
         wp_send_json_success([
-            'message' => '用戶帳戶創建成功。<br>驗證郵件已發送到您的註冊郵箱，請檢查收件箱。'
+            'message' => '使用者帳號建立成功。<br>驗證信已寄送至您註冊的電子郵件信箱，請至收件匣查看。'
         ]);
     } else {
         wp_send_json_success([
@@ -779,7 +796,7 @@ function handle_cuim_user_change_password()
     $lang = (isset($_POST['lang']) && $_POST['lang'] === 'zh') ? 'zh' : 'en';
 
     $message = ($lang === 'zh')
-        ? '密碼重設成功'
+        ? '密碼重設成功.'
         : 'Password reset successful.';
 
     wp_send_json_success(['message' => $message]);

@@ -135,9 +135,12 @@ jQuery(document).ready(function ($) {
       success: function (response) {
         // console.log(response);
         if (response.includes("Success")) {
-          // alert("Successfully Submitted");
           const $successMsg = $(
-            '<div class="submitted-successfully">Successfully Submitted</div>'
+            `<div class="submitted-successfully">
+            ${window.location.pathname.includes('/zh/')
+              ? '提交成功。'
+              : 'Successfully Submitted'}
+        </div>`
           );
           $form.append($successMsg);
 
@@ -908,7 +911,11 @@ jQuery(document).ready(function ($) {
             window.location.href = "/faq/";
           }
           const $successMsg = $(
-            `<div class="submitted-successfully">Successfully Deleted.</div>`
+            `<div class="submitted-successfully">
+        ${window.location.pathname.includes('/zh/')
+              ? '刪除成功。'
+              : 'Successfully Deleted.'}
+    </div>`
           );
           jQuery(".faq-accordions").append($successMsg);
           // Hide after 3 seconds
@@ -1135,7 +1142,11 @@ jQuery(document).ready(function ($) {
               "active"
             );
             const $successMsg = $(
-              '<div class="submitted-successfully">Report Successfully Submitted</div>'
+              `<div class="submitted-successfully">
+        ${window.location.pathname.includes('/zh/')
+                ? '回報已成功提交。'
+                : 'Report Successfully Submitted'}
+    </div>`
             );
             jQuery(".faq-main-content").append($successMsg);
             jQuery(".api-cards-wrapper").append($successMsg);

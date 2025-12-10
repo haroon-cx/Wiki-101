@@ -317,17 +317,25 @@ jQuery(document).ready(function ($) {
           }
           // alert(labelText)
           if ($fieldWrapper.find(".error-message").length === 0) {
-            var textTranslate = 'is required';
+            var textTranslate = ' is required';
             if (window.location.pathname.startsWith("/zh")) {
-              textTranslate = '為必填項目';
+              textTranslate = '為必填項目。';
             }
-            if (labelText == "What problem did you encounter?") {
+            if (labelText == "What problem did you encounter?" || labelText == "您遇到什麼問題？") {
               $fieldWrapper.append(
-                `<div class="error-message">Please select a report type</div>`
+                `<div class="error-message">
+        ${window.location.pathname.includes('/zh/')
+                  ? '請選擇回報類型。'
+                  : 'Please select a report type'}
+    </div>`
               );
-            } else if (labelText == "Detailed Description") {
+            } else if (labelText == "Detailed Description" || labelText == "詳細描述") {
               $fieldWrapper.append(
-                `<div class="error-message">Please enter a description of the issue.</div>`
+                `<div class="error-message">
+        ${window.location.pathname.includes('/zh/')
+                  ? '請輸入問題描述。'
+                  : 'Please enter a description of the issue.'}
+    </div>`
               );
             } else if (labelText == "Title") {
               $fieldWrapper.append(
@@ -371,9 +379,9 @@ jQuery(document).ready(function ($) {
             .trim();
 
           if ($fieldWrapper.find(".error-message").length === 0) {
-            var textTranslate = 'is required';
+            var textTranslate = ' is required';
             if (window.location.pathname.startsWith("/zh")) {
-              textTranslate = '為必填項目';
+              textTranslate = '為必填項目。';
             }
             $fieldWrapper.append(
               `<div class="error-message">${labelText}${textTranslate}</div>`
@@ -415,12 +423,12 @@ jQuery(document).ready(function ($) {
           } else {
             $field.addClass("error-field");
           }
-          // alert(labelText)
           if ($fieldWrapper.find(".error-message").length === 0) {
-            var textTranslate = 'is required';
+            var textTranslate = ' is required';
             if (window.location.pathname.startsWith("/zh")) {
-              textTranslate = '為必填項目';
+              textTranslate = '為必填項目。';
             }
+            // alert(labelText)
             if (labelText == "What problem did you encounter?") {
               $fieldWrapper.append(
                 `<div class="error-message">Please select a report type</div>`
@@ -429,17 +437,26 @@ jQuery(document).ready(function ($) {
               $fieldWrapper.append(
                 `<div class="error-message">Please enter a description of the issue.</div>`
               );
-            } else if (labelText == "Title") {
+            } else if (labelText == "Title" || labelText == "標題") {
+              var msg = window.location.pathname.includes('/zh/')
+                ? "請輸入標題。"
+                : "Please enter a title.";
+
+              $fieldWrapper.append(`<div class="error-message">${msg}</div>`);
+            } else if (labelText == "Question Type" || labelText == "問題類型") {
+              var msg1 = window.location.pathname.includes('/zh/')
+                ? "請選擇項目。"
+                : "Please select an item";
+
+              $fieldWrapper.append(`<div class="error-message">${msg1}</div>`);
+            } else if (labelText == "Details" || labelText == "詳細內容") {
+              // alert(labelText);
               $fieldWrapper.append(
-                `<div class="error-message">Please enter a title.</div>`
-              );
-            } else if (labelText == "Question Type") {
-              $fieldWrapper.append(
-                `<div class="error-message">Please select an item</div>`
-              );
-            } else if (labelText == "Details") {
-              $fieldWrapper.append(
-                `<div class="error-message">Content  ' + textTranslate + '.</div>`
+                `<div class="error-message">
+            ${window.location.pathname.includes('/zh/')
+                  ? '內容為必填項目。'
+                  : 'Content.'}
+            </div>`
               );
             } else {
               $fieldWrapper.append(
@@ -889,10 +906,15 @@ jQuery(document).ready(function ($) {
 
       // If exactly at limit → show error instantly
       if (length === maxChars) {
+        const errorMsg = window.location.pathname.startsWith("/zh")
+          ? "無法再輸入更多字元。"
+          : "Unable to enter more characters";
+
         $formResponse
           .removeClass("success")
           .addClass("error")
-          .text("Unable to enter more characters");
+          .text(errorMsg);
+
         $charCounter.addClass("show-message");
         return;
       }
@@ -955,10 +977,15 @@ jQuery(document).ready(function ($) {
 
       // If exactly at the max limit → show error instantly
       if (length === maxCharsS) {
+        const maxCharErrorMsg = window.location.pathname.startsWith("/zh")
+          ? "無法再輸入更多字元。"
+          : "Unable to enter more characters";
+
         $formResponse
           .removeClass("success")
           .addClass("error")
-          .text("Unable to enter more characters");
+          .text(maxCharErrorMsg);
+
         $charCounter.addClass("show-message");
         return;
       }
@@ -970,7 +997,11 @@ jQuery(document).ready(function ($) {
           $formResponse
             .removeClass("error")
             .addClass("success")
-            .text("You can submit now");
+            .text(
+              window.location.pathname.includes('/zh/')
+                ? "您現在可以提交。"
+                : "You can submit now"
+            );
           $charCounter.addClass("show-message");
         }
       }, typingDelayS);
@@ -1017,7 +1048,11 @@ jQuery(document).ready(function ($) {
     e.preventDefault();
     e.stopPropagation();
     dropArea.addClass("dragging");
-    browseLink.text("Drop here");
+    $browseLink.text(
+      window.location.pathname.startsWith("/zh")
+        ? "拖放到這裡"
+        : "Drop here"
+    );
   });
 
   // Drag leave

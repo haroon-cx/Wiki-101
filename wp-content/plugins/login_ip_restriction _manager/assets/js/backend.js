@@ -30,7 +30,7 @@ jQuery(document).ready(function ($) {
         nonce: nonce,
       },
       success: function (response) {
-        // alert(response);
+        // console.log(response);
 
         // Check if the response contains success
         if (response.success) {
@@ -60,6 +60,7 @@ jQuery(document).ready(function ($) {
             );
           }, 3000);
         } else {
+          console.log(response.data.message);
           jQuery("div#confirm-submit-popup").removeClass("active");
           const $successMsg = $(
             `<div class="submitted-unsuccessfully">${response.data.message}</div>`
@@ -74,6 +75,7 @@ jQuery(document).ready(function ($) {
         }
       },
       error: function (response) {
+        // console.log(response.data.message);
         // Error message if AJAX fails
         alert("An error occurred.");
       },
@@ -202,14 +204,14 @@ jQuery(document).ready(function ($) {
 
         if (response.success) {
           // English Version (clean & natural)
-          const englishMsg = "submitted-successfully" + "<br>Resend Verification Email Successful<br>" +
+          const englishMsg = "Resend Verification Email Successful<br>" +
             "Verification email has been resent to your<br>" +
             "Registered email address. Please check your inbox.";
 
           // Chinese Traditional Version (bilkul native feel)
-          const chineseMsg = "提交-成功" + "重新發送驗證郵件成功<br>" +
-            "驗證電子郵件已重新傳送至您的<br>" +
-            "註冊的電子郵件地址。請檢查您的收件匣。";
+          const chineseMsg = "重新寄送驗證信成功。<br>" +
+            "驗證信已重新寄送至您註冊的電子郵件信箱<br>" +
+            "請至收件匣查看。";
 
           // Auto detect language
           const finalMessage = window.location.pathname.startsWith("/zh")
@@ -283,7 +285,7 @@ jQuery(document).ready(function ($) {
           const isChinese = window.location.pathname.startsWith("/zh");
 
           const successText = isChinese
-            ? "密碼重設成功！<br>重設連結已發送到您的郵箱。<br>請查收郵件（60 秒內不可重複發送）。"
+            ? "密碼重設成功。<br>重設連結已寄出，請至您的帳號電子郵件查看。<br>您可以在 60 秒後再次請求。"
             : "Reset Password Successful<br>Reset link sent. Please check your account email.<br>You can request another one in 60 seconds.";
 
           const $successMsg = $(`
@@ -779,56 +781,129 @@ jQuery(document).ready(function ($) {
     }
   );
 
+  // $(".cuim-manage-user-validation-254").on("input", function () {
+  //   var maxLengthInputSerch = 254;
+  //   alert(maxLengthInputSerch);
+  //   var $input = $(this);
+  //   var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
+  //   var $input = $input.closest(".form-field"); // Find the parent .form-field of the current input
+
+  //   setTimeout(function () {
+  //     toggleSubmitButton();
+  //   }, 300);
+  //   // Check if the input exceeds the maxLength
+  //   if ($input.val().length > maxLengthInputSerch) {
+  //     $input.val($input.val().substring(0, maxLengthInputSerch)); // Truncate the value to maxLength
+  //     $input.addClass("error-field-input"); // Add 'error' class to the parent .form-field
+  //     // Append error message if it doesn't already exist
+  //     if ($errorMessage.length === 0) {
+  //       $(
+  //         '<div id="error-message" class="cuim-validation-error">Max 254 characters allowed.</div>'
+  //       ).insertAfter($input); // Insert the error message after the input
+  //     }
+  //   } else {
+  //     $input.removeClass("error-field-input"); // Remove 'error' class if input is valid
+  //     // Remove the error message if input length is valid
+  //     if ($errorMessage.length > 0) {
+  //       $errorMessage.remove();
+  //     }
+  //   }
+  // });
   $(".cuim-manage-user-validation-254").on("input", function () {
     var maxLengthInputSerch = 254;
+    var $input = $(this); // یہ اصل ان پٹ فیلڈ ہے
+    var $parent = $input.closest(".form-field"); // صرف parent کے لیے
+    var $errorMessage = $input.next("#error-message"); // error message جو input کے فوراً بعد ہو
 
-    var $input = $(this);
-    var $errorMessage = $input.next("#error-message"); // Look for the error message next to the input
-    var $input = $input.closest(".form-field"); // Find the parent .form-field of the current input
-
-    setTimeout(function () {
-      toggleSubmitButton();
-    }, 300);
-    // Check if the input exceeds the maxLength
+    // اگر لمبائی زیادہ ہو تو کاٹ دو
     if ($input.val().length > maxLengthInputSerch) {
-      $input.val($input.val().substring(0, maxLengthInputSerch)); // Truncate the value to maxLength
-      $input.addClass("error-field-input"); // Add 'error' class to the parent .form-field
-      // Append error message if it doesn't already exist
+      $input.val($input.val().substring(0, maxLengthInputSerch));
+    }
+
+    // ایریر میسج کا ٹیکسٹ (اگر /zh/ ہو تو چائنیز، ورنہ انگلش)
+    var isChinese = window.location.pathname.includes('/zh/');
+    var errorText = isChinese
+      ? "最多允许 254 个字符。"
+      : "Max 254 characters allowed.";
+
+    // اگر لمبائی اب بھی 254 ہے (یعنی یوزر نے زیادہ ٹائپ کیا تھا)
+    if ($input.val().length === maxLengthInputSerch && $input.data('was-over') !== true) {
+      $parent.addClass("error-field-input");
+
       if ($errorMessage.length === 0) {
-        $(
-          '<div id="error-message" class="cuim-validation-error">Max 254 characters allowed.</div>'
-        ).insertAfter($input); // Insert the error message after the input
+        $('<div id="error-message" class="cuim-validation-error">' + errorText + '</div>')
+          .insertAfter($input);
+      } else {
+        $errorMessage.text(errorText);
       }
-    } else {
-      $input.removeClass("error-field-input"); // Remove 'error' class if input is valid
-      // Remove the error message if input length is valid
+      $input.data('was-over', true); // یاد رکھیں کہ ایک دفعہ ایریر دکھا چکے
+    }
+    // اگر لمبائی ٹھیک ہے تو ایریر ہٹا دو
+    else if ($input.val().length < maxLengthInputSerch) {
+      $parent.removeClass("error-field-input");
       if ($errorMessage.length > 0) {
         $errorMessage.remove();
       }
+      $input.removeData('was-over');
     }
-  });
 
+    // Submit button toggle
+    setTimeout(function () {
+      toggleSubmitButton();
+    }, 300);
+  });
   // Prevent spaces from being typed into the input field
+  // $(".cuim-manage-user-validation-254, .cuim-manage-user-search-validation-254").on("keypress", function (e) {
+  //   var keyCode = e.keyCode || e.which;
+
+  //   // Check if the key pressed is a space (keyCode 32)
+  //   if (keyCode === 32) {
+  //     e.preventDefault(); // Prevent the space from being entered
+  //     var $input = $(this);
+  //     var $input = $input.closest(".form-field");
+  //     var $errorMessage = $input.next("#error-message");
+
+  //     // If the error message doesn't already exist, append it
+  //     if ($errorMessage.length === 0) {
+  //       setTimeout(function () {
+  //         toggleSubmitButton();
+  //       }, 300);
+  //       $(
+  //         '<div id="error-message" class="cuim-validation-error">Spaces are not allowed.</div>'
+  //       ).insertAfter($input); // Insert the error message
+  //       $input.addClass("error-field-input");
+  //     }
+  //   }
+  // });
   $(".cuim-manage-user-validation-254, .cuim-manage-user-search-validation-254").on("keypress", function (e) {
     var keyCode = e.keyCode || e.which;
 
-    // Check if the key pressed is a space (keyCode 32)
+    // اگر سپیس پریس کیا تو روک دو
     if (keyCode === 32) {
-      e.preventDefault(); // Prevent the space from being entered
-      var $input = $(this);
-      var $input = $input.closest(".form-field");
-      var $errorMessage = $input.next("#error-message");
+      e.preventDefault(); // سپیس ان پٹ میں نہ جائے
 
-      // If the error message doesn't already exist, append it
-      if ($errorMessage.length === 0) {
-        setTimeout(function () {
-          toggleSubmitButton();
-        }, 300);
-        $(
-          '<div id="error-message" class="cuim-validation-error">Spaces are not allowed.</div>'
-        ).insertAfter($input); // Insert the error message
-        $input.addClass("error-field-input");
+      var $input = $(this);                    // اصل ان پٹ فیلڈ
+      var $parent = $input.closest(".form-field"); // صرف کلاس اور ایریر کے لیے
+      var $error = $input.next("#error-message"); // پہلے سے موجود ایریر میسج
+
+      // انگلش یا چائنیز میسج
+      var isChinese = window.location.pathname.includes('/zh/');
+      var errorText = isChinese ? "不允许使用空格。" : "Spaces are not allowed.";
+
+      // اگر ایریر میسج پہلے سے نہیں ہے تو بناؤ
+      if ($error.length === 0) {
+        $('<div id="error-message" class="cuim-validation-error">' + errorText + '</div>')
+          .insertAfter($input); // input کے فوراً بعد لگے گا
+      } else {
+        $error.text(errorText); // اگر پہلے سے ہے تو صرف ٹیکسٹ بدلو (زبان تبدیل ہونے پر)
       }
+
+      $parent.addClass("error-field-input");
+
+      // Submit button کو ڈس ایبل کرنے کے لیے
+      setTimeout(function () {
+        toggleSubmitButton();
+      }, 300);
     }
   });
   /**
@@ -948,7 +1023,7 @@ jQuery(document).ready(function ($) {
           $("div#custom-faq-field-popup").removeClass("active");
 
           const deleteSuccessMsg = window.location.pathname.startsWith("/zh")
-            ? "用戶已成功刪除"
+            ? "使用者刪除成功。"
             : "The user successfully deleted.";
 
           const $successMsg = $(`<div class="submitted-successfully">${deleteSuccessMsg}</div>`);
@@ -1423,7 +1498,7 @@ jQuery(document).ready(function ($) {
     $(".account-error").text("");
     var account = $("#manage-ip-account-field").val(); // Assuming the ID for the account field is 'account'
     if (account === "") {
-      var textTranslate = 'is required';
+      var textTranslate = ' is required';
       if (window.location.pathname.startsWith("/zh")) {
         textTranslate = '是必須的';
       }

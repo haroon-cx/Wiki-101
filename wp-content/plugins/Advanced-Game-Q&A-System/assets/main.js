@@ -81,7 +81,11 @@ jQuery(document).ready(function ($) {
     e.preventDefault();
     e.stopPropagation();
     $dropArea.addClass("dragging");
-    $browseLink.text("Drop here");
+    $browseLink.text(
+      window.location.pathname.startsWith("/zh")
+        ? "拖放到這裡"
+        : "Drop here"
+    );
   });
 
   $browseLink.on("dragleave", function (e) {
@@ -111,7 +115,11 @@ jQuery(document).ready(function ($) {
     if (!file) return;
 
     if (file.type !== "image/png") {
-      alert("Only PNG format is supported.");
+      const alertMsg = window.location.pathname.startsWith("/zh")
+        ? "僅支援 PNG 格式圖片"
+        : "Only PNG format is supported.";
+
+      alert(alertMsg);
       return;
     }
 
@@ -2975,5 +2983,9 @@ jQuery(document).ready(function ($) {
 
   // Debug helper: if nothing works, log which submenu would be targeted (remove in production)
   // console.log('Menu scroll helper loaded');
-
+  if (window.location.pathname.startsWith("/zh")) {
+    $("body").addClass("lang-zh");
+  } else {
+    $("body").addClass("lang-en");
+  }
 });
