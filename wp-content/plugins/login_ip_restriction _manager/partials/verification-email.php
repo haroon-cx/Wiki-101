@@ -113,10 +113,19 @@ if ($login_again == '1') {
             <div class="successfull-message-icon">
                 <img src="<?php echo URIP_URL ?>assets/image/successfull-message-icon.svg" alt="Success Icon">
             </div>
+            <?php
+            $path = $_SERVER['REQUEST_URI'];
+            $isChinese = (strpos($path, '/zh/') === 0);
+            ?>
+
             <div class="successfull-message-text">
-                <h2>Your account has been activated successfully.
+                <h2>
+                    <?= $isChinese
+                        ? '您的帳號已成功啟用。'        // Traditional Chinese
+                        : 'Your account has been activated successfully.'; ?>
                 </h2>
             </div>
+
             <input type="hidden" class="agqa-user-name" value="<?php echo $username ?>">
         </div>
     </div>

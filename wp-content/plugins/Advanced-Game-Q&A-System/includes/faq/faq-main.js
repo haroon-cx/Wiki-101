@@ -1035,15 +1035,18 @@ jQuery(document).ready(function ($) {
     }
 
     // optional UI feedback
-    const $msg = $('<div class="submit-warning">Please wait...</div>');
+    const waitMsg = window.location.pathname.startsWith("/zh")
+      ? "請稍候…"
+      : "Please wait…";
+
+    const $msg = $(`<div class="submit-warning">${waitMsg}</div>`);
     $form.append($msg);
-    setTimeout(
-      () =>
-        $msg.fadeOut(300, function () {
-          $(this).remove();
-        }),
-      1000
-    );
+
+    setTimeout(() => {
+      $msg.fadeOut(300, function () {
+        $(this).remove();
+      });
+    }, 1000);
 
     $.ajax({
       url: agqa_ajax.ajax_url,
@@ -1144,7 +1147,7 @@ jQuery(document).ready(function ($) {
             const $successMsg = $(
               `<div class="submitted-successfully">
         ${window.location.pathname.includes('/zh/')
-                ? '回報已成功提交。'
+                ? '提交成功'
                 : 'Report Successfully Submitted'}
     </div>`
             );

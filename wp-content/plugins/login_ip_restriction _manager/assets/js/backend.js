@@ -1081,9 +1081,11 @@ jQuery(document).ready(function ($) {
 
         if (response.includes("Success")) {
           $(".agqa-delete-popup-faq").removeClass("active");
-          const $successMsg = $(
-            `<div class="submitted-successfully">The user successfully deleted.</div>`
-          );
+          const deleteSuccessText = window.location.pathname.startsWith("/zh")
+            ? "刪除成功。"
+            : "Successfully Deleted";
+
+          const $successMsg = $(`<div class="submitted-successfully">${deleteSuccessText}</div>`);
           jQuery(".custom-table-body").append($successMsg);
           if (window.location.pathname.startsWith("/zh")) {
             window.location.href = "/zh/manage-ip-whitelist/";
@@ -1848,7 +1850,7 @@ jQuery(document).ready(function ($) {
 
           // Append the success message to the custom table body
           jQuery(".custom-table-body").append($successMsg);
-          window.location.reload();
+          // window.location.reload();
           // Hide the message after 3 seconds
           setTimeout(function () {
             $successMsg.fadeOut(400, function () {
@@ -1904,9 +1906,11 @@ jQuery(document).ready(function ($) {
     e.preventDefault();
     $(".cuim-edit-submit-popup-again").removeClass("active");
     $(".edit-manage-ip-form").removeClass("active");
-    const $successMsg = $(
-      `<div class="submitted-successfully">Successfully Updated</div>`
-    );
+    const updateSuccessText = window.location.pathname.startsWith("/zh")
+      ? "更新成功。"
+      : "Successfully Updated";
+
+    const $successMsg = $(`<div class="submitted-successfully">${updateSuccessText}</div>`);
     jQuery(".add-manage-ip-form").append($successMsg);
     // Hide after 3 seconds
     setTimeout(function () {
@@ -2703,6 +2707,7 @@ jQuery(document).ready(function ($) {
     // alert('fgfgfgfgffffffffff');
     // return;
     var reportType = $("input.agqa-filter-select-hidden").val().toLowerCase();
+    // alert(reportType);
     var statusApproval = $(".agqa-filter-select-hidden.cuim-status").val().toLowerCase();
     // var loginRecordText = $("input#login-records-search").val().toLowerCase();
     //     alert(statusApproval);

@@ -349,6 +349,11 @@ jQuery(document).ready(function ($) {
               $fieldWrapper.append(
                 '<div class="error-message">Content ' + textTranslate + '.</div>'
               );
+            } else if (labelText == "Logo") {
+              $fieldWrapper.append(
+                '<div class="error-message">Logo ' + textTranslate + '.</div>'
+              );
+
             } else {
               $fieldWrapper.append(
                 `<div class="error-message">${labelText}${textTranslate}</div>`
@@ -455,7 +460,7 @@ jQuery(document).ready(function ($) {
                 `<div class="error-message">
             ${window.location.pathname.includes('/zh/')
                   ? '內容為必填項目。'
-                  : 'Content.'}
+                  : 'Content is required.'}
             </div>`
               );
             } else {
@@ -920,17 +925,31 @@ jQuery(document).ready(function ($) {
       }
 
       // If under limit → show success after 2s of no typing
+      //   typingTimer = setTimeout(function () {
+      //     if ($textarea.val().length < maxChars) {
+      //       $formResponse
+      //         .removeClass("error")
+      //         .addClass("success")
+      //         .text("Successfull submitted");
+      //       $charCounter.addClass("show-message");
+      //     }
+      //   }, typingDelay);
+      // });
       typingTimer = setTimeout(function () {
         if ($textarea.val().length < maxChars) {
+          const submitSuccessText = window.location.pathname.startsWith("/zh")
+            ? "提交成功！"
+            : "Successfully submitted";
+
           $formResponse
             .removeClass("error")
             .addClass("success")
-            .text("Successfull submitted");
+            .text(submitSuccessText);
+
           $charCounter.addClass("show-message");
         }
       }, typingDelay);
     });
-
     // Clear on submit
     $textarea.closest("form").on("submit", function (e) {
       e.preventDefault();
@@ -1491,22 +1510,41 @@ jQuery(document).ready(function ($) {
   function handleReportFiles(files) {
     if (!files.length) return;
 
+    // for (let file of files) {
+    //   if (reportUploadedFiles.length >= REPORT_MAX_FILES) {
+    //     alert(`You can upload up to ${REPORT_MAX_FILES} images.`);
+    //     break;
+    //   }
     for (let file of files) {
       if (reportUploadedFiles.length >= REPORT_MAX_FILES) {
-        alert(`You can upload up to ${REPORT_MAX_FILES} images.`);
+        const maxFilesMsg = window.location.pathname.startsWith("/zh")
+          ? `最多可上傳 ${REPORT_MAX_FILES} 張圖片。`
+          : `Up to ${REPORT_MAX_FILES} images can be uploaded.`;
+        alert(maxFilesMsg);
         break;
       }
-
+      // if (file.type !== "image/jpeg") {
+      //   alert("Only JPG format is supported.");
+      //   continue;
+      // }
       if (file.type !== "image/jpeg") {
-        alert("Only JPG format is supported.");
+        const jpgErrorMsg = window.location.pathname.startsWith("/zh")
+          ? "僅支援 JPG 格式"
+          : "Only JPG format is supported.";
+        alert(jpgErrorMsg);
         continue;
       }
-
+      // if (file.size > REPORT_MAX_SIZE) {
+      //   alert("Each image must be 2MB or less.");
+      //   continue;
+      // }
       if (file.size > REPORT_MAX_SIZE) {
-        alert("Each image must be 2MB or less.");
+        const sizeErrorMsg = window.location.pathname.startsWith("/zh")
+          ? "每張圖片的最大容量為 2MB。"
+          : "Maximum file size: 2MB per image.";
+        alert(sizeErrorMsg);
         continue;
       }
-
       reportUploadedFiles.push(file);
     }
 

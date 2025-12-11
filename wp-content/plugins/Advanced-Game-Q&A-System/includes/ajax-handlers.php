@@ -835,12 +835,20 @@ function handle_insert_provider_data()
             $type->id
         ));
 
+        // if ($existing_record) {
+        //     // Show error message if data already exists
+        //     echo 'Error: The game provider already exist.';
+        //     wp_die();
+        // }
         if ($existing_record) {
-            // Show error message if data already exists
-            echo 'Error: The game provider already exist.';
-            wp_die();
-        }
+            $lang = (isset($_POST['lang']) && $_POST['lang'] === 'zh') ? 'zh' : 'en';
 
+            $message = ($lang === 'zh')
+                ? '該遊戲提供商已存在'
+                : 'The game provider already exists.';
+
+            wp_send_json_error(['message' => $message]);
+        }
         // Prepare data for insertion
         $insert_data = [
             'provider_name'               => $provider_name,

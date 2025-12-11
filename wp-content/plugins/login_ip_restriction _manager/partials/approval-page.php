@@ -90,7 +90,23 @@ curl_close($curl);
             <div class="filter-select">
                 <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden" value="all">
                 <button class="filter-select-title">
-                    <span class="filter-default-text">All</span>
+                    <?php
+                    // Get the current URL path
+                    $path = $_SERVER['REQUEST_URI'];
+
+                    // Detect if URL starts with /zh/
+                    $isChinese = (strpos($path, '/zh/') === 0);
+                    ?>
+
+                    <span class="filter-default-text">
+                        <?= $isChinese
+                            ? '全部'   // Traditional Chinese
+                            : 'All'; // English
+                        ?>
+                    </span>
+
+
+
                     <!-- <span class="filter-default-text">Select A Type</span> -->
                     <span class="filter-selected-text"></span>
                 </button>
@@ -104,7 +120,7 @@ curl_close($curl);
                             <li data-value="FAQ Add">FAQ 新增</li>
                             <li data-value="FAQ Edit">FAQ 編輯</li>
                         <?php } else { ?>
-                            <li data-value="all">>All</li>
+                            <li data-value="all">All</li>
                             <li data-value="API Add">API Add</li>
                             <li data-value="API Edit">API Edit</li>
                             <li data-value="FAQ Add">FAQ Add</li>
@@ -117,7 +133,20 @@ curl_close($curl);
                 <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden cuim-status"
                     value="pending">
                 <button class="filter-select-title select-states">
-                    <span class="filter-default-text">Pending</span>
+                    <?php
+                    // Get the current URL path
+                    $path = $_SERVER['REQUEST_URI'];
+
+                    // Detect if URL starts with /zh/
+                    $isChinese = (strpos($path, '/zh/') === 0);
+                    ?>
+
+                    <span class="filter-default-text">
+                        <?= $isChinese
+                            ? '待審核'   // Traditional Chinese
+                            : 'Pending'; // English
+                        ?>
+                    </span>
                     <!-- <span class="filter-default-text">Select A Status</span> -->
                     <span class="filter-selected-text"></span>
                 </button>
@@ -130,7 +159,7 @@ curl_close($curl);
                             <li data-value="Approved">已通過</li>
                             <li data-value="Rejected">已拒絕</li>
                         <?php } else { ?>
-                            <li data-value="all">>All</li>
+                            <li data-value="all">All</li>
                             <li data-value="Pending">Pending</li>
                             <li data-value="Approved">Approved</li>
                             <li data-value="Rejected">Rejected</li>

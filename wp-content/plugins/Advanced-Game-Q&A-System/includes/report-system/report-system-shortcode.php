@@ -309,12 +309,23 @@ function report_system_shortcode()
                 </form>
             </div>
         </div>
-        <div class="filter-pending-responses">
+        <!-- <div class="filter-pending-responses">
             <button>Pending Response <span
-                    class="pending-response-counting"><?php echo esc_html($pending_response_count); ?></span>
+                    class="pending-response-counting"><?php //echo esc_html($pending_response_count); 
+                                                        ?></span>
+            </button>
+        </div> -->
+        <?php
+        $pendingLabel = (strpos($_SERVER['REQUEST_URI'], '/zh') !== false)
+            ? '未回覆'
+            : 'Pending Response';
+        ?>
+        <div class="filter-pending-responses">
+            <button>
+                <?php echo esc_html($pendingLabel); ?>
+                <span class="pending-response-counting"><?php echo esc_html($pending_response_count); ?></span>
             </button>
         </div>
-
         <div class="report-form-table-ctn custom-table-ctn">
             <div class="custom-table-ctn-inner">
                 <div class="report-form-table custom-table">

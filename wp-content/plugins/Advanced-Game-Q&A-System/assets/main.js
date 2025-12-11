@@ -1309,21 +1309,27 @@ jQuery(document).ready(function ($) {
           if (response.includes("Success")) {
             // alert("Game provider added successfully!");
             // alert("Provider data updated!");
-            const $successMsg = $(
-              '<div class="submitted-successfully">Game provider added successfully!</div>'
-            );
-            $form.append($successMsg);
+            // const $successMsg = $(
+            //   '<div class="submitted-successfully">Game provider added successfully!</div>'
+            // );
+            // $form.append($successMsg);
+            const successText = window.location.pathname.startsWith("/zh")
+              ? "遊戲供應商新增成功"
+              : "Game provider added successfully!";
 
+            const $successMsg = $(`<div class="submitted-successfully">${successText}</div>`);
+            $('.filter-container').append($successMsg);
             // Hide after 3 seconds
             setTimeout(function () {
-              $successMsg.fadeOut(400, function () {
+              $successMsg.fadeOut(300, function () {
                 $(this).remove();
               });
+              location.reload(); // Page reload after success message
             }, 3000);
             jQuery(".agqa-popup-form-inner .popup-form-cross-icon").trigger(
               "click"
             );
-            location.reload(); // Page reload after success message
+            // location.reload(); // Page reload after success message
           } else {
             // alert(response);
             // alert(response);
@@ -1332,11 +1338,11 @@ jQuery(document).ready(function ($) {
             const $successMsg = $(
               `<div class="submitted-unsuccessfully">${response}</div>`
             );
-            $form.append($successMsg);
+            $('.filter-container').append($successMsg);
 
             // Hide after 3 seconds
             setTimeout(function () {
-              $successMsg.fadeOut(400, function () {
+              $successMsg.fadeOut(300, function () {
                 $(this).remove();
               });
             }, 3000);
@@ -1363,24 +1369,29 @@ jQuery(document).ready(function ($) {
           nonce: nonce,
         },
         success: function (response) {
-          console.log(response);
           if (response.includes("Success")) {
             // alert("Game provider added successfully!");
-            const $successMsg = $(
-              '<div class="submitted-successfully">Game provider added successfully!</div>'
-            );
-            $form.append($successMsg);
+            // const $successMsg = $(
+            //   '<div class="submitted-successfully">Game provider added successfully!</div>'
+            // );
+            // $form.append($successMsg);
+            const successText = window.location.pathname.startsWith("/zh")
+              ? "遊戲供應商新增成功"
+              : "Game provider added successfully!";
 
+            const $successMsg = $(`<div class="submitted-successfully">${successText}</div>`);
+            $('.filter-container').append($successMsg);
             // Hide after 3 seconds
             setTimeout(function () {
               $successMsg.fadeOut(400, function () {
                 $(this).remove();
               });
+              location.reload(); // Page reload after success message
             }, 3000);
             jQuery(".agqa-popup-form-inner .popup-form-cross-icon").trigger(
               "click"
             );
-            location.reload(); // Page reload after success message
+
           } else {
             // alert(response);
             $(".file-preview span").text("");
@@ -1388,7 +1399,7 @@ jQuery(document).ready(function ($) {
             const $successMsg = $(
               `<div class="submitted-unsuccessfully">${response}</div>`
             );
-            $form.append($successMsg);
+            $('.filter-container').append($successMsg);
 
             // Hide after 3 seconds
             setTimeout(function () {
@@ -1465,11 +1476,19 @@ jQuery(document).ready(function ($) {
     formDataImage.append("file", $("input#pdf-upload-input")[0].files[0]);
     // console.log(formDataImage);
     // alert(response);
-    const $successMsg = $(
-      `<div class="submit-warning">Please Waiting...</div>`
-    );
+    // const $successMsg = $(
+    //   `<div class="submit-warning">Please Waiting...</div>`
+    // );
+    // $form.append($successMsg);
+    const waitingText = window.location.pathname.startsWith("/zh")
+      ? "請稍候..."
+      : "Please Waiting...";
+
+    const $successMsg = $(`<div class="submit-warning">${waitingText}</div>`);
     $form.append($successMsg);
 
+    // Optional: Agar chaho to loading spinner bhi add kar sakte ho for premium feel
+    // $successMsg.html(`${waitingText} <span class="spinner"></span>`);
     $.ajax({
       url: agqa_ajax.ajax_url,
       type: "POST",
@@ -1547,11 +1566,16 @@ jQuery(document).ready(function ($) {
           //  alert(response);
           if (response.includes("Success")) {
             // alert("Provider data updated!");
-            const $successMsg = $(
-              '<div class="submitted-successfully">Provider data updated!</div>'
-            );
-            $form.append($successMsg);
+            // const $successMsg = $(
+            //   '<div class="submitted-successfully">Provider data updated!</div>'
+            // );
+            // $form.append($successMsg);
+            const updateProviderText = window.location.pathname.startsWith("/zh")
+              ? "遊戲提供商資料已更新。"
+              : "Provider data updated!";
 
+            const $successMsg = $(`<div class="submitted-successfully">${updateProviderText}</div>`);
+            $form.append($successMsg);
             // Hide after 3 seconds
             setTimeout(function () {
               $successMsg.fadeOut(400, function () {
