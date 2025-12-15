@@ -187,11 +187,11 @@ curl_close($curl);
                     // var_dump($value_approval);
                 ?>
                     <div class="custom-table-row">
-                        <div class="table-body-col cuim-type-name-approval"><?php echo $value_approval->type_name; ?></div>
+                        <div class="table-body-col cuim-type-name-approval" data-approval-value="<?php echo $value_approval->type_name; ?>"><?php echo $value_approval->type_name; ?></div>
                         <div class="table-body-col"><?php echo $value_approval->question; ?></div>
                         <div class="table-body-col table-row-status <?php echo strtolower($value_approval->status); ?>">
                             <span
-                                class="<?php echo $value_approval->status; ?>"><?php echo $value_approval->status; ?></span>
+                                class="<?php echo $value_approval->status; ?>" data-approval-status-value="<?php echo $value_approval->status; ?>"><?php echo $value_approval->status; ?></span>
                         </div>
                         <div class="table-body-col">
                             <?php

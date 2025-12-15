@@ -53,14 +53,50 @@ $getUserRole = get_user_role_simple();
                         <label for="manage-user-state"><span>* </span>State</label>
                         <div class="custom-select-dropdown">
                             <div class="custom-select-dropdown-title">
-                                <span class="custom-dropdown-default-value"><?php echo $value->state; ?></span>
+                                <!-- <span class="custom-dropdown-default-value"><?php echo $value->state; ?></span> -->
+                                <?php
+                                $current_url = $_SERVER['REQUEST_URI'];
+                                $is_chinese = strpos($current_url, 'zh') !== false;
+
+                                // State ko English se Chinese mein map karne ke liye array
+                                $state_translations = [
+                                    'active'   => '啟用',     // Active → Huóyuè (commonly used as 有效 or 启用, but for user state "活跃" fits)
+                                    'inactive' => '停用',   // Inactive → Wèi jīhuó (or 不活跃)
+                                    'freeze'   => '凍結'      // Freeze → Dòngjié
+                                ];
+
+                                // Most common/standard Chinese translations for user account states:
+                                // - Active   → 启用 / 正常 / 活跃
+                                // - Inactive → 禁用 / 未激活
+                                // - Freeze   → 冻结
+
+                                // Agar aapke system mein exact values capital letter mein stored hain (jaise "Active"), to strtolower use karo
+                                $english_state = strtolower(trim($value->state));
+
+                                // Translated state nikalte hain
+                                $display_state = $is_chinese && isset($state_translations[$english_state])
+                                    ? $state_translations[$english_state]
+                                    : $value->state; // fallback to original if no translation
+                                ?>
+
+                                <span class="custom-dropdown-default-value">
+                                    <?php echo htmlspecialchars($display_state, ENT_QUOTES, 'UTF-8'); ?>
+                                </span>
                                 <span class="custom-dropdown-selected-value"></span>
                             </div>
                             <div class="custom-select-dropdown-lists">
                                 <ul>
-                                    <li data-value="Active">Active</li>
-                                    <li data-value="Inactive">Inactive</li>
-                                    <li data-value="Freeze">Freeze</li>
+                                    <?php
+                                    $current_url = $_SERVER['REQUEST_URI'];
+                                    if (strpos($current_url, 'zh') !== false) { ?>
+                                        <li data-value="Active">啟用</li>
+                                        <li data-value="Inactive">停用</li>
+                                        <li data-value="Freeze">凍結</li>
+                                    <?php } else { ?>
+                                        <li data-value="Active">Active</li>
+                                        <li data-value="Inactive">Inactive</li>
+                                        <li data-value="Freeze">Freeze</li>
+                                    <?php } ?>
                                 </ul>
                             </div>
                             <input type="hidden" name="state" id="manage-user-state" required=""
@@ -71,22 +107,56 @@ $getUserRole = get_user_role_simple();
                         <label for="question-type"><span>* </span>User Role </label>
                         <div class="custom-select-dropdown">
                             <div class="custom-select-dropdown-title">
-                                <span class="custom-dropdown-default-value"><?php echo $value->user_role; ?></span>
+                                <!-- <span class="custom-dropdown-default-value"><?php echo $value->user_role; ?></span> -->
+                                <?php
+                                $current_url = $_SERVER['REQUEST_URI'];
+                                $is_chinese = strpos($current_url, 'zh') !== false;
+
+                                // Role ko English se Chinese mein map karne ke liye array
+                                $role_translations = [
+                                    'admin'       => '最高管理員',      // Administrator
+                                    'manager'     => '一般管理員',        // Manager
+                                    'contributor' => '編輯人員',      // Contributor
+                                    'viewer'      => '檢視人員'       // Viewer
+                                ];
+                                // Translated role nikalte hain
+                                $english_role = strtolower(trim($value->user_role)); // safety ke liye lowercase aur trim
+                                $display_role = $is_chinese && isset($role_translations[$english_role])
+                                    ? $role_translations[$english_role]
+                                    : $value->user_role; // agar translation nahi mili to original hi dikhao
+                                ?>
+
+                                <span class="custom-dropdown-default-value">
+                                    <?php echo htmlspecialchars($display_role); ?>
+                                </span>
                                 <span class="custom-dropdown-selected-value"></span>
                             </div>
                             <div class="custom-select-dropdown-lists">
                                 <ul>
-                                    <?php if ($getUserRole !== 'contributor') { ?>
-                                        <?php if ($getUserRole !== 'manager') { ?>
-                                            <li data-value="admin">Admin</li>
-                                            <li data-value="manager">Manager</li>
+                                    <?php
+                                    $current_url = $_SERVER['REQUEST_URI'];
+                                    if (strpos($current_url, 'zh') !== false) { ?>
+                                        <?php if ($getUserRole !== 'contributor') { ?>
+                                            <?php if ($getUserRole !== 'manager') { ?>
+                                                <li data-value="admin">最高管理員</li>
+                                                <li data-value="manager">一般管理員</li>
+                                            <?php } ?>
+                                            <li data-value="contributor">編輯人員</li>
                                         <?php } ?>
-                                        <li data-value="contributor">Contributor</li>
+                                        <li data-value="viewer">檢視人員</li>
+                                    <?php } else { ?>
+                                        <?php if ($getUserRole !== 'contributor') { ?>
+                                            <?php if ($getUserRole !== 'manager') { ?>
+                                                <li data-value="admin">Admin</li>
+                                                <li data-value="manager">Manager</li>
+                                            <?php } ?>
+                                            <li data-value="contributor">Contributor</li>
+                                        <?php } ?>
+                                        <li data-value="viewer">Viewer</li>
                                     <?php } ?>
-                                    <li data-value="viewer">Viewer</li>
                                 </ul>
                             </div>
-                            <input type="hidden" name= "user-role" id="issue_type" required=""
+                            <input type="hidden" name="user-role" id="issue_type" required=""
                                 value="<?php echo $value->user_role; ?>">
                         </div>
                     </div>

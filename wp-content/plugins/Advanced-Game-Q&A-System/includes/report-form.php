@@ -89,7 +89,7 @@
                         <span class="custom-dropdown-selected-value"></span>
                     </div>
                     <div class="custom-select-dropdown-lists">
-                        <ul>
+                        <!-- <ul>
                             <li data-value="Functional issue / Operation not working as expected">Functional issue /
                                 Operation not working as expected</li>
                             <li data-value="UI display issue">UI display issue</li>
@@ -105,6 +105,72 @@
                                 trigger issue</li>
                             <li data-value="Text / Language error">Text / Language error</li>
                             <li data-value="other">Other</li>
+                        </ul> -->
+
+                        <ul>
+                            <?php
+                            if (strpos($_SERVER['REQUEST_URI'], '/zh/') !== false) { ?>
+                                <li data-value="all">全部</li>
+                                <li data-value="Functional issue / Operation not working as expected">
+                                    功能問題／操作未如預期
+                                </li>
+                                <li data-value="UI display issue">
+                                    介面顯示問題
+                                </li>
+                                <li data-value="Incorrect data display">
+                                    資料顯示錯誤
+                                </li>
+                                <li data-value="System error message">
+                                    系統錯誤訊息
+                                </li>
+                                <li data-value="Process interruption / Unable to complete operation">
+                                    流程中斷／無法完成操作
+                                </li>
+                                <li data-value="Performance issue / System lag">效能問題／系統延遲</li>
+                                <li data-value="Permission or account-related issue">
+                                    權限或帳號相關問題
+                                </li>
+                                <li data-value="Notification / Email / Task trigger issue">
+                                    通知／電子郵件／任務觸發問題
+                                </li>
+                                <li data-value="Text / Language error">
+                                    文字／語言錯誤
+                                </li>
+                                <li data-value="Other">
+                                    其他
+                                </li>
+                            <?php } else { ?>
+                                <li data-value="all">All</li>
+                                <li data-value="Functional issue / Operation not working as expected">
+                                    Functional issue / Operation not working as expected
+                                </li>
+                                <li data-value="UI display issue">
+                                    UI display issue
+                                </li>
+                                <li data-value="Incorrect data display">
+                                    Incorrect data display
+                                </li>
+                                <li data-value="System error message">
+                                    System error message
+                                </li>
+                                <li data-value="Process interruption / Unable to complete operation">
+                                    Process interruption / Unable to complete operation
+                                </li>
+                                <li data-value="Performance issue / System lag">Performance issue / System lag</li>
+                                <li data-value="Permission or account-related issue">
+                                    Permission or account-related issue
+                                </li>
+                                <li data-value="Notification / Email / Task trigger issue">
+                                    Notification / Email / Task trigger issue
+                                </li>
+                                <li data-value="Text / Language error">
+                                    Text / Language error
+                                </li>
+                                <li data-value="Other">
+                                    Other
+                                </li>
+                            <?php } ?>
+
                         </ul>
                     </div>
                     <input type="hidden" name="faq-report-type" id="issue_type" required>

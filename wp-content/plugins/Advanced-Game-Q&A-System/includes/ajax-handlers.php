@@ -1011,8 +1011,20 @@ function handle_add_review_revenue_provider_api_data()
                     $game_type_id
                 );
                 $game_type_name = $wpdb->get_var($query);
-                echo "Provider Name: $provider_name,  Game type: $game_type_name<br>";
-                echo 'The combination of provider and game type already exists.';
+                // echo "Provider Name: $provider_name,  Game type: $game_type_name<br>";
+                // echo 'The combination of provider and game type already exists.';
+                $current_url = $_SERVER['REQUEST_URI'];
+                // Check if 'zh' is present in the URL
+                if (strpos($current_url, 'zh') !== false) {
+                    // If 'zh' is found, do something
+                    echo "Provider Name: $provider_name, Game type: $game_type_name<br>";
+                    echo 'The combination of provider and game type already exists.';
+                } else {
+                    // If 'zh' is not found, do something else
+                    // Add your alternative code here
+                    echo "提供者名稱: $provider_name, 遊戲類型: $game_type_name<br>";
+                    echo '提供者和遊戲類型的組合已經存在。';
+                }
                 wp_die(); // Stop execution if any combination exists
             }
         }
@@ -1164,8 +1176,20 @@ function handle_add_revenue_provider_data()
                     $game_type_id
                 );
                 $game_type_name = $wpdb->get_var($query);
-                echo "Provider Name: $provider_name,  Game type: $game_type_name<br>";
-                echo 'The combination of provider and game type already exists.';
+                // echo "Provider Name: $provider_name,  Game type: $game_type_name<br>";
+                // echo 'The combination of provider and game type already exists.';
+                $current_url = $_SERVER['REQUEST_URI'];
+                // Check if 'zh' is present in the URL
+                if (strpos($current_url, 'zh') !== false) {
+                    // If 'zh' is found, do something
+                    echo "Provider Name: $provider_name, Game type: $game_type_name<br>";
+                    echo 'The combination of provider and game type already exists.';
+                } else {
+                    // If 'zh' is not found, do something else
+                    // Add your alternative code here
+                    echo "提供者名稱: $provider_name, 遊戲類型: $game_type_name<br>";
+                    echo '提供者和遊戲類型的組合已經存在。';
+                }
                 wp_die(); // Stop execution if any combination exists
             }
         }
@@ -1316,8 +1340,20 @@ function handle_add_sale_provider_api_data()
                     $game_type_id
                 );
                 $game_type_name = $wpdb->get_var($query);
-                echo "Provider Name: $provider_name,  Game type: $game_type_name<br>";
-                echo 'The combination of provider and game type already exists.';
+                // echo "Provider Name: $provider_name,  Game type: $game_type_name<br>";
+                // echo 'The combination of provider and game type already exists.';
+                $current_url = $_SERVER['REQUEST_URI'];
+                // Check if 'zh' is present in the URL
+                if (strpos($current_url, 'zh') !== false) {
+                    // If 'zh' is found, do something
+                    echo "Provider Name: $provider_name, Game type: $game_type_name<br>";
+                    echo 'The combination of provider and game type already exists.';
+                } else {
+                    // If 'zh' is not found, do something else
+                    // Add your alternative code here
+                    echo "提供者名稱: $provider_name, 遊戲類型: $game_type_name<br>";
+                    echo '提供者和遊戲類型的組合已經存在。';
+                }
                 wp_die(); // Stop execution if any combination exists
             }
         }
@@ -1469,8 +1505,20 @@ function handle_add_sale_provider_data()
                     $game_type_id
                 );
                 $game_type_name = $wpdb->get_var($query);
-                echo "Provider Name: $provider_name,  Game type: $game_type_name<br>";
-                echo 'The combination of provider and game type already exists.';
+                // echo "Provider Name: $provider_name,  Game type: $game_type_name<br>";
+                // echo 'The combination of provider and game type already exists.';
+                $current_url = $_SERVER['REQUEST_URI'];
+                // Check if 'zh' is present in the URL
+                if (strpos($current_url, 'zh') !== false) {
+                    // If 'zh' is found, do something
+                    echo "Provider Name: $provider_name, Game type: $game_type_name<br>";
+                    echo 'The combination of provider and game type already exists.';
+                } else {
+                    // If 'zh' is not found, do something else
+                    // Add your alternative code here
+                    echo "提供者名稱: $provider_name, 遊戲類型: $game_type_name<br>";
+                    echo '提供者和遊戲類型的組合已經存在。';
+                }
                 wp_die(); // Stop execution if any combination exists
             }
         }

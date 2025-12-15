@@ -449,7 +449,7 @@ jQuery(document).ready(function ($) {
       var faqText = $(this).text().toLowerCase(); // Get all text inside the FAQ accordion
       var faqCategory = $(this)
         .find(".faq-accodion-status")
-        .text()
+        .data('faq-value')
         .toLowerCase(); // Optionally, get category text
       if (
         (selectedCategory === "all" ||

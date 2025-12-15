@@ -52,7 +52,13 @@ $getUserRole = get_user_role_simple();
                     <div class="form-field required">
                         <label for="issue_type"><span>* </span>State</label>
                         <select name="manage-user-state" id="manage-user-state" required disabled>
-                            <option value="Pending"><?php echo $value->state; ?></option>
+                            <?php
+                            $current_url = $_SERVER['REQUEST_URI'];
+                            if (strpos($current_url, 'zh') !== false) { ?>
+                                <option value="Pending">待審核</option>
+                            <?php } else { ?>
+                                <option value="Pending"><?php echo $value->state; ?></option>
+                            <?php } ?>
                         </select>
                         <input type="hidden" name="state" id="manage-user-state" required=""
                             value="<?php echo $value->state; ?>">
@@ -63,19 +69,57 @@ $getUserRole = get_user_role_simple();
                         <label for="question-type"><span>* </span>User Role </label>
                         <div class="custom-select-dropdown">
                             <div class="custom-select-dropdown-title">
-                                <span class="custom-dropdown-default-value"><?php echo $value->user_role; ?></span>
+                                <!-- <span class="custom-dropdown-default-value"><?php echo $value->user_role; ?></span> -->
+                                <?php
+                                $current_url = $_SERVER['REQUEST_URI'];
+                                $is_chinese = strpos($current_url, 'zh') !== false;
+
+                                // Role ko English se Chinese mein map karne ke liye array
+                                $role_translations = [
+                                    'admin'       => '管理员',      // Administrator
+                                    'manager'     => '经理',        // Manager
+                                    'contributor' => '贡献者',      // Contributor
+                                    'viewer'      => '查看者'       // Viewer
+                                ];
+
+                                // Agar typo hai aur database mein "contributer" stored hai (without 'o'), to ye bhi add kar den
+                                // 'contributer' => '贡献者',
+
+                                // Translated role nikalte hain
+                                $english_role = strtolower(trim($value->user_role)); // safety ke liye lowercase aur trim
+                                $display_role = $is_chinese && isset($role_translations[$english_role])
+                                    ? $role_translations[$english_role]
+                                    : $value->user_role; // agar translation nahi mili to original hi dikhao
+                                ?>
+
+                                <span class="custom-dropdown-default-value">
+                                    <?php echo htmlspecialchars($display_role); ?>
+                                </span>
                                 <span class="custom-dropdown-selected-value"></span>
                             </div>
                             <div class="custom-select-dropdown-lists">
                                 <ul>
-                                    <?php if ($getUserRole !== 'contributor') { ?>
-                                        <?php if ($getUserRole !== 'manager') { ?>
-                                            <li data-value="admin">Admin</li>
-                                            <li data-value="manager">Manager</li>
+                                    <?php
+                                    $current_url = $_SERVER['REQUEST_URI'];
+                                    if (strpos($current_url, 'zh') !== false) { ?>
+                                        <?php if ($getUserRole !== 'contributor') { ?>
+                                            <?php if ($getUserRole !== 'manager') { ?>
+                                                <li data-value="admin">最高管理員</li>
+                                                <li data-value="manager">一般管理員</li>
+                                            <?php } ?>
+                                            <li data-value="contributor">編輯人員</li>
                                         <?php } ?>
-                                        <li data-value="contributor">Contributor</li>
+                                        <li data-value="viewer">檢視人員</li>
+                                    <?php } else { ?>
+                                        <?php if ($getUserRole !== 'contributor') { ?>
+                                            <?php if ($getUserRole !== 'manager') { ?>
+                                                <li data-value="admin">Admin</li>
+                                                <li data-value="manager">Manager</li>
+                                            <?php } ?>
+                                            <li data-value="contributor">Contributor</li>
+                                        <?php } ?>
+                                        <li data-value="viewer">Viewer</li>
                                     <?php } ?>
-                                    <li data-value="viewer">Viewer</li>
                                 </ul>
                             </div>
                             <input type="hidden" name="user-role" id="issue_type" required=""

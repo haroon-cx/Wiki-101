@@ -361,10 +361,10 @@ ob_start(); // Start output buffering
                                         <?php echo empty($user_data->delete_user_name) ? '' : '(deleter | ' . $user_data->delete_user_name . ')'; ?>
                                     </div>
 
-                                    <div class="table-body-col table-row-status <?php echo strtolower($user_data->state); ?>">
+                                    <div class="table-body-col table-row-status <?php echo strtolower($user_data->state); ?>" data-user-status-mg-value="<?php echo strtolower($user_data->state); ?>">
                                         <span><?php echo $user_data->state; ?></span>
                                     </div>
-                                    <div class="table-body-col table-row-user-role"><?php echo $user_data->user_role; ?></div>
+                                    <div class="table-body-col table-row-user-role" data-user-role-value="<?php echo $user_data->user_role; ?>"><?php echo $user_data->user_role; ?></div>
                                     <div class="table-body-col table-row-company"><?php echo $user_data->company_name; ?></div>
                                     <div class="table-body-col table-body-col-mail table-body-col-text"><a
                                             href="mailto:<?php echo $user_data->email; ?>"><?php echo $user_data->email; ?></a>

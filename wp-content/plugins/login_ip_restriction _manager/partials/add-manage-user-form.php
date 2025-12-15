@@ -59,7 +59,13 @@ $getUserRole = get_user_role_simple();
                     <label for="issue_type"><span>* </span>State</label>
                     <input type="hidden" name="state" value="pending">
                     <select name="state" id="manage-user-state" required disabled>
-                        <option value="Pending">Pending</option>
+                        <?php
+                        $current_url = $_SERVER['REQUEST_URI'];
+                        if (strpos($current_url, 'zh') !== false) { ?>
+                            <option value="Pending">待審核</option>
+                        <?php } else { ?>
+                            <option value="Pending">Pending</option>
+                        <?php } ?>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
                         <option value="Freeze">Freeze</option>
@@ -74,14 +80,27 @@ $getUserRole = get_user_role_simple();
                         </div>
                         <div class="custom-select-dropdown-lists">
                             <ul>
-                                <?php if ($getUserRole !== 'contributor') { ?>
-                                    <?php if ($getUserRole !== 'manager') { ?>
-                                        <li data-value="admin">Admin</li>
-                                        <li data-value="manager">Manager</li>
+                                <?php
+                                $current_url = $_SERVER['REQUEST_URI'];
+                                if (strpos($current_url, 'zh') !== false) { ?>
+                                    <?php if ($getUserRole !== 'contributor') { ?>
+                                        <?php if ($getUserRole !== 'manager') { ?>
+                                            <li data-value="admin">最高管理員</li>
+                                            <li data-value="manager">一般管理員</li>
+                                        <?php } ?>
+                                        <li data-value="contributor">編輯人員</li>
                                     <?php } ?>
-                                    <li data-value="contributor">Contributor</li>
+                                    <li data-value="viewer">檢視人員</li>
+                                <?php } else { ?>
+                                    <?php if ($getUserRole !== 'contributor') { ?>
+                                        <?php if ($getUserRole !== 'manager') { ?>
+                                            <li data-value="admin">Admin</li>
+                                            <li data-value="manager">Manager</li>
+                                        <?php } ?>
+                                        <li data-value="contributor">Contributor</li>
+                                    <?php } ?>
+                                    <li data-value="viewer">Viewer</li>
                                 <?php } ?>
-                                <li data-value="viewer">Viewer</li>
                             </ul>
                         </div>
                         <input type="hidden" name="user-role" id="issue_type" required="">

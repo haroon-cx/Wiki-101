@@ -350,12 +350,12 @@ function report_system_shortcode()
                                     <div class="table-body report-row">
                                         <div class="report-row-head">
                                             <div class="table-body-col"><?php echo $count; ?></div>
-                                            <div class="table-body-col agqa-report-type-search-text">
+                                            <div class="table-body-col agqa-report-type-search-text" data-report-system-value="<?php echo $report_value->report_type; ?>">
                                                 <?php echo $report_value->report_type; ?>
                                             </div>
                                             <div class="table-body-col report-status-response">
                                                 <span
-                                                    class="<?php echo str_replace(' ', '-', strtolower($report_value->status)); ?><?php if ($report_value->status == 'Responded') echo '-status'; ?>">
+                                                    class="<?php echo str_replace(' ', '-', strtolower($report_value->status)); ?><?php if ($report_value->status == 'Responded') echo '-status'; ?>" data-report-status-value="<?php echo $report_value->status; ?>">
                                                     <?php echo $report_value->status; ?>
                                                 </span>
                                             </div>

@@ -249,7 +249,7 @@ function custom_faq_shortcode()
                             </div>
                             <div class="<?php echo $faq_value->delete_status; ?>">
 
-                                <div class="faq-accodion-status"><?php echo $faq_value->faq_category; ?></div>
+                                <div class="faq-accodion-status" data-faq-value="<?php echo $faq_value->faq_category; ?>"><?php echo $faq_value->faq_category; ?></div>
                                 <div class="faq-accordion-head">
                                     <h2><?php echo esc_html($faq_value->question); ?></h2>
                                     <button class="button agqa-status-toggle"

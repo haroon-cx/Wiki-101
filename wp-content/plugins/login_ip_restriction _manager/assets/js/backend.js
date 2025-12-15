@@ -400,101 +400,7 @@ jQuery(document).ready(function ($) {
       }, 500); // Delay of 500 milliseconds
       return; // Return early if either is empty
     }
-    function applyCustomDots(totalPages) {
-      var $pager = jQuery(".pagination-ctn ul");
 
-      // Agar 1 hi page hai to dots ka koi faida nahi
-      if (!totalPages || totalPages <= 1) {
-        $pager.find("li.page-item.cust-ellipsis").remove();
-        return;
-      }
-
-      // Purane wale custom dots hata do
-      $pager.find("li.page-item.cust-ellipsis").remove();
-
-      // Sirf number wali li (prev / next ko hata ke)
-      var $numItems = $pager.find("li.page-item").not(".prev, .next");
-
-      // Current active page nikaalo (jo tum nth-child(3) se active kar rahe ho)
-      var current = parseInt($pager.find("li.page-item.active").text(), 10);
-      if (isNaN(current) || current < 1) current = 1;
-      if (current > totalPages) current = totalPages;
-
-      // Pehle sab numeric pages ko base state mein hide karo / > totalPages hide
-      $numItems.each(function () {
-        var n = parseInt(jQuery(this).text(), 10);
-        if (isNaN(n)) return;
-
-        if (n > totalPages) {
-          jQuery(this).hide();
-        } else {
-          jQuery(this).hide(); // baad mein select karke show karenge
-        }
-      });
-
-      var sideRange = 1; // current ke aas paas 1-1 page
-
-      // 1, last, current, current-1, current+1 show karo
-      $numItems.each(function () {
-        var n = parseInt(jQuery(this).text(), 10);
-        if (isNaN(n) || n > totalPages) return;
-
-        if (
-          n === 1 ||
-          n === totalPages ||
-          n === current ||
-          n === current - sideRange ||
-          n === current + sideRange
-        ) {
-          jQuery(this).show();
-        }
-      });
-
-      // 1st page li aur last page li find karo
-      var $page1 = $numItems.filter(function () {
-        return parseInt(jQuery(this).text(), 10) === 1;
-      });
-      var $lastPage = $numItems.filter(function () {
-        return parseInt(jQuery(this).text(), 10) === totalPages;
-      });
-
-      if ($page1.length) $page1.show();
-      if ($lastPage.length) $lastPage.show();
-
-      // 1 ke baad dots (agar gap ho)
-      if ($page1.length && $page1.is(":visible")) {
-        var $after1 = $page1.nextAll("li.page-item")
-          .not(".prev,.next")
-          .filter(":visible")
-          .first();
-
-        if ($after1.length) {
-          var nAfter = parseInt($after1.text(), 10);
-          if (!isNaN(nAfter) && nAfter > 2) {
-            jQuery(
-              '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
-            ).insertAfter($page1);
-          }
-        }
-      }
-
-      // last se pehle dots (agar gap ho)
-      if ($lastPage.length && $lastPage.is(":visible")) {
-        var $beforeLast = $lastPage.prevAll("li.page-item")
-          .not(".prev,.next")
-          .filter(":visible")
-          .first();
-
-        if ($beforeLast.length) {
-          var nBefore = parseInt($beforeLast.text(), 10);
-          if (!isNaN(nBefore) && nBefore < totalPages - 1) {
-            jQuery(
-              '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
-            ).insertBefore($lastPage);
-          }
-        }
-      }
-    }
     // Initially hide pagination and "Nothing Found" message
     $(".section-found").hide(); // Hide "Nothing Found" message
     $(".custom-table-ctn").show(); // Hide "Nothing Found" message
@@ -503,8 +409,8 @@ jQuery(document).ready(function ($) {
 
     $(".custom-table-row").each(function () {
       var rowText = $(this).find(".table-body-col-text").text().toLowerCase(); // Get all text inside the row
-      var rowCategory = $(this).find(".table-row-status").text().toLowerCase(); // Get the state of the row
-      var rowRole = $(this).find(".table-row-user-role").text().toLowerCase(); // Get the role of the row
+      var rowCategory = $(this).find(".table-row-status").data('user-status-mg-value').toLowerCase(); // Get the state of the row
+      var rowRole = $(this).find(".table-row-user-role").data('user-role-value').toLowerCase(); // Get the role of the row
       var rowCompany = $(this).find(".table-row-company").text().toLowerCase(); // Get the company of the row
       var rowDateText = $(this).find(".table-body-col-date").text().trim(); // Get the date from the row (e.g., "2025/09/17")
 
@@ -600,9 +506,105 @@ jQuery(document).ready(function ($) {
               jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
             }
           }
+          applyCustomDots(totalPages);
         });
     }, 100); // Delay of 500 milliseconds
   });
+  function applyCustomDots(totalPages) {
+    var $pager = jQuery(".pagination-ctn ul");
+
+    // Agar 1 hi page hai to dots ka koi faida nahi
+    if (!totalPages || totalPages <= 1) {
+      $pager.find("li.page-item.cust-ellipsis").remove();
+      return;
+    }
+
+    // Purane wale custom dots hata do
+    $pager.find("li.page-item.cust-ellipsis").remove();
+
+    // Sirf number wali li (prev / next ko hata ke)
+    var $numItems = $pager.find("li.page-item").not(".prev, .next");
+
+    // Current active page nikaalo (jo tum nth-child(3) se active kar rahe ho)
+    var current = parseInt($pager.find("li.page-item.active").text(), 10);
+    if (isNaN(current) || current < 1) current = 1;
+    if (current > totalPages) current = totalPages;
+
+    // Pehle sab numeric pages ko base state mein hide karo / > totalPages hide
+    $numItems.each(function () {
+      var n = parseInt(jQuery(this).text(), 10);
+      if (isNaN(n)) return;
+
+      if (n > totalPages) {
+        jQuery(this).hide();
+      } else {
+        jQuery(this).hide(); // baad mein select karke show karenge
+      }
+    });
+
+    var sideRange = 1; // current ke aas paas 1-1 page
+
+    // 1, last, current, current-1, current+1 show karo
+    $numItems.each(function () {
+      var n = parseInt(jQuery(this).text(), 10);
+      if (isNaN(n) || n > totalPages) return;
+
+      if (
+        n === 1 ||
+        n === totalPages ||
+        n === current ||
+        n === current - sideRange ||
+        n === current + sideRange
+      ) {
+        jQuery(this).show();
+      }
+    });
+
+    // 1st page li aur last page li find karo
+    var $page1 = $numItems.filter(function () {
+      return parseInt(jQuery(this).text(), 10) === 1;
+    });
+    var $lastPage = $numItems.filter(function () {
+      return parseInt(jQuery(this).text(), 10) === totalPages;
+    });
+
+    if ($page1.length) $page1.show();
+    if ($lastPage.length) $lastPage.show();
+
+    // 1 ke baad dots (agar gap ho)
+    if ($page1.length && $page1.is(":visible")) {
+      var $after1 = $page1.nextAll("li.page-item")
+        .not(".prev,.next")
+        .filter(":visible")
+        .first();
+
+      if ($after1.length) {
+        var nAfter = parseInt($after1.text(), 10);
+        if (!isNaN(nAfter) && nAfter > 2) {
+          jQuery(
+            '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+          ).insertAfter($page1);
+        }
+      }
+    }
+
+    // last se pehle dots (agar gap ho)
+    if ($lastPage.length && $lastPage.is(":visible")) {
+      var $beforeLast = $lastPage.prevAll("li.page-item")
+        .not(".prev,.next")
+        .filter(":visible")
+        .first();
+
+      if ($beforeLast.length) {
+        var nBefore = parseInt($beforeLast.text(), 10);
+        if (!isNaN(nBefore) && nBefore < totalPages - 1) {
+          jQuery(
+            '<li class="page-item disabled cust-ellipsis"><span class="page-link">...</span></li>'
+          ).insertBefore($lastPage);
+        }
+      }
+    }
+  }
   /**
    * real time validation account field
    */
@@ -2757,11 +2759,11 @@ jQuery(document).ready(function ($) {
     $(".custom-table-row").each(function () {
       var IPaccountsearchText = $(this)
         .find(".cuim-type-name-approval")
-        .text()
+        .data('approval-value')
         .toLowerCase();
       var matchStatus = $(this)
         .find(".table-row-status span")
-        .text()
+        .data('approval-status-value')
         .toLowerCase();
       // alert(IPaccountsearchText);
 

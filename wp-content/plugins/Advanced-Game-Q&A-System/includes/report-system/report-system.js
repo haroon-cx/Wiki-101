@@ -59,12 +59,12 @@ jQuery(document).ready(function ($) {
     $(".custom-table-row").each(function () {
       var reportStatusText = $(this)
         .find(".table-body-col.report-status-response span")
-        .text()
+        .data('report-status-value')
         .toLowerCase();
       // alert(reportStatusText);
       var reportTypeSearchText = $(this)
         .find(".agqa-report-type-search-text")
-        .text()
+        .data('report-system-value')
         .toLowerCase();
       // alert(reportTypeSearchText);
       var isReportSearch = $(this)
