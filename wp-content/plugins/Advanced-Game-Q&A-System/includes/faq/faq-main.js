@@ -230,9 +230,11 @@ jQuery(document).ready(function ($) {
         // console.log(response);
         if (response.includes("Success")) {
           // alert("Successfully Submitted");
-          const $successMsg = $(
-            '<div class="submitted-successfully">Successfully Submitted</div>'
-          );
+          const submitFinalText = window.location.pathname.startsWith("/zh")
+            ? "提交成功。"
+            : "Successfully Submitted";
+
+          const $successMsg = $(`<div class="submitted-successfully">${submitFinalText}</div>`);
           $form.append($successMsg);
 
           // Hide after 3 seconds
@@ -306,11 +308,16 @@ jQuery(document).ready(function ($) {
         // console.log(response);
         if (response.includes("Success")) {
           // alert("Successfully Submitted");
-          const $successMsg = $(
-            '<div class="submitted-successfully">Successfully Submitted</div>'
-          );
-          $form.append($successMsg);
+          // const $successMsg = $(
+          //   '<div class="submitted-successfully">Successfully Submitted</div>'
+          // );
+          // $form.append($successMsg);
+          const submitFinalText = window.location.pathname.startsWith("/zh")
+            ? "提交成功。"
+            : "Successfully Submitted";
 
+          const $successMsg = $(`<div class="submitted-successfully">${submitFinalText}</div>`);
+          $form.append($successMsg);
           // Hide after 3 seconds
           setTimeout(function () {
             $successMsg.fadeOut(400, function () {

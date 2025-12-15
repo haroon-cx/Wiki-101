@@ -829,6 +829,7 @@ function handle_user_profile_update()
     }
 
     $image_input = isset($data['image']) ? trim($data['image']) : '';
+    $image_input = str_replace(' ', '%20', $image_input);
     $user_name   = isset($data['user-name']) ? sanitize_text_field($data['user-name']) : '';
 
 
@@ -846,7 +847,8 @@ function handle_user_profile_update()
     $mime_type    = '';
     $file_ext     = 'jpg'; // default fallback
     $file_basename = 'user_profile_image';
-
+    // print_r($image_input);
+    // wp_die();
     // 1) Handle Data URL: data:image/<ext>;base64,XXXX
     if (preg_match('#^data:image/([a-zA-Z0-9]+);base64,#', $image_input, $m)) {
         $file_ext = strtolower($m[1]);

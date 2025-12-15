@@ -40,7 +40,7 @@ function cui_pm_add_logout_button_footer()
                 $logout_url = wp_logout_url(home_url());
                 $profile_image = get_user_meta($user_id, 'profile_image', true);
                 if (empty($profile_image)) {
-                    $profile_image = URIP_URL . '/assets/image/profile-user-image.jpg';
+                    $profile_image = URIP_URL . 'assets/image/profile-user-image.jpg';
                 }
                 ?>
                 <div class="header-right">

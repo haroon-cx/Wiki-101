@@ -1452,12 +1452,13 @@ jQuery(document).ready(function ($) {
             `<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`
           );
         }
-      } //else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
+      }
+      // else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
       //   isValid = false;
       //   $websiteInput.addClass("error-field");
       //   if ($fieldWrapper.find(".error-message").length === 0) {
       //     $fieldWrapper.append(
-      //         `<div class="error-message">Please enter a valid domain(e.g. .com, .net).</div>`
+      //       `<div class="error-message">Please enter a valid domain(e.g. .com, .net).</div>`
       //     );
       //   }
       // }
@@ -1640,9 +1641,11 @@ jQuery(document).ready(function ($) {
           // console.log(response);
           if (response.includes("Success")) {
             // alert("Provider data updated!");
-            const $successMsg = $(
-              '<div class="submitted-successfully">Provider data updated!</div>'
-            );
+            const providerUpdateText = window.location.pathname.startsWith("/zh")
+              ? "供應商數據已更新。"
+              : "Provider data updated!";
+
+            const $successMsg = $(`<div class="submitted-successfully">${providerUpdateText}</div>`);
             $form.append($successMsg);
 
             // Hide after 3 seconds
@@ -1725,7 +1728,8 @@ jQuery(document).ready(function ($) {
             `<div class="error-message">Official Website must not contain spaces. Please re-enter.</div>`
           );
         }
-      } //else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
+      }
+      //else if (value && !/^[a-zA-Z0-9.-]+\.[a-z]{2,}$/i.test(value)) {
       //   isValid = false;
       //   $websiteInput.addClass("error-field");
       //   if ($fieldWrapper.find(".error-message").length === 0) {
@@ -1749,11 +1753,16 @@ jQuery(document).ready(function ($) {
     formDataImage.append("file", $("input#pdf-upload-input")[0].files[0]);
     // console.log(formDataImage);
     // alert(response);
-    const $successMsg = $(
-      `<div class="submit-warning">Please Waiting...</div>`
-    );
-    $form.append($successMsg);
+    // const $successMsg = $(
+    //   `<div class="submit-warning">Please Waiting...</div>`
+    // );
+    // $form.append($successMsg);
+    const providerUpdateText = window.location.pathname.startsWith("/zh")
+      ? "請稍候..."
+      : "Please Waiting...";
 
+    const $successMsg = $(`<div class="submit-warning">${providerUpdateText}</div>`);
+    $form.append($successMsg);
     // Hide after 3 seconds
     setTimeout(function () {
       $successMsg.fadeOut(400, function () {
@@ -1821,9 +1830,11 @@ jQuery(document).ready(function ($) {
           // console.log(response);
           if (response.includes("Success")) {
             // alert("Provider data updated!");
-            const $successMsg = $(
-              '<div class="submitted-successfully">Provider data updated!</div>'
-            );
+            const providerUpdateText = window.location.pathname.startsWith("/zh")
+              ? "供應商數據已更新。"
+              : "Provider data updated!";
+
+            const $successMsg = $(`<div class="submitted-successfully">${providerUpdateText}</div>`);
             $form.append($successMsg);
 
             // Hide after 3 seconds
@@ -1891,9 +1902,11 @@ jQuery(document).ready(function ($) {
           console.log(response);
           if (response.includes("Success")) {
             // alert("Provider data updated!");
-            const $successMsg = $(
-              '<div class="submitted-successfully">Provider data updated!</div>'
-            );
+            const providerUpdateText = window.location.pathname.startsWith("/zh")
+              ? "供應商數據已更新。"
+              : "Provider data updated!";
+
+            const $successMsg = $(`<div class="submitted-successfully">${providerUpdateText}</div>`);
             $form.append($successMsg);
             // Hide after 3 seconds
             setTimeout(function () {
@@ -2417,9 +2430,11 @@ jQuery(document).ready(function ($) {
         // alert(response);
         if (response.includes("Success")) {
           // alert("Provider data updated!");
-          const $successMsg = $(
-            '<div class="submitted-successfully">Provider data updated!</div>'
-          );
+          const providerUpdateText = window.location.pathname.startsWith("/zh")
+            ? "供應商數據已更新。"
+            : "Provider data updated!";
+
+          const $successMsg = $(`<div class="submitted-successfully">${providerUpdateText}</div>`);
           $form.append($successMsg);
 
           // Hide after 3 seconds
@@ -2494,9 +2509,11 @@ jQuery(document).ready(function ($) {
         // alert(response);
         if (response.includes("Success")) {
           // alert("Provider data updated!");
-          const $successMsg = $(
-            '<div class="submitted-successfully">Provider data updated!</div>'
-          );
+          const providerUpdateText = window.location.pathname.startsWith("/zh")
+            ? "供應商數據已更新。"
+            : "Provider data updated!";
+
+          const $successMsg = $(`<div class="submitted-successfully">${providerUpdateText}</div>`);
           $form.append($successMsg);
 
           // Hide after 3 seconds
@@ -2571,11 +2588,16 @@ jQuery(document).ready(function ($) {
         // alert(response);
         if (response.includes("Success")) {
           // alert("Provider data updated!");
-          const $successMsg = $(
-            '<div class="submitted-successfully">Provider data updated!</div>'
-          );
-          $form.append($successMsg);
+          // const $successMsg = $(
+          //   '<div class="submitted-successfully">Provider data updated!</div>'
+          // );
+          // $form.append($successMsg);
+          const submitFinalText = window.location.pathname.startsWith("/zh")
+            ? "供應商數據已更新。"
+            : "Provider data updated!";
 
+          const $successMsg = $(`<div class="submitted-successfully">${submitFinalText}</div>`);
+          $form.append($successMsg);
           // Hide after 3 seconds
           setTimeout(function () {
             $successMsg.fadeOut(400, function () {
@@ -2648,9 +2670,11 @@ jQuery(document).ready(function ($) {
         // alert(response);
         if (response.includes("Success")) {
           // alert("Provider data updated!");
-          const $successMsg = $(
-            '<div class="submitted-successfully">Provider data updated!</div>'
-          );
+          const providerUpdateText = window.location.pathname.startsWith("/zh")
+            ? "供應商數據已更新。"
+            : "Provider data updated!";
+
+          const $successMsg = $(`<div class="submitted-successfully">${providerUpdateText}</div>`);
           $form.append($successMsg);
 
           // Hide after 3 seconds

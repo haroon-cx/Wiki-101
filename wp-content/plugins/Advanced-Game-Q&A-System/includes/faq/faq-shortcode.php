@@ -144,7 +144,21 @@ function custom_faq_shortcode()
                         <div class="filter-select">
                             <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden" value="all">
                             <button class="filter-select-title">
-                                <span class="filter-default-text">All</span>
+                                <?php
+                                // Get the current URL path
+                                $path = $_SERVER['REQUEST_URI'];
+
+                                // Detect if URL starts with /zh/
+                                $isChinese = (strpos($path, '/zh/') === 0);
+                                ?>
+
+                                <span class="filter-default-text">
+                                    <?= $isChinese
+                                        ? '全部'   // Traditional Chinese
+                                        : 'All'; // English
+                                    ?>
+                                </span>
+                                <!-- <span class="filter-default-text">All</span> -->
                                 <span class="filter-selected-text"></span>
                             </button>
                             <div class="filter-select-list agqa-faq-cat-filter">

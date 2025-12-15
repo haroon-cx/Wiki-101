@@ -1231,8 +1231,11 @@ jQuery(document).ready(function ($) {
           setTimeout(function () {
             $successMsg.remove();
             jQuery(".cuim-profile-form-wrapper").removeClass("active");
-
-            window.location.href = `/verification/?login-again=1`;
+            if (window.location.pathname.startsWith("/zh")) {
+              window.location.href = `/zh/verification/?login-again=1`;
+            } else {
+              window.location.href = `/verification/?login-again=1`;
+            }
           }, 3000);
         } else {
           jQuery("div#confirm-submit-popup").removeClass("active");
@@ -1284,7 +1287,7 @@ jQuery(document).ready(function ($) {
     e.preventDefault();
     var $form = jQuery(this);
     var blobUrl = jQuery("#cuim-avatar-preview").attr("src");
-
+    // alert(blobUrl);
     // Convert blob: URL to data URL (base64)
     function blobUrlToDataURL(blobUrl) {
       return fetch(blobUrl)
@@ -1500,12 +1503,12 @@ jQuery(document).ready(function ($) {
     $(".account-error").text("");
     var account = $("#manage-ip-account-field").val(); // Assuming the ID for the account field is 'account'
     if (account === "") {
-      var textTranslate = ' is required';
+      var textTranslate = 'Account is required.';
       if (window.location.pathname.startsWith("/zh")) {
-        textTranslate = '是必須的';
+        textTranslate = '帳號為必填項目。';
       }
       isValid = false;
-      $(".account-error").text("Account " + textTranslate + ".");
+      $(".account-error").text(textTranslate);
       $(".manage-ip-account-field").addClass("error-field");
     }
 

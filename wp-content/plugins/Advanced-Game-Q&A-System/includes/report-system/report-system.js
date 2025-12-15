@@ -339,6 +339,11 @@ jQuery(document).ready(function ($) {
             } else {
               jQuery(".pagination-ctn ul li.next").removeClass("disabled"); // Enable Next button
             }
+            var beforeNext = jQuery(".pagination-ctn ul li.next").prev("li");
+
+            if (!beforeNext.is(":hidden") && beforeNext.hasClass("active")) {
+              jQuery(".pagination-ctn ul li.next").addClass("disabled");
+            }
           }
         });
     }, 100); // Delay of 500 milliseconds
