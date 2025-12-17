@@ -689,7 +689,7 @@ jQuery(document).ready(function ($) {
   addBtn.on("click", function () {
     editMode = false;
     editTarget = null;
-    firstNameInput.val("").attr("placeholder", "Description");
+    firstNameInput.val("").attr("placeholder", "Please enter ...");
     showPopup(addFieldPopup);
   });
 

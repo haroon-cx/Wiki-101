@@ -4689,7 +4689,7 @@ label[for="select-game-type-id"]
 @media (max-height: 980px) {
   .agqa-popup-form-select,
   .custom-select-dropdown-lists {
-    max-height: 340px;
+    max-height: 250px !important;
   }
 }
 

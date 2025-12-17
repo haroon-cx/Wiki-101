@@ -21,7 +21,7 @@ $getUserRole = get_user_role_simple();
                     data-inited-validation="1">
                     <div class="form-field required">
                         <label for="account-field"><span>* </span>Account</label>
-                        <input type="text" name="account" id="account-field" required placeholder="Description"
+                        <input type="text" name="account" id="account-field" required placeholder="Please enter ..."
                             value="<?php echo $value->account; ?>" disabled>
 
                         <input type="hidden" name="account" id="account-field" required placeholder="Description"

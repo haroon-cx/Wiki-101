@@ -12,7 +12,7 @@
         <form action="#" id="add-ip-from" autocomplete="off" data-inited-validation="1">
             <div class="form-field full-width cuim-main-add-ip-account">
                 <label for="manage-ip-account-field">Account</label>
-                <input type="text" name="account-name" id="manage-ip-account-field" placeholder="Description" required>
+                <input type="text" name="account-name" id="manage-ip-account-field" placeholder="Please enter ..." required>
             </div>
             <div class="error-message account-error"></div>
             <div class="form-field full-width">

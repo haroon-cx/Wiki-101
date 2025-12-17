@@ -140,7 +140,7 @@ function custom_faq_shortcode()
                 <div class="filter-area">
                     <form action="#" autocomplete="off">
                         <input type="search" name="filter-search" id="filter-search" class="agqa-faq-validation-100"
-                            placeholder="description">
+                            placeholder="Please enter ...">
                         <div class="filter-select">
                             <input type="hidden" name="filter-select-hidden" class="agqa-filter-select-hidden" value="all">
                             <button class="filter-select-title">

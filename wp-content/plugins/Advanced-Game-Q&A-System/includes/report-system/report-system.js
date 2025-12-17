@@ -267,8 +267,8 @@ jQuery(document).ready(function ($) {
     $(".custom-table-row").each(function () {
       // alert(reportStatusText);
       var reportTypeSearchText = $(this)
-        .find(".table-body-col.report-status-response")
-        .text()
+        .find(".table-body-col.report-status-response span")
+        .data('report-status-value')
         .toLowerCase();
 
       // Apply filters based on exact match for state, role, company, and search term

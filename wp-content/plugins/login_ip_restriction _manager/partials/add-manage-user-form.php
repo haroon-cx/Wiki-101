@@ -19,7 +19,7 @@ $getUserRole = get_user_role_simple();
                 <div class="form-field required">
                     <label for="account-field"><span>* </span>Account</label>
                     <input type="text" class="cuim-manage-user-validation-20" name="account" id="account-field" required
-                        placeholder="Description">
+                        placeholder="Please enter ...">
                     <div id="error-message" class="cuim-validation-error"></div>
                 </div>
                 <!-- <div class="form-field required">

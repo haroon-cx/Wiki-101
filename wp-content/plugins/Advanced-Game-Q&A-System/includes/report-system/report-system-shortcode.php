@@ -81,10 +81,10 @@ function report_system_shortcode()
         $args  = [];
 
         // Status filter (e.g., "Pending Response")
-        if (! empty($add_report_status)) {
-            $where[] = "status = %s";
-            $args[]  = $add_report_status . ' Response';
-        }
+        // if (! empty($add_report_status)) {
+        //     $where[] = "status = %s";
+        //     $args[]  = $add_report_status . ' Response';
+        // }
 
         // Viewer => only own records
         if ($getUserRole === 'viewer') {
@@ -1052,6 +1052,26 @@ function report_system_shortcode()
                     }
                 }
             }
+
+            setTimeout(function() {
+                var params = new URLSearchParams(window.location.search);
+
+                if (params.get("status") === "pending") {
+                    var $btn = jQuery('.filter-pending-responses');
+                    const btn = $btn.get(0);
+                    // Create and dispatch mouse events
+                    ['mousedown', 'mouseup', 'click'].forEach(eventType => {
+                        btn.dispatchEvent(
+                            new MouseEvent(eventType, {
+                                view: window,
+                                bubbles: true,
+                                cancelable: true
+                            })
+                        );
+                    });
+                }
+
+            }, 500);
         });
     </script>
 <?php

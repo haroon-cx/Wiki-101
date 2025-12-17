@@ -85,7 +85,7 @@
                 <label for="issue_type"><span>* </span>What problem did you encounter?</label>
                 <div class="custom-select-dropdown">
                     <div class="custom-select-dropdown-title">
-                        <span class="custom-dropdown-default-value">Select Role</span>
+                        <span class="custom-dropdown-default-value">Please Select</span>
                         <span class="custom-dropdown-selected-value"></span>
                     </div>
                     <div class="custom-select-dropdown-lists">

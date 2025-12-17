@@ -811,45 +811,72 @@ jQuery(document).ready(function ($) {
   //     }
   //   }
   // });
-  $(".cuim-manage-user-validation-254").on("input", function () {
-    var maxLengthInputSerch = 254;
-    var $input = $(this); // یہ اصل ان پٹ فیلڈ ہے
-    var $parent = $input.closest(".form-field"); // صرف parent کے لیے
-    var $errorMessage = $input.next("#error-message"); // error message جو input کے فوراً بعد ہو
+  var maxLengthInputSerch = 254;
 
-    // اگر لمبائی زیادہ ہو تو کاٹ دو
-    if ($input.val().length > maxLengthInputSerch) {
-      $input.val($input.val().substring(0, maxLengthInputSerch));
+  function getErrorText() {
+    var isChinese = window.location.pathname.includes("/zh/");
+    return isChinese ? "最多允许 254 个字符。" : "Max 254 characters allowed.";
+  }
+
+  function showError($input) {
+    var $parent = $input.closest(".form-field");
+    var $errorMessage = $input.next("#error-message");
+    var errorText = getErrorText();
+
+    $parent.addClass("error-field-input");
+
+    if ($errorMessage.length === 0) {
+      $('<div id="error-message" class="cuim-validation-error">' + errorText + "</div>")
+        .insertAfter($input);
+    } else {
+      $errorMessage.text(errorText);
+    }
+  }
+
+  function removeError($input) {
+    var $parent = $input.closest(".form-field");
+    var $errorMessage = $input.next("#error-message");
+
+    $parent.removeClass("error-field-input");
+    if ($errorMessage.length) $errorMessage.remove();
+  }
+
+  // 1) 255 attempt pe typing block + error show
+  $(document).on("keydown", ".cuim-manage-user-validation-254", function (e) {
+    var $input = $(this);
+
+    // allowed keys
+    if (
+      e.key === "Backspace" || e.key === "Delete" ||
+      e.key === "ArrowLeft" || e.key === "ArrowRight" ||
+      e.key === "ArrowUp" || e.key === "ArrowDown" ||
+      e.key === "Tab" || e.key === "Home" || e.key === "End" ||
+      e.ctrlKey || e.metaKey
+    ) return;
+
+    var el = this;
+    var hasSelection = el.selectionStart !== el.selectionEnd;
+
+    // 254 pe ho aur user 255 type kar raha ho (selection nahi)
+    if (!hasSelection && $input.val().length >= maxLengthInputSerch) {
+      e.preventDefault();      // stop 255
+      showError($input);       // show error on 255 attempt
+    }
+  });
+
+  // 2) Paste/drag-drop: agar 255+ aya to trim + error show
+  $(document).on("input", ".cuim-manage-user-validation-254", function () {
+    var $input = $(this);
+    var val = $input.val();
+
+    if (val.length > maxLengthInputSerch) {
+      $input.val(val.substring(0, maxLengthInputSerch)); // cut to 254
+      showError($input); // error because user attempted 255+
+    } else {
+      // agar user wapas 254 se kam kar de to error hata do
+      removeError($input);
     }
 
-    // ایریر میسج کا ٹیکسٹ (اگر /zh/ ہو تو چائنیز، ورنہ انگلش)
-    var isChinese = window.location.pathname.includes('/zh/');
-    var errorText = isChinese
-      ? "最多允许 254 个字符。"
-      : "Max 254 characters allowed.";
-
-    // اگر لمبائی اب بھی 254 ہے (یعنی یوزر نے زیادہ ٹائپ کیا تھا)
-    if ($input.val().length === maxLengthInputSerch && $input.data('was-over') !== true) {
-      $parent.addClass("error-field-input");
-
-      if ($errorMessage.length === 0) {
-        $('<div id="error-message" class="cuim-validation-error">' + errorText + '</div>')
-          .insertAfter($input);
-      } else {
-        $errorMessage.text(errorText);
-      }
-      $input.data('was-over', true); // یاد رکھیں کہ ایک دفعہ ایریر دکھا چکے
-    }
-    // اگر لمبائی ٹھیک ہے تو ایریر ہٹا دو
-    else if ($input.val().length < maxLengthInputSerch) {
-      $parent.removeClass("error-field-input");
-      if ($errorMessage.length > 0) {
-        $errorMessage.remove();
-      }
-      $input.removeData('was-over');
-    }
-
-    // Submit button toggle
     setTimeout(function () {
       toggleSubmitButton();
     }, 300);
