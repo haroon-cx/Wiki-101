@@ -129,22 +129,22 @@ $rows_type_game = $wpdb->get_results("
                     <!-- <input type="text" name="selling-price" id="selling-price" placeholder="Description"
                         required> -->
                     <input type="number" name="selling-price" min="0" max="100" step="1" inputmode="numeric" value=""
-                        id="selling-price" placeholder="Description" required>
+                        id="selling-price" placeholder="Please enter ..." required>
                 </div>
                 <div class="form-field required">
                     <label for="api-cost"><span>*</span> Max. Revenue Share(%)</label>
                     <!-- <input type="text" name="api-cost" id="api-cost" placeholder="Description" required> -->
                     <input type="number" name="api-cost" min="0" max="100" step="1" inputmode="numeric" value=""
-                        id="api-cost" placeholder="Description" required>
+                        id="api-cost" placeholder="Please enter ..." required>
                 </div>
                 <div class="form-field required">
                     <label for="game-info-website"><span>*</span> Game Info Website</label>
-                    <input type="text" name="game-info-website" id="game-info-website" placeholder="Description"
+                    <input type="text" name="game-info-website" id="game-info-website" placeholder="Please enter ..."
                         required>
                 </div>
                 <div class="form-field">
                     <label for="game-demo-website">Game Demo Website</label>
-                    <input type="text" name="game-demo-website" id="game-demo-website" placeholder="Description">
+                    <input type="text" name="game-demo-website" id="game-demo-website" placeholder="Please enter ...">
                 </div>
                 <div class="form-field required">
                     <label for="select-game-category"><span>*</span> API Type</label>
@@ -169,13 +169,13 @@ $rows_type_game = $wpdb->get_results("
                 </div>
                 <div class="form-field required">
                     <label for="representative-name"><span>*</span> Representative’s Name</label>
-                    <input type="text" name="representative-name" id="representative-name" placeholder="Description"
+                    <input type="text" name="representative-name" id="representative-name" placeholder="Please enter ..."
                         required>
                 </div>
                 <div class="form-field">
                     <label for="representative-telegram">Representative’s Telegram</label>
                     <input type="text" name="representative-telegram" id="representative-telegram"
-                        placeholder="Description">
+                        placeholder="Please enter ...">
                 </div>
                 <div class="form-field">
                     <div class="add-custom-field-ctn">

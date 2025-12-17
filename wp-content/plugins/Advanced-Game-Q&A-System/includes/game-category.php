@@ -176,7 +176,7 @@ function game_categories_shortcode($atts)
                                 </div>
                                 <div class="agqa-popup-form-field required">
                                     <label for="provider-name"><span>*</span> Provider Name</label>
-                                    <input type="text" name="provider-name" id="provider-name" placeholder="Description"
+                                    <input type="text" name="provider-name" id="provider-name" placeholder="Please enter ..."
                                         required>
                                 </div>
                                 <div class="agqa-popup-form-field required">

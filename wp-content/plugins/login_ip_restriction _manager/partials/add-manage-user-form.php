@@ -109,13 +109,13 @@ $getUserRole = get_user_role_simple();
                 <div class="form-field required">
                     <label for="comapany-name-field"><span>* </span>Company Name</label>
                     <input type="text" name="company-name" class="agqa-faq-validation-100" id="comapany-name-field"
-                        required placeholder="Description">
+                        required placeholder="Please enter ...">
                     <div id="error-message" class="cuim-validation-error"></div>
                 </div>
                 <div class="form-field required">
                     <label for="manage-user-email-field"><span>* </span>Email</label>
                     <input type="email" class="cuim-manage-user-validation-254" name="email" id="email-field" required
-                        placeholder="Description">
+                        placeholder="Please enter ...">
                 </div>
                 <div class="form-field">
                     <div class="add-custom-field-ctn">

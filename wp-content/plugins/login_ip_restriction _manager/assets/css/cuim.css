@@ -1030,7 +1030,7 @@ div#cuim-edit-fields input {
   opacity: 0.3;
   pointer-events: none;
 }
-.table-body-disabled-profile{
+.table-body-disabled-profile {
   opacity: 0.9 !important;
 }
 .faq-accordion .table-body-disabled div {
@@ -1259,11 +1259,11 @@ div#cuim-edit-fields input {
 }
 
 .english-language {
-  background-image: url(../image/english-lang-icon.svg);
+  background-image: url(../image/chinese-lang-icon.svg);
 }
 
 .chinese-language {
-  background-image: url(../image/chinese-lang-icon.svg);
+  background-image: url(../image/english-lang-icon.svg);
 }
 
 .notification-button-counting {
