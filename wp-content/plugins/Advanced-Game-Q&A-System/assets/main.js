@@ -1293,7 +1293,7 @@ jQuery(document).ready(function ($) {
       $('input[name="upload-file"]').val("");
       var formData = $form.serialize();
       formData += "&imageurl=" + encodeURIComponent(imageUrl);
-
+      formData += "&lang=" + $('html').attr('lang');
       var nonce = agqa_ajax.nonce;
 
       $.ajax({
@@ -1357,6 +1357,7 @@ jQuery(document).ready(function ($) {
       $('input[name="upload-file"]').val("");
       var formData = $form.serialize();
       formData += "&imageurl=" + encodeURIComponent(imageUrl);
+      formData += "&lang=" + $('html').attr('lang');
 
       var nonce = agqa_ajax.nonce;
 
@@ -1815,6 +1816,7 @@ jQuery(document).ready(function ($) {
       formData +=
         "&provider-name=" +
         $(".agqa-main-game-type .custom-dropdown-selected-value").text();
+      formData += "&lang=" + $('html').attr('lang');
       // alert(formData);
       // return;
       var nonce = agqa_ajax.nonce;
@@ -1888,6 +1890,7 @@ jQuery(document).ready(function ($) {
       formData +=
         "&provider-name=" +
         $(".agqa-main-game-type .custom-dropdown-selected-value").text();
+      formData += "&lang=" + $('html').attr('lang');
       // console.log(formData);
       var nonce = agqa_ajax.nonce;
       $.ajax({
